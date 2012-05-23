@@ -67,7 +67,7 @@ public class Contributor
   private Date    m_entered_date;
   private String  m_updated_by_user = "";
   private Date    m_updated_date;
-
+//delete me
   // Derived Objects
   private Vector   m_conOrgLinks  = new Vector ();
   private Vector   m_contrib_contriblinks  = new Vector ();
