@@ -1,0 +1,70 @@
+//a:link {color:#000000; text-decoration:none;}
+//a:visited {color:#000000; text-decoration:none;}
+//a:hover {color:#99CF16; text-decoration:underline;}
+
+.menuitems {font-size: 11px; color: #000000; line-height: 20px; font-family: Verdana, Arial, Helvetica, san serif}
+.menutext {font-size: 10px; color: #000000; font-family: Verdana, Arial, Helvetica, san serif}
+.functionheader {font-size: 12px; color: #000000; font-family: Verdana, Arial, Helvetica, san serif}
+
+
+#sidebar {
+width: 225px;
+}
+
+#main {
+left: 250px;
+
+}
+
+
+
+.heading     { FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #333333; LINE-HEIGHT: 16px; FONT-FAMILY: Verdana, "Arial", Helvetica, serif }
+.bodyhead		{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; letter-spacing: 1; color: #362D77; font-weight:700 }
+.bodytext		{ font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #2E2E2E }
+.header      { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #FFFFFF; 
+               text-transform: uppercase; font-weight: bold }
+.head        { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color: #FFFFFF; 
+               text-transform: uppercase; font-weight: bold }
+.line10      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 10px; border: 0 ridge }
+.line15      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 15px; border: 0 ridge }
+.line20      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 20px; border: 0 ridge }
+.line25      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 25px; border: 0 ridge }
+.line35      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 35px; border: 0 ridge }
+.line50      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 50px; border: 0 ridge }
+.line75      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 75px; border: 0 ridge }
+.line100     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 100px; border: 0 ridge }
+.line125      { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 15px; 
+               background-color: #C9C9C9; color: #000000; width: 125px; border: 0 ridge }
+.line150     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width:150px; border: 0 ridge }
+.line175     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 175px; border: 0 ridge }
+.line200     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 200px; border: 0 ridge }
+.line225     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width: 225px; border: 0 ridge }
+.line250     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width:250px; border: 0 ridge }
+.line275     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width:275px; border: 0 ridge }
+.line300     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width:300px; border: 0 ridge }
+.line325     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+               background-color: #C9C9C9; color: #000000; width:325px; border: 0 ridge }
+.line350     { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px;
+               background-color: #C9C9C9; color: #000000; width:350px; border: 0 ridge }
+.lineVeryLarge { font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px;
+               background-color: #C9C9C9; color: #000000; width:750px; border: 0 ridge }
+
+.spacertext  { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #f8f0e1; }
+.tick {  font-family:Verdana, Arial, Helvetica, sans-serif; background-color:#E7EfC7; color:#003b8a; border: 0 ridge }
+.button	{ font-family:Verdana, Arial, Helvetica, sans-serif; FONT-SIZE: 10px; 
+             background-color: #C9C9C9; color: #000000; width: 50px; border: 0 ridge }             
