@@ -153,6 +153,7 @@ public void displayUpdateForm(String                p_id,
     p_out.println("  <tr><td align='right' >Comment on/Tag this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
     p_out.println("<tr><td><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
     p_out.println("<tr><td><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='right' >Export to excel</a></td></tr>");
+    p_out.println("<tr><td><a href='/pages/network/?task=ego-centric&id=" + p_request.getParameter("id") + "' align='right' >Network</a></td></tr>");
     p_out.println("</table>");
     
     /*p_out.println("<DIV style=\"float:right; padding-top: 15px;\">");
