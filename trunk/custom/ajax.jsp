@@ -4,7 +4,7 @@
   String ajaxType = request.getParameter("ajaxType");
   ausstage.Database          db_ausstage          = new ausstage.Database ();
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
-    //delete me
+ 
   if (ajaxType.equals("CODE_ASSOCIATION")) {
     String code1LovId = request.getParameter("code1LovId");
 
