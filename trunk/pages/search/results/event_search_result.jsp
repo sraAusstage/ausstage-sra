@@ -114,10 +114,10 @@ public String formatDate(String day, String month, String year) {
   String page_num                        = request.getParameter("f_page_num");
   String recset_count                    = request.getParameter("f_recset_count");
   String search_within_search_for_result = request.getParameter("f_search_within_search");
-  String inc_resources									 = request.getParameter("inc_resources");
-  String f_sql_switch										 = request.getParameter("f_sql_switch");
-  String f_date_clause									 = request.getParameter("f_date_clause");
-  String f_sort_by											 = request.getParameter("f_sort_by");
+  String inc_resources					 = request.getParameter("inc_resources");
+  String f_sql_switch					 = request.getParameter("f_sql_switch");
+  String f_date_clause					 = request.getParameter("f_date_clause");
+  String f_sort_by						 = request.getParameter("f_sort_by");
   int l_int_page_num                     = 0;
   State state                            = new State(db_ausstage_for_result);
   SimpleDateFormat formatPattern         = new SimpleDateFormat("dd/MM/yyyy");

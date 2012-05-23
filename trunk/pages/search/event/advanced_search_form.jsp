@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import = "ausstage.Database, java.sql.*, sun.jdbc.rowset.*, java.util.Date, ausstage.PrimaryGenre, ausstage.State"%>
 <%@ page import = "ausstage.Status, ausstage.SecondaryGenre, ausstage.PrimaryContentInd, ausstage.AusstageCommon, ausstage.Country, ausstage.LookupCode"%>
-
+ 
 <%admin.AppConstants ausstage_search_appconstants_for_result = new admin.AppConstants(request);%>
 <jsp:useBean id="admin_db_for_result" class="admin.Database" scope="application">
 <%admin_db_for_result.connDatabase(ausstage_search_appconstants_for_result.DB_PUBLIC_USER_NAME, ausstage_search_appconstants_for_result.DB_PUBLIC_USER_PASSWORD);%>
@@ -547,7 +547,7 @@ function checkFields(){
     return(false);
   }
   else{
-	  System.out.println("Ajax check");
+	  //System.out.println("Ajax check");
     return(ajaxFunction());
   }
 }
@@ -585,6 +585,7 @@ function isDigit(c){
   }
 
 function ajaxFunction(){
+
 	var ajaxRequest;  // The variable that makes Ajax possible!
 	
 	try{
@@ -604,32 +605,32 @@ function ajaxFunction(){
 		}
 	}
 	// Create a function that will receive data sent from the server
-	ajaxRequest.open("GET", "results/ajax.jsp?f_event_name=" + document.advancedSearchForm.f_event_name.value+ "
-			  &f_event_id=" + document.advancedSearchForm.f_event_id.value+ "
-				&f_betweenfrom_dd=" + document.advancedSearchForm.f_betweenfrom_dd.value+ "
-				&f_betweenfrom_mm=" + document.advancedSearchForm.f_betweenfrom_mm.value+ "
-				&f_betweenfrom_yyyy=" + document.advancedSearchForm.f_betweenfrom_yyyy.value+ "
-				&f_betweento_dd=" + document.advancedSearchForm.f_betweento_dd.value+ "
-				&f_betweento_mm=" + document.advancedSearchForm.f_betweento_mm.value+ "
-				&f_betweento_yyyy=" + document.advancedSearchForm.f_betweento_yyyy.value+ "
-				&f_venue_name=" + document.advancedSearchForm.f_venue_name.value+ "
-				&f_venue_id=" + document.advancedSearchForm.f_venue_id.value+ "
-				&f_states=" + document.advancedSearchForm.f_states.value+ "
-				&f_umbrella=" + document.advancedSearchForm.f_umbrella.value+ "
-				&f_status=" + document.advancedSearchForm.f_status.value+ "
-				&f_primary_genre=" + document.advancedSearchForm.f_primary_genre.value+ "
-				&f_prim_cont_indi=" + document.advancedSearchForm.f_prim_cont_indi.value+ "
-				&f_origin_of_text=" + document.advancedSearchForm.f_origin_of_text.value+ "
-				&f_origin_of_production=" + document.advancedSearchForm.f_origin_of_production.value+ "
-				&f_organisation_name=" + document.advancedSearchForm.f_organisation_name.value+ "
-				&f_organisation_function=" + document.advancedSearchForm.f_organisation_function.value+ "
-				&f_organisation_id=" + document.advancedSearchForm.f_organisation_id.value+ "
-				&f_contributor_name=" + document.advancedSearchForm.f_contributor_name.value+ "
-				&f_contributor_function=" + document.advancedSearchForm.f_contributor_function.value+ "
-				&f_contributor_id=" + document.advancedSearchForm.f_contributor_id.value
-				&f_assoc_item=" + document.advancedSearchForm.f_assoc_item.value+ "
-				&f_limit_by=" + document.advancedSearchForm.f_limit_by.value+ "
-				&f_order_by=" + document.advancedSearchForm.f_order_by.value+ "
+	ajaxRequest.open("GET", "results/ajax.jsp?f_event_name=" + document.advancedSearchForm.f_event_name.value
+				+ "&f_event_id=" + document.advancedSearchForm.f_event_id.value
+				+ "&f_betweenfrom_dd=" + document.advancedSearchForm.f_betweenfrom_dd.value
+				+ "&f_betweenfrom_mm=" + document.advancedSearchForm.f_betweenfrom_mm.value
+				+ "&f_betweenfrom_yyyy=" + document.advancedSearchForm.f_betweenfrom_yyyy.value
+				+ "&f_betweento_dd=" + document.advancedSearchForm.f_betweento_dd.value
+				+ "&f_betweento_mm=" + document.advancedSearchForm.f_betweento_mm.value
+				+ "&f_betweento_yyyy=" + document.advancedSearchForm.f_betweento_yyyy.value
+				+ "&f_venue_name=" + document.advancedSearchForm.f_venue_name.value
+				+ "&f_venue_id=" + document.advancedSearchForm.f_venue_id.value
+				+ "&f_states=" + document.advancedSearchForm.f_states.value
+				+ "&f_umbrella=" + document.advancedSearchForm.f_umbrella.value
+				+ "&f_status=" + document.advancedSearchForm.f_status.value
+				+ "&f_primary_genre=" + document.advancedSearchForm.f_primary_genre.value
+				+ "&f_prim_cont_indi=" + document.advancedSearchForm.f_prim_cont_indi.value
+				+ "&f_origin_of_text=" + document.advancedSearchForm.f_origin_of_text.value
+				+ "&f_origin_of_production=" + document.advancedSearchForm.f_origin_of_production.value
+				+ "&f_organisation_name=" + document.advancedSearchForm.f_organisation_name.value
+				+ "&f_organisation_function=" + document.advancedSearchForm.f_organisation_function.value
+				+ "&f_organisation_id=" + document.advancedSearchForm.f_organisation_id.value
+				+ "&f_contributor_name=" + document.advancedSearchForm.f_contributor_name.value
+				+ "&f_contributor_function=" + document.advancedSearchForm.f_contributor_function.value
+				+ "&f_contributor_id=" + document.advancedSearchForm.f_contributor_id.value
+				+ "&f_assoc_item=" + document.advancedSearchForm.f_assoc_item.value
+				+ "&f_limit_by=" + document.advancedSearchForm.f_limit_by.value
+				+ "&f_order_by=" + document.advancedSearchForm.f_order_by.value , false); 
 	ajaxRequest.send(null); 
 
 	if (ajaxRequest.responseText == "0") {

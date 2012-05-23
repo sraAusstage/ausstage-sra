@@ -146,19 +146,75 @@ color : black;
     var form = document.searchform;
 
     function checkFields(){
+      msg = "";
       //all fields are empty
       if(form.f_keyword.value == ""){      
         alert("You have not entered the correct value(s) for keyword. Please press OK.");
         return (false);
-      }   
-      msg = "";
+      } 
+      
+      //check date 
+      if(!validateDate(form.f_year)){
+      	alert("Please enter a valid year");
+      	return false;
+      }
+
+      if (msg!=""){
+    	  alert(msg);
+    	  return (false);
+      }
     }
 
-    
-    //Check Integer
-    if ((!isInteger(form.f_year.value) &&  form.f_year.value != 4) ){
-  		    msg += "- Date year must be a valid\n";
-  		  }
+    function ajaxFunction(){
+    	var ajaxRequest;  // The variable that makes Ajax possible!
+    	
+    	try{
+    		// Opera 8.0+, Firefox, Safari
+    		ajaxRequest = new XMLHttpRequest();
+    	} catch (e){
+    		// Internet Explorer Browsers
+    		try{
+    			ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+    		} catch (e) {
+    			try{
+    				ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    			} catch (e){
+    				// Something went wrong, return true to go to the next page
+    				return true;
+    			}
+    		}
+    	}
+    	// Create a function that will receive data sent from the server
+    	/*ajaxRequest.open("GET", "results/ajax.jsp?f_title=" 
+    					+ document.searchform.f_title.value
+    					+ "&f_creator=" + document.searchform.f_creator.value
+    					+ "&f_source=" + document.searchform.f_source.value
+    					+ "&f_keywords=" + document.searchform.f_keywords.value
+    					+ "&f_firstdate_dd=" + document.searchform.f_firstdate_dd.value
+    					+ "&f_firstdate_mm=" + document.searchform.f_firstdate_mm.value
+    					+ "&f_firstdate_yyyy=" + document.searchform.f_firstdate_yyyy.value
+    					+ "&f_collectingInstitution=" + document.searchform.f_collectingInstitution.value
+    					+ "&f_work=" + document.searchform.f_work.value
+    					+ "&f_event=" + document.searchform.f_event.value
+    					+ "&f_contributor=" + document.searchform.f_contributor.value
+    					+ "&f_venue=" + document.searchform.f_venue.value
+    					+ "&f_organisation=" + document.searchform.f_organisation.value
+    					+ "&f_assoc_item=" + document.searchform.f_assoc_item.value
+    					+ "&f_sort_by=" + document.searchform.f_sort_by.value
+    					+ "&f_limit_by=" + document.searchform.f_limit_by.value
+    					, false);
+    	ajaxRequest.send(null); 
+		*/
+		
+    	if (ajaxRequest.responseText == "0") {
+    		alert("There were no results found for your search.");
+    		return false;
+    	} else {
+    		return true;
+    	}
+
+    }
+
     
     function isBlank(s) {
         if((s == null)||(s == "")) 
@@ -190,8 +246,28 @@ color : black;
      function isDigit (c){
        return ((c >= "0") && (c <= "9"))
      }
-    
-    
-    
+     
+     //check date format - can be yyyy or yyyy-yyyy
+     function validateDate(c_date){
+    	 switch (c_date.value.length){
+    	 	case 0: return true;
+    	 		break;
+    	 	case 4: if(!isInteger(c_date.value))
+    	 			return false;
+    	 		break;
+    	 	case 9: var years = c_date.value.split("-");
+    	 		if(years.length!=2) {
+    	 			return false;
+    	 		}else {
+    	 			if(!isInteger(years[0])|| years[0].length !=4 || !isInteger(years[1]) || years[1].length !=4  ){
+    	 				return false;}
+    	 		}
+    	 		break;
+    	 	default: return false;
+    	 		break;
+    	 	}
+    	 return true;
+    }
+     
   //-->
   </script>
