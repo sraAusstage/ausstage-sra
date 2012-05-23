@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="java_src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_25">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/annotations-api.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/ausstage_other.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/catalina.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/catalina-ha.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/catalina-tribes.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/classes12.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/commons-codec-1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/commons-daemon.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/commons-email-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/ecj-3.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/el-api.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/jasper.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/jasper-el.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/json_simple-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/mail-1.4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/mailapi.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/map.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/mysql-connector-java-5.0.7-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/popchartembedder.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/rowset.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/servlet.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/tdb-0.8.10.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/tomcat-coyote.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/tomcat-dbcp.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/tomcat-i18n-es.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/tomcat-i18n-fr.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/tomcat-i18n-ja.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/tools.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/trove-3.0.0rc2.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/mapping2.jar"/>
+	<classpathentry kind="lib" path="C:/Ausstage/apache-tomcat-6.0.32/lib/networks.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>
