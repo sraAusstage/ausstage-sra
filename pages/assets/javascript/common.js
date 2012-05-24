@@ -20,6 +20,8 @@
  * Common global variables used across more than one page in the site
  */
 var BASE_URL = "/opencms/";
+var BASE_URL_MAP = "/pages/map/";
+//var BASE_URL = "/pages/map/";
 var UPDATE_DELAY = 500;
 var AJAX_ERROR_MSG    = 'An unexpected error occurred during -, please try again. If the problem persists contact the AusStage team.'; 
 
