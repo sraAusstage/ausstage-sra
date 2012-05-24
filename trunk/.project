@@ -12,7 +12,6 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>info.rsdev.eclipse.opencms.module.developer.OpenCmsModuleNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>
