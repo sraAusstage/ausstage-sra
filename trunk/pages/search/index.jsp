@@ -1,4 +1,4 @@
-﻿<%@ page pageEncoding="UTF-8"%>
+﻿﻿<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import = "ausstage.AusstageCommon"%>
@@ -169,7 +169,7 @@ color : black;
     function ajaxFunction(search_from){
     //added by Brad - copied the same process used in other pages to show no results returned before navigating to another page.
     	var ajaxRequest;  // The variable that makes Ajax possible!
-    
+        var url;
     	try{
     		// Opera 8.0+, Firefox, Safari
     		ajaxRequest = new XMLHttpRequest();
@@ -188,14 +188,10 @@ color : black;
     	}
     	//check the search_from value to determine which tables we need to check
     	switch (search_from){
-    		case 'all' :	alert('all'); return false;
-    		
-    		case 'event' :  ajaxRequest.open("GET",   "results/event_ajax.jsp?f_keyword="+form.f_keyword.value
-    							+ "&f_search_from="+form.f_search_from.value
-    							+ "&f_sql_switch="+form.f_sql_switch.value
-    							+ "&f_sort_by="+form.f_sort_by.value
-    							+ "&f_year="+form.f_year.value, false);
-    				ajaxRequest.send(null);
+    		case 'all' :	url = "results/all_ajax.jsp?";
+    				break;
+    				
+    		case 'event' :  url = "results/event_ajax.jsp?";
     				break;
     		case 'contributor' : alert('contributor'); return false;
     		case 'organisation' : alert('organisation'); return false;
@@ -203,6 +199,14 @@ color : black;
     		case 'resource' : alert('resource'); return false;
     		case 'work' : alert('work'); return false;	
     	}
+    	
+    	ajaxRequest.open("GET", url + "f_keyword="+form.f_keyword.value
+    							+ "&f_search_from="+form.f_search_from.value
+    							+ "&f_sql_switch="+form.f_sql_switch.value
+    							+ "&f_sort_by="+form.f_sort_by.value
+    							+ "&f_year="+form.f_year.value, false);
+    	ajaxRequest.send(null);
+    	
     	if (ajaxRequest.responseText == "0") {
     		alert("There were no results found for your search.");
     		return false;
