@@ -1,131 +1,128 @@
 <%@ page pageEncoding="UTF-8"%><%@ page contentType="text/html; charset=UTF-8"%><%@ page import = "java.util.Vector, java.util.StringTokenizer,java.util.Calendar, java.text.SimpleDateFormat"%><%@ page import = "java.sql.*, sun.jdbc.rowset.*"%><%@ page import = "ausstage.Event, ausstage.State, ausstage.Search, ausstage.Contributor, admin.Common"%><%@ page import = "ausstage.AusstageCommon, ausstage.AdvancedSearch"%><%admin.AppConstants ausstage_search_appconstants_for_result = new admin.AppConstants(request);%><jsp:useBean id="ausstage_db_for_result" class="ausstage.Database" scope="application"><%ausstage_db_for_result.connDatabase(ausstage_search_appconstants_for_result.DB_PUBLIC_USER_NAME, ausstage_search_appconstants_for_result.DB_PUBLIC_USER_PASSWORD);%>
 </jsp:useBean><%
-  ausstage.Database	db_ausstage_for_collection_result 	= new ausstage.Database ();
-  admin.Common common 									= new admin.Common   ();
-  
-  db_ausstage_for_collection_result.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
-  CachedRowSet crsetResult    = null;
-  Search search;
-  String formatted_date       = "";
-  String keyword              = request.getParameter("f_keywords");
-  String page_num             = request.getParameter("f_page_num");
-  String recset_count         = request.getParameter("f_recset_count");
-   
-  if(keyword == null)
-      keyword="";
- 
-  String sub_types []           = (String [])request.getParameterValues("f_sub_types");  
-  String firstdate_dd           = request.getParameter("f_firstdate_dd");
-  String firstdate_mm           = request.getParameter("f_firstdate_mm");
-  String firstdate_yyyy         = request.getParameter("f_firstdate_yyyy");
-  String collectingInstitution	= request.getParameter("f_collectingInstitution");
-  
-  if(collectingInstitution == null) collectingInstitution="";  
-  
-  String creator = request.getParameter("f_creator");
-  if(creator == null) creator="";
-  
-  String title = request.getParameter("f_title");
-  if(title == null) title="";
-  
-  String source = request.getParameter("f_source");
-  
-  if(source == null) source="";
-  
-  String work = request.getParameter("f_work");
-  if(work == null) work="";
-  
-  String event = request.getParameter("f_event");
-  if(event == null) event="";
-  
-  String contributor = request.getParameter("f_contributor");
-  if(contributor == null) contributor="";
-  
-  String venue = request.getParameter("f_venue");
-  if(venue == null) venue="";
-  
-  String assoc_item = request.getParameter("f_assoc_item");       
-  if(assoc_item == null) assoc_item="";
-  
-  String l_organisation = request.getParameter("f_organisation");
-  if(l_organisation == null) l_organisation="";
-  
-  //String         secondary_genre []          = (String [])request.getParameterValues("f_secondary_genre"); 
-  //if(secondary_genre == null)
-  //  secondary_genre="";
-  String l_boolean = request.getParameter("f_boolean");
-  if(l_boolean == null) l_boolean="";
-  
-  String sort_by = request.getParameter("f_sort_by");
-  if(sort_by == null) sort_by="";
-  
-  int l_int_page_num =0;
-  State state                    = new State(db_ausstage_for_collection_result);
-  SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-  
-  String [] subTypes             = sub_types;
-  //String [] secGenreArray = secondary_genre;
-  
-  boolean do_print               = false;
-  String resultsPerPage          = request.getParameter("f_limit_by");;
-  if (resultsPerPage == null || !"20 50 75 100".contains(resultsPerPage)) resultsPerPage = "20";
+	ausstage.Database db_ausstage_for_result = new ausstage.Database ();
+	admin.Common common                      = new admin.Common   ();
 
-    ///////////////////////////////////
-    //    DISPLAY SEARCH RESULTS
-    //////////////////////////////////
-    int counter;
-    int start_trigger;
-    int curr_row = 0;      
-    // never going to be a collection search from this page
-    search = new Search(db_ausstage_for_collection_result);
+	db_ausstage_for_result.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
-    search.setKeyWord(keyword.trim());
+	CachedRowSet crset                 		= null;
+	Search search;
+	String formatted_date              		= "";
+	String keyword                         	= request.getParameter("f_keyword");
+	String table_to_search_from            	= request.getParameter("f_search_from");
+	String page_num                        	= request.getParameter("f_page_num");
+	String recset_count                    	= request.getParameter("f_recset_count");
+	String search_within_search_for_result 	= request.getParameter("f_search_within_search");
+	String inc_resources					= request.getParameter("inc_resources");
+	String f_sql_switch					 	= request.getParameter("f_sql_switch");
+	String f_date_clause					= request.getParameter("f_date_clause");
+	String f_sort_by						= request.getParameter("f_sort_by");
+	int l_int_page_num                     	= 0;
+	State state                            	= new State(db_ausstage_for_result);
+	SimpleDateFormat formatPattern         	= new SimpleDateFormat("dd/MM/yyyy");
+	String orderBy                 			= request.getParameter("f_order_by");
+	String sortOrd                 			= request.getParameter("order");
+	
+	if (sortOrd == null) sortOrd = "ASC";
     
-    search.setSqlSwitch("and");
     
-    search.setSortBy(sort_by);
-      
-    // set the search sub types array
-    search.setSubTypes(subTypes);
-    search.setFirstDate(firstdate_yyyy,firstdate_mm,firstdate_dd);
+    // Make sure that a keyword has been entered. The user may have javascript disabled.
+    if (keyword == null ||
+        keyword.equals("null") ||
+        keyword.equals("")) {
+      search.setKeyWord("xxxxNoDataEnteredxx"); // Dummy string so that an error is not generated by the database 
+    } 
+    else {
+      search.setKeyWord(keyword.trim());
+    }
 
-    //search.setSecondaryGenre(secGenreArray);
+    if(request.getParameter("f_sql_switch") != null){
+      search.setSqlSwitch(request.getParameter("f_sql_switch").toString());
+    }
     
-    search.setTitle(title);
-    search.setSource(source);
-    search.setCreator(creator);
+    if(table_to_search_from != null){
+      search.setSearchFor(table_to_search_from);
+    }
     
-    search.setContributor(contributor);
-    search.setCollectionInstitution(collectingInstitution);
-    search.setWork(work);
-    search.setEvent(event);
-    search.setVenue(venue);
-    search.setResourceVisible(assoc_item);
-    search.setBoolean(l_boolean);
-    search.setOrganisation(l_organisation);
-
+    //System.out.println(orderBy);
+    if(orderBy != null){
+    	search.setOrderBy((orderBy.equals("venue_name")?"venue_name "+sortOrd+ ", suburb " + sortOrd +" ," + (state.equals("state")?"state":"venue_state"):orderBy) + " " + sortOrd);
+      }
+    
+    if(request.getParameter("f_sort_by") != null){
+      search.setSortBy(request.getParameter("f_sort_by").toString());
+    }
+    System.out.println("Order By: " + orderBy);
+    System.out.println(sortOrd);
+    
+    // check if the search is search within a search
+    if(!search_within_search_for_result.equals(""))
+      search.setSearchWithinResults((String) session.getAttribute("sub_search_str"));
+    
     if(page_num != null){
-
       if(Integer.parseInt(page_num) > 1)
         curr_row = Integer.parseInt(page_num) * Integer.parseInt(resultsPerPage) - Integer.parseInt(resultsPerPage);
     }else{
       recset_count = search.getRecordCount();
     }
-
-    crsetResult = search.getResources();
-      
-    if(crsetResult != null && crsetResult.next()){
-      // get the number of rows returned (1st time only)
-      if(page_num == null){
-      page_num="1";
-        crsetResult.last(); 
-        recset_count = Integer.toString(crsetResult.getRow());
-        crsetResult.first();         
-      }
-
-     }
-    out.print(recset_count==null?"0":recset_count); 
-
     
+    // Either all, or events with an associated resource, or events with an associated online resource - only to be done for Search All
+    // default condition is to include resources
+
+    if (m_inc_resource != null){
+      search.setResourceVisible(m_inc_resource);
+    }
+  
+    /**********************************************
+      ALL OR EVENT RESULT
+    **********************************************/
+   // System.out.println("Display all results");
+    //if(table_to_search_from != null){
+    	System.out.println("Display event results");
+    String unformattedDate = request.getParameter("f_year");
+    if(table_to_search_from.equals("all") || table_to_search_from.equals("event") ){
+    	if(request.getParameter("f_year") != null && !request.getParameter("f_year").equals("")){
+      // Dates are only part of the all and event searches
+      
+      		if(unformattedDate != null && !unformattedDate.equals("")){
+		        // Date can be in the form "1996" or "1996-2008"
+		        String yearFrom        = "";
+		        String yearTo          = "";
+		        if (unformattedDate.length() == 4) {
+		          yearTo = unformattedDate;
+		          yearFrom = unformattedDate;
+	        	}
+	        	else if (unformattedDate.length() == 9) {
+	          		yearFrom = unformattedDate.substring(0, 4);
+	          		yearTo = unformattedDate.substring(5);
+	        	}
+	        	else {
+	          		// Invalid date, should not get here because of form submission validation
+	        	}
+	        	if (yearTo.length() == 4 && yearFrom.length() == 4) {
+	          		search.setBetweenFromDate(yearFrom, "01", "01");
+	          		search.setBetweenToDate(yearTo, "12", "31");
+	         	}
+      		}    
+    	}
+   	}
+      
+      if(table_to_search_from.equals("all"))
+        crset = search.getAll();
+      else
+        crset = search.getEvents();
+
+      if(crset != null && crset.next()){
+          // get the number of rows returned (1st time only)
+          if(page_num == null){
+          page_num="1";
+            crset.last(); 
+            recset_count = Integer.toString(crset.getRow());
+            crset.first();         
+          }
+      }
+      out.print(recset_count==null?"0":recset_count); 
+
+      
 %>
