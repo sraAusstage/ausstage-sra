@@ -158,16 +158,16 @@ color : black;
       	alert("Please enter a valid year");
       	return false;
       }
-
-      if (msg!=""){
-    	  alert(msg);
-    	  return (false);
-      }
+           
+      //if (msg!=""){alert(msg);return (false);}
+      
+      //return (ajaxFunction(form.f_search_from.value));
+      
     }
 
-    function ajaxFunction(){
+    function ajaxFunction(search_from){
     	var ajaxRequest;  // The variable that makes Ajax possible!
-    	
+    
     	try{
     		// Opera 8.0+, Firefox, Safari
     		ajaxRequest = new XMLHttpRequest();
@@ -184,6 +184,23 @@ color : black;
     			}
     		}
     	}
+    	
+    	//check the search_from value to determine which tables we need to check
+    	switch (search_from){
+    		case 'all' :	alert('all'); return false;
+    		
+    		case 'event' :	alert('event'); 
+    				//ajaxRequest.open("GET", "results/event_ajax.jsp?f_keyword")		
+    		
+    		case 'contributor' : alert('contributor'); return false;
+    		case 'organisation' : alert('organisation'); return false;
+    		case 'venue' : alert('venue'); return false;
+    		case 'resource' : alert('resource'); return false;
+    		case 'work' : alert('work'); return false;
+    	
+    	}
+    	
+    
     	// Create a function that will receive data sent from the server
     	/*ajaxRequest.open("GET", "results/ajax.jsp?f_title=" 
     					+ document.searchform.f_title.value
@@ -204,12 +221,12 @@ color : black;
     					+ "&f_limit_by=" + document.searchform.f_limit_by.value
     					, false);
     	ajaxRequest.send(null); 
-		*/
+	*/	
 		
     	if (ajaxRequest.responseText == "0") {
     		alert("There were no results found for your search.");
     		return false;
-    	} else {
+    	} else {alert (ajaxRequest.responseText);
     		return true;
     	}
 
