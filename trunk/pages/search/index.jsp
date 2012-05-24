@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8"%>
+﻿<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import = "ausstage.AusstageCommon"%>
@@ -13,6 +13,7 @@
       <td width="10px" background='ausstagebgside.gif'>&nbsp;</td>
       <td>     
       <%  
+      //test
   String search_within_search_for_form = request.getParameter("f_search_within_search");  
   String m_sql_switch                  = request.getParameter("f_sql_switch");
   String m_table_to_search_from        = request.getParameter("f_search_from");
@@ -161,11 +162,12 @@ color : black;
            
       //if (msg!=""){alert(msg);return (false);}
       
-      //return (ajaxFunction(form.f_search_from.value));
+      return (ajaxFunction(form.f_search_from.value));
       
     }
 
     function ajaxFunction(search_from){
+    //added by Brad - copied the same process used in other pages to show no results returned before navigating to another page.
     	var ajaxRequest;  // The variable that makes Ajax possible!
     
     	try{
@@ -184,52 +186,29 @@ color : black;
     			}
     		}
     	}
-    	
     	//check the search_from value to determine which tables we need to check
     	switch (search_from){
     		case 'all' :	alert('all'); return false;
     		
-    		case 'event' :	alert('event'); 
-    				//ajaxRequest.open("GET", "results/event_ajax.jsp?f_keyword")		
-    		
+    		case 'event' :  ajaxRequest.open("GET",   "results/event_ajax.jsp?f_keyword="+form.f_keyword.value
+    							+ "&f_search_from="+form.f_search_from.value
+    							+ "&f_sql_switch="+form.f_sql_switch.value
+    							+ "&f_sort_by="+form.f_sort_by.value
+    							+ "&f_year="+form.f_year.value, false);
+    				ajaxRequest.send(null);
+    				break;
     		case 'contributor' : alert('contributor'); return false;
     		case 'organisation' : alert('organisation'); return false;
     		case 'venue' : alert('venue'); return false;
     		case 'resource' : alert('resource'); return false;
-    		case 'work' : alert('work'); return false;
-    	
+    		case 'work' : alert('work'); return false;	
     	}
-    	
-    
-    	// Create a function that will receive data sent from the server
-    	/*ajaxRequest.open("GET", "results/ajax.jsp?f_title=" 
-    					+ document.searchform.f_title.value
-    					+ "&f_creator=" + document.searchform.f_creator.value
-    					+ "&f_source=" + document.searchform.f_source.value
-    					+ "&f_keywords=" + document.searchform.f_keywords.value
-    					+ "&f_firstdate_dd=" + document.searchform.f_firstdate_dd.value
-    					+ "&f_firstdate_mm=" + document.searchform.f_firstdate_mm.value
-    					+ "&f_firstdate_yyyy=" + document.searchform.f_firstdate_yyyy.value
-    					+ "&f_collectingInstitution=" + document.searchform.f_collectingInstitution.value
-    					+ "&f_work=" + document.searchform.f_work.value
-    					+ "&f_event=" + document.searchform.f_event.value
-    					+ "&f_contributor=" + document.searchform.f_contributor.value
-    					+ "&f_venue=" + document.searchform.f_venue.value
-    					+ "&f_organisation=" + document.searchform.f_organisation.value
-    					+ "&f_assoc_item=" + document.searchform.f_assoc_item.value
-    					+ "&f_sort_by=" + document.searchform.f_sort_by.value
-    					+ "&f_limit_by=" + document.searchform.f_limit_by.value
-    					, false);
-    	ajaxRequest.send(null); 
-	*/	
-		
     	if (ajaxRequest.responseText == "0") {
     		alert("There were no results found for your search.");
     		return false;
-    	} else {alert (ajaxRequest.responseText);
+    	} else {
     		return true;
     	}
-
     }
 
     
