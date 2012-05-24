@@ -19,25 +19,6 @@
 <%admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstants(request);%>
 <%@ page import = "ausstage.AusstageCommon"%>
 
-<script type="text/javascript">
-
-function CreateExcelSheet()
-{
-var x=myTable.rows
-var xls = new ActiveXObject("Excel.Application")
-xls.visible = true
-xls.Workbooks.Add
-for (i = 0; i < x.length; i++)
-{
-var y = x[i].cells
-
-for (j = 0; j < y.length; j++)
-{
-xls.Cells( i+1, j+1).Value = y[j].innerText
-}
-}
-}
-</script>
 <%!
 public String concatFields(Vector fields, String token) {
   String ret = "";
@@ -170,8 +151,12 @@ public void displayUpdateForm(String                p_id,
 	  p_out.println("</script>");
 	  
     p_out.println("<form name=\"UpdateForm\" id=\"UpdateForm\" method=\"POST\" action=\"/pages/ausstage/public_comments.jsp\" target=\"public_comments\">");
-    p_out.println("<table width=\"98%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
-    p_out.println("  <tr><td align='right' >Comment on/Tag this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
+    p_out.println("<table style=\"float: right;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+    p_out.println("  <tr><td >Comment on/Tag this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
+    
+    p_out.println("<tr><td><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
+    p_out.println("<tr><td><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='right' >Export to excel</a></td></tr>");
+    p_out.println("<tr><td><a href='/pages/map/?complex-map=true&c=&o=" + p_request.getParameter("id") + "&v=&e=' align='left' >Map</a></td></tr>");
     p_out.println("</table>");
    
    /*p_out.println("<DIV style=\"float:right; padding-top: 15px;\">");
@@ -179,7 +164,7 @@ public void displayUpdateForm(String                p_id,
     p_out.println("<span id=\"show_browse_help\" class=\"helpIcon clickable\"></span>");
     p_out.println("</div>");*/ 
     p_out.println("<DIV id='UpdateFormDiv' style=\"display:none;\">");
-    p_out.println("   <table align=\"center\" width=\"98%\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#EFFFEF;border-color:#7EBA5E\">");
+    p_out.println("   <table align=\"center\" width=\"98%\" border=\"1\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#EFEFFF;border-color:#7E5EBA\">");
     p_out.println("   <tr>");
     p_out.println("   <td>");
     p_out.println("     <table width='100%' border='0' cellpadding='3' cellspacing='0'>");
@@ -242,7 +227,6 @@ public void displayUpdateForm(String                p_id,
     p_out.println("     <tr>");
     p_out.println("       <td align='right' colspan='3'><a href=\"#\" onclick=\"javascript:validateUpdateForm();\"><img src='/resources/images/ok.gif' border='0' alt='Comment on this record'></td>");
     p_out.println("     </tr>");
-    
     p_out.println("     </table>");
     p_out.println("   </td>");
     p_out.println("   </tr>");
@@ -356,7 +340,7 @@ public void displayUpdateForm(String                p_id,
     
     //Name
    out.println("   <tr class=\"b-185\">");
-    out.println("     <td  align='right' width ='25%'   class='general_heading_light' valign='top'>Organisation Name</td>");
+    out.println("     <td  align='right' width ='25%'   class='general_heading_light f-186' valign='top'>Organisation Name</td>");
     out.println("     <td>&nbsp;</td>");
     out.println("     <td width ='75%' ><b>" + organisation.getName() + "</b></td>");
     out.println("   </tr>");
@@ -364,7 +348,7 @@ public void displayUpdateForm(String                p_id,
     //Other Names
     if (organisation.getOtherNames1() != null && !organisation.getOtherNames1().equals("") || organisation.getOtherNames2() != null && !organisation.getOtherNames2().equals("") || organisation.getOtherNames3() != null && !organisation.getOtherNames3().equals("")) {
     out.println("   <tr>");
-    out.println("     <td align='right' class='general_heading_light' valign='top'>Other names</td>");
+    out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Other names</td>");
     out.println("     <td>&nbsp;</td>");
     out.println("     <td >");
     // other name 1
@@ -388,7 +372,7 @@ public void displayUpdateForm(String                p_id,
     
     //Address
     out.println("   <tr class=\"b-185\">");
-    out.println("     <td align='right' class='general_heading_light' valign='top'>Address</td>");
+    out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Address</td>");
     out.println("     <td>&nbsp;</td>");
     out.println("     <td >" + organisation.getAddress());
     
@@ -411,27 +395,29 @@ public void displayUpdateForm(String                p_id,
     //Website
     if (organisation.getWebLinks() != null && !organisation.getWebLinks().equals("")) {
 	    out.println("   <tr>");
-	    out.println("     <td align='right' class='general_heading_light' valign='top'>Website</td>");
+	    out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Website</td>");
 	    out.println("     <td>&nbsp;</td>");
 	    out.println("     <td ><a href=\"");
 	    if(organisation.getWebLinks().indexOf("http://") < 0)
 	      out.println("http://");
 	    out.println(organisation.getWebLinks() + "\">" + organisation.getWebLinks() + "</a>" );
 	    %>
+	    <br>
+	    <script type="text/javascript" src="http://www.shrinktheweb.com/scripts/pagepix.js"></script>
+	    <script type="text/javascript">
+            stw_pagepix('<%
+	    if(organisation.getWebLinks().indexOf("http://") < 0)
+	      out.print("http://");
+	    %><%=organisation.getWebLinks()%>', 'afcb2483151d1a2', 'sm', 0);
+	    var anchorElements = document.getElementsByTagName('a');
+            for (var i in anchorElements) {
+              if (anchorElements[i].href.indexOf("shrinktheweb") != -1 || anchorElements[i].href == document.getElementById('url').href){
+                anchorElements[i].onmousedown = function() {}
+                anchorElements[i].href = document.getElementById('url').href;
+              }
+            }
+            </script>
 	    
-		<script type="text/javascript">
-		if (typeof Thumboo == 'undefined'){
-			var thumboo_init_options= {
-					"api_url":"counter15.goingup.com/thumboo/api.php",
-					"uid":"e188aad0fdbef59810e4b66c1430a856",
-					"url":"<%=organisation.getWebLinks()%>",
-					"size":"150x100",
-					"imgpath":"counter15.goingup.com/thumboo",
-					"link":1
-			};
-			document.write(unescape('%3Cscript type="text/javascript" src="'+
-			document.location.protocol+'//counter15.goingup.com/thumboo/thumboo_original.js"%3E%3C/script%3E')); }else{ Thumboo.add('<%=organisation.getWebLinks()%>',1);}
-		</script>
 	<%
 	out.println("   </td>"); 
 	    out.println("   </tr>");    
@@ -440,16 +426,25 @@ public void displayUpdateForm(String                p_id,
     //Functions
     if (organisation.getFunction(Integer.parseInt(org_id)) != null && !organisation.getFunction(Integer.parseInt(org_id)).equals("")) {
     	out.println("   <tr class=\"b-185\">");
-	    out.println("     <td align='right' class='general_heading_light' valign='top'>Functions</b></td>");
+	    out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Functions</b></td>");
 	    out.println("     <td>&nbsp;</td>");
 	    out.println("     <td >" + organisation.getFunction(Integer.parseInt(org_id)) + "</td>");
+	    out.println("   </tr>");
+    }
+    
+    //NLA
+    if(organisation.getNLA() != null && !organisation.getNLA().equals("")) {
+	    out.println("   <tr>");
+	    out.println("     <td align='right' class='general_heading_light f-186' valign='top'>NLA</td>");
+	    out.println("     <td>&nbsp;</td>");
+	    out.println("     <td  valign='top'>" + organisation.getNLA() + "</td>");
 	    out.println("   </tr>");
     }
    
     //Notes
     if (organisation.getNotes() != null && !organisation.getNotes().equals("")) {
     	out.println("   <tr class=\"b-185\">");
-	    out.println("     <td align='right' class='general_heading_light' valign='top'>Notes</b></td>");
+	    out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Notes</b></td>");
 	    out.println("     <td>&nbsp;</td>");
 	    out.println("     <td >" + organisation.getNotes() + "</td>");
 	    out.println("   </tr>");
@@ -457,8 +452,8 @@ public void displayUpdateForm(String                p_id,
   %>  
     <script type="text/javascript">
     function displayRow(name){
-    	document.getElementById("function").style.display = 'none';
-    	document.getElementById("functionbtn").style.backgroundColor = '#c0c0c0';
+    	document.getElementById("venue").style.display = 'none';
+    	document.getElementById("venuebtn").style.backgroundColor = '#c0c0c0';
     	document.getElementById("organisation").style.display = 'none';
     	document.getElementById("organisationbtn").style.backgroundColor = '#c0c0c0';
     	document.getElementById("contributor").style.display = 'none';
@@ -513,17 +508,20 @@ public void displayUpdateForm(String                p_id,
     <td>&nbsp;</td>
     <td id="tabs" colspan=3>
     	<a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a>
-    	<a href="#" onclick="displayRow('function')" id='functionbtn'>Functions</a>
-    	<a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a>
-    	<a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a>    	
+    	<a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a>   
+    	<a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a> 	
+    	<a href="#" onclick="displayRow('venue')" id='venuebtn'>Venues</a>
     </td>
     </tr>
     
     
 <%
     
+    admin.AppConstants constants = new admin.AppConstants();
+    ausstage.Database     m_db = new ausstage.Database ();
+    m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
     
-    //Associated Events
+    //Events
     out.println("   <tr id='events'>");
     event = new Event(db_ausstage_for_drill);
     crset = event.getEventsByOrg(Integer.parseInt(org_id));
@@ -566,92 +564,27 @@ public void displayUpdateForm(String                p_id,
     out.println("   </tr>");
 
     
-    
-    //Events by function
-    admin.AppConstants constants = new admin.AppConstants();
-    ausstage.Database     m_db = new ausstage.Database ();
-    m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
-    Statement stmt1    = m_db.m_conn.createStatement ();
-    String sqlString = "";
-    CachedRowSet l_rs = null; 
-    int eventfunccount = 0;
-    int i=0;
-    sqlString = "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date, "+
-    "events.yyyyfirst_date,events.first_date,venue.venue_name,venue.suburb,states.state,`orgfunctmenu`.`orgfunction` "+
-    "FROM events,venue,states,orgevlink,`organisation`,`orgfunctmenu` "+
-    "inner join ( "+
-    "SELECT ce.organisationid, cf.orgfunctionid, count(*) num  "+
-    "FROM orgevlink ce,orgfunctmenu cf "+
-    "where ce.function=cf.orgfunctionid  "+
-    "and ce.organisationid=" + org_id + " "+
-    "group by cf.orgfunction"+
-    " ) evcount ON (evcount.orgfunctionid = orgfunctmenu.orgfunctionid)  "+
-    " where organisation.organisationid=" + org_id  + " "+
-    "and organisation.organisationid=orgevlink.organisationid "+
-    "and orgevlink.eventid=events.eventid "+
-    "and events.venueid=venue.venueid "+
-    "and venue.state=states.stateid "+
-    "AND orgevlink.function=orgfunctmenu.orgfunctionid "+
-    "order by evcount.num desc, orgfunctmenu.orgfunction,events.first_date desc";
-    
-    l_rs = m_db.runSQL(sqlString, stmt1);
-    
-    out.println("<tr id='function'>");
-     String prevFunc = "";
-     if(l_rs.next()){
-    	 do{
-    		 if(eventfunccount==0){
- 		 			out.println("     <td align='right' class='general_heading_light' valign='top'></td>");
- 	        out.println("     <td>&nbsp;</td>");
- 	        out.println("     <td  valign=\"top\">");
-    		 }
-  	     eventfunccount++;
-  	     
-  	     if (!prevFunc.equals(l_rs.getString("orgfunction"))) {
- 	        	if (eventfunccount > 1) {
- 	        		out.print("</ul>");
- 	        	}
- 	        	out.print(l_rs.getString("orgfunction")+ "<br><ul>");
- 	        	prevFunc = l_rs.getString("orgfunction");
- 	        }
- 	        out.print("<li><a href=\"/pages/event/?id=" +
- 	        		l_rs.getString("eventid") + "\">"+l_rs.getString("event_name")+"</a>");
-          if(hasValue(l_rs.getString("venue_name")))
-            out.print(", " +  l_rs.getString("venue_name"));
-          if(hasValue(l_rs.getString("suburb"))) 
-           out.print(", " + l_rs.getString("suburb"));
-          if(hasValue(l_rs.getString("state")))
-           out.print(", " + l_rs.getString("state"));
-          if (hasValue(l_rs.getString("DDFIRST_DATE")) || hasValue(l_rs.getString("MMFIRST_DATE")) || hasValue(l_rs.getString("YYYYFIRST_DATE")))
-           out.print(", " + formatDate(l_rs.getString("DDFIRST_DATE"),l_rs.getString("MMFIRST_DATE"),l_rs.getString("YYYYFIRST_DATE")));
-       out.println("</li>"); 
-    	 }while(l_rs.next());
-    	 if(eventfunccount>0)
-    	 out.println("</ul>");
-    	 out.println("</td>");
-     }out.println("   </tr>");
-     
      
      //Events by organisation type
      
      Statement stmt2    = m_db.m_conn.createStatement ();
-     String sqlString2 = "";
      CachedRowSet eo_rs = null; 
      int eventorgcount = 0;
-      sqlString2 = 
+     String sqlString2 = 
     "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
-  	" events.yyyyfirst_date,events.first_date,venue.venue_name,venue.suburb,states.state,`organisation_type`.`type`, evcount.num  "+
-  	"   FROM events,venue,states,orgevlink,`organisation`,`organisation_type`  "+
-  	"inner join (SELECT ce.organisationid, cf.organisation_type_id, count(*) num "+
-  	"FROM organisation ce,organisation_type cf  where ce.organisation_type_id=cf.organisation_type_id  and ce.organisationid=" + org_id + " "+
-  	"group by cf.type)evcount ON (evcount.organisation_type_id = `organisation_type`.`organisation_type_id`) "+
-  	"where organisation.organisationid=" + org_id + " AND " + 
-  	" organisation.organisationid=orgevlink.organisationid AND "+
-  	" orgevlink.eventid=events.eventid and "+
+  	"events.first_date,venue.venue_name,venue.suburb,states.state,organisation.organisationid,organisation.name,evcount.num "+
+  	"FROM events,venue,states,organisation,orgevlink oe2,orgevlink "+
+  	"inner join (SELECT oe.organisationid, count(distinct oe.eventid) num "+
+  	"FROM orgevlink oe, orgevlink oe2 where oe2.eventid=oe.eventid and oe2.organisationid=" + org_id + " "+
+  	"group by oe.organisationid) evcount ON (evcount.organisationid = orgevlink.organisationid) "+
+  	"WHERE oe2.organisationid = " + org_id + " AND "+
+  	"orgevlink.organisationid != " + org_id + " AND "+
+  	"oe2.eventid = events.eventid AND "+
   	"events.venueid = venue.venueid AND "+
   	"venue.state = states.stateid AND "+
-  	"organisation.organisation_type_id = organisation_type.organisation_type_id "+
-	"order by evcount.num desc, organisation_type.type,events.first_date desc ";
+  	"events.eventid = orgevlink.eventid AND "+
+  	"orgevlink.organisationid = organisation.organisationid "+
+	"ORDER BY evcount.num desc,organisation.name,events.first_date DESC";
      eo_rs = m_db.runSQL(sqlString2, stmt2);
      
      out.println("<tr id='organisation'>");
@@ -665,12 +598,12 @@ public void displayUpdateForm(String                p_id,
   	        
      		 }
      		 eventorgcount++;
-     		 if (!prevOrg.equals(eo_rs.getString("type"))) {
+     		 if (!prevOrg.equals(eo_rs.getString("name"))) {
   	        	if (eventorgcount > 1) {
   	        		out.print("</ul>");
   	        	}
-  	        	out.print(eo_rs.getString("type")+ "<br><ul>");
-  	        	prevOrg = eo_rs.getString("type");
+  	        	out.print("<a href=\"/pages/organisation/?id=" + eo_rs.getString("organisationid") + "\">" + eo_rs.getString("name")+ "</a><br><ul>");
+  	        	prevOrg = eo_rs.getString("name");
   	        }
   	        out.print("<li><a href=\"/pages/event/?id=" +
   	        		eo_rs.getString("eventid") + "\">"+eo_rs.getString("event_name")+"</a>");
@@ -688,39 +621,119 @@ public void displayUpdateForm(String                p_id,
      	 out.println("</ul>");
      	 out.println("</td>");
       }out.println("   </tr>");
+       
+     //Events by organisation type
+     
+     stmt2    = m_db.m_conn.createStatement ();
+     CachedRowSet ov_rs = null; 
+     int orgvencount = 0;
+      sqlString2 = 
+	"SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
+	"events.first_date,venue.venueid,venue.venue_name,venue.suburb,states.state,organisation.organisationid,organisation.name,evcount.num "+
+	"FROM events,venue,states,organisation,orgevlink "+
+	"inner join (SELECT events.venueid, count(distinct orgevlink.eventid) num "+
+	"FROM orgevlink, events where orgevlink.eventid=events.eventid and orgevlink.organisationid=" + org_id + " "+
+	"GROUP BY events.venueid) evcount "+
+	"WHERE orgevlink.organisationid = " + org_id + " AND "+
+	"evcount.venueid = events.venueid AND "+
+	"orgevlink.eventid = events.eventid AND "+
+	"events.venueid = venue.venueid AND "+
+	"venue.state = states.stateid AND "+
+	"events.eventid = orgevlink.eventid AND "+
+	"orgevlink.organisationid = organisation.organisationid "+
+	"ORDER BY evcount.num desc,venue.venue_name,events.first_date DESC";
+     ov_rs = m_db.runSQL(sqlString2, stmt2);
+     
+     out.println("<tr id='venue'>");
+      String prevVen = "";
+      if(ov_rs.next()){
+     	 do{
+     		if(orgvencount==0){
+  		 			out.println("     <td align='right' class='general_heading_light' valign='top'></td>");
+  	        out.println("     <td>&nbsp;</td>");
+  	        out.println("     <td  valign=\"top\">");
+  	        
+     		 }
+     		 orgvencount++;
+     		 if (!prevVen.equals(ov_rs.getString("venueid"))) {
+  	        	if (orgvencount> 1) {
+  	        		out.print("</ul>");
+  	        	}
+  	        	out.print("<a href=\"/pages/venue/?id=" + ov_rs.getString("venueid") + "\">" + ov_rs.getString("venue_name")+ "</a>");
+  	        	if(hasValue(ov_rs.getString("suburb"))) 
+				out.print(", " + ov_rs.getString("suburb"));
+           		if(hasValue(ov_rs.getString("state")))
+				out.print(", " + ov_rs.getString("state"));
+  	        	out.print("<br><ul>");
+  	        	prevVen= ov_rs.getString("venueid");
+  	        }
+  	        out.print("<li><a href=\"/pages/event/?id=" +
+  	        		ov_rs.getString("eventid") + "\">"+ov_rs.getString("event_name")+"</a>");
+
+           if (hasValue(ov_rs.getString("DDFIRST_DATE")) || hasValue(ov_rs.getString("MMFIRST_DATE")) || hasValue(ov_rs.getString("YYYYFIRST_DATE")))
+            out.print(", " + formatDate(ov_rs.getString("DDFIRST_DATE"),ov_rs.getString("MMFIRST_DATE"),ov_rs.getString("YYYYFIRST_DATE")));
+        out.println("</li>"); 
+     	 }while(ov_rs.next());
+     	if(orgvencount> 0)
+     	 out.println("</ul>");
+     	 out.println("</td>");
+      }out.println("   </tr>");
       
       //Contributors by organisation
 	Statement stmt3 	= m_db.m_conn.createStatement();
 	String sqlString3	= "";
 	CachedRowSet co_org	= null;
 	int contributororgcount = 0;
-	sqlString3		= "SELECT Distinct contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) as name,contributor.last_name, contributor.first_name, organisation.name, organisation.organisationid "+
-				  "FROM contributor "+
-				  "Inner JOIN conorglink ON (contributor.contributorid = conorglink.contributorid) "+
-				  "Inner JOIN organisation ON (conorglink.organisationid = organisation.organisationid) "+
-				  "where organisation.organisationid= "+ org_id;
+	sqlString3		= "SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
+				"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
+				"venue.venue_name,venue.suburb,states.state,evcount.num " +
+				"FROM events,venue,states,orgevlink,conevlink,contributor " +
+				"inner join (SELECT conevlink.contributorid, count(distinct conevlink.eventid) num " +
+				"FROM conevlink, orgevlink where orgevlink.eventid=conevlink.eventid and orgevlink.organisationid=" + org_id + " " +
+				"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
+				"WHERE orgevlink.organisationid = " + org_id + " AND " +
+				"orgevlink.eventid = events.eventid AND " +
+				"events.venueid = venue.venueid AND " +
+				"venue.state = states.stateid AND " +
+				"events.eventid = orgevlink.eventid AND " +
+				"orgevlink.eventid=conevlink.eventid AND " +
+				"conevlink.contributorid = contributor.contributorid " +
+				"ORDER BY evcount.num desc,contributor.last_name,contributor.first_name,events.first_date DESC";
 	co_org			= m_db.runSQL(sqlString3, stmt3);
 	
-	out.println("<tr id='contributor'>");
-	if(co_org.next())	
-	{
-	  do
-	  {
-	    if(contributororgcount==0)
-	    {
-	      out.println("     <td align='right' class='general_heading_light' valign='top'></td>");
-	      out.println("     <td>&nbsp;</td>");
-  	      out.println("     <td  valign=\"top\">");		
-  	    }
-  	    contributororgcount++;	
-  	    out.print("<li><a href=\"/pages/event/?id=" +
-  	        		co_org.getString("contributorid") + "\">"+co_org.getString("name")+"</a>");  
-  	    out.println("</li>");
-  	  }while(co_org.next());
-  	  if(contributororgcount > 0)
-  	  out.println("</ul>");
-     	  out.println("</td>");
-        }out.println("   </tr>");
+     out.println("<tr id='contributor'>");
+      String prevCon = "";
+      if(co_org.next()){
+     	 do{
+     		if(contributororgcount==0){
+  		 out.println("     <td align='right' class='general_heading_light' valign='top'></td>");
+  	         out.println("     <td>&nbsp;</td>");
+  	         out.println("     <td  valign=\"top\">");
+  	        
+     		}
+     		 contributororgcount++;
+     		 if (!prevCon.equals(co_org.getString("contributorid"))) {
+  	        	if (contributororgcount> 1) {
+  	        		out.print("</ul>");
+  	        	}
+  	        	out.print("<a href=\"/pages/contributor/?id=" + co_org.getString("contributorid") + "\">" + co_org.getString("contributor_name")+ "</a><br><ul>");
+  	        	prevCon= co_org.getString("contributorid");
+  	        }
+  	        out.print("<li><a href=\"/pages/event/?id=" +
+  	        		co_org.getString("eventid") + "\">"+co_org.getString("event_name")+"</a>");
+  	        	if(hasValue(co_org.getString("suburb"))) 
+				out.print(", " + co_org.getString("suburb"));
+           		if(hasValue(co_org.getString("state")))
+				out.print(", " + co_org.getString("state"));
+
+           if (hasValue(co_org.getString("DDFIRST_DATE")) || hasValue(co_org.getString("MMFIRST_DATE")) || hasValue(co_org.getString("YYYYFIRST_DATE")))
+            out.print(", " + formatDate(co_org.getString("DDFIRST_DATE"),co_org.getString("MMFIRST_DATE"),co_org.getString("YYYYFIRST_DATE")));
+        out.println("</li>"); 
+     	 }while(co_org.next());
+     	if(contributororgcount> 0)
+     	 out.println("</ul>");
+     	 out.println("</td>");
+      }out.println("   </tr>");
   	    
   	    
      
@@ -735,19 +748,20 @@ public void displayUpdateForm(String                p_id,
       {
     	  if (rowWorksCount == 0) 
     	  {
-	    	  out.println("     <td align='right' class='general_heading_light' valign='top'>Works</td>");
+	    	  out.println("     <td align='right' class='general_heading_light' valign='top'><a class='f-186' href=\"#\" onclick=\"showHide('works')\">Works</a></td>");
 	    	  out.println("     <td>&nbsp;</td>");
 	    	  out.println("     <td >");
-	    	  out.println("<table width=\"" + secTableWdth + "\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+	    	  out.println("<table id='works' width=\"" + secTableWdth + "\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
 	    	  rowWorksCount++;
-	    	}
+	  }
     	  
-        out.println("<tr><td width=\"" + secCol1Wdth + "\"  valign=\"top\"><a href=\"/pages/work/?id=" +
+          out.println("<tr><td width=\"" + secCol1Wdth + "\"  valign=\"top\"><a href=\"/pages/work/?id=" +
                          rset.getString("workid") + "\">" +
                          rset.getString("work_title") + "</a></td>");
-         out.println("</tr>");  
+          out.println("</tr>");  
       }
-    }if(rowWorksCount > 0){
+    }
+    if(rowWorksCount > 0){
     out.println("      </table>");
     out.println("     </td>");
     out.println("   </tr>");
@@ -764,10 +778,10 @@ public void displayUpdateForm(String                p_id,
       {
     	  if(orgResourcesCountfalse==0)
     	  {
-    	    out.println("     <td align='right' class='general_heading_light' valign='top'>Resources</td>");
+    	    out.println("     <td align='right' class='general_heading_light' valign='top'><a class='f-186' href=\"#\" onclick=\"showHide('resources')\">Resources</a></td>");
     	    out.println("     <td>&nbsp;</td>");
     	    out.println("     <td >");
-    	    out.println("       <table width=\"" + secTableWdth + "\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
+    	    out.println("       <table id='resources' width=\"" + secTableWdth + "\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
       	  orgResourcesCountfalse++;
     	  }
     	    //  Items
@@ -788,7 +802,7 @@ public void displayUpdateForm(String                p_id,
     
    //Identifier   
     out.println("   <tr class=\"b-185\">");
-    out.println("     <td align='right' class='general_heading_light' valign='top'>Organisation Identifier</td>");
+    out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Organisation Identifier</td>");
     out.println("     <td>&nbsp;</td>");
     out.println("     <td >" + organisation.getId() + "</td>");
     out.println("   </tr>");
@@ -810,4 +824,10 @@ public void displayUpdateForm(String                p_id,
       <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
       <a class="addthis_counter addthis_pill_style"></a>
     </div>
-<script>displayRow("events");</script>
+<script>displayRow("events");
+if (!document.getElementById("venue").innerHTML.match("[A-Za-z]")) document.getElementById("venuebtn").style.display = "none";
+if (!document.getElementById("organisation").innerHTML.match("[A-Za-z]")) document.getElementById("organisationbtn").style.display = "none";
+if (!document.getElementById("contributor").innerHTML.match("[A-Za-z]")) document.getElementById("contributorbtn").style.display = "none";
+if (!document.getElementById("events").innerHTML.match("[A-Za-z]")) document.getElementById("eventsbtn").style.display = "none";
+
+</script>
