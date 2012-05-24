@@ -188,16 +188,26 @@ color : black;
     	}
     	//check the search_from value to determine which tables we need to check
     	switch (search_from){
-    		case 'all' :	url = "results/all_ajax.jsp?";
-    				break;
+    		case 'all' :		url = "results/all_ajax.jsp?";
+    					break;
     				
-    		case 'event' :  url = "results/event_ajax.jsp?";
-    				break;
-    		case 'contributor' : alert('contributor'); return false;
-    		case 'organisation' : alert('organisation'); return false;
-    		case 'venue' : alert('venue'); return false;
-    		case 'resource' : alert('resource'); return false;
-    		case 'work' : alert('work'); return false;	
+    		case 'event' :  	url = "results/event_ajax.jsp?";
+    					break;
+    				
+    		case 'contributor' : 	url = "results/contrib_ajax.jsp?";
+    				     	break;
+    		
+    		case 'organisation' : 	url = "results/org_ajax.jsp?";
+    				     	break;
+    		
+    		case 'venue' : 		url = "results/venue_ajax.jsp?";
+    				     	break;
+    				     	
+    		case 'resource' : 	url = "results/resource_ajax.jsp?";
+    				     	break;
+    		
+    		case 'work' : 		url = "results/work_ajax.jsp?";
+    				     	break;	
     	}
     	
     	ajaxRequest.open("GET", url + "f_keyword="+form.f_keyword.value
