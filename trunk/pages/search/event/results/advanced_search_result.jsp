@@ -454,11 +454,17 @@ public String formatDate(String day, String month, String year)
                      }
                     
       // write Previous
-      if(int_page_num > 1)
+      if(int_page_num > 1){
+        out.println("<a href=\"" + url +
+     		     "&f_page_num=1" + 
+                    "&f_recset_count=" + recset_count + 
+                    "\">First </a>&nbsp;");
+
         out.println("<a href=\"" + url +
                     "&f_page_num=" + (int_page_num - 1) + 
                     "&f_recset_count=" + recset_count + 
-                    "\">Previous</a>&nbsp;");
+                    "\">Previous  </a>&nbsp;");
+      }
 
       // write page numbers
       counter = 0;
@@ -484,12 +490,12 @@ public String formatDate(String day, String month, String year)
       // write Next
       if(page_num != null){
         if((int_page_num) < rounded_num_pages){// display Next only if its under the rounded_num_pages count
-          out.println("<a href=\"" + url + "&f_recset_count=" + recset_count + "&f_page_num=" + (int_page_num + 1) + "\">Next</a>");
-         
+          out.println("<a href=\"" + url + "&f_recset_count=" + recset_count + "&f_page_num=" + (int_page_num + 1) + "\">  Next</a>");
+          out.println("<a href=\"" + url + "&f_recset_count=" + recset_count + "&f_page_num=" + rounded_num_pages + "\"> Last</a>");
         }
       }else{
-        out.println("<a href=\"" + url + "&f_page_num=" + (int_page_num + 2) + "&f_recset_count=" + recset_count + "\">Next</a>"); 
-                            
+        out.println("<a href=\"" + url + "&f_page_num=" + (int_page_num + 2) + "&f_recset_count=" + recset_count + "\">  Next</a>"); 
+        out.println("<a href=\"" + url + "&f_recset_count=" + recset_count + "&f_page_num=" + rounded_num_pages + "\"> Last</a>");
       }          
       out.println("       </td>");
       out.println("      </tr>");
