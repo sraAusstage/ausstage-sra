@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import = "java.util.Vector, java.text.SimpleDateFormat"%>
-<%@ page import = "java.sql.*, sun.jdbc.rowset.*, java.util.Calendar"%>
+<%@ page import = "java.sql.*, sun.jdbc.rowset.*, java.util.Calendar, java.util.Date, java.text.SimpleDateFormat"%>
 <%@ page import = "ausstage.State"%>
 <%@ page import = "admin.Common"%>
 <%@ page import = "ausstage.Event, ausstage.DescriptionSource"%>
@@ -789,6 +789,10 @@ public void displayUpdateForm(String                p_id,
     out.println("     </td>");
     out.println("   </tr>");}*/
 
+    SimpleDateFormat dateFormat = new SimpleDateFormat("d-MMMM-yyyy");
+    String dateString = dateFormat.format(event.getUpdatedDate());
+    System.out.println("DateString: "+dateString);
+    
     
     //Reviewed
     if(event.getReview() == true)
@@ -797,9 +801,9 @@ public void displayUpdateForm(String                p_id,
    	  out.println("     <td  class='general_heading_light f-186' valign='top' align='right'>Data Reviewed By</td>");
     	out.println("     <td>&nbsp;</td>");
     	if(event.getUpdatedByUser().equals("null") && event.getReview() == true){
-    		out.println("<td valign=\"top\">" + event.getEnteredByUser() + " on " + event.getEnteredDate() +"</td>");
+    		out.println("<td valign=\"top\">" + event.getEnteredByUser() + " on " + dateFormat.format(event.getEnteredDate())+"</td>");
     	}
-    	out.println("<td valign=\"top\">" + event.getUpdatedByUser() + " on " + event.getUpdatedDate() +"</td>");
+    	out.println("<td valign=\"top\">" + event.getUpdatedByUser() + " on " + dateFormat.format(event.getUpdatedDate()) +"</td>");
     }
     
     //Event Identifier
