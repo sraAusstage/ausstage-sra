@@ -791,23 +791,10 @@ public void displayUpdateForm(String                p_id,
 
     
     //Reviewed
-    
-    out.println("   <tr class=\"b-185\">");
-    out.println("     <td  class='general_heading_light f-186' valign='top' align='right'>Reviewed</td>");
-    out.println("     <td>&nbsp;</td>");
-    if(event.getReview())
-      out.println("     <td  valign=\"top\">Yes</td>");
-    else
-      out.println("     <td  valign=\"top\">No</td>");
-    out.println("   </tr>");
-    
-    
-    //Reviewer
-    
     if(event.getReview() == true)
     {
-    	out.println("   <tr>");
-    	out.println("     <td align='right'  class='general_heading_light f-186' valign=\"top\">Reviewer</td>");
+      out.println("   <tr class=\"b-185\">");
+   	  out.println("     <td  class='general_heading_light f-186' valign='top' align='right'>Data Reviewed By</td>");
     	out.println("     <td>&nbsp;</td>");
     	if(event.getUpdatedByUser().equals("null") && event.getReview() == true){
     		out.println("<td valign=\"top\">" + event.getEnteredByUser() + " on " + event.getEnteredDate() +"</td>");
