@@ -789,7 +789,7 @@ public void displayUpdateForm(String                p_id,
     out.println("     </td>");
     out.println("   </tr>");}*/
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("d-MMMM-yyyy");
+    SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM yyyy");
     String dateString = dateFormat.format(event.getUpdatedDate());
     System.out.println("DateString: "+dateString);
     
