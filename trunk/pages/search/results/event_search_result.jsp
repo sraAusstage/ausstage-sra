@@ -102,28 +102,28 @@ public String formatDate(String day, String month, String year) {
   String australia_dancing_search_string;
   String google_search_string;
   
-	  ausstage.Database          db_ausstage_for_result       = new ausstage.Database ();
-	  admin.Common            common                       = new admin.Common   ();
-	  db_ausstage_for_result.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
-	
-	  CachedRowSet crset                     = null;
-	  Search search;
-	  String formatted_date                  = "";
-	  String keyword                         = request.getParameter("f_keyword");
-	  String table_to_search_from            = request.getParameter("f_search_from");
-	  String page_num                        = request.getParameter("f_page_num");
-	  String recset_count                    = request.getParameter("f_recset_count");
-	  String search_within_search_for_result = request.getParameter("f_search_within_search");
-	  String inc_resources					 = request.getParameter("inc_resources");
-	  String f_sql_switch					 = request.getParameter("f_sql_switch");
-	  String f_date_clause					 = request.getParameter("f_date_clause");
-	  String f_sort_by						 = request.getParameter("f_sort_by");
-	  int l_int_page_num                     = 0;
-	  State state                            = new State(db_ausstage_for_result);
-	  SimpleDateFormat formatPattern         = new SimpleDateFormat("dd/MM/yyyy");
-	  String         orderBy                 = request.getParameter("f_order_by");
-	  String         sortOrd                 = request.getParameter("order");
-	  if (sortOrd == null) sortOrd = "ASC";
+  ausstage.Database          db_ausstage_for_result       = new ausstage.Database ();
+  admin.Common            common                       = new admin.Common   ();
+  db_ausstage_for_result.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
+
+  CachedRowSet crset                     = null;
+  Search search;
+  String formatted_date                  = "";
+  String keyword                         = request.getParameter("f_keyword");
+  String table_to_search_from            = request.getParameter("f_search_from");
+  String page_num                        = request.getParameter("f_page_num");
+  String recset_count                    = request.getParameter("f_recset_count");
+  String search_within_search_for_result = request.getParameter("f_search_within_search");
+  String inc_resources									 = request.getParameter("inc_resources");
+  String f_sql_switch										 = request.getParameter("f_sql_switch");
+  String f_date_clause									 = request.getParameter("f_date_clause");
+  String f_sort_by											 = request.getParameter("f_sort_by");
+  int l_int_page_num                     = 0;
+  State state                            = new State(db_ausstage_for_result);
+  SimpleDateFormat formatPattern         = new SimpleDateFormat("dd/MM/yyyy");
+  String         orderBy                 = request.getParameter("f_order_by");
+  String         sortOrd                 = request.getParameter("order");
+  if (sortOrd == null) sortOrd = "ASC";
  
   boolean do_print                       = false;
   // Secondary Rowset to be used in when crset is already in use i.e. when 
@@ -424,7 +424,21 @@ public String formatDate(String day, String month, String year) {
           out.println("&nbsp;&nbsp;");
           
           // write Previous
-          if(int_page_num > 1)
+          if(int_page_num > 1){
+            out.println("<a href=\"" + 
+                        "?f_keyword=" + common.URLEncode(keyword) + 
+                        "&f_search_from=" + table_to_search_from + 
+                        "&f_page_num=1" + 
+                        "&f_recset_count=" + recset_count + 
+                        "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                        "&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+                        "&f_date_clause=" + request.getParameter("f_date_clause") + 
+                        "&f_search_within_search=" + search_within_search_for_result +
+                        "&inc_resources=" + m_inc_resource +
+                        "&sort_order="+ request.getParameter("order")+
+                        "&f_order_by=" + request.getParameter("f_order_by") + 
+                        "\">First</a>&nbsp;");           
+          
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
                         "&f_search_from=" + table_to_search_from + 
@@ -439,8 +453,7 @@ public String formatDate(String day, String month, String year) {
                         "&f_order_by=" + request.getParameter("f_order_by") +
                    //     "&f_year=" + unformattedDate +
                         "\">Previous</a>&nbsp;");
-
-          
+          }
           // write page numbers
           counter = 0;
           for(; i < rounded_num_pages + 1; i++){
@@ -489,7 +502,21 @@ public String formatDate(String day, String month, String year) {
                           "&sort_order="+ request.getParameter("order")+
                           "&f_order_by=" + request.getParameter("f_order_by") +
                      //     "&f_year=" + unformattedDate +
-                          "\">Next</a>");
+                          "\">Next</a>&nbsp;");
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+                          "&f_date_clause=" + request.getParameter("f_date_clause") + 
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "&inc_resources=" + m_inc_resource +
+                          "&sort_order="+ request.getParameter("order")+
+                          "&f_order_by=" + request.getParameter("f_order_by") +
+                          "\">Last</a>");                          
+                          
             }
           }else{
             out.println("<a href=\"" +  
@@ -505,7 +532,21 @@ public String formatDate(String day, String month, String year) {
                         "&sort_order="+ request.getParameter("order")+
                         "&f_order_by=" + request.getParameter("f_order_by") +
                  //       "&f_year=" + unformattedDate +
-                        "\">Next</a>");
+                        "\">Next </a>");
+                        
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+                          "&f_date_clause=" + request.getParameter("f_date_clause") + 
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "&inc_resources=" + m_inc_resource +
+                          "&sort_order="+ request.getParameter("order")+
+                          "&f_order_by=" + request.getParameter("f_order_by") +
+                          "\">Last</a>");                            
           }
               
           out.println("       </td>");
@@ -728,7 +769,16 @@ public String formatDate(String day, String month, String year) {
           out.println("&nbsp;&nbsp;");
           
           // write Previous
-          if(int_page_num > 1)
+          if(int_page_num > 1){
+            out.println("<a href=\"" + 
+                        "?f_keyword=" + common.URLEncode(keyword) + 
+                        "&f_search_from=" + table_to_search_from + 
+                        "&f_page_num=1" + 
+                        "&f_recset_count=" + recset_count + 
+                        "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                        "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_search_within_search=" + search_within_search_for_result +
+                        "\">First</a>&nbsp;");
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
                         "&f_search_from=" + table_to_search_from + 
@@ -738,6 +788,7 @@ public String formatDate(String day, String month, String year) {
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Previous</a>&nbsp;");
+          }
 
           
           // write page numbers
@@ -778,7 +829,19 @@ public String formatDate(String day, String month, String year) {
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
                           "&f_search_within_search=" + search_within_search_for_result +
-                          "\">Next</a>");
+                          "\">Next</a>&nbsp;");
+              
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                          
+                          
+                                      
             }
           }else{
             out.println("<a href=\"" + 
@@ -789,7 +852,18 @@ public String formatDate(String day, String month, String year) {
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">Next</a>");
+                        "\">Next</a>&nbsp;");
+             
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                        
+                       
           }
               
           out.println("       </td>");
@@ -971,7 +1045,16 @@ public String formatDate(String day, String month, String year) {
           out.println("&nbsp;&nbsp;");
           
           // write Previous
-          if(int_page_num > 1)
+          if(int_page_num > 1){
+            out.println("<a href=\"" + 
+                        "?f_keyword=" + common.URLEncode(keyword) + 
+                        "&f_search_from=" + table_to_search_from + 
+                        "&f_page_num=1" + 
+                        "&f_recset_count=" + recset_count + 
+                        "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                        "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_search_within_search=" + search_within_search_for_result +
+                        "\">First</a>&nbsp;");
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
                         "&f_search_from=" + table_to_search_from + 
@@ -981,7 +1064,7 @@ public String formatDate(String day, String month, String year) {
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Previous</a>&nbsp;");
-
+	  }
           
           // write page numbers
           counter = 0;
@@ -1021,7 +1104,16 @@ public String formatDate(String day, String month, String year) {
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
                           "&f_search_within_search=" + search_within_search_for_result +
-                          "\">Next</a>");
+                          "\">Next</a>&nbsp;");
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                          
             }
           }else{
             out.println("<a href=\"" + 
@@ -1032,7 +1124,16 @@ public String formatDate(String day, String month, String year) {
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">Next</a>");
+                        "\">Next</a>&nbsp;");
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                    
           }
               
           out.println("       </td>");
@@ -1274,7 +1375,16 @@ public String formatDate(String day, String month, String year) {
           out.println("&nbsp;&nbsp;");
           
           // write Previous
-          if(int_page_num > 1)
+          if(int_page_num > 1){
+            out.println("<a href=\"" + 
+                        "?f_keyword=" + common.URLEncode(keyword) + 
+                        "&f_search_from=" + table_to_search_from + 
+                        "&f_page_num=1" + 
+                        "&f_recset_count=" + recset_count + 
+                        "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                        "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_search_within_search=" + search_within_search_for_result +
+                        "\">First</a>&nbsp;");
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
                         "&f_search_from=" + table_to_search_from + 
@@ -1284,7 +1394,7 @@ public String formatDate(String day, String month, String year) {
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Previous</a>&nbsp;");
-
+	  }
           
           // write page numbers
           counter = 0;
@@ -1324,7 +1434,16 @@ public String formatDate(String day, String month, String year) {
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
                           "&f_search_within_search=" + search_within_search_for_result +
-                          "\">Next</a>");
+                          "\">Next</a>&nbsp;");
+              out.println("<a href=\"" +  
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                          
             }
           }else{
             out.println("<a href=\"" + 
@@ -1335,7 +1454,16 @@ public String formatDate(String day, String month, String year) {
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">Next</a>");
+                        "\">Next</a>&nbsp;");
+              out.println("<a href=\"" +  
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                         
           }
               
           out.println("       </td>");
@@ -1587,7 +1715,16 @@ public String formatDate(String day, String month, String year) {
           out.println("&nbsp;&nbsp;");
           
           // write Previous
-          if(int_page_num > 1)
+          if(int_page_num > 1){
+            out.println("<a href=\"" + 
+                        "?f_keyword=" + common.URLEncode(keyword) + 
+                        "&f_search_from=" + table_to_search_from + 
+                        "&f_page_num=1" + 
+                        "&f_recset_count=" + recset_count + 
+                        "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                        "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_search_within_search=" + search_within_search_for_result +
+                        "\">First</a>&nbsp;");           
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
                         "&f_search_from=" + table_to_search_from + 
@@ -1597,7 +1734,7 @@ public String formatDate(String day, String month, String year) {
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Previous</a>&nbsp;");
-
+	  }
           
           // write page numbers
           counter = 0;
@@ -1637,7 +1774,16 @@ public String formatDate(String day, String month, String year) {
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
                           "&f_search_within_search=" + search_within_search_for_result +
-                          "\">Next</a>");
+                          "\">Next</a>&nbsp;");
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                          
             }
           }else{
             out.println("<a href=\"" +
@@ -1648,7 +1794,16 @@ public String formatDate(String day, String month, String year) {
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">Next</a>");
+                        "\">Next</a>&nbsp;");
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                         
           }
               
           out.println("       </td>");
@@ -1825,7 +1980,16 @@ public String formatDate(String day, String month, String year) {
           out.println("&nbsp;&nbsp;");
           
           // write Previous
-          if(int_page_num > 1)
+          if(int_page_num > 1){
+            out.println("<a href=\"" + 
+                        "?f_keyword=" + common.URLEncode(keyword) + 
+                        "&f_search_from=" + table_to_search_from + 
+                        "&f_page_num=1" + 
+                        "&f_recset_count=" + recset_count + 
+                        "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                        "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_search_within_search=" + search_within_search_for_result +
+                        "\">First</a>&nbsp;");          
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
                         "&f_search_from=" + table_to_search_from + 
@@ -1835,7 +1999,7 @@ public String formatDate(String day, String month, String year) {
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Previous</a>&nbsp;");
-
+	  }
           
           // write page numbers
           counter = 0;
@@ -1875,7 +2039,16 @@ public String formatDate(String day, String month, String year) {
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
                           "&f_search_within_search=" + search_within_search_for_result +
-                          "\">Next</a>");
+                          "\">Next</a>&nbsp;");
+              out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                          
             }
           }else{
             out.println("<a href=\"" + 
@@ -1886,7 +2059,16 @@ public String formatDate(String day, String month, String year) {
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">Next</a>");
+                        "\">Next</a>&nbsp;");
+               out.println("<a href=\"" + 
+                          "?f_keyword=" + common.URLEncode(keyword) + 
+                          "&f_search_from=" + table_to_search_from + 
+                          "&f_page_num=" + rounded_num_pages + 
+                          "&f_recset_count=" + recset_count + 
+                          "&f_sql_switch=" + request.getParameter("f_sql_switch") +
+                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_search_within_search=" + search_within_search_for_result +
+                          "\">Last</a>");                       
           }
               
           out.println("       </td>");
