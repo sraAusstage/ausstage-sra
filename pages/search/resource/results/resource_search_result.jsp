@@ -281,7 +281,9 @@
           
         // write Previous
         if(int_page_num > 1) {
+          out.println("<a href=\"" +pageURL + "&f_page_num=1"  +"\">First</a>&nbsp;");
           out.println("<a href=\"" +pageURL + "&f_page_num=" + (int_page_num - 1) +"\">Previous</a>&nbsp;");
+          
         }
 
         // write page numbers
@@ -304,10 +306,12 @@
          // write Next
         if(page_num != null){
           if((int_page_num) < rounded_num_pages){// display Next only if its under the rounded_num_pages count
-            out.println("<a href=\"" +pageURL + "&f_page_num=" + (int_page_num + 1) +"\">Next</a>");
+            out.println("<a href=\"" +pageURL + "&f_page_num=" + (int_page_num + 1) +"\">Next</a>&nbsp;");
+            out.println("<a href=\"" +pageURL + "&f_page_num=" + rounded_num_pages +"\">Last</a>");
           }
         }else{
-          out.println("<a href=\"" +pageURL + "&f_page_num=" + (int_page_num + 2) +"\">Next</a>");
+          out.println("<a href=\"" +pageURL + "&f_page_num=" + (int_page_num + 2) +"\">Next</a>&nbsp;");
+          out.println("<a href=\"" +pageURL + "&f_page_num=" + rounded_num_pages +"\">Last</a>");
         }            
         out.println("       </td>");
         out.println("      </tr>");
