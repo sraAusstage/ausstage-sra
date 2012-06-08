@@ -16,7 +16,7 @@
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
   Venue		venueObj        = (Venue)session.getAttribute("venueObj");
   String 	venueid		= venueObj.getVenueId();
-  System.out.println("Venue Id:"+venueid);
+  //System.out.println("Venue Id:"+venueid);
   Vector venueVenueLinks = venueObj.getAssociatedVenues();
   String functionId   = "";
   String functionDesc = "";
@@ -42,7 +42,7 @@
   for(int i=0; i < venueVenueLinks.size(); i++) {
   	VenueVenueLink venueVenueLink = new VenueVenueLink(db_ausstage);
 	venueVenueLink.load((String)venueVenueLinks.elementAt(i));
-	System.out.println("Child Venues:"+venueVenueLinks.elementAt(i));
+	//System.out.println("Child Venues:"+venueVenueLinks.elementAt(i));
 //VenueVenueLink venueVenueLink = venueVenueLinks.elementAt(i);
   //  VenueVenueLink venueVenueLink = new VenueVenueLink(venueVenueLinks.elementAt(i));
     //VenueVenueLink venueVenueLink = (VenueVenueLink)venueVenueLinks.elementAt(i);

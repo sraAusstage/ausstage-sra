@@ -3,7 +3,7 @@
   //created by BW
   //it is just another search to determine from the basic search page if there are results returned or not. 
   
-  ausstage.Database db_ausstage_for_result          = new ausstage.Database ();
+  ausstage.Database db_ausstage_for_result       = new ausstage.Database ();
   Common         common                          = new Common();
   db_ausstage_for_result.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 

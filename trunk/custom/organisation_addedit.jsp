@@ -297,9 +297,11 @@
   out.println("<textarea name=\"f_notes\" rows=\"5\" cols=\"50\" class=\"line300\">" + organisationObj.getNotes() + "</textarea>");
   pageFormater.writeTwoColTableFooter(out);
   
+ // if (organisationObj.getNLA() != null && !organisationObj.getNLA().equals("")) {
   pageFormater.writeTwoColTableHeader(out, "NLA");
   out.println("<input type=\"text\" name=\"f_nla\" size=\"100\" class=\"line300\" maxlength=2048 value=\"" + organisationObj.getNLA() + "\">");
   pageFormater.writeTwoColTableFooter(out);
+ // }
   
   
   /***************************
@@ -326,22 +328,26 @@
   out.print(organisationObj.getId());
   pageFormater.writeTwoColTableFooter(out);
  
-  pageFormater.writeTwoColTableHeader(out, "Created By User:");
-  out.print(organisationObj.getEnteredByUser());
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Date Created:");
-  out.print(common.formatDate(organisationObj.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Updated By User:");
-  out.print(organisationObj.getUpdatedByUser());
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Date Updated:");
-  out.print(common.formatDate(organisationObj.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
-
+  if (organisationObj.getEnteredByUser() != null && !organisationObj.getEnteredByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Created By User:");
+    out.print(organisationObj.getEnteredByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Created:");
+    out.print(common.formatDate(organisationObj.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
+  
+  if (organisationObj.getUpdatedByUser() != null && !organisationObj.getUpdatedByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Updated By User:");
+    out.print(organisationObj.getUpdatedByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Updated:");
+    out.print(common.formatDate(organisationObj.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
+  
   /*****************************************************/
 
   

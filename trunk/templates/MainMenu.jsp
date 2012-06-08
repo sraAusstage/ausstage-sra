@@ -1,4 +1,4 @@
-﻿<%@ page pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page import="org.opencms.jsp.*,com.opencms.file.*,java.util.*" %>
@@ -31,7 +31,7 @@ if (menuanalytics.contains(","+currentPage)) category = "analytics";
 <div id="topbar2" class="b-194">
   <a <%=category.equals("search")?"style=\"background-color:#333333;\" ":""%>href="/pages/search/" title="Search">Search</a>
   <a <%=category.equals("browse")?"style=\"background-color:#333333;\" ":""%>href="/pages/browse/contributors/" title="Browse">Browse</a>
-  <a <%=category.equals("mapping")?"style=\"background-color:#333333;\" ":""%>href="/pages/map/" title="Mapping">Mapping</a>
+  <a <%=category.equals("mapping")?"style=\"background-color:#333333;\" ":""%>href="/pages/map/#tabs-3" title="Mapping">Mapping</a>
   <a <%=category.equals("networks")?"style=\"background-color:#333333;\" ":""%>href="/pages/network/" title="Networks">Network</a>
   <a <%=category.equals("mobile")?"style=\"background-color:#333333;\" ":""%>href="/pages/mobile/" title="Mobile">Mobile</a>
   <a <%=category.equals("exchange")?"style=\"background-color:#333333;\" ":""%>href="/pages/exchange/" title="Exchange">Exchange</a>
@@ -42,9 +42,9 @@ if (menuanalytics.contains(","+currentPage)) category = "analytics";
 if (category.equals("mapping")) {
 %>
 <ul class="fix-ui-tabs">
-  <li><a href="#tabs-3">Map</a></li> 
-  <li><a href="#tabs-1">Build</a></li>
-  <li><a href="#tabs-2">Regions</a></li>
+  <li style="position: relative; left:70px;"><a href="#tabs-1">Build</a></li>
+  <li style="position: relative; left:70px;"><a href="#tabs-2">Regions</a></li>
+  <li style="position: relative; left:-140px;"><a href="#tabs-3">Map</a></li> 
    
 </ul>
 <%

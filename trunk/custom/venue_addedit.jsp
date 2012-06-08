@@ -82,16 +82,16 @@ function load() {
 	geocoder = new google.maps.Geocoder();
 }
 
-function checkMandatoryFields(){
+/*function checkMandatoryFields(){
     //all fields are empty
     if(document.venue_addedit_form.f_street.value == ""){      
       alert("Please enter street and suburb details.");
       return (false);
     }   
     msg = "";
-  }
+  }*/
 
-function showAddress() {
+/*function showAddress() {
 	
 	if(document.venue_addedit_form.f_street.value == ""){      
 	      alert("Please enter street name.");
@@ -115,7 +115,7 @@ function showAddress() {
 		}
 	});
 	return false;
-}
+}*/
 
 document.body.onload=function(){load();};
 </script>

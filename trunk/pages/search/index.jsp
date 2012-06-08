@@ -1,4 +1,4 @@
-﻿﻿<%@ page pageEncoding="UTF-8"%>
+﻿<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import = "ausstage.AusstageCommon"%>
@@ -95,7 +95,7 @@ color : black;
 	  	  <option value="work"         <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("work")) { out.print(" selected 		");}%>>Works</option>
 		</select>
 	      </td>
-	      <td align="center"><input type="submit" value="Search"></td>
+	      <td align="center"><input type="submit" value="Search" onclick="return checkFields();"></td>
 	    </tr>
 	    <tr>
 	      <td>&nbsp;</td>

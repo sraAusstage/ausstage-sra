@@ -30,7 +30,7 @@
   if (session.getAttribute("organisationObj") != null) {
 	  organisationObj = (Organisation) session.getAttribute("organisationObj");
 	  organisationObj.setDb(db_ausstage);
-	  System.out.println("the org's id: " + organisationObj.getId());
+	  //System.out.println("the org's id: " + organisationObj.getId());
   } else if (organisation_id != null && !organisation_id.equals ("") && !organisation_id.equals ("null")) {
 	  organisationObj = new Organisation(db_ausstage);
 	  organisationObj.load (Integer.parseInt(organisation_id));

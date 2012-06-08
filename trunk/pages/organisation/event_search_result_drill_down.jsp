@@ -156,6 +156,7 @@ public void displayUpdateForm(String                p_id,
     
     p_out.println("<tr><td><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
     p_out.println("<tr><td><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='right' >Export to excel</a></td></tr>");
+    p_out.println("<tr><td><a href='/pages/map/?complex-map=true&c=&o=" + p_request.getParameter("id") + "&v=&e=' align='left' >Map</a></td></tr>");
     p_out.println("</table>");
    
    /*p_out.println("<DIV style=\"float:right; padding-top: 15px;\">");

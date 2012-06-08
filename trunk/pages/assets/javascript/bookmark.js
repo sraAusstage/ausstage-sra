@@ -224,6 +224,7 @@ BookmarkClass.prototype.doComplexMapFromLink = function (c, o, v, e) {
         }
         
         if(e != "") {
+       
                 if(e.indexOf('-') != -1) {
                         e = e.split('-');
                 
@@ -251,6 +252,8 @@ BookmarkClass.prototype.doComplexMapFromLink = function (c, o, v, e) {
 
 // functions to process the results of the ajax marker data lookups
 BookmarkClass.prototype.processAjaxData1 = function(data) {
+console.log("contributor data");
+console.log(data);
         bookmarkObj.data.contributors = bookmarkObj.data.contributors.concat(data);
 }
 
@@ -263,6 +266,8 @@ BookmarkClass.prototype.processAjaxData3 = function(data) {
 }
 
 BookmarkClass.prototype.processAjaxData4 = function(data) {
+console.log("event data");
+console.log(data);
         bookmarkObj.data.events = bookmarkObj.data.events.concat(data);
 }
 
@@ -282,6 +287,7 @@ BookmarkClass.prototype.addDataToMap = function() {
         }
         
         if(bookmarkObj.data.events.length > 0) {
+        
                 mappingObj.addEventData(bookmarkObj.data.events, false);
         }
         

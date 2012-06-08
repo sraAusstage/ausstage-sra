@@ -35,7 +35,7 @@
       OrganisationOrganisationLink organisationOrganisationLink = new OrganisationOrganisationLink(db_ausstage);
       // get data from the request object
       childOrganisationId = request.getParameter("f_child_organisation_id_" + i);
-      System.out.println("Child Id:" +childOrganisationId);
+      //System.out.println("Child Id:" +childOrganisationId);
       functionId  = request.getParameter("f_function_lov_id_" + i);
       notes       = request.getParameter("f_notes_" + i);
 

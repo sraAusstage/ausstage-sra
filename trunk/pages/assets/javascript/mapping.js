@@ -82,7 +82,7 @@ function MappingClass() {
         //this.HEIGHT_BUFFER_CONSTANT = 35;
         //this.HEIGHT_BUFFER_CONSTANT = 65;
         this.HEIGHT_BUFFER_CONSTANT = 75;
-        this.WIDTH_BUFFER_CONSTANT  = 55;
+        this.WIDTH_BUFFER_CONSTANT  = 85;
         
         // variables to hold the x / y offset constants for computing the placement pointer on a marker
         this.POINTER_X_OFFSET = 16;
@@ -217,6 +217,7 @@ MappingClass.prototype.updateMap = function() {
                 mappingObj.initMap();
                 mappingObj.resizeMap();
         } else {
+
                 // reset the map and associated objects
                 
                 // reset the marker clusterer
@@ -237,7 +238,7 @@ MappingClass.prototype.updateMap = function() {
                 mappingObj.mapMarkers.objects = [];
                 mappingObj.mapMarkers.hashes = [];
         }
-        
+
         // check to see if clustering should be enabled
         if(mappingObj.markerData.objects.length >= mappingObj.applyClusterLimit) {
                 mappingObj.clusteringEnabled = true;
@@ -250,7 +251,7 @@ MappingClass.prototype.updateMap = function() {
         var objects = mappingObj.markerData.objects;
         var iconography = null;
         var offset = 0;
-        
+
         for(var i = 0; i < objects.length; i++) {
                 
                 // build the iconography
@@ -301,7 +302,7 @@ MappingClass.prototype.updateMap = function() {
         
         // finalise the map updates
         mappingObj.resizeMap();
-        
+    
         // update the map legend
         mapLegendObj.showLegend();
         
@@ -561,7 +562,8 @@ MappingClass.prototype.addVenueBrowseData = function(data, display) {
 
 // function to update the list of contributors with data from the search interface
 MappingClass.prototype.addContributorData = function(data, display) {
-
+console.log(data);
+console.log('Contributorxxxxxxxxxxxx');
         // declare helper variables
         var hash  = null;
         var idx   = null;
@@ -740,8 +742,11 @@ MappingClass.prototype.addOrganisationData = function(data, display) {
         }
 }
 
-// function to update the list of contributors with data from the search interface
+// function to update the list of events with data from the search interface
 MappingClass.prototype.addEventData = function(data, display) {
+console.log("event data being added");
+console.log(data);
+
 
         // declare helper variables
         var hash  = null;
@@ -755,7 +760,7 @@ MappingClass.prototype.addEventData = function(data, display) {
         // loop through the data
         for(var i = 0; i < data.length; i++) {
         
-                // get the contributor information and list of venes
+                // get the event information and list of venes
                 event  = data[i].extra[0];
                 venues = data[i].venues;
                 
@@ -779,7 +784,7 @@ MappingClass.prototype.addEventData = function(data, display) {
                                 mappingObj.markerData.objects.push(obj);
                         } else {
                                 // have seen this lat / lng before
-                                // check to see if the contributor has already been added
+                                // check to see if the event has already been added
                                 obj   = mappingObj.markerData.objects[idx];
                                 id    = event.id;
                                 found = false;
@@ -793,6 +798,7 @@ MappingClass.prototype.addEventData = function(data, display) {
                                 
                                 if(found == false) {
                                         obj.events.push(event);
+
                                 }
                         }
                 }
@@ -834,7 +840,7 @@ MappingClass.prototype.computeMapWidth = function() {
         
         // get the width of various elements
         var wrapper = $('.wrapper').width();
-        var sidebar = $('.sidebar').width();
+        var sidebar = $('.sidebar1').width();
         
         width = wrapper - (sidebar + mappingObj.WIDTH_BUFFER_CONSTANT);
         
@@ -1614,6 +1620,7 @@ MappingClass.prototype.doMapFromLink = function() {
                         if(typeof(e) == 'undefined') {
                                 e = null;
                         }
+
                         
                         // build the map
                         bookmarkObj.doComplexMapFromLink(c, o, v, e);
@@ -1634,6 +1641,7 @@ MappingClass.prototype.doSimpleMapFromLink = function(type, id) {
                 // get the data
                 $.getJSON(url, function(data) {
                         if(data.length > 0) {
+                        
                                 mappingObj.addContributorData(data);
                         } else {
                                 alert('No records were found using the id in the persistent link that can be added to a map');
@@ -1689,10 +1697,12 @@ MappingClass.prototype.resetMap = function() {
 
         // delete all of the markers if necessary
         if(mappingObj.map == null) {
+
                 // initialise the map
                 mappingObj.initMap();
                 mappingObj.resizeMap();
         } else {
+
                 // reset the map and associated objects
                 
                 // reset the marker clusterer
