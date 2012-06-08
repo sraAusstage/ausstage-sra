@@ -28,7 +28,7 @@ String url = request.getServerName();
 	<script type="text/javascript" src="assets/javascript/aus_exchange.js"></script>		
 	<script type="text/javascript" src="assets/javascript/tab-selector.js"></script>
 		<!-- main content -->
-		<div class="main b-172">
+		<div class="main1 b-172">
 		<%@ include file="../../templates/MainMenu.jsp"%>
 
 		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; padding:0px; border-width:0px;">

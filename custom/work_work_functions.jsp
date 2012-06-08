@@ -42,18 +42,21 @@
     System.out.println("Child Works:"+workWorkLinks.elementAt(i));
     WorkWorkLink workWorkLink = new WorkWorkLink(db_ausstage);
     try{
-      workWorkLink.load(workWorkLink.getChildId());  	  
+      //workWorkLink.load(workWorkLink.getChildId()); 
+      workWorkLink.load((String)workWorkLinks.elementAt(i)); 	  
     }catch(Exception e){
       workWorkLink.load((String)workWorkLinks.elementAt(i));
     }
-	  
+    
     // Load up the child works 
     Work tempWork = new Work(db_ausstage);
     try{
-      tempWork.load(Integer.parseInt(workWorkLink.getChildId()));
+      //tempWork.load(Integer.parseInt(workWorkLink.getChildId()));
+      tempWork.load(Integer.parseInt((String)workWorkLinks.elementAt(i)));
     }catch(Exception e){
       tempWork.load(Integer.parseInt((String)workWorkLinks.elementAt(i)));
     }
+
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Work:</b> <%=workObj.getName()%><br><br></td>

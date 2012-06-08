@@ -11,7 +11,7 @@
 <script src="assets/javascript/libraries/jquery.form-2.64.js"></script>
 <script src="assets/javascript/index.js"></script>
 <script src="assets/javascript/tab-selector.js"></script>
-	<div class="main b-184 f-187">
+	<div class="main1 b-184 f-187">
 		<!-- main content -->
 		<div id="tabs" class="tab-container" style="border-width:0px;">
 			<%@ include file="../../templates/MainMenu.jsp"%>

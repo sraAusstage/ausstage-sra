@@ -390,8 +390,6 @@ public void displayUpdateForm(String                p_id,
 	    out.println("     <td  valign=\"top\">" + event.getUmbrella() + "</td>");
 	    out.println("   </tr>");
     }
-    
-    
     	
    	//First Date
    	if (!formatDate(event.getDdfirstDate(),event.getMmfirstDate(),event.getYyyyfirstDate()).equals("")) {
@@ -459,6 +457,14 @@ public void displayUpdateForm(String                p_id,
     
 
     
+     //Part of a tour -- remove me when event-event joins are done
+    if (event.getPartOfATour()) {
+	    out.println("   <tr>");
+	    out.println("     <td  class='general_heading_light f-186' valign='top' align='right'>Part Of A Tour</td>");
+	    out.println("     <td>&nbsp;</td>");
+	    out.println("     <td  valign=\"top\">Yes</td>");
+	    out.println("   </tr>");
+    }
     
     
     //Description
@@ -790,7 +796,12 @@ public void displayUpdateForm(String                p_id,
     out.println("   </tr>");}*/
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM yyyy");
-    String dateString = dateFormat.format(event.getUpdatedDate());
+    String dateString = null;
+    try {
+    	dateString = dateFormat.format(event.getUpdatedDate());
+    } catch (Exception e) {
+    	dateString = dateFormat.format(event.getEnteredDate());
+    }
     System.out.println("DateString: "+dateString);
     
     

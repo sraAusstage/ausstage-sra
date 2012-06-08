@@ -58,7 +58,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 </style>
 
 <div id='main1' class="main1 b-184 f-187">
-  <div id="tabs" class="tab-container">
+  <div id="tabs" class="tab-container" style="position: relative">
     <%@ include file="../../templates/MainMenu.jsp"%>
   <div>
 
@@ -150,18 +150,22 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 	</div>
       </div>
 				
-      <div id="tabs-3">
-	<div id="map_container_div" style="width:80%;">
-	  <div id="map_div" style="height: 100%; width:80%;"></div>
+      <div id="tabs-3" style="width: 600px">
+	<!--widths were both 100 -->
+	<div id="map_container_div" style="width: 100%">
+	  <div id="map_div" style="height: 100%; width: 100%"></div>
 	  <div style="height: 25px;"></div>
 	  <div>
-	    <div class="timeSliderContainer" style="float: left; height: 30px; width:80%;">
-	    <div id="timeSlider"></div>
-  	  </div>
-	  <div id="mapResetButtonContainer" style="float: right; width:80%;">
-	    <input type="button" name="btn_reset_map" id="btn_reset_map" value="Reset Map"/>
+	    <div class="timeSliderContainer" style="float: left; height: 30px; width: 100%">
+	      <div id="timeSlider"></div>
+  	    </div>
+	    <div id="mapResetButtonContainer" style="float: right">
+	      <input type="button" name="btn_reset_map" id="btn_reset_map" value="Reset Map"/>
+	    </div>
 	  </div>
-	</div>
+	  
+	  
+	  
       </div>
       
     </div>

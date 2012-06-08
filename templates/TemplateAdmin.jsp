@@ -1,4 +1,4 @@
-﻿<%@ page pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page session="true" import="org.opencms.main.*, org.opencms.jsp.*,org.opencms.file.*, java.lang.String, java.util.*" %>

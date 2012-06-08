@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
+<%@ page session="true" import="org.opencms.main.*, org.opencms.jsp.*,org.opencms.file.*, java.lang.String, java.util.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page import = "java.sql.Statement, sun.jdbc.rowset.CachedRowSet, admin.Common, java.util.*"%>
 <%@ page import = "ausstage.Event, ausstage.Status, ausstage.DescriptionSource"%>
@@ -588,42 +589,64 @@
 
   pageFormater.writeTwoColTableFooter(out);
 
-//Reviewed Flag
-pageFormater.writeHelper(out, "Reviewed", "helpers_no14.gif");
+
+// Only show reviewed flag if in the Admin or Reviewer groups
+
+CmsJspActionElement cms = new CmsJspActionElement(pageContext,request,response);
+CmsObject cmsObject = cms.getCmsObject();
+List<CmsGroup> userGroups = cmsObject.getGroupsOfUser(session.getAttribute("userName").toString(), true);
+List<String> groupNames = new ArrayList();
+for(CmsGroup group:userGroups) {
+   groupNames.add(group.getName());
+}
 
 
+// if (request.getRequestURI().indexOf("event_search") >=0) response.getOutputStream().print("curr "); -- to display "curr " in the list of classes 
+if (groupNames.contains("Administrators") || groupNames.contains("Reviewers")) {
+  //Reviewed Flag
+  pageFormater.writeHelper(out, "Reviewed", "helpers_no14.gif");
+  
+  pageFormater.writeTwoColTableHeader(out, "Reviewed");
+  out.println("<input type='checkbox' name='f_review' value='yes' " + (eventObj.getReview()?"checked":"") + ">");
+  //out.println("<input type='radio' name='f_review' value='no' checked" + ">");
+  pageFormater.writeTwoColTableFooter(out);
+  
+  pageFormater.writeHelper(out, "Data Entry Information", "helpers_no15.gif");
+} else {
+  out.println("<input type='hidden' name='f_review' value='" + (eventObj.getReview()?"yes":"") + "'>");
 
-pageFormater.writeTwoColTableHeader(out, "Reviewed");
-out.println("<input type='checkbox' name='f_review' value='yes' " + (eventObj.getReview()?"checked":"") + ">");
-//out.println("<input type='radio' name='f_review' value='no' checked" + ">");
-pageFormater.writeTwoColTableFooter(out);
- 
+  pageFormater.writeHelper(out, "Data Entry Information", "helpers_no14.gif");
+}
+
   
  /***************************
        Data Entry Information
   ****************************/
-  pageFormater.writeHelper(out, "Data Entry Information", "helpers_no15.gif");
   
   pageFormater.writeTwoColTableHeader(out, "Event ID:");
   out.print(eventObj.getEventid());
   pageFormater.writeTwoColTableFooter(out);
   
-  pageFormater.writeTwoColTableHeader(out, "Created by User:");
-  out.print(eventObj.getEnteredByUser());
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Date Created:");
-  out.print(ausstageCommon.formatDate(eventObj.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
+  if (eventObj.getEnteredByUser() != null && !eventObj.getEnteredByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Created by User:");
+    out.print(eventObj.getEnteredByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Created:");
+    out.print(ausstageCommon.formatDate(eventObj.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
   
-  pageFormater.writeTwoColTableHeader(out, "Updated By User:");
-  out.print(eventObj.getUpdatedByUser());
-  pageFormater.writeTwoColTableFooter(out);
-  
-  pageFormater.writeTwoColTableHeader(out, "Date Updated:");
-  out.print(ausstageCommon.formatDate(eventObj.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
-
+  if (eventObj.getUpdatedByUser() != null && !eventObj.getUpdatedByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Updated By User:");
+    out.print(eventObj.getUpdatedByUser());
+    System.out.println(" Updating User:" + eventObj.getUpdatedByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Updated:");
+    out.print(ausstageCommon.formatDate(eventObj.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
   
 
   db_ausstage.disconnectDatabase();

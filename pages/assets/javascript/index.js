@@ -75,6 +75,6 @@ $(document).ready(function(){
         
         // check to see if this is a persistent link map request
         mappingObj.doMapFromLink();
-        
+     
         mappingObj.resetMap();
 });

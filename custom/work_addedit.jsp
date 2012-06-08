@@ -215,22 +215,26 @@
   out.print(work.getWorkId());
   pageFormater.writeTwoColTableFooter(out);
   
-  pageFormater.writeTwoColTableHeader(out, "Created By User:");
-  out.print(work.getEnteredByUser());
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Date Created:");
-  out.print(common.formatDate(work.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Updated By User:");
-  out.print(work.getUpdatedByUser());
-  pageFormater.writeTwoColTableFooter(out);
+  if (work.getEnteredByUser() != null && !work.getEnteredByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Created By User:");
+    out.print(work.getEnteredByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Created:");
+    out.print(common.formatDate(work.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
   
-  pageFormater.writeTwoColTableHeader(out, "Date Updated:");
-  out.print(common.formatDate(work.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
- 
+  if (work.getUpdatedByUser() != null && !work.getUpdatedByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Updated By User:");
+    out.print(work.getUpdatedByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Updated:");
+    out.print(common.formatDate(work.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
+  
   out.print("<br><br><br><br>");
   pageFormater.writePageTableFooter (out);
   pageFormater.writeButtons(out, "back", "prev.gif", "welcome.jsp", "cross.gif", "submit", "next.gif");

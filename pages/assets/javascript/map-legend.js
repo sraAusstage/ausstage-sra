@@ -194,7 +194,7 @@ MapLegendClass.prototype.updateLegend = function() {
         
         // get the data used to build the legend
         var recordData = mapLegendObj.buildRecordData();
-        
+    
         // build the map legend 
         if(recordData.contributors.objects.length > 0) {
                 // add the contributors
@@ -363,6 +363,7 @@ MapLegendClass.prototype.updateLegend = function() {
         if(recordData.events.objects.length > 0) {
                 // add the events
                 objects = recordData.events.objects;
+               
                 
                 // reset the tableData variable
                 tableData = '<table id="mapLegendEvents" class="mapLegendTable">';
@@ -453,7 +454,8 @@ MapLegendClass.prototype.buildRecordData = function() {
                                           venues:        {ids: [], objects: []},
                                           events:        {ids: [], objects: []}
                                          };
-                                         
+                                         console.log("**************");
+                                         console.log(mapData);
         // loop through the marker data
         for (var i = 0; i < mapData.length; i++) {
         

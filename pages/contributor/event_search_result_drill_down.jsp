@@ -389,10 +389,14 @@ Vector item_contentindlinks;
 
     // New rules (23/12/2008)
    
-    if (!formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()).equals("") || !formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()).equals("")) 
+    if (!formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()).equals("") || !formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()).equals("")) 
+    System.out.println("Date of Death:"+ contributor.getDodYear());
+   // if(contributor.getDodYear() == null || contributor.getDodYear().equals(""))
     { 
-      if(hasValue(contributor.getDobYear()))
+      if(hasValue(contributor.getDobYear()) && !contributor.getDodYear().equals(""))
       {
+    	  System.out.println("In DOB");
+    	  System.out.println("In DOB:" + formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()));
 	      //Date of Birth  
 	      out.println("   <tr bgcolor='#eeeeee'>");
 	      out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Date of Birth</td>");
@@ -404,7 +408,9 @@ Vector item_contentindlinks;
       } 
       
       if(hasValue(contributor.getDodYear()))  
-      {        	  
+      {     
+    	  System.out.println("In DOD");
+    	  System.out.println("In DOD:" + formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
     	//Date of death
 	      out.println("   <tr bgcolor='#eeeeee'>");
 	      out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Date of Death</td>");
@@ -417,7 +423,7 @@ Vector item_contentindlinks;
     }
     
     /*
-    if(contributor.getDodYear() == null || contributor.getDodYear().equals("") ){
+    if(contributor.getDodYear() != null || !contributor.getDodYear().equals("")){
       //Date of Birth
       out.println("   <tr bgcolor='#eeeeee'>");
       out.println("     <td align='right' class='general_heading_light f-186' valign='top'>Date of Birth</td>");
@@ -436,8 +442,8 @@ Vector item_contentindlinks;
       out.print(formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
       out.println("     </td>");
       out.println("   </tr>");
-    }
-    */
+    }*/
+    
     
     //Functions
     out.println("   <tr>");

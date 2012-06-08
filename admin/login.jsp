@@ -84,7 +84,7 @@ if(user == null || user.length()== 0 || loginFailed)
       <input type="hidden" name="url" value="<%=url%>" />
       <p>username: <input name="user" /></p>
       <p>password: <input name="password" type="password" /></p>
-      <p><input type="submit" /></p>
+      <p><input type="submit"/></p>
     </form>
   </body>
 </html>

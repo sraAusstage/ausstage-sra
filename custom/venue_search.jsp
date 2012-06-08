@@ -73,7 +73,7 @@
   }
   
   String contributor_id = request.getParameter("f_contrib_id");
-  System.out.println("Contributor Id:"+contributor_id);
+  //System.out.println("Contributor Id:"+contributor_id);
   if (request.getParameter("f_contrib_id") != null) {
     contribObj = (Contributor)session.getAttribute("contributor"); // Get the contributor object.
     if (contribObj == null)                               // Make sure it exists

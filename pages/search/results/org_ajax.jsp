@@ -40,7 +40,6 @@
 
   if( search_from != null){ search.setSearchFor(search_from); }
 
-  
   crset = search.getOrganisations();
   
 

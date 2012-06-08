@@ -45,18 +45,24 @@
   // adding a work
   if (workid.equals ("-1"))
   {
+    System.out.println("adding work");
     error_occurred = !work.addWork();
   }
   //deleting a work
   else if(action != null && !action.equals("") && action.equals("delete")){
+    System.out.println("deleting work");
     error_occurred = !work.deleteWork();
   }
   else // Editing a work
   {
-    if(action != null && !action.equals("") && action.equals("copy"))
+    if(action != null && !action.equals("") && action.equals("copy")){
+      System.out.println("copy work");
       error_occurred = !work.addWork();
-    else
+    }
+    else{
       error_occurred = !work.updateWork();
+      System.out.println("update work");
+    }
   }
 
   // Error
