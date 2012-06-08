@@ -425,7 +425,7 @@
     pageFormater.writeTwoColTableFooter (out);
     pageFormater.writeTwoColTableHeader (out, "NLA");
   %>
-    <input class="line200" type="text" name="f_contrib_nla" size="10" maxlength="40" value="<%=contrib_nla%>">
+    <input class="line200" type="text" name="f_contrib_nla" size="100" maxlength="100" value="<%=contrib_nla%>">
   <%
     pageFormater.writeTwoColTableFooter (out);
     pageFormater.writeTwoColTableHeader (out, "Country");
@@ -540,26 +540,31 @@
   /***************************
        Data Entry Information
   ****************************/
+  
   pageFormater.writeHelper(out, "Data Entry Information", "helpers_no3.gif");
   pageFormater.writeTwoColTableHeader(out, "Contributor ID:");
   out.print(contributor.getId());
   pageFormater.writeTwoColTableFooter(out);
   
-  pageFormater.writeTwoColTableHeader(out, "Created By User:");
-  out.print(contributor.getEnteredByUser());
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Date Created:");
-  out.print(common.formatDate(contributor.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Updated By User:");
-  out.print(contributor.getUpdatedByUser());
-  pageFormater.writeTwoColTableFooter(out);
+  if (contributor.getEnteredByUser() != null && !contributor.getEnteredByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Created By User:");
+    out.print(contributor.getEnteredByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Created:");
+    out.print(common.formatDate(contributor.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
   
-  pageFormater.writeTwoColTableHeader(out, "Date Updated:");
-  out.print(common.formatDate(contributor.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
-  pageFormater.writeTwoColTableFooter(out);
+  if (contributor.getUpdatedByUser() != null && !contributor.getUpdatedByUser().equals("")) {
+    pageFormater.writeTwoColTableHeader(out, "Updated By User:");
+    out.print(contributor.getUpdatedByUser());
+    pageFormater.writeTwoColTableFooter(out);
+    
+    pageFormater.writeTwoColTableHeader(out, "Date Updated:");
+    out.print(common.formatDate(contributor.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
+    pageFormater.writeTwoColTableFooter(out);
+  }
   
     pageFormater.writePageTableFooter (out);
     pageFormater.writeButtons(out, "back", "prev.gif", AppConstants.CONTEXT_ROOT + "/admin/content_main_menu.jsp", "cross.gif", "submit", "next.gif");
