@@ -1351,7 +1351,8 @@ public class Item {
       Statement stmt = m_db.m_conn.createStatement();
       //first make sure we are not updating a item with catalogue id
       //that already exists in the database.
-
+      /*
+       * removed by Brad Williams. Cat Id no longer needs to be unique
       l_sql = 
           "SELECT itemid " + "FROM item " + "WHERE (itemid !=" + m_itemid + ") " + 
           "AND catalogueid='" + m_catalogueid + "'";
@@ -1360,6 +1361,7 @@ public class Item {
         l_cat_id_exists = true;
 
       if (!l_cat_id_exists) {
+      */
         //make sure that we are not inserting data too large for the table column
         if (m_item_description.length() > 1000)
           m_item_description = m_item_description.substring(0, 999);
@@ -1829,10 +1831,13 @@ public class Item {
             "' where itemid=" + m_itemid;
         m_db.runSQLResultSet(l_sql, stmt);
         l_ret = true;
-      } else { //we are trying to update a item with a catalogue id that already exists.
+      
+      /* Brad Williams - catalogue id no longer needs to be unique
+       * 
+       * } else { //we are trying to update a item with a catalogue id that already exists.
         l_ret = false;
         setErrorMessage("Unable to update the resource. You are trying to update a item with a <b>catalogue id</b> that already exists.");
-      }
+      }*/
       stmt.close();
 
     } catch (Exception e) {
