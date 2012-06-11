@@ -16,7 +16,7 @@
 
 package ausstage.services;
 
-import com.sun.org.omg.CORBA.ParameterMode;
+//import com.sun.org.omg.CORBA.ParameterMode;
 
 import javax.xml.namespace.QName;
 
@@ -32,7 +32,7 @@ public class BSServiceTest
 {
     public static void main(String [] args)
     {
-        try {
+    	try {
             Options options = new Options(args);
            
             String endpointURL = options.getURL();
@@ -47,9 +47,11 @@ public class BSServiceTest
             
             Service  service = new Service();
             Call     call    = (Call) service.createCall();
-
+            
             call.setTargetEndpointAddress( new java.net.URL(endpointURL) );
-            call.setOperationName( new QName("http://ausstage.services", "callSearch") );
+            //call.setOperationName( new QName("http://ausstage.services", "callSearch") );
+            call.setOperationName( new QName("http://www.ausstage.edu.au:8088/services/BSService", "callSearch") );
+            //call.setOperationName( new QName("-lhttp://sapac24.cc.flinders.edu.au:8088/axis/services/BSService", "callSearch") );
             call.addParameter( "arg1", XMLType.XSD_STRING, javax.xml.rpc.ParameterMode.IN);
             call.addParameter( "arg2", XMLType.XSD_STRING, javax.xml.rpc.ParameterMode.IN);
             call.addParameter( "arg3", XMLType.XSD_STRING, javax.xml.rpc.ParameterMode.IN);
@@ -59,7 +61,6 @@ public class BSServiceTest
 
             //String ret = (String) call.invoke( new Object[] { args[0],args[1],args[2],args[3],args[4]} );
             String ret = (String) call.invoke( new Object[] { "hamlet","1997","alphab_frwd","and","all"} );
-
             
             System.out.println("Results");
             System.out.println("" + ret);

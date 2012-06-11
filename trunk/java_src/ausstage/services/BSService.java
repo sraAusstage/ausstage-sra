@@ -46,7 +46,7 @@ public class BSService
   public BSService () {
     //create an instance of properties class
     Properties props = new Properties();
-    
+
     //try retrieve data from file
     try {
       props.load(new FileInputStream("BSService.properties"));
@@ -55,6 +55,7 @@ public class BSService
     catch(IOException e) {
       e.printStackTrace();
     }
+
   }
 
   public String callSearch(String p_keyword ,String p_year ,String p_sortBy ,String p_sqlSwitch ,String p_table)  {
@@ -109,30 +110,36 @@ public class BSService
     CachedRowSet results =null;
     try{
       if(table.equals("all")){
-        results = search.getAll();
+        results = search.getAll(true);
       }else if(table.equals("event")){
-        results = search.getEvents();
+        results = search.getEvents(true);
       }else if(table.equals("contributor")){
-        results = search.getContributors();
+        results = search.getContributors(true);
       }else if(table.equals("organisation")){
-        results = search.getOrganisations();
+        results = search.getOrganisations(true);
       }else if(table.equals("venue")){
-        results = search.getVenues();
+        results = search.getVenues(true);
       }else if(table.equals("resource")){
-        results = search.getResources();
+        results = search.getResources(true);
       }
       results.first();
-      result = "<BASICSEARCHRESULT COUNT = \"" +  results.size() + "\">";
+      
+      // Reconstruct the result to form a XML formatted output 
+      result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><BASICSEARCHRESULT COUNT = \"" +  results.size() + "\">";
+ 
       for(int i=0; i < results.size(); i ++){
-        result += results.getString("xml");
+    	// DB always return a single column result set  
+        result += results.getString(1);
         results.next();
       }
+ 
       result += "</BASICSEARCHRESULT>";
     }
     catch(java.sql.SQLException e){
       System.out.println( e.getMessage());
     }
     System.out.println(results.size() + " rows returned for " + table);
+
     disconnectDatabase();
 
     return result;
@@ -142,14 +149,13 @@ public class BSService
   {
       try
       {
-        if(db_conn != null)
-        {
-            for(; !db_conn.isClosed(); db_conn.close()) { }
-        }
-
-        DriverManager.registerDriver(new OracleDriver());
-        
-        db_conn = java.sql.DriverManager.getConnection(DB_CONNECTION_STRING, AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
+          if(db_conn != null)
+          {
+              for(; !db_conn.isClosed(); db_conn.close()) { }
+          }
+          Class.forName("com.mysql.jdbc.Driver");
+          db_conn = DriverManager.getConnection(DB_CONNECTION_STRING, AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
+          //db_conn = DriverManager.getConnection(DB_CONNECTION_STRING, AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
       }
       catch(Exception e)
       {
