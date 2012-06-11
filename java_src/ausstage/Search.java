@@ -17,6 +17,7 @@ import ausstage.Database;
 import java.sql.*;
 import sun.jdbc.rowset.*;
 import java.lang.Character;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.GregorianCalendar;
 
@@ -64,9 +65,11 @@ import java.util.GregorianCalendar;
   public Search(Database p_db) {
     m_db = p_db;
   }
-  
+  //pw changed following 
   public Search(Database p_db,java.sql.Connection p_connection) {
-    m_db = p_db;
+	//  m_db = p_db;
+	  p_db.m_conn = p_connection;
+	  m_db = p_db;
   }
 
   private void buildSqlSearchString() {
@@ -651,7 +654,77 @@ import java.util.GregorianCalendar;
 
     return (l_crset);
   }
+  
+  /*
+      	Following method specifically for invoke through the BSService. 
+  		It returns XML formatted output.
+  */  
+  public CachedRowSet getAll(boolean calling_from_BSService) {
+	  Statement l_stmt;
+	  CachedRowSet l_crset = null;  
+	  
+	  if (calling_from_BSService){
+		  
+	    System.out.println("Executing method Search.getAll(calling_from_BSService)");
+	    String m_sql_items = "eventid, event_name, venue_name, suburb, venue_state, first_date, resource_flag";
+	    m_sql_string.append("select distinct " + m_sql_items + " from search_all ");
+	    m_sql_string.append("where ");
+	    // lets build the search string
+	    buildSqlSearchString();
+	    
+	    // lets alter search query for BSService
+	    String temp_result_table = "search_all_result" ;
+	    // alter the query to return XML formatted output from DB
+	    String altered_query = ConstructXMLQuery(m_sql_items, temp_result_table);
+	    altered_query = altered_query + m_sql_string.toString();
+	    altered_query = altered_query + ") as " + temp_result_table;
+	    
+	    try {
+	      l_stmt = m_db.m_conn.createStatement();
+	      
+	      l_crset = 
+	          m_db.runSQL(altered_query, l_stmt);
+	      l_stmt.close();
+	      System.out.println("SQL STRING: " + altered_query);
 
+	    } catch (Exception e) {
+	      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+	      System.out.println("An Exception occured in Search.getAll(boolean calling_from_BSService)");
+	      System.out.println("MESSAGE: " + e.getMessage());
+	      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+	      System.out.println("SQL STRING: " + m_sql_string.toString());
+	      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+	    }
+	  }
+	    return (l_crset);
+	}
+  
+  	/***** Construct select query string in following format ******/
+    /*
+	        select 	fn_xml_tag('ALL_ROW',null,null,
+			concat(	fn_xml_tag('EVENTID',search_all_result.eventid,null,null),
+			fn_xml_tag('EVENT_NAME',search_all_result.event_name,null,null),
+			fn_xml_tag('VENUE_NAME',search_all_result.venue_name,null,null),
+			fn_xml_tag('SUBURB',search_all_result.suburb,null,null),
+			fn_xml_tag('VENUE_STATE',search_all_result.venue_state,null,null),
+			fn_xml_tag('FIRST_DATE',search_all_result.first_date,null,null),
+			fn_xml_tag('RESOURCE_FLAG',search_all_result.resource_flag,null,null)))
+			from (
+     */
+	public String ConstructXMLQuery (String table_column_list, String result_name) {
+		StringBuilder xml_query = new StringBuilder("select fn_xml_tag('ALL_ROW',null,null,concat(");
+		StringTokenizer st_value = new StringTokenizer(table_column_list , ",");
+		String alter_value  = "";
+				while (st_value.hasMoreTokens()) {
+		     alter_value = st_value.nextToken().trim();
+		     xml_query.append("fn_xml_tag('" + alter_value+ "'," + result_name + "." + alter_value + ",null,null),") ;
+		}
+		// Remove last comma value and construct full select statement
+		alter_value = xml_query.substring(0, xml_query.length() - 1)+ " )) from (";
+	    return alter_value;
+	}
+  
+  
   public CachedRowSet getEvent() {
 
     m_sql_string.append("select * from search_event where eventid = ");
@@ -673,7 +746,44 @@ import java.util.GregorianCalendar;
     return (m_rset);
   }
 
-
+  /*
+	Following method specifically for invoke through the BSService. 
+	It returns XML formatted output.
+  */  
+  public CachedRowSet getEvents(boolean calling_from_BSService) {
+	m_rset = null;
+	if (calling_from_BSService){
+		  
+		System.out.println("Executing method Search.getEvents(calling_from_BSService)");
+	    String m_sql_items = "eventid, event_name, venue_name, suburb, venue_state, first_date,  resource_flag ";
+	    m_sql_string.append("select distinct " + m_sql_items + "  from search_event where ");
+	    buildSqlSearchString();
+	
+	    // lets alter search query for BSService
+	    String temp_result_table = "get_Events" ;
+	    // alter the query to return XML formatted output from DB
+	    String altered_query = ConstructXMLQuery(m_sql_items, temp_result_table);
+	    altered_query = altered_query + m_sql_string.toString();
+	    altered_query = altered_query + ") as " + temp_result_table;
+	    
+	    try {
+	      Statement l_stmt;
+	      l_stmt = m_db.m_conn.createStatement();
+	      m_rset = m_db.runSQL(altered_query, l_stmt);
+	      System.out.println("SQL STRING(events): " + altered_query);
+	      l_stmt.close();
+	    } catch (Exception e) {
+	      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+	      System.out.println("An Exception occured in Search.getEvents(calling_from_BSService)");
+	      System.out.println("MESSAGE: " + e.getMessage());
+	      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+	      System.out.println("CLASS.TOSTRING: " + m_sql_string.toString());
+	      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+	    }
+	}
+    return (m_rset);
+  }
+  
   public CachedRowSet getEvents() {
   
 
@@ -735,7 +845,50 @@ import java.util.GregorianCalendar;
     //System.out.println("m_sql_string = " + m_sql_string.toString());
     return (m_rset);
   }
-
+  
+  /*
+	Following method specifically for invoke through the BSService. 
+	It returns XML formatted output.
+  */ 
+  public CachedRowSet getResources(boolean calling_from_BSService) {
+	  m_rset = null;
+	  if (calling_from_BSService){
+		  
+			System.out.println("Executing method Search.getResources(calling_from_BSService)");
+		    // just select the fields that will be good for the distinct
+		    String m_sql_items = "itemid, item_sub_type_lov_id,item_sub_type," +
+    		"  copyright_date,  issued_date, accessioned_date,  citation_date," +
+                             " source_citation,citation,title"+
+                             ", ITEM_URL";
+		    m_sql_string.append("select distinct " + m_sql_items + " from search_resource where ");
+		    buildResourceSqlSearchString();
+		    
+		    // lets alter search query for BSService
+		    String temp_result_table = "get_Events" ;
+		    // alter the query to return XML formatted output from DB
+		    String altered_query = ConstructXMLQuery(m_sql_items, temp_result_table);
+		    altered_query = altered_query + m_sql_string.toString();
+		    altered_query = altered_query + ") as " + temp_result_table;
+	
+		    try {
+		      Statement l_stmt;
+		      l_stmt = m_db.m_conn.createStatement();
+		      m_rset = m_db.runSQL(altered_query, l_stmt);
+		      System.out.println("SQL STRING(resources): " + altered_query);
+		      l_stmt.close();
+		    } catch (Exception e) {
+		      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+		      System.out.println("An Exception occured in Search.getResources(calling_from_BSService)");
+		      System.out.println("MESSAGE: " + e.getMessage());
+		      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+		      System.out.println("CLASS.TOSTRING: " + m_sql_string.toString());
+		      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		    }
+	  }
+	    return (m_rset);
+	}
+  
+  
   public CachedRowSet getWhatsOn(String l_state) {
 
     m_sql_string.append("SELECT  distinct search_event.eventid,search_event.event_name,search_event.venue_name,search_event.venue_state,search_event.suburb,events.yyyyfirst_date,events.mmfirst_date,events.ddfirst_date,  events.mmlast_date, events.ddlast_date,  events.yyyylast_date, events.first_date, events.last_date FROM events, search_event WHERE events.eventid = search_event.eventid AND events.MMFIRST_DATE is not null AND events.DDFIRST_DATE is not null AND events.YYYYFIRST_DATE is not null AND LENGTH(events.YYYYFIRST_DATE) =4 AND search_event.venue_state = '" + l_state + "' AND((events.MMLAST_DATE is not null AND events.DDLAST_DATE is not null AND events.YYYYLAST_DATE is not null AND events.LAST_DATE >= now())OR(NOT(events.MMLAST_DATE is not null AND events.DDLAST_DATE is not null AND events.YYYYLAST_DATE is not null) AND events.FIRST_DATE >= now())) ORDER BY search_event.suburb, search_event.venue_name,events.YYYYLAST_DATE,events.FIRST_DATE,events.LAST_DATE");
@@ -757,7 +910,45 @@ import java.util.GregorianCalendar;
     //System.out.println("m_sql_string = " + m_sql_string.toString());
     return (m_rset);
   }
-
+  
+  /*
+	Following method specifically for invoke through the BSService. 
+	It returns XML formatted output.
+  */  
+  public CachedRowSet getVenues(boolean calling_from_BSService) {
+	m_rset = null;
+	if (calling_from_BSService){
+		  
+		System.out.println("Executing method Search.getVenues(calling_from_BSService)");
+	    String m_sql_items = "venueid, venue_name, street, suburb, venue_state, web_links, resource_flag";
+	    m_sql_string.append("select distinct " + m_sql_items + " from search_venue where ");
+	    buildSqlSearchString();
+	    
+	    // lets alter search query for BSService
+	    String temp_result_table = "get_Events" ;
+	    // alter the query to return XML formatted output from DB
+	    String altered_query = ConstructXMLQuery(m_sql_items, temp_result_table);
+	    altered_query = altered_query + m_sql_string.toString();
+	    altered_query = altered_query + ") as " + temp_result_table;
+	
+	    try {
+	      Statement l_stmt;
+	      l_stmt = m_db.m_conn.createStatement();
+	      m_rset = m_db.runSQL(altered_query, l_stmt);
+	      System.out.println("SQL STRING(venues): " + altered_query);
+	      l_stmt.close();
+	    } catch (Exception e) {
+	      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+	      System.out.println("An Exception occured in Search.getVenues(calling_from_BSService)");
+	      System.out.println("MESSAGE: " + e.getMessage());
+	      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+	      System.out.println("CLASS.TOSTRING: " + m_sql_string.toString());
+	      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+	    }
+	}
+    return (m_rset);
+  }
+  
   public CachedRowSet getVenues() {
     
     String m_sql_items = "search_venue.venueid, venue_name, street, suburb, venue_state, web_links, resource_flag, CONCAT_WS('- '  ,min(events.yyyyfirst_date), max(events.yyyylast_date)) dates,count(distinct events.eventid) num, " +
@@ -817,6 +1008,85 @@ import java.util.GregorianCalendar;
     return (m_rset);
   }
 
+  /*
+	Following method specifically for invoke through the BSService. 
+	It returns XML formatted output.
+  */  
+  public CachedRowSet getContributors(boolean calling_from_BSService) {
+	  m_rset = null;
+	  
+	  if (calling_from_BSService){
+ 
+		System.out.println("Executing method Search.getContributors(calling_from_BSService)");
+	    //String m_sql_items = "contributorid, contrib_name, last_name, first_name, contrib_gender, nationality, date_of_birth_str as date_of_birth, contrib_state, event_dates, DATE_OF_DEATH_STR, DATE_OF_BIRTH_STR, resource_flag";
+		String m_sql_items = "contributorid, contrib_name, last_name, first_name, contrib_gender, nationality, date_of_birth, contrib_state, event_dates, DATE_OF_DEATH_STR, DATE_OF_BIRTH_STR, resource_flag";
+		m_sql_string.append("select distinct " + m_sql_items + " from search_contributor where ");
+	    buildSqlSearchString();
+	    
+	    // lets alter search query for BSService
+	    String temp_result_table = "get_Events" ;
+	    // alter the query to return XML formatted output from DB
+	    String altered_query = ConstructXMLQuery(m_sql_items, temp_result_table);
+	    altered_query = altered_query + m_sql_string.toString();
+	    altered_query = altered_query + ") as " + temp_result_table;
+
+	    try {
+	      Statement l_stmt;
+	      l_stmt = m_db.m_conn.createStatement();
+	      m_rset = m_db.runSQL(altered_query, l_stmt);
+	      System.out.println("SQL STRING(contributors): " + altered_query);
+	      l_stmt.close();
+	    } catch (Exception e) {
+	      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+	      System.out.println("An Exception occured in Search.getContributors(calling_from_BSService)");
+	      System.out.println("MESSAGE: " + e.getMessage());
+	      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+	      System.out.println("CLASS.TOSTRING: " + m_sql_string.toString());
+	      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+	    }
+	  }
+	    return (m_rset);
+  }
+  
+  /*
+	Following method specifically for invoke through the BSService. 
+	It returns XML formatted output.
+*/  
+  public CachedRowSet getOrganisations(boolean calling_from_BSService) {
+	m_rset = null;
+	if (calling_from_BSService){
+		  
+		System.out.println("Executing method Search.getOrganisations(calling_from_BSService)");
+	    String m_sql_items =  "organisationid, name, address, suburb, org_state, web_links, resource_flag";
+	    m_sql_string.append("select distinct " + m_sql_items + "  from search_organisation where ");
+	    buildSqlSearchString();
+	    
+	    // lets alter search query for BSService
+	    String temp_result_table = "get_Events" ;
+	    // alter the query to return XML formatted output from DB
+	    String altered_query = ConstructXMLQuery(m_sql_items, temp_result_table);
+	    altered_query = altered_query + m_sql_string.toString();
+	    altered_query = altered_query + ") as " + temp_result_table;	
+	    
+	    try {
+	      Statement l_stmt;
+	      l_stmt = m_db.m_conn.createStatement();
+	      m_rset = m_db.runSQL(altered_query, l_stmt);
+	      System.out.println("SQL STRING(organisations): " + altered_query);
+	      l_stmt.close();
+	    } catch (Exception e) {
+	      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+	      System.out.println("An Exception occured in Search.getOrganisations(calling_from_BSService)");
+	      System.out.println("MESSAGE: " + e.getMessage());
+	      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+	      System.out.println("CLASS.TOSTRING: " + m_sql_string.toString());
+	      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+	    }
+	}
+    return (m_rset);
+  }
+  
+  
   public CachedRowSet getOrganisations() {
     
     String m_sql_items =  "search_organisation.organisationid, name, address, suburb, org_state, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) as total, CONCAT_WS('- ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
