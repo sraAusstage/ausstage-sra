@@ -348,7 +348,7 @@ public class Organisation
                     "'" + m_db.plSqlSafeString(m_yyyylast_date)   + "'," +
                     m_db.plSqlSafeString(m_place_of_origin.equals("")?"null":m_place_of_origin) + ","+ 
                     m_db.plSqlSafeString(m_place_of_demise.equals("")?"null":m_place_of_demise) + ","+ 
-                    m_db.plSqlSafeString(m_nla) + ")";
+                    "'" + m_db.plSqlSafeString(m_nla) +"'"+ ")";
         m_db.runSQL (sqlString, stmt);
         System.out.println("In add 3");
         System.out.println(sqlString);
@@ -363,6 +363,7 @@ public class Organisation
     }
     catch (Exception e)
     {
+      
       m_error_string = "Unable to add the organisation. The data may be invalid.";
       return (false);
     }
