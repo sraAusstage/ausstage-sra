@@ -1309,7 +1309,7 @@ public class Item {
       *  
       *  } else { // a copy of this item already exist
         setErrorMessage("Unable to add the resource. An item with this <b>catalogue id</b> already exists");
-        l_ret = false;
+        l_ret = false; 
       }
 */
       stmt.close();
