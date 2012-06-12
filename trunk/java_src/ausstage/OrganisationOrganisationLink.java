@@ -7,326 +7,298 @@ import admin.AppConstants;
 import admin.Common;
 import sun.jdbc.rowset.CachedRowSet;
 
-public class OrganisationOrganisationLink
-{
-  private Database     m_db;
-  private AppConstants AppConstants = new AppConstants();
-  private Common       Common       = new Common();
+public class OrganisationOrganisationLink {
+	private Database m_db;
+	private AppConstants AppConstants = new AppConstants();
+	private Common Common = new Common();
 
-  // All of the record information
-  //private String              OrganisationOrganisationLinkId;
-  private String              organisationId;
-  private String              childId;
-  private String              functionLovId;
-  private String              notes;
-  private String              m_error_string;
-  
-  /*
-  Name: OrganisationOrganisationLink ()
+	// All of the record information
+	// private String OrganisationOrganisationLinkId;
+	private String organisationId;
+	private String childId;
+	private String functionLovId;
+	private String notes;
+	private String m_error_string;
 
-  Purpose: Constructor.
+	/*
+	 * Name: OrganisationOrganisationLink ()
+	 * 
+	 * Purpose: Constructor.
+	 * 
+	 * Parameters: p_db : The database object
+	 * 
+	 * Returns: None
+	 */
+	public OrganisationOrganisationLink(ausstage.Database m_db2) {
+		m_db = m_db2;
+		initialise();
+	}
 
-  Parameters:
-    p_db       : The database object
+	/*
+	 * Name: initialise ()
+	 * 
+	 * Purpose: Resets the object to point to no record.
+	 * 
+	 * Parameters: None
+	 * 
+	 * Returns: None
+	 */
+	public void initialise() {
+		// OrganisationOrganisationLinkId = "0";
+		organisationId = "0";
+		childId = "0";
+		functionLovId = "0";
+		notes = "";
+		m_error_string = "";
+	}
 
-  Returns:
-     None
+	/*
+	 * Name: load ()
+	 * 
+	 * 
+	 * Parameters: p_organisation_id : id of the main Organisation record
+	 * 
+	 * Returns: None
+	 */
 
-  */
-  public OrganisationOrganisationLink(ausstage.Database m_db2)
-  {
-    m_db = m_db2;
-    initialise();
-  }
-  
-  /*
-  Name: initialise ()
+	public void load(String p_organisationorganisationlink_id) {
+		CachedRowSet l_rs;
+		String sqlString;
 
-  Purpose: Resets the object to point to no record.
+		// Reset the object
+		initialise();
 
-  Parameters:
-    None
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
 
-  Returns:
-     None
+			sqlString = " SELECT * FROM OrgOrgLink, lookup_codes " + " WHERE OrgOrgLinkId = " + p_organisationorganisationlink_id
+					+ "   AND OrgOrgLink.function_lov_id=lookup_codes.code_lov_id";
+			l_rs = m_db.runSQL(sqlString, stmt);
 
-  */
-  public void initialise()
-  {
-    // OrganisationOrganisationLinkId  = "0";
-    organisationId          = "0";
-    childId         = "0";
-    functionLovId   = "0";
-    notes           = "";
-    m_error_string  = "";
-  }
-  
-  /*
-  Name: load ()
+			if (l_rs.next()) {
+				// OrganisationOrganisationlinkId =
+				// l_rs.getString("OrganisationOrganisationlinkId");
+				organisationId = l_rs.getString("organisationId");
+				childId = l_rs.getString("childId");
+				functionLovId = l_rs.getString("function_lov_id");
+				notes = l_rs.getString("notes");
 
-  
-  Parameters:
-    p_organisation_id  : id of the main Organisation record
+				if (notes == null) notes = "";
+			}
+			l_rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in OrganisationOrganisationLink: load().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+	}
 
-  Returns:
-     None
+	/*
+	 * Name: add ()
+	 * 
+	 * Purpose: Adds this object to the database. Does this by simply calling
+	 * the update() method.
+	 * 
+	 * Parameters: organisationId String array of child Organisation ids.
+	 * 
+	 * Returns: True if successful, else false
+	 */
 
-  */
-  
-  public void load(String p_organisationorganisationlink_id)
-  {
-    CachedRowSet l_rs;
-    String       sqlString;
+	public boolean add(String p_organisationId, Vector p_childLinks) {
+		return update(p_organisationId, p_childLinks);
+	}
 
-    // Reset the object
-    initialise();
+	/*
+	 * Name: update ()
+	 * 
+	 * Purpose: Modifies this object in the database by deleting all
+	 * OrganisationOrganisationLinks for this Organisation and inserting new
+	 * ones from an array of p_childLinks.
+	 * 
+	 * Parameters: Organisation Id String array of child Organisation ids.
+	 * 
+	 * Returns: True if successful, else false
+	 */
 
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
+	public boolean update(String p_organisationId, Vector p_childLinks) {
+		// System.out.println("In update:" + p_childLinks + ", Org Id:"+
+		// p_organisationId);
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
+			boolean l_ret = false;
+			System.out.println("In update");
+			sqlString = "DELETE FROM OrgOrgLink where " + "organisationId=" + p_organisationId;
+			m_db.runSQL(sqlString, stmt);
 
-      sqlString = " SELECT * FROM OrgOrgLink, lookup_codes " +
-                  " WHERE OrgOrgLinkId = " + p_organisationorganisationlink_id +
-                  "   AND OrgOrgLink.function_lov_id=lookup_codes.code_lov_id";
-      l_rs = m_db.runSQL (sqlString, stmt);
+			if (p_childLinks != null) {
+				// System.out.println("Org:" + p_childLinks + ", Org Id:"+
+				// p_organisationId);
+				for (int i = 0; i < p_childLinks.size(); i++) {
+					try {
+						sqlString = "INSERT INTO OrgOrgLink " + "(organisationId, childId, function_lov_id) " + "VALUES (" + p_organisationId + ", "
+								+ ((OrganisationOrganisationLink) p_childLinks.get(i)).getChildId() + ", null)";
+						// System.out.println("Org loop:" +
+						// p_childLinks.get(i)); ((OrganisationOrganisationLink)
+						// p_childLinks.get(i)).getChildId()
+					} catch (Exception e) {
+						sqlString = "INSERT INTO OrgOrgLink " + "(organisationId, childId, function_lov_id) " + "VALUES (" + p_organisationId + ", " + p_childLinks.get(i)
+								+ ", null)";
+					}
+					m_db.runSQL(sqlString, stmt);
+				}
+				l_ret = true;
+			}
+			// System.out.println("In update2:" + p_childLinks);
+			stmt.close();
+			return l_ret;
+		} catch (Exception e) {
+			m_error_string = "Unable to update the links to the selected Organisation Link records.";
+			return (false);
+		}
+	}
 
-      if (l_rs.next())
-      {
-        //OrganisationOrganisationlinkId = l_rs.getString("OrganisationOrganisationlinkId");
-    	  	organisationId        = l_rs.getString("organisationId");
-    	  	childId        = l_rs.getString("childId");
-		    functionLovId  = l_rs.getString("function_lov_id");
-		    notes          = l_rs.getString("notes");
+	/*
+	 * Name: deleteOrganisationOrganisationLinksForOrganisation ()
+	 * 
+	 * Purpose: Deletes all OrganisationOrganisationLink records for the
+	 * specified Organisation Id.
+	 * 
+	 * Parameters: deleteOrganisationOrganisationLinksForOrganisation Id
+	 * 
+	 * Returns: None
+	 */
+	public void deleteOrganisationOrganisationLinksForOrganisation(String organisationId) {
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
+			sqlString = "DELETE from OrgOrgLink WHERE organisationId = " + organisationId;
+			m_db.runSQL(sqlString, stmt);
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in deleteOrganisationOrganisationLinksForOrganisation().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+	}
 
-		    if (notes == null) notes = "";
-      }
-      l_rs.close();
-      stmt.close();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in OrganisationOrganisationLink: load().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-  }
-  
-  /*
-  Name: add ()
+	/*
+	 * Name: getOrganisationOrganisationLinks ()
+	 * 
+	 * Purpose: Returns a record set with all of the
+	 * OrganisationOrganisationLinks information in it.
+	 * 
+	 * Parameters: Organisation Id
+	 * 
+	 * Returns: A record set.
+	 */
+	public CachedRowSet getOrganisationOrganisationLinks(int organisationId) {
+		CachedRowSet l_rs;
+		String sqlString;
 
-  Purpose: Adds this object to the database. Does this by simply calling the update()
-           method.
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
 
-  Parameters:
-    organisationId
-    String array of child Organisation ids.
+			sqlString = "SELECT OrgOrgLink.* " + " FROM OrgOrgLink " + " WHERE OrgOrgLink.organisationId  = " + organisationId;
 
-  Returns:
-     True if successful, else false
+			l_rs = m_db.runSQL(sqlString, stmt);
+			stmt.close();
+			return (l_rs);
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getOrganisationOrganisationLinks().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return (null);
+		}
+	}
 
-  */
-  
-  public boolean add (String p_organisationId, Vector p_childLinks)
-  {
-    return update(p_organisationId, p_childLinks);
-  }
-  
-  /*
-  Name: update ()
+	/*
+	 * Name: getOrganisationOrganisationLinksForOrganisation (organisationId)
+	 * 
+	 * Purpose: Returns a Vector containing all the
+	 * OrganisationOrganisationLinks for this organisation.
+	 * 
+	 * Parameters: organisation Id
+	 * 
+	 * Returns: A Vector of all OrganisationOrganisationLinks for this
+	 * organisation.
+	 */
 
-  Purpose: Modifies this object in the database by deleting all OrganisationOrganisationLinks for this
-           Organisation and inserting new ones from an array of p_childLinks.
+	public Vector getOrganisationOrganisationLinksForOrganisation(int organisationId) {
+		Vector allOrganisationOrganisationLinks = new Vector();
+		CachedRowSet rset = this.getOrganisationOrganisationLinks(organisationId);
+		OrganisationOrganisationLink organisationOrganisationLink = null;
 
-  Parameters:
-    Organisation Id
-    String array of child Organisation ids.
+		try {
+			while (rset.next()) {
+				organisationOrganisationLink = new OrganisationOrganisationLink(m_db);
+				organisationOrganisationLink.setOrganisationId(rset.getString("organisationId"));
+				organisationOrganisationLink.setChildId(rset.getString("childId"));
+				organisationOrganisationLink.setNotes(rset.getString("notes"));
 
-  Returns:
-     True if successful, else false
+				allOrganisationOrganisationLinks.add(organisationOrganisationLink);
+			}
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getOrganisationOrganisationLinksForOrganisation().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		} finally {
+			try {
+				rset.close();
+			} catch (Exception ex) {
+			}
+		}
+		return allOrganisationOrganisationLinks;
+	}
 
-  */
-  
-  public boolean update (String p_organisationId, Vector p_childLinks)
-  {
-	  //System.out.println("In update:" + p_childLinks + ", Org Id:"+ p_organisationId);
-    try
-    {      
-      Statement stmt = m_db.m_conn.createStatement ();
-      String       sqlString;
-      boolean      l_ret = false;
-      System.out.println("In update");
-      sqlString = "DELETE FROM OrgOrgLink where " +
-                  "organisationId=" + p_organisationId;
-      m_db.runSQL (sqlString, stmt);
+	public void setOrganisationId(String s) {
+		organisationId = s;
+	}
 
-      if (p_childLinks != null) {
-    	  //System.out.println("Org:"  + p_childLinks + ", Org Id:"+ p_organisationId);
-	      for (int i=0;  i < p_childLinks.size(); i++){
-	    	  try{
-	    		  sqlString = "INSERT INTO OrgOrgLink "    +
-                    "(organisationId, childId, function_lov_id) " +
-                    "VALUES (" +
-                    p_organisationId + ", " + ((OrganisationOrganisationLink) p_childLinks.get(i)).getChildId() + ", null)";
-	    		  //System.out.println("Org loop:" + p_childLinks.get(i));  ((OrganisationOrganisationLink) p_childLinks.get(i)).getChildId()        
-	    	  }catch(Exception e){
-	    		  sqlString = "INSERT INTO OrgOrgLink "    +
-	    		  "(organisationId, childId, function_lov_id) " +
-	    		  "VALUES (" +
-	    		  p_organisationId + ", " + p_childLinks.get(i) + ", null)";
-	    	  }
-	    	  m_db.runSQL (sqlString, stmt);
-	      }
-	      l_ret = true;
-      }
-      //System.out.println("In update2:" + p_childLinks);
-      stmt.close ();
-      return l_ret;
-    }
-    catch (Exception e)
-    {
-      m_error_string = "Unable to update the links to the selected Organisation Link records.";
-      return (false);
-    }
-  }
-  
-  /*
-  Name: deleteOrganisationOrganisationLinksForOrganisation ()
+	public void setChildId(String s) {
+		childId = s;
+	}
 
-  Purpose: Deletes all OrganisationOrganisationLink records for the specified Organisation Id.
+	public void setFunctionLovId(String s) {
+		functionLovId = s;
+	}
 
-  Parameters:
-    deleteOrganisationOrganisationLinksForOrganisation Id
+	public void setNotes(String s) {
+		notes = s;
+		if (notes == null) notes = "";
+		if (notes.length() > 500) notes = notes.substring(0, 499);
+	}
 
-  Returns:
-     None
+	public String getOrganisationId() {
+		return (organisationId);
+	}
 
-  */
-  public void deleteOrganisationOrganisationLinksForOrganisation (String organisationId)
-  {
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
-      String    sqlString;
-      sqlString = "DELETE from OrgOrgLink WHERE organisationId = " + organisationId;
-      m_db.runSQL (sqlString, stmt);
-      stmt.close ();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in deleteOrganisationOrganisationLinksForOrganisation().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-  }
-  
-  /*
-  Name: getOrganisationOrganisationLinks ()
+	public String getChildId() {
+		return (childId);
+	}
 
-  Purpose: Returns a record set with all of the OrganisationOrganisationLinks information in it.
+	public String getFunctionId() {
+		return (functionLovId);
+	}
 
-  Parameters:
-		Organisation Id
+	public String getNotes() {
+		return (notes);
+	}
 
-  Returns:
-     A record set.
-
-  */
-  public CachedRowSet getOrganisationOrganisationLinks(int organisationId)
-  {
-    CachedRowSet l_rs;
-    String       sqlString;
-    
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
-
-      sqlString = "SELECT OrgOrgLink.* " +
-      		" FROM OrgOrgLink " +
-      		" WHERE OrgOrgLink.organisationId  = " + organisationId;
-                  
-      l_rs = m_db.runSQL (sqlString, stmt);
-      stmt.close();
-      return (l_rs);
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in getOrganisationOrganisationLinks().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-      return (null);
-    }
-  }
-  
-  /*
-  Name: getOrganisationOrganisationLinksForOrganisation (organisationId)
-
-  Purpose: Returns a Vector containing all the OrganisationOrganisationLinks for this organisation.
-
-  Parameters:
-    organisation Id
-
-  Returns:
-     A Vector of all OrganisationOrganisationLinks for this organisation.
-  */
-
-  public Vector getOrganisationOrganisationLinksForOrganisation(int organisationId)
-  {
-    Vector allOrganisationOrganisationLinks              = new Vector();
-    CachedRowSet rset                 = this.getOrganisationOrganisationLinks(organisationId);
-    OrganisationOrganisationLink organisationOrganisationLink               = null;
-    
-    try
-    {
-      while (rset.next())
-      {
-    	  organisationOrganisationLink = new OrganisationOrganisationLink(m_db);
-    	  organisationOrganisationLink.setOrganisationId(rset.getString("organisationId"));
-    	  organisationOrganisationLink.setChildId(rset.getString("childId"));
-    	  organisationOrganisationLink.setNotes(rset.getString("notes"));
-
-        
-
-        allOrganisationOrganisationLinks.add(organisationOrganisationLink);
-      }
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in getOrganisationOrganisationLinksForOrganisation().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-    finally
-    {
-      try {rset.close ();} catch (Exception ex) {}
-    }
-    return allOrganisationOrganisationLinks;
-  }
-  
-  public void setOrganisationId         (String s) {organisationId       = s;}
-  public void setChildId         (String s) {childId       = s;}
-  public void setFunctionLovId   (String s) {functionLovId = s;}
-  public void setNotes           (String s)
-  {
-    notes = s;
-    if (notes == null) notes = "";
-    if (notes.length() > 500) notes = notes.substring(0,499);
-  }
-
-  public String              getOrganisationId         () {return (organisationId);}
-  public String              getChildId         () {return (childId);}
-  public String              getFunctionId      () {return (functionLovId);}
-  public String              getNotes           () {return (notes);}
-  public String              getError           () {return (m_error_string);}
+	public String getError() {
+		return (m_error_string);
+	}
 }
