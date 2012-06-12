@@ -35,7 +35,7 @@ if (menuanalytics.contains(","+currentPage)) category = "analytics";
   <a <%=category.equals("networks")?"style=\"background-color:#333333;\" ":""%>href="/pages/network/" title="Networks">Network</a>
   <a <%=category.equals("mobile")?"style=\"background-color:#333333;\" ":""%>href="/pages/mobile/" title="Mobile">Mobile</a>
   <a <%=category.equals("exchange")?"style=\"background-color:#333333;\" ":""%>href="/pages/exchange/" title="Exchange">Exchange</a>
-  <a <%=category.equals("analytics")?"style=\"background-color:#333333;\" ":""%>href="/pages/analytics/index.jsp" title="Analytics">Analytics</a>
+  <a <%=category.equals("analytics")?"style=\"background-color:#333333;\" ":""%>href="/pages/analytics/" title="Analytics">Analytics</a>
   <%=category.equals("record")?"<span style=\"background-color:#333333;\">Record</span>":""%>
 </div>
 <%
