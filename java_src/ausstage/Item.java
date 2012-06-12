@@ -1700,7 +1700,7 @@ public class Item {
 
         if (m_itemid != null)
           l_sql += "WHERE ITEMID=" + m_itemid + " ";
-
+       // System.out.println("Update Item: " + l_sql);
         m_db.runSQLResultSet(l_sql, stmt);
 
 
