@@ -8,7 +8,7 @@ Project: Centricminds
 
 Purpose: Provides Primary Content Indicator object functions.
 
-***************************************************/
+ ***************************************************/
 
 package ausstage;
 
@@ -17,387 +17,332 @@ import java.sql.*;
 import ausstage.Database;
 import sun.jdbc.rowset.*;
 
-public class PrimaryContentInd extends AusstageInputOutput
-{
+public class PrimaryContentInd extends AusstageInputOutput {
 
-  private String  m_error_string;
-  Database m_db = null;
+	private String m_error_string;
+	Database m_db = null;
 
-  /*
-  Name: PrimaryContentInd ()
+	/*
+	 * Name: PrimaryContentInd ()
+	 * 
+	 * Purpose: Constructor.
+	 * 
+	 * Parameters: p_db : The database object
+	 * 
+	 * Returns: None
+	 */
+	public PrimaryContentInd(Database m_db) {
+		this.m_db = m_db;
+	}
 
-  Purpose: Constructor.
+	/*
+	 * Name: load ()
+	 * 
+	 * Purpose: Sets the class to a contain the Primary Content Indicator
+	 * information for the specified Primary Content Indicator id.
+	 * 
+	 * Parameters: p_id : id of the Primary Content Indicator record
+	 * 
+	 * Returns: None
+	 */
+	public void load(int p_id) {
+		CachedRowSet l_rs;
+		String sqlString;
 
-  Parameters:
-    p_db       : The database object
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
 
-  Returns:
-     None
+			sqlString = "SELECT * FROM CONTENTINDICATOR WHERE CONTENTINDICATORID = " + p_id;
+			l_rs = m_db.runSQL(sqlString, stmt);
 
-  */
-  public PrimaryContentInd(Database m_db)
-  {
-    this.m_db = m_db;
-  }
+			if (l_rs.next()) {
+				m_id = p_id;
+				m_name = l_rs.getString("CONTENTINDICATOR");
+				m_description = l_rs.getString("CONTENTINDICATORDESCRIPTION");
+			}
 
-  /*
-  Name: load ()
+			if (m_name == null) {
+				m_name = "";
+			}
 
-  Purpose: Sets the class to a contain the Primary Content Indicator information for the
-           specified Primary Content Indicator id.
+			if (m_description == null) {
+				m_description = "";
+			}
 
-  Parameters:
-    p_id : id of the Primary Content Indicator record
+			l_rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in PrimaryContentInd.load()");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+	}
 
-  Returns:
-     None
+	/*
+	 * Name: add ()
+	 * 
+	 * Purpose: Adds this object to the database.
+	 * 
+	 * Parameters:
+	 * 
+	 * Returns: True if the add was successful, else false. Also fills out the
+	 * id of the new record in the m_id member.
+	 */
+	public boolean add() {
+		boolean ret = true;
+		try {
 
-  */
-  public void load(int p_id)
-  {
-    CachedRowSet  l_rs;
-    String        sqlString;
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
 
-    try
-    {      
-      Statement stmt = m_db.m_conn.createStatement ();
+			// Check to make sure that the user has entered in all of the
+			// required fields
+			if (validateObjectForDB()) {
+				// trim the notes first to db specified max chars (-1) before
+				// inserting
+				if (!m_description.equals("") && m_description.length() >= 300) m_description = m_description.substring(0, 299);
 
-      sqlString = "SELECT * FROM CONTENTINDICATOR WHERE CONTENTINDICATORID = " + p_id;
-      l_rs = m_db.runSQL (sqlString, stmt);
-        
-      if (l_rs.next())
-      {
-        m_id          = p_id;
-        m_name        = l_rs.getString ("CONTENTINDICATOR");
-        m_description = l_rs.getString ("CONTENTINDICATORDESCRIPTION");
-      }
+				if (!isDuplicate()) {
+					sqlString = "INSERT INTO CONTENTINDICATOR (CONTENTINDICATOR, CONTENTINDICATORDESCRIPTION) " + "VALUES (" + "'" + m_db.plSqlSafeString(m_name) + "', " + "'"
+							+ m_db.plSqlSafeString(m_description) + "')";
 
-      if (m_name == null) {
-        m_name = "";
-      }
+					m_db.runSQL(sqlString, stmt);
 
-      if (m_description == null) {
-        m_description = "";
-      }      
+					// Get the inserted index & set the id state of the object
+					setId(Integer.parseInt(m_db.getInsertedIndexValue(stmt, "CONTENTINDICATORID_SEQ")));
+				} else {
+					ret = false;
+				}
+			}
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in PrimaryContentInd.add()");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			ret = false;
+		}
+		return (ret);
+	}
 
+	private boolean isDuplicate() {
+		boolean ret = false;
+		try {
+			CachedRowSet l_rs;
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
+			sqlString = "select CONTENTINDICATOR from CONTENTINDICATOR where " + "lower(CONTENTINDICATOR)='" + m_db.plSqlSafeString(m_name).toLowerCase() + "'";
+			if (m_id != 0) sqlString += " and not CONTENTINDICATORID=" + m_id;
+			l_rs = m_db.runSQL(sqlString, stmt);
 
-      l_rs.close();
-      stmt.close();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in PrimaryContentInd.load()");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-  }
+			if (l_rs.next()) ret = true;
+			stmt.close();
 
-  /*
-  Name: add ()
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in PrimaryContentInd.isDuplicate()");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+		return (ret);
+	}
 
-  Purpose: Adds this object to the database.
+	/*
+	 * Name: update ()
+	 * 
+	 * Purpose: Modifies this object in the database.
+	 * 
+	 * Parameters:
+	 * 
+	 * Returns: None
+	 */
+	public boolean update() {
+		boolean l_ret = true;
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
 
-  Parameters:
+			// Check to make sure that the user has entered in all of the
+			// required fields
+			if (validateObjectForDB()) {
 
-  Returns:
-     True if the add was successful, else false. Also fills out the id of the
-     new record in the m_id member.
+				// trim the notes first to db specified max chars (-1) before
+				// inserting
+				if (!m_description.equals("") && m_description.length() >= 300) m_description = m_description.substring(0, 299);
+				if (!isDuplicate()) {
+					sqlString = "UPDATE CONTENTINDICATOR " + "SET CONTENTINDICATOR = '" + m_db.plSqlSafeString(m_name) + "', " + "CONTENTINDICATORDESCRIPTION = '"
+							+ m_db.plSqlSafeString(m_description) + "' " + "WHERE CONTENTINDICATORID = " + m_id;
+					m_db.runSQL(sqlString, stmt);
+				} else {
+					l_ret = false;
+				}
+			}
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in PrimaryContentInd.update().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			l_ret = false;
+		}
+		return (l_ret);
+	}
 
-  */
-  public boolean add ()
-  {
-    boolean ret = true;
-    try
-    {
-      
-      Statement stmt = m_db.m_conn.createStatement ();
-      String    sqlString;
+	/*
+	 * Name: delete ()
+	 * 
+	 * Purpose: Removes this object from the database.
+	 * 
+	 * Parameters:
+	 * 
+	 * Returns: None
+	 */
+	public boolean delete() {
+		boolean ret = true;
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
 
-      // Check to make sure that the user has entered in all of the required fields
-      if (validateObjectForDB ())
-      {
-        // trim the notes first to db specified max chars (-1) before inserting
-        if(!m_description.equals("") && m_description.length() >= 300)
-          m_description = m_description.substring (0, 299);
-        
-        if(!isDuplicate()){
-          sqlString = "INSERT INTO CONTENTINDICATOR (CONTENTINDICATOR, CONTENTINDICATORDESCRIPTION) " + 
-                      "VALUES (" +
-                      "'" + m_db.plSqlSafeString(m_name) + "', " + 
-                      "'" + m_db.plSqlSafeString(m_description) + "')";
-                    
-          m_db.runSQL (sqlString, stmt);
+			if (!isInUse()) {
+				sqlString = "DELETE FROM CONTENTINDICATOR WHERE CONTENTINDICATORID = " + m_id;
+				m_db.runSQL(sqlString, stmt);
+			}
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in PrimaryContentInd.delete().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			ret = false;
+		}
+		return (ret);
+	}
 
-          // Get the inserted index & set the id state of the object
-          setId (Integer.parseInt(m_db.getInsertedIndexValue(stmt, "CONTENTINDICATORID_SEQ")));
-        }else{
-          ret = false;
-        }
-      }
-      stmt.close ();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in PrimaryContentInd.add()");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-      ret = false;
-    }
-     return (ret);
-  }
+	public boolean isInUse() {
 
-  private boolean isDuplicate(){
-    boolean ret    = false;
-    try{      
-      CachedRowSet   l_rs;      
-      Statement stmt = m_db.m_conn.createStatement ();
-      String    sqlString;
-      sqlString = "select CONTENTINDICATOR from CONTENTINDICATOR where " +
-                  "lower(CONTENTINDICATOR)='" + m_db.plSqlSafeString(m_name).toLowerCase() + "'";
-                  if(m_id != 0) 
-                    sqlString += " and not CONTENTINDICATORID=" + m_id;
-      l_rs = m_db.runSQL (sqlString, stmt);
+		CachedRowSet l_rs;
+		boolean ret = false;
+		String sqlString = "";
 
-      if(l_rs.next())
-        ret = true;
-      stmt.close ();
-      
-    }catch(Exception e){
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in PrimaryContentInd.isDuplicate()");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-    return(ret);
-  }
-  /*
-  Name: update ()
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			// check if this primary content indicator exist in the events table
+			sqlString = "select EVENTID from PRIMCONTENTINDICATOREVLINK " + "where PRIMCONTENTINDICATORID = " + m_id;
+			l_rs = m_db.runSQL(sqlString, stmt);
 
-  Purpose: Modifies this object in the database.
+			if (l_rs.next()) ret = true;
 
-  Parameters:
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println("An Exception occured in PrimaryContentInd.isInUse().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+		return (ret);
+	}
 
-  Returns:
-     None
+	/*
+	 * Name: validateObjectForDB ()
+	 * 
+	 * Purpose: Determines if the object is valid for insert or update.
+	 * 
+	 * Parameters: True if the object is valid, else false
+	 * 
+	 * Returns: None
+	 */
+	private boolean validateObjectForDB() {
+		boolean l_ret = true;
+		if (m_name.equals("")) {
+			m_error_string = "Unable to add the Subjects. Primary Subjects name is required.";
+			l_ret = false;
+		}
+		return (l_ret);
+	}
 
-  */
-  public boolean update ()
-  {
-    boolean   l_ret = true;
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
-      String    sqlString;
+	public CachedRowSet getNames() {
+		CachedRowSet l_rs = null;
+		String sqlString;
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			sqlString = "select CONTENTINDICATORID, CONTENTINDICATOR " + "from CONTENTINDICATOR order by CONTENTINDICATOR";
+			l_rs = m_db.runSQL(sqlString, stmt);
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println("An Exception occured in PrimaryContentInd.getNames().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+		return (l_rs);
+	}
 
-      // Check to make sure that the user has entered in all of the required fields
-      if (validateObjectForDB ())
-      {
+	// methods to set the state of the oject
 
-        // trim the notes first to db specified max chars (-1) before inserting
-        if(!m_description.equals("") && m_description.length() >= 300)
-          m_description = m_description.substring (0, 299);
-        if(!isDuplicate()){  
-          sqlString = "UPDATE CONTENTINDICATOR " + 
-                      "SET CONTENTINDICATOR = '" + m_db.plSqlSafeString(m_name) + "', " +
-                      "CONTENTINDICATORDESCRIPTION = '" + m_db.plSqlSafeString(m_description) + "' " +
-                      "WHERE CONTENTINDICATORID = " + m_id;
-          m_db.runSQL (sqlString, stmt);
-        }else{
-          l_ret = false;
-        }
-      }
-      stmt.close ();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in PrimaryContentInd.update().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-      l_ret = false;
-    }
-    return (l_ret);
-  }
+	public void setId(int p_id) {
+		m_id = p_id;
+	}
 
+	public void setName(String p_name) {
+		m_name = p_name;
+	}
 
-  /*
-  Name: delete ()
+	public void setDescription(String p_description) {
+		m_description = p_description;
+	}
 
-  Purpose: Removes this object from the database.
+	public void setPrefId(int p_id) {
+		m_preferred_id = 0;
+	}
 
-  Parameters:
+	public void setNewPrefName(String p_name) {
+		m_new_pref_name = p_name;
+	}
 
-  Returns:
-     None
+	// methods to get the state of the oject
 
-  */
-  public boolean delete ()
-  {
-    boolean ret = true;
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
-      String    sqlString;
- 
-      if(!isInUse()){
-        sqlString = "DELETE FROM CONTENTINDICATOR WHERE CONTENTINDICATORID = " + m_id;
-        m_db.runSQL (sqlString, stmt);
-      }      
-      stmt.close ();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in PrimaryContentInd.delete().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-      ret = false;
-    }
-    return(ret);
-  }
+	public int getId() {
+		return (m_id);
+	}
 
-  public boolean isInUse(){
-  
-    CachedRowSet  l_rs;
-    boolean ret = false;
-    String sqlString = "";
+	public String getName() {
+		return (m_name);
+	}
 
-    try{
-      Statement stmt = m_db.m_conn.createStatement ();
-      // check if this primary content indicator exist in the events table
-      sqlString = "select EVENTID from PRIMCONTENTINDICATOREVLINK " +
-                  "where PRIMCONTENTINDICATORID = " + m_id;
-      l_rs = m_db.runSQL(sqlString, stmt);
+	public String getDescription() {
+		return (m_description);
+	}
 
-      if(l_rs.next())
-        ret = true;
-        
-      stmt.close();
-    }catch(Exception e){
-      System.out.println ("An Exception occured in PrimaryContentInd.isInUse().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-    return(ret);
-  }
-  /*
-  Name: validateObjectForDB ()
+	public int getPrefId() {
+		return (m_preferred_id);
+	}
 
-  Purpose: Determines if the object is valid for insert or update.
-
-  Parameters:
-     True if the object is valid, else false
-     
-  Returns:
-     None
-
-  */
-  private boolean validateObjectForDB ()
-  {
-    boolean l_ret = true;
-    if (m_name.equals (""))
-    {
-      m_error_string = "Unable to add the Subjects. Primary Subjects name is required.";
-      l_ret = false;
-    }
-    return (l_ret);
-  }
-
-  public CachedRowSet getNames(){
-    CachedRowSet  l_rs = null;
-    String        sqlString;
-    try{
-      Statement stmt = m_db.m_conn.createStatement ();
-      sqlString = "select CONTENTINDICATORID, CONTENTINDICATOR " +
-                  "from CONTENTINDICATOR order by CONTENTINDICATOR";
-      l_rs = m_db.runSQL(sqlString, stmt);
-      stmt.close();
-    }catch(Exception e){
-      System.out.println ("An Exception occured in PrimaryContentInd.getNames().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-    return(l_rs);
-  }
-  
-  // methods to set the state of the oject
-  
-  public void setId (int p_id)
-  {
-    m_id = p_id;
-  }
-  
-  public void setName (String p_name)
-  {
-    m_name = p_name;
-  }
-
-  public void setDescription (String p_description)
-  {
-    m_description = p_description;
-  }  
-
-  public void setPrefId(int p_id){
-    m_preferred_id = 0;
-  }
-
-  public void setNewPrefName(String p_name){
-    m_new_pref_name = p_name;
-  }
-  
-  // methods to get the state of the oject
-  
-  public int getId(){
-    return(m_id);
-  }
-  
-  public String getName(){
-    return (m_name);
-  }
-
-  public String getDescription(){
-    return (m_description);
-  }  
-
-  public int getPrefId(){
-    return(m_preferred_id);
-  }
-
-  /*
-  Name: initialise ()
-
-  Purpose: Resets the object to point to no record.
-
-  Parameters:
-    None
-
-  Returns:
-     None
-
-  */
-  public void initialise()
-  {
-    m_id           = 0;
-    m_name         = "";
-    m_description  = "";
-    m_preferred_id = 0;
-  }
+	/*
+	 * Name: initialise ()
+	 * 
+	 * Purpose: Resets the object to point to no record.
+	 * 
+	 * Parameters: None
+	 * 
+	 * Returns: None
+	 */
+	public void initialise() {
+		m_id = 0;
+		m_name = "";
+		m_description = "";
+		m_preferred_id = 0;
+	}
 }
-
-

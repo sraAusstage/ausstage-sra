@@ -85,8 +85,7 @@ public class LookupCode {
 		try {
 			stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT * FROM lookup_codes WHERE " + "code_lov_id="
-			+ p_id;
+			sqlString = "SELECT * FROM lookup_codes WHERE " + "code_lov_id=" + p_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -99,8 +98,7 @@ public class LookupCode {
 				m_short_code = l_rs.getString("short_code");
 				m_description = l_rs.getString("description");
 
-				if (m_description == null)
-					m_description = "";
+				if (m_description == null) m_description = "";
 				if (l_rs.getString("system_code").equals("Y"))
 					m_system_code = true;
 				else
@@ -122,19 +120,16 @@ public class LookupCode {
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());
 			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (SQLException e1) {
-					System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-					System.out
-					.println("An Exception occured in LookupCode.load().");
-					System.out.println("MESSAGE: " + e.getMessage());
-					System.out.println("LOCALIZED MESSAGE: "
-							+ e.getLocalizedMessage());
-					System.out.println("CLASS.TOSTRING: " + e.toString());
-					System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-				}
+			if (stmt != null) try {
+				stmt.close();
+			} catch (SQLException e1) {
+				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+				System.out.println("An Exception occured in LookupCode.load().");
+				System.out.println("MESSAGE: " + e.getMessage());
+				System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+				System.out.println("CLASS.TOSTRING: " + e.toString());
+				System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			}
 		}
 	}
 
@@ -167,52 +162,35 @@ public class LookupCode {
 			else
 				strDefaultFlag = "N";
 
-			if (m_description.length() > 200)
-				m_description = m_description.substring(0, 200);
+			if (m_description.length() > 200) m_description = m_description.substring(0, 200);
 
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
-				sqlString = "INSERT INTO lookup_codes ( code_type, short_code, description, system_code, default_flag, sequence_no ) VALUES ("
-					+ "'"
-					+ m_db.plSqlSafeString(m_code_type)
-					+ "','"
-					+ m_db.plSqlSafeString(m_short_code)
-					+ "',"
-					+ "'"
-					+ m_db.plSqlSafeString(m_description)
-					+ "','"
-					+ m_db.plSqlSafeString(strSystemCode)
-					+ "', "
-					+ "'"
-					+ m_db.plSqlSafeString(strDefaultFlag)
-					+ "',"
-					+ m_sequence_no + " )";
+				sqlString = "INSERT INTO lookup_codes ( code_type, short_code, description, system_code, default_flag, sequence_no ) VALUES (" + "'"
+						+ m_db.plSqlSafeString(m_code_type) + "','" + m_db.plSqlSafeString(m_short_code) + "'," + "'" + m_db.plSqlSafeString(m_description) + "','"
+						+ m_db.plSqlSafeString(strSystemCode) + "', " + "'" + m_db.plSqlSafeString(strDefaultFlag) + "'," + m_sequence_no + " )";
 				m_db.runSQL(sqlString, stmt);
 
 				// Get the inserted index
-				m_code_lov_id = Integer.parseInt(m_db.getInsertedIndexValue(
-						stmt, "LOOKUPCODEID_SEQ"));
+				m_code_lov_id = Integer.parseInt(m_db.getInsertedIndexValue(stmt, "LOOKUPCODEID_SEQ"));
 				ret = true;
 			}
 			stmt.close();
 			return (ret);
 		} catch (Exception e) {
 			m_error_string = "Unable to add the lookup code. The data may be invalid.";
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (SQLException e1) {
-					System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-					System.out
-					.println("An Exception occured in LookupCode.add().");
-					System.out.println("MESSAGE: " + e.getMessage());
-					System.out.println("LOCALIZED MESSAGE: "
-							+ e.getLocalizedMessage());
-					System.out.println("CLASS.TOSTRING: " + e.toString());
-					System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-				}
-				return (false);
+			if (stmt != null) try {
+				stmt.close();
+			} catch (SQLException e1) {
+				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+				System.out.println("An Exception occured in LookupCode.add().");
+				System.out.println("MESSAGE: " + e.getMessage());
+				System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+				System.out.println("CLASS.TOSTRING: " + e.toString());
+				System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			}
+			return (false);
 		}
 	}
 
@@ -243,23 +221,14 @@ public class LookupCode {
 			else
 				strDefaultFlag = "N";
 
-			if (m_description.length() > 200)
-				m_description = m_description.substring(0, 200);
+			if (m_description.length() > 200) m_description = m_description.substring(0, 200);
 
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
-				sqlString = "UPDATE lookup_codes set code_type= '"
-					+ m_db.plSqlSafeString(m_code_type) + "', "
-					+ "short_code = '" + m_db.plSqlSafeString(m_short_code)
-					+ "', " + "description = '"
-					+ m_db.plSqlSafeString(m_description) + "', "
-					+ "system_code = '"
-					+ m_db.plSqlSafeString(strSystemCode) + "', "
-					+ "default_flag = '"
-					+ m_db.plSqlSafeString(strDefaultFlag) + "', "
-					+ "sequence_no = " + m_sequence_no
-					+ " where code_lov_id=" + m_code_lov_id;
+				sqlString = "UPDATE lookup_codes set code_type= '" + m_db.plSqlSafeString(m_code_type) + "', " + "short_code = '" + m_db.plSqlSafeString(m_short_code) + "', "
+						+ "description = '" + m_db.plSqlSafeString(m_description) + "', " + "system_code = '" + m_db.plSqlSafeString(strSystemCode) + "', " + "default_flag = '"
+						+ m_db.plSqlSafeString(strDefaultFlag) + "', " + "sequence_no = " + m_sequence_no + " where code_lov_id=" + m_code_lov_id;
 				m_db.runSQL(sqlString, stmt);
 				l_ret = true;
 			}
@@ -267,20 +236,17 @@ public class LookupCode {
 			return (l_ret);
 		} catch (Exception e) {
 			m_error_string = "Unable to update the lookup code. The data may be invalid, or may be in use.";
-			if (stmt != null)
-				try {
-					stmt.close();
-				} catch (SQLException e1) {
-					System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-					System.out
-					.println("An Exception occured in LookupCode.update().");
-					System.out.println("MESSAGE: " + e.getMessage());
-					System.out.println("LOCALIZED MESSAGE: "
-							+ e.getLocalizedMessage());
-					System.out.println("CLASS.TOSTRING: " + e.toString());
-					System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-				}
-				return (false);
+			if (stmt != null) try {
+				stmt.close();
+			} catch (SQLException e1) {
+				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+				System.out.println("An Exception occured in LookupCode.update().");
+				System.out.println("MESSAGE: " + e.getMessage());
+				System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+				System.out.println("CLASS.TOSTRING: " + e.toString());
+				System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			}
+			return (false);
 		}
 	}
 
@@ -300,13 +266,11 @@ public class LookupCode {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from lookup_codes WHERE code_lov_id="
-				+ m_code_lov_id;
+			sqlString = "DELETE from lookup_codes WHERE code_lov_id=" + m_code_lov_id;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {
-			System.out
-			.println("Unable to delete the Lookup Code. The data may be in use.");
+			System.out.println("Unable to delete the Lookup Code. The data may be in use.");
 			try {
 				if (stmt != null) {
 					stmt.close();
@@ -327,34 +291,34 @@ public class LookupCode {
 	 * 
 	 * Returns: True if the country is in use, else false
 	 *//*
-	 * public boolean checkInUse(int p_id) { CachedRowSet l_rs; String
-	 * sqlString; boolean ret = false;
-	 * 
-	 * try { Statement stmt = m_db.m_conn.createStatement ();
-	 * 
-	 * // Venue sqlString = "SELECT * FROM venue WHERE " + "countryid=" +
-	 * p_id; l_rs = m_db.runSQL (sqlString, stmt);
-	 * 
-	 * if (l_rs.next()) ret = true; l_rs.close();
-	 * 
-	 * // Organisation sqlString = "SELECT * FROM organisation WHERE " +
-	 * "countryid=" + p_id; l_rs = m_db.runSQL (sqlString, stmt);
-	 * 
-	 * if (l_rs.next()) ret = true; l_rs.close();
-	 * 
-	 * // Contributor sqlString = "SELECT * FROM contributor WHERE " +
-	 * "countryid=" + p_id; l_rs = m_db.runSQL (sqlString, stmt);
-	 * 
-	 * if (l_rs.next()) ret = true; l_rs.close();
-	 * 
-	 * stmt.close(); return (ret); } catch (Exception e) {
-	 * System.out.println(">>>>>>>> EXCEPTION <<<<<<<<"); System.out.println
-	 * ("An Exception occured in checkInUse().");
-	 * System.out.println("MESSAGE: " + e.getMessage());
-	 * System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-	 * System.out.println("CLASS.TOSTRING: " + e.toString());
-	 * System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<"); return (ret); } }
-	 */
+		 * public boolean checkInUse(int p_id) { CachedRowSet l_rs; String
+		 * sqlString; boolean ret = false;
+		 * 
+		 * try { Statement stmt = m_db.m_conn.createStatement ();
+		 * 
+		 * // Venue sqlString = "SELECT * FROM venue WHERE " + "countryid=" +
+		 * p_id; l_rs = m_db.runSQL (sqlString, stmt);
+		 * 
+		 * if (l_rs.next()) ret = true; l_rs.close();
+		 * 
+		 * // Organisation sqlString = "SELECT * FROM organisation WHERE " +
+		 * "countryid=" + p_id; l_rs = m_db.runSQL (sqlString, stmt);
+		 * 
+		 * if (l_rs.next()) ret = true; l_rs.close();
+		 * 
+		 * // Contributor sqlString = "SELECT * FROM contributor WHERE " +
+		 * "countryid=" + p_id; l_rs = m_db.runSQL (sqlString, stmt);
+		 * 
+		 * if (l_rs.next()) ret = true; l_rs.close();
+		 * 
+		 * stmt.close(); return (ret); } catch (Exception e) {
+		 * System.out.println(">>>>>>>> EXCEPTION <<<<<<<<"); System.out.println
+		 * ("An Exception occured in checkInUse().");
+		 * System.out.println("MESSAGE: " + e.getMessage());
+		 * System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+		 * System.out.println("CLASS.TOSTRING: " + e.toString());
+		 * System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<"); return (ret); } }
+		 */
 	/*
 	 * Name: validateObjectForDB ()
 	 * 
@@ -396,8 +360,7 @@ public class LookupCode {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT * FROM lookup_codes where code_type = '"
-				+ p_code_type + "' order by SEQUENCE_NO, short_code";
+			sqlString = "SELECT * FROM lookup_codes where code_type = '" + p_code_type + "' order by SEQUENCE_NO, short_code";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
@@ -423,8 +386,7 @@ public class LookupCode {
 	 * 
 	 * Returns: A record set.
 	 */
-	public CachedRowSet getLookupCodes(String p_code_type,
-			String p_table_to_check, String p_link_column) {
+	public CachedRowSet getLookupCodes(String p_code_type, String p_table_to_check, String p_link_column) {
 		CachedRowSet l_rs;
 		String sqlString;
 		String l_ret;
@@ -432,11 +394,8 @@ public class LookupCode {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT distinct lookup_codes.* FROM lookup_codes, "
-				+ p_table_to_check + " "
-				+ "where lookup_codes.code_type = '" + p_code_type + "' "
-				+ " AND lookup_codes.code_lov_id=" + p_table_to_check + "."
-				+ p_link_column + " " + "order by SEQUENCE_NO, short_code";
+			sqlString = "SELECT distinct lookup_codes.* FROM lookup_codes, " + p_table_to_check + " " + "where lookup_codes.code_type = '" + p_code_type + "' "
+					+ " AND lookup_codes.code_lov_id=" + p_table_to_check + "." + p_link_column + " " + "order by SEQUENCE_NO, short_code";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
@@ -465,23 +424,19 @@ public class LookupCode {
 		handleException(p_e, "");
 	}
 
-	public ResultSet getCitationByResourceSubType(Statement p_stmt,
-			int itemTypeLovId) {
+	public ResultSet getCitationByResourceSubType(Statement p_stmt, int itemTypeLovId) {
 
 		String l_sql = "";
 		ResultSet l_rs = null;
 
 		try {
-			l_sql = "SELECT DISTINCT item.citation, item.itemid FROM item "
-				+ "INNER JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
-				+ "WHERE lookup_codes.`code_type`='RESOURCE_SUB_TYPE' and lookup_codes.code_lov_id = "
-				+ itemTypeLovId + " order by item.citation";
+			l_sql = "SELECT DISTINCT item.citation, item.itemid FROM item " + "INNER JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
+					+ "WHERE lookup_codes.`code_type`='RESOURCE_SUB_TYPE' and lookup_codes.code_lov_id = " + itemTypeLovId + " order by item.citation";
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-			System.out
-			.println("An Exception occurred in item - getItemLanguage().");
+			System.out.println("An Exception occurred in item - getItemLanguage().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());

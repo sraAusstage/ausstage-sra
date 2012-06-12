@@ -7,324 +7,288 @@ import admin.AppConstants;
 import admin.Common;
 import sun.jdbc.rowset.CachedRowSet;
 
-public class VenueVenueLink
-{
-  private Database     m_db;
-  private AppConstants AppConstants = new AppConstants();
-  private Common       Common       = new Common();
+public class VenueVenueLink {
+	private Database m_db;
+	private AppConstants AppConstants = new AppConstants();
+	private Common Common = new Common();
 
-  // All of the record information
-  private String              venueId;
-  private String              childId;
-  private String              functionLovId;
-  private String              notes;
-  private String              m_error_string;
-  
-  /*
-  Name: VenueVenueLink ()
+	// All of the record information
+	private String venueId;
+	private String childId;
+	private String functionLovId;
+	private String notes;
+	private String m_error_string;
 
-  Purpose: Constructor.
+	/*
+	 * Name: VenueVenueLink ()
+	 * 
+	 * Purpose: Constructor.
+	 * 
+	 * Parameters: p_db : The database object
+	 * 
+	 * Returns: None
+	 */
+	public VenueVenueLink(ausstage.Database m_db2) {
+		m_db = m_db2;
+		initialise();
+	}
 
-  Parameters:
-    p_db       : The database object
+	/*
+	 * Name: initialise ()
+	 * 
+	 * Purpose: Resets the object to point to no record.
+	 * 
+	 * Parameters: None
+	 * 
+	 * Returns: None
+	 */
+	public void initialise() {
+		venueId = "0";
+		childId = "0";
+		functionLovId = "0";
+		notes = "";
+		m_error_string = "";
+	}
 
-  Returns:
-     None
+	/*
+	 * Name: load ()
+	 * 
+	 * 
+	 * Parameters: p_venue_id : id of the main venue record
+	 * 
+	 * Returns: None
+	 */
 
-  */
-  public VenueVenueLink(ausstage.Database m_db2)
-  {
-    m_db = m_db2;
-    initialise();
-  }
-  
-  /*
-  Name: initialise ()
+	public void load(String p_venuevenuelink_id) {
+		CachedRowSet l_rs;
+		String sqlString;
 
-  Purpose: Resets the object to point to no record.
+		// Reset the object
+		initialise();
 
-  Parameters:
-    None
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
 
-  Returns:
-     None
+			sqlString = " SELECT * FROM VenueVenueLink, lookup_codes " + " WHERE venuevenuelinkId = " + p_venuevenuelink_id
+					+ "   AND venuevenuelink.function_lov_id=lookup_codes.code_lov_id";
+			l_rs = m_db.runSQL(sqlString, stmt);
 
-  */
-  public void initialise()
-  {
-    venueId          = "0";
-    childId         = "0";
-    functionLovId   = "0";
-    notes           = "";
-    m_error_string  = "";
-  }
-  
-  /*
-  Name: load ()
+			if (l_rs.next()) {
+				// venuevenuelinkId = l_rs.getString("venuevenuelinkId");
+				venueId = l_rs.getString("venueId");
+				childId = l_rs.getString("childId");
+				functionLovId = l_rs.getString("function_lov_id");
+				notes = l_rs.getString("notes");
 
-  
-  Parameters:
-    p_venue_id  : id of the main venue record
+				if (notes == null) notes = "";
+			}
+			l_rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in VenueVenueLink: load().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+	}
 
-  Returns:
-     None
+	/*
+	 * Name: add ()
+	 * 
+	 * Purpose: Adds this object to the database. Does this by simply calling
+	 * the update() method.
+	 * 
+	 * Parameters: venueId String array of child venue ids.
+	 * 
+	 * Returns: True if successful, else false
+	 */
 
-  */
-  
-  public void load(String p_venuevenuelink_id)
-  {
-    CachedRowSet l_rs;
-    String       sqlString;
+	public boolean add(String p_venueId, Vector p_childLinks) {
+		return update(p_venueId, p_childLinks);
+	}
 
-    // Reset the object
-    initialise();
+	/*
+	 * Name: update ()
+	 * 
+	 * Purpose: Modifies this object in the database by deleting all
+	 * VenueVenueLinks for this Venue and inserting new ones from an array of
+	 * p_childLinks.
+	 * 
+	 * Parameters: Venue Id String array of child venue ids.
+	 * 
+	 * Returns: True if successful, else false
+	 */
 
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
+	public boolean update(String p_venueId, Vector p_childLinks) {
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
+			boolean l_ret = false;
 
-      sqlString = " SELECT * FROM VenueVenueLink, lookup_codes " +
-                  " WHERE venuevenuelinkId = " + p_venuevenuelink_id +
-                  "   AND venuevenuelink.function_lov_id=lookup_codes.code_lov_id";
-      l_rs = m_db.runSQL (sqlString, stmt);
+			System.out.println("In update");
+			sqlString = "DELETE FROM VenueVenueLink where " + "venueId=" + p_venueId;
+			m_db.runSQL(sqlString, stmt);
 
-      if (l_rs.next())
-      {
-        //venuevenuelinkId = l_rs.getString("venuevenuelinkId");
-    	  	venueId        = l_rs.getString("venueId");
-    	  	childId        = l_rs.getString("childId");
-		    functionLovId  = l_rs.getString("function_lov_id");
-		    notes          = l_rs.getString("notes");
+			if (p_childLinks != null) {
 
-		    if (notes == null) notes = "";
-      }
-      l_rs.close();
-      stmt.close();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in VenueVenueLink: load().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-  }
-  
-  /*
-  Name: add ()
+				for (int i = 0; i < p_childLinks.size(); i++) {
+					try {
+						sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id) " + "VALUES (" + p_venueId + ", "
+								+ ((VenueVenueLink) p_childLinks.get(i)).getChildId() + ", null)";
+					} catch (Exception e) {
+						sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id) " + "VALUES (" + p_venueId + ", " + p_childLinks.get(i) + ", null)";
+					}
+					m_db.runSQL(sqlString, stmt);
+					System.out.println("Inserted child Id:" + childId);
+					System.out.println("In insert");
+				}
+				l_ret = true;
+			}
+			stmt.close();
+			return l_ret;
+		} catch (Exception e) {
+			m_error_string = "Unable to update the links to the selected venue Link records.";
+			return (false);
+		}
+	}
 
-  Purpose: Adds this object to the database. Does this by simply calling the update()
-           method.
+	/*
+	 * Name: deleteVenueVenueLinksForVenue ()
+	 * 
+	 * Purpose: Deletes all VenueVenueLink records for the specified Venue Id.
+	 * 
+	 * Parameters: deleteVenueVenueLinksForVenue Id
+	 * 
+	 * Returns: None
+	 */
+	public void deleteVenueVenueLinksForVenue(String venueId) {
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			String sqlString;
+			sqlString = "DELETE from VenueVenueLink WHERE venueId = " + venueId;
+			m_db.runSQL(sqlString, stmt);
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in deleteVenueVenueLinksForVenue().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+	}
 
-  Parameters:
-    venueId
-    String array of child venue ids.
+	/*
+	 * Name: getVenueVenueLinks ()
+	 * 
+	 * Purpose: Returns a record set with all of the VenueVenueLinks information
+	 * in it.
+	 * 
+	 * Parameters: Venue Id
+	 * 
+	 * Returns: A record set.
+	 */
+	public CachedRowSet getVenueVenueLinks(int venueId) {
+		CachedRowSet l_rs;
+		String sqlString;
 
-  Returns:
-     True if successful, else false
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
 
-  */
-  
-  public boolean add (String p_venueId, Vector p_childLinks)
-  {
-    return update(p_venueId, p_childLinks);
-  }
-  
-  /*
-  Name: update ()
+			sqlString = "SELECT VenueVenueLink.* " + " FROM VenueVenueLink " + " WHERE VenueVenueLink.venueId  = " + venueId;
 
-  Purpose: Modifies this object in the database by deleting all VenueVenueLinks for this
-           Venue and inserting new ones from an array of p_childLinks.
+			l_rs = m_db.runSQL(sqlString, stmt);
+			stmt.close();
+			return (l_rs);
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getVenueVenueLinks().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return (null);
+		}
+	}
 
-  Parameters:
-    Venue Id
-    String array of child venue ids.
+	/*
+	 * Name: getVenueVenueLinksForVenue (venueId)
+	 * 
+	 * Purpose: Returns a Vector containing all the VenueVenueLinks for this
+	 * venue.
+	 * 
+	 * Parameters: venue Id
+	 * 
+	 * Returns: A Vector of all VenueVenueLinks for this venue.
+	 */
 
-  Returns:
-     True if successful, else false
+	public Vector getVenueVenueLinksForVenue(int venueId) {
+		Vector allVenueVenueLinks = new Vector();
+		CachedRowSet rset = this.getVenueVenueLinks(venueId);
+		VenueVenueLink venueVenueLink = null;
 
-  */
-  
-  public boolean update (String p_venueId, Vector p_childLinks)
-  {
-	try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
-      String       sqlString;
-      boolean      l_ret = false;
+		try {
+			while (rset.next()) {
+				venueVenueLink = new VenueVenueLink(m_db);
+				venueVenueLink.setVenueId(rset.getString("venueId"));
+				venueVenueLink.setChildId(rset.getString("childId"));
+				venueVenueLink.setNotes(rset.getString("notes"));
 
-      System.out.println("In update");
-      sqlString = "DELETE FROM VenueVenueLink where " +
-                  "venueId=" + p_venueId;
-      m_db.runSQL (sqlString, stmt);
+				allVenueVenueLinks.add(venueVenueLink);
+			}
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getVenueVenueLinksForVenue().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		} finally {
+			try {
+				rset.close();
+			} catch (Exception ex) {
+			}
+		}
+		return allVenueVenueLinks;
+	}
 
-      if (p_childLinks != null) {
-    	  
-    	   for (int i=0;  i < p_childLinks.size(); i++){
-    		  try {
-    		    sqlString = "INSERT INTO venueVenueLink "    +
-                    "(venueId, childId, function_lov_id) " +
-                    "VALUES (" +
-                    p_venueId + ", " +  ((VenueVenueLink) p_childLinks.get(i)).getChildId() + ", null)";
-    		  } catch (Exception e) {
-    			  sqlString = "INSERT INTO venueVenueLink "    +
-                  "(venueId, childId, function_lov_id) " +
-                  "VALUES (" +
-                  p_venueId + ", " +  p_childLinks.get(i) + ", null)";
-    		  }
-        m_db.runSQL (sqlString, stmt);
-        System.out.println("Inserted child Id:" + childId);
-        System.out.println("In insert");
-    	  }
-    	  l_ret = true;
-      }
-      stmt.close ();
-      return l_ret;
-    }
-    catch (Exception e)
-    {
-      m_error_string = "Unable to update the links to the selected venue Link records.";
-      return (false);
-    }
-  }
-  
-  /*
-  Name: deleteVenueVenueLinksForVenue ()
+	public void setVenueId(String s) {
+		venueId = s;
+	}
 
-  Purpose: Deletes all VenueVenueLink records for the specified Venue Id.
+	public void setChildId(String s) {
+		childId = s;
+	}
 
-  Parameters:
-    deleteVenueVenueLinksForVenue Id
+	public void setFunctionLovId(String s) {
+		functionLovId = s;
+	}
 
-  Returns:
-     None
+	public void setNotes(String s) {
+		notes = s;
+		if (notes == null) notes = "";
+		if (notes.length() > 500) notes = notes.substring(0, 499);
+	}
 
-  */
-  public void deleteVenueVenueLinksForVenue (String venueId)
-  {
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
-      String    sqlString;
-      sqlString = "DELETE from VenueVenueLink WHERE venueId = " + venueId;
-      m_db.runSQL (sqlString, stmt);
-      stmt.close ();
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in deleteVenueVenueLinksForVenue().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-  }
-  
-  /*
-  Name: getVenueVenueLinks ()
+	public String getVenueId() {
+		return (venueId);
+	}
 
-  Purpose: Returns a record set with all of the VenueVenueLinks information in it.
+	public String getChildId() {
+		return (childId);
+	}
 
-  Parameters:
-		Venue Id
+	public String getFunctionId() {
+		return (functionLovId);
+	}
 
-  Returns:
-     A record set.
+	public String getNotes() {
+		return (notes);
+	}
 
-  */
-  public CachedRowSet getVenueVenueLinks(int venueId)
-  {
-    CachedRowSet l_rs;
-    String       sqlString;
-    
-    try
-    {
-      Statement stmt = m_db.m_conn.createStatement ();
-
-      sqlString = "SELECT VenueVenueLink.* " +
-      		" FROM VenueVenueLink " +
-      		" WHERE VenueVenueLink.venueId  = " + venueId;
-                  
-      l_rs = m_db.runSQL (sqlString, stmt);
-      stmt.close();
-      return (l_rs);
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in getVenueVenueLinks().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-      return (null);
-    }
-  }
-  
-  /*
-  Name: getVenueVenueLinksForVenue (venueId)
-
-  Purpose: Returns a Vector containing all the VenueVenueLinks for this venue.
-
-  Parameters:
-    venue Id
-
-  Returns:
-     A Vector of all VenueVenueLinks for this venue.
-  */
-
-  public Vector getVenueVenueLinksForVenue(int venueId)
-  {
-    Vector allVenueVenueLinks              = new Vector();
-    CachedRowSet rset                 = this.getVenueVenueLinks(venueId);
-    VenueVenueLink venueVenueLink               = null;
-    
-    try
-    {
-      while (rset.next())
-      {
-    	  venueVenueLink = new VenueVenueLink(m_db);
-    	  venueVenueLink.setVenueId(rset.getString("venueId"));
-    	  venueVenueLink.setChildId(rset.getString("childId"));
-    	  venueVenueLink.setNotes(rset.getString("notes"));
-
-        
-
-        allVenueVenueLinks.add(venueVenueLink);
-      }
-    }
-    catch (Exception e)
-    {
-      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-      System.out.println ("An Exception occured in getVenueVenueLinksForVenue().");
-      System.out.println("MESSAGE: " + e.getMessage());
-      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-      System.out.println("CLASS.TOSTRING: " + e.toString());
-      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
-    }
-    finally
-    {
-      try {rset.close ();} catch (Exception ex) {}
-    }
-    return allVenueVenueLinks;
-  }
-  
-  public void setVenueId         (String s) {venueId       = s;}
-  public void setChildId         (String s) {childId       = s;}
-  public void setFunctionLovId   (String s) {functionLovId = s;}
-  public void setNotes           (String s)
-  {
-    notes = s;
-    if (notes == null) notes = "";
-    if (notes.length() > 500) notes = notes.substring(0,499);
-  }
-
-  public String              getVenueId         () {return (venueId);}
-  public String              getChildId         () {return (childId);}
-  public String              getFunctionId      () {return (functionLovId);}
-  public String              getNotes           () {return (notes);}
-  public String              getError           () {return (m_error_string);}
+	public String getError() {
+		return (m_error_string);
+	}
 }
