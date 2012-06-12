@@ -881,6 +881,9 @@ public class Item {
     try {
       Statement stmt = m_db.m_conn.createStatement();
 
+      /*
+       * Removed by Brad Williams. Cat id no longer needs to be unique
+       * 
       l_sql = "SELECT itemid " + "FROM item " + "WHERE catalogueid IS NOT NULL AND catalogueid != '' AND catalogueid = '";
 
       //run this sql to make sure we are not trying to insert a item that already has a copy
@@ -892,7 +895,7 @@ public class Item {
 
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       if (!l_rs.next()) {
-
+    	  */
         if (m_item_description.length() > 1000)
           m_item_description = m_item_description.substring(0, 999);
         if (m_storage.length() > 250)
@@ -1301,11 +1304,14 @@ public class Item {
         m_db.runSQLResultSet(l_sql, stmt);
 
         l_ret = true;
-      } else { // a copy of this item already exist
+     /*
+      * Removed by Brad Williams - cat id no longer needs to be null.
+      *  
+      *  } else { // a copy of this item already exist
         setErrorMessage("Unable to add the resource. An item with this <b>catalogue id</b> already exists");
         l_ret = false;
       }
-
+*/
       stmt.close();
 
     } catch (Exception e) {
