@@ -12,7 +12,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import metadata.Metadata;
-import search.Search;
+import ausstage.Search;
 import sun.jdbc.rowset.CachedRowSet;
 
 // Referenced classes of package content:
@@ -2512,7 +2512,7 @@ public class ContentOutput
         }
     }
 
-    public String searchResultsControl(HttpServletRequest p_request, String p_altColour, boolean p_preview)
+  /*  public String searchResultsControl(HttpServletRequest p_request, String p_altColour, boolean p_preview)
     {
         String ret = "";
         try
@@ -2603,7 +2603,7 @@ public class ContentOutput
             return s;
         }
     }
-
+*/
     public String titleControl(boolean p_preview)
     {
         try
