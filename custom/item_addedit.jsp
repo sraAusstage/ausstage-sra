@@ -173,7 +173,7 @@
   ///////////////////////////////////
   // Creator Contributor Association(s)
   ///////////////////////////////////
-  out.println("<a name='item_creator_contributors_link' />");
+  //out.println("<a name='item_creator_contributors_link' />");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_creator_conlinks, "creator contributor", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -189,7 +189,7 @@
   ///////////////////////////////////
   // Creator ORGANISATIONS Association(s)
   ///////////////////////////////////
-  out.println("<a name='item_creator_organisations_link' />");
+  //out.println("<a name='item_creator_organisations_link' />");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_creator_orglinks, "creator organisation", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -227,7 +227,7 @@
       
     }
   }
-  out.println("<a name='item_source' />");
+ // out.println("<a name='item_source' />");
   pageFormater.writeTwoColTableHeader(out, "Source");
   out.println("<input type='hidden' name='f_sourceid' value='" + item.getSourceId() + "'>");
   out.println("<input type='text' name='f_source_citation' readonly size='50' class='line300' value=\"" + 
