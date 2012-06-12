@@ -23,7 +23,7 @@ import java.util.GregorianCalendar;
   public class SearchCount {
 	private Database m_db;
   	private admin.Common common = new admin.Common();
-  	
+  	private String m_key_word = "";
 
 
   	public SearchCount(Database p_db) {
@@ -304,8 +304,8 @@ import java.util.GregorianCalendar;
     *******************/
   	public void setKeyWord(String p_key_word) {
   		m_key_word = p_key_word.trim();
-  		m_key_word = m_key_word.replaceAll(' ','% %');
-  		m_key_word = '%'+m_key_word.toLowerCase()+'%';
+  		m_key_word = m_key_word.replaceAll(" ","% %");
+  		m_key_word = "%"+m_key_word.toLowerCase()+"%";
   		System.out.println("search term is "+m_key_word);
   	}
   }
