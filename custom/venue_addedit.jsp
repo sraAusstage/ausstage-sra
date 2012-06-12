@@ -275,7 +275,7 @@ document.body.onload=function(){load();};
   /***************************
   Venue Association/s
   ****************************/
-  //out.println("<a name='venue_venue_link' />");
+  out.println("<a name='venue_venue_link' />");
   pageFormater.writeHelper(out, "Venue Association/s", "helpers_no2.gif");
   hidden_fields.clear();
 
