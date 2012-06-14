@@ -337,7 +337,7 @@ public class Event {
 				m_umbrella = l_rs.getString("umbrella");
 
 				m_entered_by_user = l_rs.getString("entered_by_user");
-				m_updated_by_user = l_rs.getString("entered_by_user");
+				m_updated_by_user = l_rs.getString("updated_by_user");
 				m_entered_date = l_rs.getDate("entered_date");
 				m_updated_date = l_rs.getDate("updated_date");
 
