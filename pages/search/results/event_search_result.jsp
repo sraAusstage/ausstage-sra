@@ -52,50 +52,6 @@
     margin: 5px;
   }
 </style>
-<%!
-public String concatFields(Vector fields, String token) {
-  String ret = "";
-  for (int i=0; i<fields.size(); i++) {
-    if (fields.elementAt(i) != null) {
-        if (!(fields.elementAt(i)).equals("") && !ret.equals("")) {
-          ret += token;
-        }
-        ret += fields.elementAt(i);
-    }
-  }
-  return ret;
-}
-
-public String formatDate(String day, String month, String year) {
-  if (year == null || year.equals("")){
-    return "";
-  }
-  Calendar calendar = Calendar.getInstance();
-   
-  SimpleDateFormat formatter = new SimpleDateFormat();
-  if (month == null || month.equals("") ){
-    formatter.applyPattern("yyyy");
-    calendar.set(Calendar.YEAR , new Integer(year).intValue());
-  
-  }
-  else if(day == null || day.equals("") ){
-    formatter.applyPattern("MMMMM yyyy");
-    calendar.set(Calendar.MONTH  ,new Integer(month).intValue() -1);
-    calendar.set(Calendar.YEAR , new Integer(year).intValue());
-    
-  }
-  else{
-    formatter.applyPattern("d MMMMM yyyy");
-    calendar.set(Calendar.DAY_OF_MONTH  ,new Integer(day).intValue());
-    calendar.set(Calendar.MONTH  ,new Integer(month).intValue() -1);
-    calendar.set(Calendar.YEAR , new Integer(year).intValue());
-  }
-  java.util.Date date = calendar.getTime();
-  String result = formatter.format(date);
-
-  return result.replaceAll(" ", "&nbsp;");
-}
-%>
 
 <%
   String picture_australia_search_string;
