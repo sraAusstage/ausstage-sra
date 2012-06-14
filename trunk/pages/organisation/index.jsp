@@ -273,7 +273,7 @@
 					%>
 							<td align='right' class='general_heading_light' valign='top'></td>
 							<td>&nbsp;</td>
-							<td valign=\"top\">
+							<td valign="top">
 								<ul>
 								<%
 								while(crset.next()) {
