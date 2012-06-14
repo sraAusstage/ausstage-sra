@@ -481,7 +481,7 @@ function showHide(name) {
 							<%=formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE"))%>
 							</li>
 						<%	 
-				 	 }
+				 	}
 					%>
 						</ul>
 					</td>
@@ -524,13 +524,13 @@ function showHide(name) {
 					
 					<%	
 					while (crset.next()){
-						// If we're starting a new contributor, check if we have to finish the previous one
+						// If we're starting a new organisation, check if we have to finish the previous one
 						if (!prevOrg.equals(crset.getString("name"))) {
 							if (hasValue(prevOrg)) out.print("</ul>");
 							
 							// Now start the new one
 							%>
-						<a href="/pages/contributor/?id=<%=crset.getString("organisationid")%>">
+						<a href="/pages/organisation/?id=<%=crset.getString("organisationid")%>">
 							<%=crset.getString("name")%>
 						</a>
 						<br>
@@ -551,7 +551,7 @@ function showHide(name) {
 							%>
 							</li>
 						<%	 
-				 	 }
+				 	}
 					%>
 						</ul>
 					</td>
