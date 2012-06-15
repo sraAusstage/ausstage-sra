@@ -46,7 +46,7 @@
       <td width="20%" align="left"><b>Number of Rows</b></td>      
     </tr>
     <%
-      sqlString = 	"Select table_name, table_rows from information_schema.tables where table_schema = 'ausstage_schema'";
+      sqlString = 	"Select table_name, table_rows from information_schema.tables where table_schema = 'ausstage'";
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;  
       while (l_rs.next() && l_rs.getString(1) != null && !l_rs.getString(1).equals(""))
