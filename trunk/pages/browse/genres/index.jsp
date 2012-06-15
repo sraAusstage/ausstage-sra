@@ -45,27 +45,13 @@
   -->
 </script>
 
-<style>
-  .letters a {
-    margin-right: 5px;
-    color: blue;
-  }
-  div.heading {
-    font-weight: bold;
-    
-  }
-  
-  #bar {
+<div class="browse">
+
+<div class="browse-bar b-90">
    
-    padding: 10px;
-    margin: 5px;
-  }
-</style>
-<%@ include file="../../../templates/MainMenu.jsp"%>
+    <span class="browse-heading large">Genres</span>
 
-<div class="heading">Browse by genre</div><br>
-
-<br>
+</div>
 <%
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
@@ -100,18 +86,20 @@
   int recordCount = Integer.parseInt(l_rs.getString(1));
 %>
 
-<table width="100%">
+<table class="browse-table">
   <form name="form_searchSort_report" method="POST" action=".">
   <%-- These are hidden inputs that will be populated by the reSortData() JavaScript function. --%>
     <input type="hidden" name="col" value="<%=sortCol%>">
     <input type="hidden" name="order" value="<%=sortOrd%>">
     <input type="hidden" name="pageno" value="<%=pno%>">
-    <tr width="100%" id="bar" class="b-186">
-      <td width="40%"><b><a href="#" onClick="reSortData('name')"> Name  (<%=l_rs.getString(1)%>)</a></b></td>
-      <td width="20%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a></b></td>
-      <td width="20%" align="right"><b><a href="#" onClick="reSortNumbers('num')">Events</a></b></td>
-      <td width="20%" align="right"><b><a href="#" onClick="reSortNumbers('total')">Resources</a></b></td>
+    <thead>
+    <tr>
+      <th width="40%"><b><a href="#" onClick="reSortData('name')"> Name  (<%=l_rs.getString(1)%>)</a></b></th>
+      <th width="20%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a></b></th>
+      <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('num')">Events</a></b></th>
+      <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('total')">Resources</a></b></th>
     </tr>
+    </thead>
     <%
     sqlString = 	"SELECT secgenreclass.`genreclassid`, secgenreclass.genreclass name, min(events.yyyyfirst_date) year, max(events.yyyylast_date), "+
 			"count(distinct events.eventid) num, secgenreclass.secgenrepreferredid, COUNT(distinct itemsecgenrelink.itemid) as total "+
@@ -158,9 +146,9 @@
     <tr>
       <td colspan="4" bgcolor="aaaaaa"></td>
     </tr> 
-    <tr  width="100%" >
+    <tr  width="100%" class="browse-bar b-90" style="height:2.5em;" >
       <td align="right" colspan="5">
-        <div class='letters'>
+        <div class='browse-index browse-index-genre'>
         <%if (previous >= 0) 
         {
           out.println("<a href='?order="+ sortOrd +"&col="+ sortCol +"'>First</a> ");

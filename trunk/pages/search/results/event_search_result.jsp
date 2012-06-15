@@ -88,7 +88,7 @@
   String m_inc_resource                   = request.getParameter("inc_resources");
   String resultsPerPage                   = request.getParameter("f_limit_by");
   if (resultsPerPage == null || !"20 50 75 100".contains(resultsPerPage)) resultsPerPage = "20";
-
+    
     ///////////////////////////////////
     //    DISPLAY SEARCH RESULTS
     //////////////////////////////////
@@ -206,11 +206,19 @@
         out.println("      </tr>");
         out.println("      <tr>");
         out.println("       <td colspan=\"8\"  >");
-
+	
         // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
         //if(search_within_search_for_result.equals(""))
         out.print("Search Results: Showing " + ((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s).");
         out.print(" Click Event Name to view details.");
+        out.print("<div class=\"browse\"><div class=\"browse-bar b-90\">"
+    		 +"<img src=\"../../../resources/images/icon-event.png\" class=\"browse-icon\">"
+    		 +"<span class=\"browse-heading large\">Events</span>"
+    		 +"<span class=\"browse-index browse-index-event\">search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"</span></div></div>");
+        
+        
         
         %>
         <form name="form_searchSort_report" method="POST" action="?">

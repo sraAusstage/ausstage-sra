@@ -58,41 +58,6 @@
     margin: 5px;
   }
 </style>
-<%!
-
-public String formatDate(String day, String month, String year)
-{
-  if (year == null || year.equals("") ){
-    return "";
-  }
-  Calendar calendar = Calendar.getInstance();
-  
-  SimpleDateFormat formatter = new SimpleDateFormat();
-  if (month == null || month.equals("") ){
-    formatter.applyPattern("yyyy");
-    calendar.set(Calendar.YEAR , new Integer(year).intValue());
-  
-  }
-  else if(day == null || day.equals("") ){
-    formatter.applyPattern("MMMMM yyyy");
-    calendar.set(Calendar.MONTH  ,new Integer(month).intValue() -1);
-    calendar.set(Calendar.YEAR , new Integer(year).intValue());
-  }
-  else{
-    formatter.applyPattern("d MMMMM yyyy");
-    calendar.set(Calendar.DAY_OF_MONTH  ,new Integer(day).intValue());
-    calendar.set(Calendar.MONTH  ,new Integer(month).intValue() -1);
-    calendar.set(Calendar.YEAR , new Integer(year).intValue());
-  }
-
-  java.util.Date date = calendar.getTime();
-  String result = formatter.format(date);
-  //System.out.println(result + " " + day + month + year);
-
-  return result.replaceAll(" ", "&nbsp;");
-}
-%>
-
 <%
   ausstage.Database db_ausstage_for_result          = new ausstage.Database ();
   Common         common                          = new Common();
@@ -158,6 +123,8 @@ public String formatDate(String day, String month, String year)
   ///////////////////////////////////
   //    DISPLAY SEARCH RESULTS
   //////////////////////////////////
+	
+
 
   int counter;
   int start_trigger;
@@ -503,7 +470,7 @@ public String formatDate(String day, String month, String year)
     out.println("     </table>"); 
   }//end first if
   else{
-    out.println("<p >Your search did not return any result.<br>Please refine " +
+    out.println("<p>Your search did not return any result.<br>Please refine " +
                 "your search criteria.</p>");
   }
 %>

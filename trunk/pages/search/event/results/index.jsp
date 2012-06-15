@@ -7,7 +7,7 @@
 
 <%@ include file="../../../../public/common.jsp"%>
 
-<%@ include file="../../../../templates/MainMenu.jsp"%>
+<!--<%@ include file="../../../../templates/MainMenu.jsp"%>-->
 
 <%@ include file="advanced_search_result.jsp"%>
 

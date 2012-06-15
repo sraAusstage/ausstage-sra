@@ -43,13 +43,17 @@
 		if (login.m_isAdmin.equals("true")) {
 			sqlString = "SELECT * FROM author_functions where is_custom='f' ORDER BY fun_cat, fun_order";
 		} else {
-			sqlString = "SELECT author_functions.*  " + "FROM author_functions, author_roles_function_rights, author_roles_rel " + "WHERE author_roles_rel.auth_id = "
-					+ login.m_userId + " " + "AND author_roles_rel.role_id = author_roles_function_rights.role_id "
-					+ "AND author_roles_function_rights.fun_id = author_functions.fun_id " + "AND is_custom='f' " + "ORDER by fun_cat, fun_order";
-		}
+        sqlString = "SELECT author_functions.*  " +
+                    "FROM author_functions, author_roles_function_rights, author_roles_rel " +
+                    "WHERE author_roles_rel.auth_id = " + login.m_userId + " " + 
+                    "AND author_roles_rel.role_id = author_roles_function_rights.role_id " +
+                    "AND author_roles_function_rights.fun_id = author_functions.fun_id " + 
+                    "AND is_custom='f' " + 
+                    "ORDER by fun_cat, fun_order";
+    }
 
-		Statement stmt = db.m_conn.createStatement();
-		rset = db.runSQL(sqlString, stmt);
+    Statement stmt = db.m_conn.createStatement ();
+    rset = db.runSQL (sqlString, stmt);
 		count_id = 0;
 		while (rset.next()) {
 			fun_id = rset.getString("fun_id");
