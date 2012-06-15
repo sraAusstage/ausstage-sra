@@ -36,7 +36,7 @@
 
 				if (!commadelimfilename.equals("")) {
 
-					out.print("<p>You can <a href=" + AppConstants.PUBLIC_SITE_URL + AppConstants.REPORTS_FILE_PATH);
+					out.print("<p>You can <a href=/opencms" + AppConstants.REPORTS_FILE_PATH);
 					out.print("/" + sqlInterface.getCommaDelimFileName());
 					out.print("> <font COLOR='#99CF16'>click here</font></a> to get the comma delimited file. ");
 					out.print("(size " + sqlInterface.getCommaDelimFileSize() + "KB)</p>");
