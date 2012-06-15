@@ -26,7 +26,7 @@
     if(secondary_content_ind.isInUse())
       pageFormater.writeText (out, "Could not delete Secondary Subject because it has an association with the Events table!.<br>Click the tick button to continue.");
     else
-      opageFormater.writeText (out, "Delete Secondary Subject process was successful.<br>Click the tick button to continue.");
+      pageFormater.writeText (out, "Delete Secondary Subject process was successful.<br>Click the tick button to continue.");
   }else{
     pageFormater.writeText (out, "Delete Secondary Subjects process was unsuccessful.<br>Please try again later.");
   }
