@@ -44,27 +44,17 @@
   }
   -->
 </script>
-<style>
-  .letters a {
-    margin-right: 5px;
-    color: blue;
-  }
-  div.heading {
-    font-weight: bold;
+
+
+<div class="browse">
+
+<div class="browse-bar b-153">
+
+    <img src="../../../resources/images/icon-event.png" class="browse-icon">
     
-  }
-  
-  #bar {
-   
-    padding: 10px;
-    margin: 5px;
-  }
-</style>
-<%@ include file="../../../templates/MainMenu.jsp"%>
+    <span class="browse-heading large">Resources</span>
 
-<div class="heading">Browse resources by type</div><br>
-
-<br>
+</div>
 <%
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
@@ -101,16 +91,18 @@
   int recordCount = Integer.parseInt(l_rs.getString(1));
 %>
 
-<table width="100%">
+<table class="browse-table">
   <form name="form_searchSort_report" method="POST" action=".">
   <%-- These are hidden inputs that will be populated by the reSortData() JavaScript function. --%>
     <input type="hidden" name="col" value="<%=sortCol%>">
     <input type="hidden" name="order" value="<%=sortOrd%>">
     <input type="hidden" name="pageno" value="<%=pno%>">
-    <tr width="100%" id="bar" class="b-186">
-      <td width="70%"><b>	       <a href="#" onClick="reSortData('name')"> Name  (<%=l_rs.getString(1)%>)</a></b></td>
-      <td width="30%" align="right"><b><a href="#" onClick="reSortNumbers('counter')">Resources</a></b></td>
+    <thead>
+    <tr>
+      <th width="70%"><b> <a href="#" onClick="reSortData('name')"> Name  (<%=l_rs.getString(1)%>)</a></b></th>
+      <th width="30%" align="right"><b><a href="#" onClick="reSortNumbers('counter')">Resources</a></b></th>
     </tr>
+    </thead>
     <%
     sqlString = 	"select * from (SELECT lookup_codes.short_code name, count(item.itemid) counter,lookup_codes.code_lov_id FROM lookup_codes  "+
 			"LEFT JOIN item ON (lookup_codes.code_lov_id = item.item_sub_type_lov_id) WHERE lookup_codes.`code_type`='RESOURCE_SUB_TYPE' Group by lookup_codes.short_code "+
@@ -137,10 +129,8 @@
   	if (i == 25) break;
     }
     %>
-    <tr>
-      <td colspan="4" bgcolor="aaaaaa"></td>
-    </tr> 
-    <tr  width="100%" >
+     
+    <tr  width="100%" class="browse-bar b-153" style="height:2.5em;">
       <td align="right" colspan="5">
         <div class='letters'>
         <%if (previous >= 0) 

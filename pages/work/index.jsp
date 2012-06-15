@@ -333,7 +333,7 @@
 						<tr id='contributor'>
 						<%
 						//Contributors Tab
-						sqlString		= 
+						sqlString = 
 						"SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
 						"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
 						"venue.venue_name,venue.suburb,states.state,evcount.num " +
@@ -450,22 +450,22 @@
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
-						</table>
-						
-						<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>
-						<!-- AddThis Button BEGIN -->
-						<div align="right" class="addthis_toolbox addthis_default_style ">
-							<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-							<a class="addthis_button_tweet"></a>
-							<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-							<a class="addthis_counter addthis_pill_style"></a>
-						</div>
-						<script>
-							displayRow("events");
-							if (!document.getElementById("organisation").innerHTML.match("[A-Za-z]")) document.getElementById("organisationbtn").style.display = "none";
-							if (!document.getElementById("contributor").innerHTML.match("[A-Za-z]")) document.getElementById("contributorbtn").style.display = "none";
-							if (!document.getElementById("events").innerHTML.match("[A-Za-z]")) document.getElementById("eventsbtn").style.display = "none";
-						</script>
+					</table>
+					
+					<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>
+					<!-- AddThis Button BEGIN -->
+					<div align="right" class="addthis_toolbox addthis_default_style ">
+						<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+						<a class="addthis_button_tweet"></a>
+						<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+						<a class="addthis_counter addthis_pill_style"></a>
+					</div>
+					<script>
+						displayRow("events");
+						if (!document.getElementById("organisation").innerHTML.match("[A-Za-z]")) document.getElementById("organisationbtn").style.display = "none";
+						if (!document.getElementById("contributor").innerHTML.match("[A-Za-z]")) document.getElementById("contributorbtn").style.display = "none";
+						if (!document.getElementById("events").innerHTML.match("[A-Za-z]")) document.getElementById("eventsbtn").style.display = "none";
+					</script>
 					</td>
 				</tr>
 			</table>

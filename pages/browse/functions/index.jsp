@@ -44,38 +44,21 @@
   }
   -->
 </script>
-<style>
-  .letters a {
-    margin-right: 5px;
-    color: blue;
-  }
-  div.heading {
-    font-weight: bold;
-   
-  }
-  tr.even td {
-    background-color: #e3e3e3;
-  }
-  tr.odd td {
-    background-color: #ffffff;
-  }
-  #bar {
-    background-color: #aaaaaa;
-    padding: 10px;
-    margin: 5px;
-  }
-</style>
-<%@ include file="../../../templates/MainMenu.jsp"%>
 
-<div class="heading">Browse by function</div><br>
+<div class="browse">
+
+<div class="browse-bar b-105">
+
+    
+    <span class="browse-heading large">Functions</span>
 <%
   String letter = request.getParameter("letter");
   if (letter == null) letter = "a";
     if (letter.length() > 1) letter = letter.substring(0,1);
   letter = letter.toLowerCase();
 %>
-<br>
-<div class="letters">
+
+<div class='browse-index browse-index-function'>
   <a href="?letter=A" <%=letter.equals("a")?"style='font-weight:bold'":""%>>A</a>
   <a href="?letter=B" <%=letter.equals("b")?"style='font-weight:bold'":""%>>B</a>
   <a href="?letter=C" <%=letter.equals("c")?"style='font-weight:bold'":""%>>C</a>
@@ -103,7 +86,7 @@
   <a href="?letter=Y" <%=letter.equals("y")?"style='font-weight:bold'":""%>>Y</a>
   <a href="?letter=Z" <%=letter.equals("z")?"style='font-weight:bold'":""%>>Z</a>
 </div>
-<br>
+</div>
 <%
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
@@ -140,18 +123,20 @@
   int recordCount = Integer.parseInt(l_rs.getString(1));
 %>
 
-<table width="100%">
+<table class="browse-table">
   <form name="form_searchSort_report" method="POST" action=".">
   <%-- These are hidden inputs that will be populated by the reSortData() JavaScript function. --%>
     <input type="hidden" name="col" value="<%=sortCol%>">
     <input type="hidden" name="order" value="<%=sortOrd%>">
     <input type="hidden" name="letter" value="<%=letter%>">
     <input type="hidden" name="pageno" value="<%=pno%>">
-    <tr width="100%" id="bar">
-      <td width="20%"><b><a href="#" onClick="reSortData('preferredterm')">Name  (<%=l_rs.getString(1)%>)</a></b> </td>
+    <thead>
+    <tr>
+      <th width="20%"><b><a href="#" onClick="reSortData('preferredterm')">Name  (<%=l_rs.getString(1)%>)</a></b> </th>
       
-      <td width="15%" align="right"><b><a href="#" onClick="reSortNumbers('total')">Contributors</a></b></td>
+      <th width="15%" align="right"><b><a href="#" onClick="reSortNumbers('total')">Contributors</a></b></th>
     </tr>
+    </thead>
     <%
     sqlString = 	"SELECT contributorfunctpreferred.preferredterm,count(contfunctlink.contributorid) as total,`contributorfunctpreferred`.`contributorfunctpreferredid`  " +
 			"FROM contributorfunctpreferred "+
@@ -179,12 +164,9 @@
       if (i == 25) break;
     }
     %>
-    <tr>
-      <td colspan="5" bgcolor="aaaaaa"></td>
-    </tr>
-    <tr  width="100%" >
+    <tr  width="100%" class="browse-bar b-105" style="height:2.5em;" >
       <td align="right" colspan="5">
-        <div class='letters'>
+        <div class="browse-index browse-index-function">
         <%if (previous >= 0) 
         {
           out.println("<a href='?letter=" + letter + "&order="+ sortOrd +"&col="+ sortCol +"'>First</a> ");

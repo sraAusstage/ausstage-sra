@@ -43,23 +43,13 @@
   }
   -->
 </script>
-<style>
-  .letters a {
-    margin-right: 5px;
-    color: blue;
-  }
-  div.heading {
-    font-weight: bold;
-   
-  }
-  #bar {
-    padding: 10px;
-    margin: 5px;
-  }
-</style>
-<%@ include file="../../../templates/MainMenu.jsp"%>
+<div class="browse">
 
-<div class="heading">Browse by subject</div><br>
+<div class="browse-bar b-90">
+    
+    <span class="browse-heading large">Subjects</span>
+
+
 <%
   String letter = request.getParameter("letter");
   if (letter == null) letter = "a";
@@ -67,7 +57,7 @@
   letter = letter.toLowerCase();
 %>
 <br>
-<div class='letters'>
+<div class='browse-index browse-index-event'>
   <a href="?letter=A" <%=letter.equals("a")?"style='font-weight:bold'":""%>>A</a>
   <a href="?letter=B" <%=letter.equals("b")?"style='font-weight:bold'":""%>>B</a>
   <a href="?letter=C" <%=letter.equals("c")?"style='font-weight:bold'":""%>>C</a>
@@ -95,7 +85,7 @@
   <a href="?letter=Y" <%=letter.equals("y")?"style='font-weight:bold'":""%>>Y</a>
   <a href="?letter=Z" <%=letter.equals("z")?"style='font-weight:bold'":""%>>Z</a>
 </div>
-<br>
+</div>
 <%
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
@@ -135,19 +125,21 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
 %>
-<table width="100%">
+<table class="browse-table">
   <form name="form_searchSort_report" method="POST" action=".">
   <%-- These are hidden inputs that will be populated by the reSortData() JavaScript function. --%>
     <input type="hidden" name="col" value="<%=sortCol%>">
     <input type="hidden" name="order" value="<%=sortOrd%>">
     <input type="hidden" name="letter" value="<%=letter%>">
     <input type="hidden" name="pageno" value="<%=pno%>">
-    <tr width="100%" id="bar" class="b-186">
-      <td width="40%"><b> <a href="#" onClick="reSortData('contentindicator')">Name   (<%=l_rs.getString(1)%>)</a> </b></td>
-      <td width="20%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a><b></td>
-      <td width="20%" align="right"><b><a href="#" onClick="reSortNumbers('count(distinct events.eventid)')">Events</a><b></td>
-      <td width="20%" align="right"><b><a href="#" onClick="reSortNumbers('count(distinct itemcontentindlink.itemid)')">Resources</a><b></td>
+    <thead>
+    <tr>
+      <th width="40%"><b> <a href="#" onClick="reSortData('contentindicator')">Name   (<%=l_rs.getString(1)%>)</a> </b></th>
+      <th width="20%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a><b></th>
+      <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('count(distinct events.eventid)')">Events</a><b></th>
+      <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('count(distinct itemcontentindlink.itemid)')">Resources</a><b></th>
     </tr>
+    </thead>
     <div class='letters'>
     <%
       int counter=0;
@@ -192,10 +184,10 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
       if (i == 25) break;
       }
       %>
-      <tr><td colspan="4" bgcolor="aaaaaa"></td></tr>
-      <tr  width="100%" >
+      
+      <tr width="100%" class="browse-bar b-90" style="height:2.5em;" >
         <td align="right" colspan="5">
-	  <div class='letters'>
+	  <div class='browse-index browse-index-subject'>
             <%if (previous >= 0) 
             {
               out.println("<a href='?letter=" + letter + "&order="+ sortOrd +"&col="+ sortCol +"'>First</a> ");
