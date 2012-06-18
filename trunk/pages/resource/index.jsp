@@ -259,6 +259,9 @@
 								%>
 								</table>
 							</td>
+						<%
+						}
+						%>
 						</tr>
 						
 						<%
@@ -321,7 +324,7 @@
 								<td class='general_body' valign="top">
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
-									for (String secGenreId : item_secgenrelinks) {
+									for (String secGenreId : (Vector<String>) item_secgenrelinks) {
 										secondaryGenre.loadLinkedProperties(new Integer(secGenreId).intValue());
 										%>
 										<tr>
@@ -351,7 +354,7 @@
 								<td class='general_body' valign="top">
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
-									for (String contentIndId : item_contentindlinks) {
+									for (String contentIndId : (Vector<String>) item_contentindlinks) {
 										// load content indicator from id
 										contentIndicator.load(new Integer(contentIndId).intValue());
 										%>
@@ -382,7 +385,7 @@
 								<td class='general_body' valign="top">
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
-									for (String workId : item_worklinks) {
+									for (String workId : (Vector<String>) item_worklinks) {
 										// load work from id
 										work.load(new Integer(workId).intValue());
 										%>
@@ -422,7 +425,7 @@
 										<tr>
 											<td valign="top">
 												<%=lookUpCode.getDescription() %>
-												<a href="/pages/resource/?id=<%=assocItem.getId()%>">       
+												<a href="/pages/resource/?id=<%=assocItem.getItemId()%>">       
 													<%=assocItem.getCitation()%>
 												</a>
 											</td>
@@ -445,7 +448,7 @@
 								<td class='general_body' valign="top">
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
-									for (String itemEvLink : item_evlinks) {
+									for (String itemEvLink : (Vector<String>) item_evlinks) {
 										rset = event.getEventsByItem(Integer.parseInt(itemEvLink), stmt);
 										if (rset != null) {
 											while(rset.next()){
@@ -480,7 +483,8 @@
 								<td class='general_body' valign="top">
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
-									for (String contribId : item_conlinks) {
+									for (ItemContribLink itemContribLink : (Vector<ItemContribLink>) item_conlinks) {
+										String contribId = itemContribLink.getContribId();
 										String name = "";
 										// use the contribId to load a new organisation each time:
 										contributor.load(new Integer(contribId).intValue());
@@ -504,7 +508,7 @@
 						}
 						
 						// Other Organisation
-						if (organisation != null && item_orglinks.size > 0) {
+						if (organisation != null && item_orglinks.size() > 0) {
 						%>
 							<tr>
 								<td align='right' class='general_heading_light f-186' valign="top">Related Organisation</td>
@@ -512,7 +516,7 @@
 								<td class='general_body' valign="top">
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
-									for (ItemOrganLink itemOrganLink : item_orglinks) {
+									for (ItemOrganLink itemOrganLink : (Vector <ItemOrganLink>) item_orglinks) {
 										String orgaId = itemOrganLink.getOrganisationId();
 										// use the orgaId to load a new organisation each time:
 										organisation.load(new Integer(orgaId).intValue());
@@ -544,7 +548,7 @@
 									<%
 									// in the item_venuelinks vector we only have the venue id 
 									// to get the venue name -> load a venue object
-									for (String venueId : item_venuelinks) {
+									for (String venueId : (Vector<String>) item_venuelinks) {
 										venue.load(new Integer(venueId).intValue());
 										%>
 										<tr>
@@ -1041,10 +1045,10 @@
 						<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
 						<a class="addthis_counter addthis_pill_style"></a>
 					</div>
-				</td>
-			</tr>
-		</table>
-	</td>
+					</td>
+				</tr>
+			</table>
+		</td>
 	</tr>
 </table>
 <cms:include property="template" element="foot" />
