@@ -340,8 +340,8 @@
     
     out.println("<input type='text' name='f_place_of_birth_venue_name' readonly size='50' class='line300' value=\"" + pob.getName() + "\">");
     out.print("<td width=30><a style='cursor:hand' " +
-              "onclick=\"Javascript:contrib_addedit_form.action='venue_search.jsp?mode=" + action + "&place_of_birth=1';" +
-              "contrib_addedit_form.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
+              "onclick=\"document.f_contributor_addedit.action='venue_search.jsp?mode=" + action + "&place_of_birth=1';" +
+              "document.f_contributor_addedit.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
     pageFormater.writeTwoColTableFooter(out);
     
     pageFormater.writeTwoColTableHeader (out, "Date of Death");
@@ -360,8 +360,8 @@
     
     out.println("<input type='text' name='f_place_of_death_venue_name' readonly size='50' class='line300' value=\"" + pod.getName() + "\">");
     out.print("<td width=30><a style='cursor:hand' " +
-              "onclick=\"Javascript:contrib_addedit_form.action='venue_search.jsp?mode=" + action + "&place_of_death=1';" +
-              "contrib_addedit_form.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
+              "onclick=\"document.f_contributor_addedit.action='venue_search.jsp?mode=" + action + "&place_of_death=1';" +
+              "document.f_contributor_addedit.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
     
     pageFormater.writeTwoColTableFooter (out);
     pageFormater.writeTwoColTableHeader (out, "Nationality");
