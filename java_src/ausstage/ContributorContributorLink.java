@@ -108,8 +108,8 @@ public class ContributorContributorLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean add(String p_contributorId, Vector p_childLinks) {
-		return update(p_contributorId, p_childLinks);
+	public boolean add(String p_contributorId, Vector p_childLinks, Vector<String> p_functionIds) {
+		return update(p_contributorId, p_childLinks, p_functionIds);
 	}
 
 	/*
@@ -124,7 +124,7 @@ public class ContributorContributorLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean update(String p_contributorId, Vector p_childLinks) {
+	public boolean update(String p_contributorId, Vector p_childLinks, Vector<String> p_functionIds) {
 		// System.out.println("In update:" + p_childLinks + ", Con Id:"+
 		// p_contributorId);
 		try {
@@ -132,7 +132,7 @@ public class ContributorContributorLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM ContribContribLink where " + "contributorId=" + p_contributorId;
+			sqlString = "DELETE FROM ContribContribLink where contributorId=" + p_contributorId;
 			m_db.runSQL(sqlString, stmt);
 
 			if (p_childLinks != null) {
@@ -140,11 +140,13 @@ public class ContributorContributorLink {
 				// ", Con Id:"+ p_contributorId);
 				for (int i = 0; i < p_childLinks.size(); i++) {
 					try {
-						sqlString = "INSERT INTO ContribContribLink " + "(contributorId, childId, function_lov_id) " + "VALUES (" + p_contributorId + ", "
-								+ ((ContributorContributorLink) p_childLinks.get(i)).getChildId() + ", null)";
+						sqlString = "INSERT INTO ContribContribLink " 
+								+ "(contributorId, childId, function_lov_id) " 
+								+ "VALUES (" + p_contributorId + ", " + ((ContributorContributorLink) p_childLinks.get(i)).getChildId() + ", " + p_functionIds.get(i) + ")";
 					} catch (Exception e) {
-						sqlString = "INSERT INTO ContribContribLink " + "(contributorId, childId, function_lov_id) " + "VALUES (" + p_contributorId + ", " + p_childLinks.get(i)
-								+ ", null)";
+						sqlString = "INSERT INTO ContribContribLink " 
+								+ "(contributorId, childId, function_lov_id) " 
+								+ "VALUES (" + p_contributorId + ", " + p_childLinks.get(i) + ", " + p_functionIds.get(i) + ")";
 					}
 					// System.out.println("Con loop:" + p_childLinks.get(i));
 					m_db.runSQL(sqlString, stmt);
@@ -242,6 +244,7 @@ public class ContributorContributorLink {
 				contributorContributorLink = new ContributorContributorLink(m_db);
 				contributorContributorLink.setContributorId(rset.getString("contributorId"));
 				contributorContributorLink.setChildId(rset.getString("childId"));
+				contributorContributorLink.setFunctionLovId(rset.getString("function_Lov_Id"));
 				contributorContributorLink.setNotes(rset.getString("notes"));
 
 				allContributorContributorLinks.add(contributorContributorLink);

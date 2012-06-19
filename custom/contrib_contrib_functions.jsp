@@ -18,17 +18,13 @@
   String 	contributorid		= Integer.toString(contributorObj.getId());
   System.out.println("Contributor Id:"+contributorid);
   Vector contributorContributorLinks = contributorObj.getAssociatedContributors();
+  Vector<String> contributorContributorLinkFunctions = contributorObj.getAssociatedContributorFunctions();
+  
   String functionId   = "";
   String functionDesc = "";
   String notes        = "";
   LookupCode lookUps = new LookupCode(db_ausstage);
-  //CachedRowSet rsetContributorFuncLookUps = lookUps.getLookupCodes("ITEM_FUNCTION");
   CachedRowSet rsetContributorFuncLookUps = lookUps.getLookupCodes("CONTRIBUTOR_RELATION");
-  /////
-  System.out.println("begin -------------------------------------------------------------");
-  System.out.println("                                                                   ");
-  System.out.println("  contributorContributorLinks = "+contributorContributorLinks.toString());
-  /////
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);
 %>
@@ -44,31 +40,23 @@
   }
 
     for(int i=0; i < contributorContributorLinks.size(); i++) {
-  
          Contributor contributor = new Contributor(db_ausstage);
         ContributorContributorLink contributorContributorLink = new ContributorContributorLink(db_ausstage);
   	try{
-  	//  System.out.println("Try:"+contributorContributorLink.getChildId());
-  	//  contributorContributorLink.load(contributorContributorLink.getChildId()); 
   	  contributorContributorLink.load((String)contributorContributorLinks.elementAt(i));
   
   	}catch(Exception e){
   	  System.out.println(e.toString()+ "Exception :"+contributorContributorLinks.elementAt(i));
 	  contributorContributorLink.load((String)contributorContributorLinks.elementAt(i));
 	}
-	//System.out.println("Exception outside:"+contributorContributorLinks.elementAt(i));
-    
+  	
     // Load up the child Contributors
     Contributor tempContributor = new Contributor(db_ausstage);
     try{
-     // tempContributor.load(Integer.parseInt(contributorContributorLink.getChildId()));
      tempContributor.load(Integer.parseInt((String) contributorContributorLinks.elementAt(i)));
     }catch(Exception e){
-      //tempContributor.load(Integer.parseInt((String) contributorContributorLinks.elementAt(i)));
       tempContributor.load(Integer.parseInt(contributorContributorLink.getChildId()));
     }
-    System.out.println("Names:" + tempContributor.getLastName());
-    //System.out.println( "Temp:"+ Integer.parseInt(contributorContributorLink.getChildId()));
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Contributor:</b> <%=contributorObj.getName() +" "+ contributorObj.getLastName() %><br><br></td>
