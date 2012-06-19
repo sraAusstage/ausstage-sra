@@ -1,9 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page
-	import="org.opencms.main.*,org.opencms.jsp.*,org.opencms.file.*,java.sql.*,sun.jdbc.rowset.*"%>
-<%
-	CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
+<%@ page import="org.opencms.main.*, org.opencms.jsp.*,org.opencms.file.*, java.sql.*,sun.jdbc.rowset.*"%>
+<% CmsJspActionElement cms = new CmsJspActionElement(pageContext,request,response);
 	
 	String user = request.getHeader("AJP_givenName") + request.getHeader("AJP_sn");
 	

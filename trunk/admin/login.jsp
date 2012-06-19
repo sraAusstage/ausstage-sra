@@ -4,8 +4,7 @@
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
 <%@ page session="true" import="org.opencms.main.*,org.opencms.jsp.*,org.opencms.file.*,java.lang.String"%>
 <cms:include property="template" element="head" />
-<%
-	CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
+<% CmsJspActionElement cms = new CmsJspActionElement(pageContext,request,response);
 	
 	String user = request.getParameter("user");
 	String password = request.getParameter("password");

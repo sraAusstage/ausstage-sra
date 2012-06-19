@@ -133,10 +133,10 @@ public void displayUpdateForm(String                p_id,
 	  
     p_out.println("<form name=\"UpdateForm\" id=\"UpdateForm\" method=\"POST\" action=\"ausstage/public_comments.jsp\" target=\"public_comments\">");
     p_out.println("<table style=\"float: right;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
-    p_out.println("  <tr><td align='right' >Comment on/Tag this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
-    p_out.println("<tr><td><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
-    p_out.println("<tr><td><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='right' >Export to excel</a></td></tr>");
-    p_out.println("<tr><td><a href='/pages/network/?task=ego-centric&id=" + p_request.getParameter("id") + "' align='right' >Network</a> | <a href='/pages/map/?complex-map=true&c=" + p_request.getParameter("id") + "&o=&v=&e=' align='left' >Map</a></td></tr>");
+    p_out.println("  <tr><td align='right' nowrap >Comment on/Tag this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
+    p_out.println("<tr><td align='right' ><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
+    p_out.println("<tr><td align='right'><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='right' >Export to excel</a></td></tr>");
+    p_out.println("<tr><td align='right'><a href='/pages/network/?task=ego-centric&id=" + p_request.getParameter("id") + "' align='right' >Network</a> | <a href='/pages/map/?complex-map=true&c=" + p_request.getParameter("id") + "&o=&v=&e=' align='left' >Map</a></td></tr>");
     p_out.println("</table>");
     
     /*p_out.println("<DIV style=\"float:right; padding-top: 15px;\">");

@@ -21,14 +21,9 @@
 <%@ page import = "ausstage.AusstageCommon"%>
 <%@ include file="../../public/common.jsp"%>
 <cms:include property="template" element="head" />
-<%@ include file="../../templates/MainMenu.jsp"%>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
-	<tr>
-		<td>
-			<table width="100%" align="right" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse">
-				<tr>
-					<td bgcolor="#FFFFFF">
+
+<div class='record'>
 					<%
 						ausstage.Database db_ausstage_for_drill = new ausstage.Database ();
 						db_ausstage_for_drill.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
@@ -68,18 +63,23 @@
 						lookupcode.load(Integer.parseInt(resource_subtype_id));
 						Event event = new Event(db_ausstage_for_drill);
 						
-						if (displayUpdateForm) {
-							displayUpdateForm(resource_subtype_id, "Resource Type", lookupcode.getShortCode(), out,
-								request, ausstage_search_appconstants_for_drill);
-						}               
+						              
 						
 						//Resource Sub Type Name
 						%>
-						<table align="center" width='98%' border="0" cellpadding="3" cellspacing="0">
+						<table class='record-table'>
 							<tr>
-								<td width='25%' align='right' class='general_heading_light f-186' valign='top'>Resource Sub Type</td>
-								<td>&nbsp;</td>
-								<td width='75%'><b><%=lookupcode.getShortCode()%></b></td>
+								<th class='record-label b-153 bold'><img src='../../../resources/images/icon-resource.png' class='box-icon'>Resource Sub Type</th>
+								
+								<td class='record-value bold'><%=lookupcode.getShortCode()%></td>
+								<td rowspan=3 valign='top'>
+								<%
+								if (displayUpdateForm) {
+								displayUpdateForm(resource_subtype_id, "Resource Type", lookupcode.getShortCode(), out,
+								request, ausstage_search_appconstants_for_drill);
+								} 
+								%>
+								</td>
 							</tr>
 							
 							<%
@@ -90,9 +90,9 @@
 							if (rset != null && rset.isBeforeFirst()) {
 							%>
 								<tr>
-									<td align='right' class='general_heading_light f-186' valign='top'>Resources</td>
-									<td>&nbsp;</td>
-									<td>
+									<th class='record-label b-153'>Resources</th>
+									
+									<td class='record-value'>
 										<table border="0" cellpadding="0" cellspacing="0">
 										<%
 										while(rset.next()) {
@@ -117,20 +117,15 @@
 							//Resource Sub Type Identifier
 							%>
 							
-							<tr class="b-185">
-								<td align='right' class='general_heading_light f-186' valign="top">Resource Sub Type Identifier</td>
-								<td>&nbsp;</td>
-								<td valign="top"><%=lookupcode.getCodeLovID()%></td>
+							<tr>
+								<th class='record-label b-153'>Resource Sub Type Identifier</th>
+								
+								<td class='record-value'><%=lookupcode.getCodeLovID()%></td>
 							</tr>
 						</table>
 						<%
 						// close statement
 						stmt.close();
 						%>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+</div>					
 <cms:include property="template" element="foot" />

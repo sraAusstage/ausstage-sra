@@ -25,9 +25,11 @@
 
 	<div class="header-search">
 
-		<form name="header-search-form" id="header-search-form" method="post"> 
+		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/?f_keyword="<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));}%>> 
 
-		<input id="header-search-keywords" type="text" class="" style="width: 140px;"> <input class="" type="submit" value="Search">
+		<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));}%>>
+		
+		 <input class="" type="submit" value="Search">
 
 		</form>
 

@@ -21,11 +21,9 @@
 <%@ page import = "ausstage.AusstageCommon"%>
 <%@ include file="../../public/common.jsp"%>
 <cms:include property="template" element="head" />
-<%@ include file="../../templates/MainMenu.jsp"%>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
-	<tr>
-		<td>
+
+<div class='record'>
 			<%
 			ausstage.Database db_ausstage_for_drill = new ausstage.Database ();
 			db_ausstage_for_drill.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
@@ -53,19 +51,22 @@
 			
 			function = new ContFunctPref (db_ausstage_for_drill);
 			function.load(contfunction_id);
-	
-			if(displayUpdateForm) {
-				displayUpdateForm(contfunction_id, "Contributor Function", function.getPreferredTerm(),out,
-				request, ausstage_search_appconstants_for_drill);
-			}             
-	
+
 			// Function Term
 			%>
-			<table align="center" width='98%' border="0" cellpadding="3" cellspacing="0">
+			<table class='record-table'>
 				<tr>
-					<td width = '25%' align='right'  class='general_heading_light f-186' valign='top'>Function</td>
-					<td>&nbsp;</td>
-					<td width ='75%' ><b><%=function.getPreferredTerm()%></b></td>
+					<th class='record-label b-105 bold'><img src='../../../resources/images/icon-blank.png' class='box-icon'>Function</th>
+					
+					<td class='record-value bold'><%=function.getPreferredTerm()%></td>
+					<td rowspan=2 valign='top'>
+					<%
+					if(displayUpdateForm) {
+					displayUpdateForm(contfunction_id, "Contributor Function", function.getPreferredTerm(),out,
+					request, ausstage_search_appconstants_for_drill);
+					}   
+					%>
+					</td>
 				</tr>
 			
 			<%
@@ -75,9 +76,9 @@
 			if(rset != null && rset.isBeforeFirst()) {
 			%>
 				<tr>
-					<td align='right'  class='general_heading_light f-186' valign='top'>Contributors</td>
-					<td>&nbsp;</td>
-					<td>
+					<th class='record-label b-105 '>Contributors</th>
+					
+					<td class='record-value'>
 						<table border="0" cellpadding="0" cellspacing="0">
 						<%	
 						while(rset.next()) {
@@ -100,30 +101,25 @@
 			
 			//Contributor Function Identifier
 			%>
-			<tr class="b-185">
-				<td align='right'  class='general_heading_light f-186' valign="top">Contributor Function Identifier</td>
-				<td>&nbsp;</td>
-				<td valign="top"><%=function.getPreferredId()%></td>
+			<tr>
+				<th class='record-label b-105'>Contributor Function Identifier</th>
+				
+				<td class='record-value'><%=function.getPreferredId()%></td>
 			</tr>
 			
-			<tr>
-				<td>&nbsp;</td>
-			</tr>
 		</table>
 	<%  
 	// close statement
 	stmt.close();
 %>
-	<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>
-	<!-- AddThis Button BEGIN -->
-	<div align="right" class="addthis_toolbox addthis_default_style ">
-		<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-		<a class="addthis_button_tweet"></a>
-		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-		<a class="addthis_counter addthis_pill_style"></a>
-	</div>
+<!--<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>-->
+  <!-- AddThis Button BEGIN -->
+<!--<div align="right" class="addthis_toolbox addthis_default_style ">
+  <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+  <a class="addthis_button_tweet"></a>
+  <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+  <a class="addthis_counter addthis_pill_style"></a>
+</div>-->
 
-    </td>
-  </tr>
-</table>
+</div>
 <cms:include property="template" element="foot" />

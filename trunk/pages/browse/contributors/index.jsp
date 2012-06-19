@@ -115,7 +115,7 @@
 
 <div class="browse-bar b-105">
 
-  <form name="form_searchSort_report" method="POST" action="index-jb.jsp">
+  <form name="form_searchSort_report" method="POST" action="index.jsp">
   <%-- These are hidden inputs that will be populated by the reSortData() JavaScript function. --%>
     <input type="hidden" name="col" value="<%=sortCol%>">
     <input type="hidden" name="order" value="<%=sortOrd%>">
@@ -183,7 +183,7 @@
       if (rowCounter % 2 == 0) evenOddValue = 0;
     %>
     <tr class="<%=evenOdd[evenOddValue]%>">
-      <td width="25%"><a href="/pages/contributor/index-jb.jsp?id=<%=l_rs.getString(1)%>"><%=l_rs.getString(3)==null?"":l_rs.getString(3)%> <%=l_rs.getString(2)==null?"":l_rs.getString(2)%></a></td>
+      <td width="25%"><a href="/pages/contributor/index.jsp?id=<%=l_rs.getString(1)%>"><%=l_rs.getString(3)==null?"":l_rs.getString(3)%> <%=l_rs.getString(2)==null?"":l_rs.getString(2)%></a></td>
        <td width="40%" align="left"><%if (l_rs.getString(7) != null) out.write(l_rs.getString(7)); %></td>
       <td width="15%" align="right"><%   	     
         if(l_rs.getString(6).equals("1") || l_rs.getString(4) != null && l_rs.getString(4).equals(l_rs.getString(5)))

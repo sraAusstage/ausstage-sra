@@ -34,8 +34,7 @@
 	// if editing
 	if (collection_info_access_id != null && !collection_info_access_id.equals("") && !collection_info_access_id.equals("null"))
 		error_occurred = !collInfoAccessObj.update();
-	else
-		// Adding
+	else // Adding
 		error_occurred = !collInfoAccessObj.add();
 
 	// Error

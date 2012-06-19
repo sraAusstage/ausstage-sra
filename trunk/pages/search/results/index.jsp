@@ -7,7 +7,7 @@
 
 <table width="100%" align="right" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse">
   <tr>
-    <td bgcolor="#FFFFFF"><%@ include file="event_search_result.jsp"%></td>
+    <td bgcolor="#FFFFFF"><%@ include file="search_result.jsp"%></td>
   </tr>
 </table>
 <cms:include property="template" element="foot" />

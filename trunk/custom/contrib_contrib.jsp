@@ -39,7 +39,6 @@
   String selected_list_db_field_id_name  = "";
   Vector selected_list_db_display_fields = new Vector ();
   String comeFromContribAddeditPage         = request.getParameter("f_from_contrib_add_edit_page");
-  System.out.println("Previous page:" +comeFromContribAddeditPage);
   String filter_id;
   String filter_first_name;
   String filter_last_name;
@@ -47,8 +46,6 @@
 
   Hashtable hidden_fields = new Hashtable();
   Contributor  contributor   = (Contributor)session.getAttribute("contributor");
-  System.out.println("Contributor object:" +contributor);
-  //System.out.println("get contributor = " + contributor);
   if (contributor == null) contributor = new Contributor(db_ausstage);
   //we don't want to loose any info added to the contrib_addedit.jsp form.
   //only set the contributor attributes if we have come from the addedit page.
@@ -100,8 +97,6 @@
   //object in the session.
   
   Vector contribContribLinks = contributor.getAssociatedContributors();
-  System.out.println("Associated COntributors:" + contribContribLinks);
-  //System.out.println(contribContribLinks.toString());
 //add the selected contributors to the contributor
  if (f_select_this_contributor_id != null)
   {
@@ -115,9 +110,6 @@
    contribContribLinks.remove(f_unselect_this_contributor_id);
    contributor.setContributorContributorLinks(contribContribLinks);   
  }
-
- 
- //System.out.println("set contributor = " + contributor);
 
  
   // Get the form parameters that are used to create the SQL that determines what
@@ -207,7 +199,7 @@
 		"FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "+
 		"LEFT JOIN events ON (conevlink.eventid = events.eventid) "+
 		"Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) "+
-"Where 1=1 ";	
+		"Where 1=1 ";	
 
     // Add the filters to the SQL
     if (!filter_id.equals (""))

@@ -44,14 +44,7 @@
   }
   -->
 </script>
-<style>
- 
-  #bar {
-  
-    padding: 10px;
-    margin: 5px;
-  }
-</style>
+
 
 <%
   String picture_australia_search_string;
@@ -200,26 +193,21 @@
           crset.first();         
         }
 
-        out.println("     <table width=\"100%\" border=\"0\" cellpadding=\"3\" cellspacing=\"0\">");      
+              
         // DISPLAY NUMBER OF RESULTS
-        out.println("      <tr>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"8\"  >");
-	
         // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
         //if(search_within_search_for_result.equals(""))
-        out.print("Search Results: Showing " + ((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s).");
-        out.print(" Click Event Name to view details.");
-        out.print("<div class=\"browse\"><div class=\"browse-bar b-90\">"
-    		 +"<img src=\"../../../resources/images/icon-event.png\" class=\"browse-icon\">"
-    		 +"<span class=\"browse-heading large\">Events</span>"
-    		 +"<span class=\"browse-index browse-index-event\">search results for \'"+keyword+"\'. "
+	
+	//EVENT HEADER
+        out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
+    		 +"<img src=\"../../../resources/images/icon-event.png\" class=\"search-icon\">"
+    		 +"<span class=\"search-heading large\">Events</span>"
+    		 +"<span class=\"search-index search-index-event\">search results for \'"+keyword+"\'. "
     		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
-    		 +"</span></div></div>");
+    		 +"</span></div>");
         
         
-        
+        out.println("     <table class=\"search-table\">");
         %>
         <form name="form_searchSort_report" method="POST" action="?">
           <input type="hidden" name="f_order_by" value="<%=orderBy%>">
@@ -236,26 +224,19 @@
   			</form>
         <%
 
-        // DISPLAY HEADERS AND TITLES
-        out.println("       </td>");
-        out.println("      </tr>");  
+        // DISPLAY HEADERS AND TITLES   
+        out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <td colspan=\"8\">&nbsp;</td>");
-        out.println("      </tr>");
-              
-        out.println("      <tr id=\"bar\" class =\"b-186\">");
-        out.println("       <td width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('event_name')\"> Event Name</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Venue</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"80\" align='right' ><b><a href=\"#\" onClick=\"reSortData('first_date')\">First Date</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"80\" align='right' ><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></td>");
+        out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('event_name')\"> Event Name</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Venue</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"80\" align='right' ><b><a href=\"#\" onClick=\"reSortData('first_date')\">First Date</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"80\" align='right' ><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></th>");
       //  out.println("       <td width=\"1\">&nbsp;</td>"); // For Resource Image
+        out.println("      </thead>");
         out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"></td>");
-        out.println("      </tr>"); 
 
         counter       = 0;
         start_trigger = 0;
@@ -347,6 +328,7 @@
           start_trigger++;         
         }while(crset.next());
 
+    
        out.println("      <tr>");
        out.println("       <td colspan=\"9\" bgcolor=\"aaaaaa\" >");      
        out.println("       </td>");
@@ -364,8 +346,9 @@
           out.println("      <tr>");
           out.println("       <td colspan=\"7\">&nbsp;</td>");
           out.println("      </tr>");
-          out.println("      <tr>");
-          out.println("       <td align=\"right\" colspan=\"9\" >");         
+          out.println("      <tr width=\"100%\" class=\"search-bar b-90\" style=\"height:2.5em;\">");
+          out.println("       <td align=\"right\" colspan=\"9\" >"); 
+          out.println("        <div class=\"search-index search-index-event\">");        
           unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage+""));
           rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
           remainder_num       = Integer.parseInt(unrounded_page_num.substring(unrounded_page_num.indexOf(".") + 1, unrounded_page_num.indexOf(".") + 2)); // ie. 5.4 will return 4          
@@ -385,7 +368,7 @@
             if(int_page_num >= 10)
               i = int_page_num - 4;
           }          
-          out.println("&nbsp;&nbsp;");
+          //out.println("&nbsp;&nbsp;");
           
           // write Previous
           if(int_page_num > 1){
@@ -512,19 +495,19 @@
                           "&f_order_by=" + request.getParameter("f_order_by") +
                           "\">Last</a>");                            
           }
-              
+          out.println("       </div>");    
           out.println("       </td>");
           out.println("      </tr>");
         } 
         
         // External links to other sites
-        out.println("      <tr>");
-        out.println("       <td colspan='7' ><br><br>");
-        out.println("       </td>");
-        out.println("      </tr> ");
+        //out.println("      <tr>");
+        //out.println("       <td colspan='7' ><br><br>");
+        //out.println("       </td>");
+        //out.println("      </tr> ");
         
         
-        out.println("     </table>");
+        out.println("     </table></div>");
      
       }else{
         out.println("<p>Your search did not return any result.<br>Please refine " +
@@ -553,20 +536,19 @@
           crset.first();         
         }
 
-        out.println("     <table width='100%' border=\"0\" cellpadding=\"3\" cellspacing=\"0\">");
-        // DISPLAY NUMBER OF RESULTS
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
-        out.println("       <b></b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
 
+        // DISPLAY NUMBER OF RESULTS
         // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
         //if(search_within_search_for_result.equals(""))
-        out.println("Search Results: Showing " + ((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s).");
-        out.print(" Click Venue Name to view details.");
-                
+        out.print("<div class=\"search\"><div class=\"search-bar b-134\">"
+    		 +"<img src=\"../../../resources/images/icon-venue.png\" class=\"search-icon\">"
+    		 +"<span class=\"search-heading large\">Venues</span>"
+    		 +"<span class=\"search-index search-index-venue\">search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"</span></div>");
+        
+        
+        out.println("     <table class=\"search-table\">");        
         %>
         <form name="form_searchSort_report" method="POST" action="?">
           <input type="hidden" name="f_order_by" value="<%=orderBy%>">
@@ -576,25 +558,20 @@
 				</form>
         <%
         
-        // DISPLAY HEADERS AND TITLES
-        out.println("       </td>");
-        out.println("      </tr>");        
+        // DISPLAY HEADERS AND TITLES        
+
+        out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <td colspan=\"7\">&nbsp;</td>");
-        out.println("      </tr>");
-        out.println("      <tr id=\"bar\" class =\"b-186\">");
-        out.println("       <td width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Venue Name</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('street')\">Address</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"80\"><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"></td>");
+        out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Venue Name</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('street')\">Address</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"80\"><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></th>");
+        out.println("      </thead>");
         out.println("      </tr>");
        
         counter       = 0;
@@ -703,8 +680,9 @@
           out.println("      <tr>");
           out.println("       <td colspan=\"10\">&nbsp;</td>");
           out.println("      </tr>");
-          out.println("      <tr>");
+          out.println("      <tr width=\"100%\" class=\"search-bar b-134\" style=\"height:2.5em;\">");
           out.println("       <td align=\"right\" colspan=\"10\" >");
+		  out.println("        <div class=\"search-index search-index-venue\">"); 
          
           unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage + ""));
           rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
@@ -730,7 +708,7 @@
 
 
           
-          out.println("&nbsp;&nbsp;");
+          //out.println("&nbsp;&nbsp;");
           
           // write Previous
           if(int_page_num > 1){
@@ -829,18 +807,18 @@
                           "\">Last</a>");                        
                        
           }
-              
+          out.println("       </div>");    
           out.println("       </td>");
           out.println("      </tr>");
         } 
 
         // External links to other sites
-        out.println("      <tr>");
-        out.println("       <td colspan='7' ><br><br>");
-        out.println("       </td>");
-        out.println("      </tr> ");
+        //out.println("      <tr>");
+        //out.println("       <td colspan='7' ><br><br>");
+        //out.println("       </td>");
+        //out.println("      </tr> ");
         
-        out.println("     </table>");
+        out.println("     </table></div>");
      
       }else{
         out.println("<p >Your search did not return any result.<br>Please refine " +
@@ -869,16 +847,18 @@
           crset.first();         
         }
 
-        out.println("     <table width='100%' border=\"0\" cellpadding=\"3\" cellspacing=\"0\">");
+        
 
         // DISPLAY NUMBER OF RESULTS
-        out.println("      <tr>");
-        out.println("       <td ></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td>");
-        out.println("Search Results: Showing " + ((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s).");
-        out.print(" Click Work Name to view details.");
+        out.print("<div class=\"search\"><div class=\"search-bar b-153\">"
+    		 +"<img src=\"../../../resources/images/icon-work.png\" class=\"search-icon\">"
+    		 +"<span class=\"search-heading large\">Works</span>"
+    		 +"<span class=\"search-index search-index-work\">search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"</span></div>");
+        
+        
+        out.println("     <table class=\"search-table\">");        
  
         %>
         <form name="form_searchSort_report" method="POST" action="?">
@@ -890,24 +870,18 @@
         <%
         
         // DISPLAY HEADERS AND TITLES
-        out.println("       </td>");
-        out.println("      </tr>");        
+        out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <td>&nbsp;</td>");
-        out.println("      </tr>");
-        out.println("      <tr id=\"bar\" class =\"b-186\">");
-        out.println("       <td ><b><a href=\"#\" onClick=\"reSortData('work_title')\">Work Name</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td ><b><a href=\"#\" onClick=\"reSortData('contrib')\">Creators</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td ><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td ><b><a href=\"#\" onClick=\"reSortData('events')\">Events</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td ><b><a href=\"#\" onClick=\"reSortData('resources')\">Resources</a></b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"></td>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('work_title')\">Work Name</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('contrib')\">Creators</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('events')\">Events</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('resources')\">Resources</a></b></th>");
+        out.println("      </thead>");
         out.println("      </tr>");
         
         counter       = 0;
@@ -983,8 +957,9 @@
           out.println("      <tr>");
           out.println("       <td>&nbsp;</td>");
           out.println("      </tr>");
-          out.println("      <tr>");
-          out.println("       <td colspan=\"9\" align=\"right\">");
+          out.println("      <tr width=\"100%\" class=\"search-bar b-153\" style=\"height:2.5em;\">");
+          out.println("       <td align=\"right\" colspan=\"9\" >"); 
+          out.println("        <div class=\"search-index search-index-work\">");
          
           unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage + ""));
           rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
@@ -1100,17 +1075,18 @@
                           "\">Last</a>");                    
           }
               
+          out.println("       </div>");    
           out.println("       </td>");
           out.println("      </tr>");
         } 
 
         // External links to other sites
-        out.println("      <tr>");
-        out.println("       <td><br><br>");
-        out.println("       </td>");
-        out.println("      </tr> ");
+        //out.println("      <tr>");
+        //out.println("       <td><br><br>");
+        //out.println("       </td>");
+        //out.println("      </tr> ");
         
-        out.println("     </table>");
+        out.println("     </table></div>");
      
       }else{
         out.println("<p >Your search did not return any result.<br>Please refine " +
@@ -1162,20 +1138,18 @@
           crset.first();         
         }
 
-        out.println("     <table width='100%' border=\"0\" cellpadding=\"3\" cellspacing=\"0\">");
+        
 
         // DISPLAY NUMBER OF RESULTS
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
-        out.println("       <b>Search Results</b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
-
-        // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
-        //if(search_within_search_for_result.equals(""))
-          out.println("Search Results: Showing " + ((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s).");
-        out.print(" Click Contributor Name to view details.");
+         out.print("<div class=\"search\"><div class=\"search-bar b-105\">"
+    		 +"<img src=\"../../../resources/images/icon-contributor.png\" class=\"search-icon\">"
+    		 +"<span class=\"search-heading large\">Contributors</span>"
+    		 +"<span class=\"search-index search-index-contributor\">search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"</span></div>");
+        
+        
+        out.println("     <table class=\"search-table\">");
        
         %>
         <form name="form_searchSort_report" method="POST" action="?">
@@ -1187,26 +1161,19 @@
         <%
         
         // DISPLAY HEADERS AND TITLES
-        out.println("       </td>");
-        out.println("      </tr>");        
+        out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <td colspan=\"7\">&nbsp;</td>");
+        out.println("       <th width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('contrib_name')\">Contributor Name</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"100\" ><b><a href=\"#\" onClick=\"reSortData('event_dates')\">Event Dates</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('function')\">Functions</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></th>");
+        out.println("      </thead>");
         out.println("      </tr>");
-        out.println("      <tr id=\"bar\" class =\"b-186\">");
-        out.println("       <td width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('contrib_name')\">Contributor Name</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"100\" ><b><a href=\"#\" onClick=\"reSortData('event_dates')\">Event Dates</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('function')\">Functions</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"></td>");
-        out.println("      </tr>");
-        
 
         counter       = 0;
         start_trigger = 0;
@@ -1309,8 +1276,9 @@
           out.println("      <tr>");
           out.println("       <td colspan=\"7\">&nbsp;</td>");
           out.println("      </tr>");
-          out.println("      <tr>");
-          out.println("       <td align=\"right\" colspan=\"10\" >");
+         out.println("      <tr width=\"100%\" class=\"search-bar b-105\" style=\"height:2.5em;\">");
+          out.println("       <td align=\"right\" colspan=\"10\" >"); 
+          out.println("        <div class=\"search-index search-index-contributor\">");
          
           unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage + ""));
           rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
@@ -1336,7 +1304,7 @@
 
 
           
-          out.println("&nbsp;&nbsp;");
+          //out.println("&nbsp;&nbsp;");
           
           // write Previous
           if(int_page_num > 1){
@@ -1430,16 +1398,17 @@
                           "\">Last</a>");                         
           }
               
+          out.println("       </div>");    
           out.println("       </td>");
           out.println("      </tr>");
         } 
 
         // External links to other sites
-        out.println("      <tr>");
-        out.println("       <td colspan='7' ><br><br>");
-        out.println("      </tr> ");
+        //out.println("      <tr>");
+        //out.println("       <td colspan='7' ><br><br>");
+        //out.println("      </tr> ");
         
-        out.println("     </table>");
+        out.println("     </table></div>");
      
       }else{
         out.println("<p>Your search did not return any result.<br>Please refine " +
@@ -1467,20 +1436,15 @@
           crset.first();         
         }
 
-        out.println("     <table width='100%' border=\"0\" cellpadding=\"3\" cellspacing=\"0\">");
-
-        // DISPLAY NUMBER OF RESULTS
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
-        out.println("       <b>Search Results</b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
-
-        // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
-        //if(search_within_search_for_result.equals(""))
-          out.println("Search Results: Showing " + ((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s).");
-        out.print(" Click Organisation Name to view details.");
+        out.print("<div class=\"search\"><div class=\"search-bar b-121\">"
+    		 +"<img src=\"../../../resources/images/icon-organisation.png\" class=\"search-icon\">"
+    		 +"<span class=\"search-heading large\">Organisations</span>"
+    		 +"<span class=\"search-index search-index-event\">search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"</span></div>");
+        
+        
+        out.println("     <table class=\"search-table\">");
         
         %>
         <form name="form_searchSort_report" method="POST" action="?">
@@ -1492,23 +1456,16 @@
         <%
     
         // DISPLAY HEADERS AND TITLES
-        out.println("       </td>");
-        out.println("      </tr>");        
-
+        out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <td colspan=\"7\">&nbsp;</td>");
-        out.println("      </tr>");
-        out.println("      <tr id=\"bar\" class =\"b-186\">");
-        out.println("       <td width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('name')\">Organisation Name</a></b></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</b></a></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</b></a></td>");
-        out.println("       <td width=\"1\">&nbsp;</td>");
-        out.println("       <td width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</b></a></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"></td>");
+        out.println("       <th width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('name')\">Organisation Name</a></b></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</b></a></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</b></a></th>");
+        out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</b></a></th>");
+         out.println("      </thead>");
         out.println("      </tr>");
 
         counter       = 0;
@@ -1649,8 +1606,9 @@
           out.println("      <tr>");
           out.println("       <td colspan=\"7\">&nbsp;</td>");
           out.println("      </tr>");
-          out.println("      <tr>");
+          out.println("      <tr width=\"100%\" class=\"search-bar b-121\" style=\"height:2.5em;\">");		  
           out.println("       <td align=\"right\" colspan=\"8\" >");
+		  out.println("        <div class=\"search-index search-index-organisation\">");
          
           unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage + ""));
           rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
@@ -1676,7 +1634,7 @@
 
 
           
-          out.println("&nbsp;&nbsp;");
+         // out.println("&nbsp;&nbsp;");
           
           // write Previous
           if(int_page_num > 1){
@@ -1769,16 +1727,16 @@
                           "&f_search_within_search=" + search_within_search_for_result +
                           "\">Last</a>");                         
           }
-              
+          out.println("       </div>");              
           out.println("       </td>");
           out.println("      </tr>");
         } 
 
         // External links to other sites
-        out.println("      <tr>");
-        out.println("       <td colspan='7' ><br><br>");
-        out.println("      </tr> ");
-        out.println("     </table>");
+        //out.println("      <tr>");
+        //out.println("       <td colspan='7' ><br><br>");
+        //out.println("      </tr> ");
+        //out.println("     </table>");
      
       }else{
         out.println("<p >Your search did not return any result.<br>Please refine " +
@@ -1830,20 +1788,16 @@
           crset.first();         
         }
 
-        out.println("     <table width='100%' border=\"0\" cellpadding=\"3\" cellspacing=\"0\">");
-        // DISPLAY NUMBER OF RESULTS
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
-        out.println("       <b>Search Results</b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"  >");
-
-        // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
-        //if(search_within_search_for_result.equals(""))
-        out.println("Search Results: Showing " + ((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s).");
-        out.print(" Click Resource Citation to view details.");
         
+        out.print("<div class=\"search\"><div class=\"search-bar b-153\">"
+    		 +"<img src=\"../../../resources/images/icon-resource.png\" class=\"search-icon\">"
+    		 +"<span class=\"search-heading large\">Resources</span>"
+    		 +"<span class=\"search-index search-index-resource\">search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"</span></div>");
+        
+        
+        out.println("     <table class=\"search-table\">");
         %>
         <form name="form_searchSort_report" method="POST" action="?">
           <input type="hidden" name="f_order_by" value="<%=orderBy%>">
@@ -1854,22 +1808,10 @@
         <%
        
         // DISPLAY HEADERS AND TITLES
-        out.println("       </td>");
-        out.println("      </tr>");        				
+        out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <td colspan=\"7\">&nbsp;</td>");
-        out.println("      </tr>");
-     
-        
-         
-        out.println("      <tr>");
-        out.println("       <td>&nbsp;</td>");
-        out.println("      </tr>");
-        out.println("      <tr id=\"bar\" class =\"b-186\">");
-        out.println("       <td ><b><a href=\"#\" onClick=\"reSortData('citation')\">Citation</a></b></td>");
-        out.println("      </tr>");
-        out.println("      <tr>");
-        out.println("       <td colspan=\"7\"></td>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('citation')\">Citation</a></b></th>");
+        out.println("      </thead>");
         out.println("      </tr>");
        
         counter       = 0;
@@ -1919,8 +1861,9 @@
           out.println("      <tr>");
           out.println("       <td colspan=\"7\">&nbsp;</td>");
           out.println("      </tr>");
-          out.println("      <tr>");
+          out.println("      <tr width=\"100%\" class=\"search-bar b-153\" style=\"height:2.5em;\">");
           out.println("       <td align=\"right\" colspan=\"7\" >");
+		  out.println("        <div class=\"search-index search-index-resource\">"); 
          
           unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage + ""));
           rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
@@ -1941,7 +1884,7 @@
             if(int_page_num >= 10)
               i = int_page_num - 4;
           }         
-          out.println("&nbsp;&nbsp;");
+          //out.println("&nbsp;&nbsp;");
           
           // write Previous
           if(int_page_num > 1){
@@ -2034,17 +1977,17 @@
                           "&f_search_within_search=" + search_within_search_for_result +
                           "\">Last</a>");                       
           }
-              
+          out.println("       </div>");              
           out.println("       </td>");
           out.println("      </tr>");
         } 
 
         // External links to other sites
-        out.println("      <tr>");
-        out.println("       <td colspan='7' ><br><br>");
-        out.println("      </tr> ");
+       // out.println("      <tr>");
+        //out.println("       <td colspan='7' ><br><br>");
+        //out.println("      </tr> ");
         
-        out.println("     </table>");
+        out.println("     </table></div>");
      
       }else{
         out.println("<p >Your search did not return any result.<br>Please refine " +
