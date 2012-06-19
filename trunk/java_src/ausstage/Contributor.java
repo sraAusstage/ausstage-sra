@@ -70,6 +70,7 @@ public class Contributor {
 	// Derived Objects
 	private Vector m_conOrgLinks = new Vector();
 	private Vector m_contrib_contriblinks = new Vector();
+	private Vector<String> m_contrib_contriblinkfunctions = new Vector<String>();
 
 	/*
 	 * Name: Contributor ()
@@ -105,10 +106,6 @@ public class Contributor {
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
-				// m_entered_by_user = l_rs.getString ("entered_by_user");
-				// m_entered_date = l_rs.getDate ("entered_date");
-				// m_updated_by_user = l_rs.getString ("modified_by_user");
-				// m_updated_date = l_rs.getDate ("modified_date");
 
 				m_id = p_id;
 				m_prefix = l_rs.getString("PREFIX");
@@ -147,21 +144,6 @@ public class Contributor {
 				loadLinkedContributors();
 
 				// set the contributor function ids
-				/*****
-				 * sqlString = "SELECT CONTFUNCT.CONTFUNCTIONID FROM " +
-				 * "CONTRIBUTOR, CONTFUNCTLINK, CONTFUNCT WHERE " +
-				 * "CONTRIBUTOR.CONTRIBUTORID=CONTFUNCTLINK.CONTRIBUTORID and "
-				 * +
-				 * "CONTFUNCTLINK.CONTFUNCTIONID=CONTFUNCT.CONTFUNCTIONID and "
-				 * + "CONTRIBUTOR.CONTRIBUTORID = " + p_id;
-				 *****/
-				/******
-				 * sqlString = "SELECT CONTFUNCT.CONTFUNCTIONID FROM " +
-				 * "CONTFUNCTLINK, CONTFUNCT WHERE " +
-				 * "CONTFUNCTLINK.CONTRIBUTORFUNCTPREFERREDID=CONTFUNCT.CONTRIBUTORFUNCTPREFERREDID and "
-				 * + "CONTFUNCTLINK.CONTRIBUTORID = " + p_id;
-				 *******/
-
 				sqlString = "select CONTRIBUTORFUNCTPREFERREDID from " + "CONTFUNCTLINK where CONTRIBUTORID=" + p_id;
 
 				l_rs = m_db.runSQL(sqlString, stmt);
@@ -265,8 +247,6 @@ public class Contributor {
 			if (m_entered_by_user == null) m_entered_by_user = "";
 			if (m_updated_by_user == null) m_updated_by_user = "";
 
-			// if (m_entered_by_user == null) m_entered_by_user = "";
-			// if (m_updated_by_user == null) m_updated_by_user = "";
 			l_rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -278,11 +258,6 @@ public class Contributor {
 			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
 		}
 	}
-
-	// public String getEnteredByUser(){return m_entered_by_user;}
-	// public Date getEnteredDate(){return m_entered_date;}
-	// public Date getUpdatedDate(){return m_updated_date;}
-	// public String getUpdatedByUser(){return m_updated_by_user;}
 
 	public Vector getContributors() {
 		return m_contrib_contriblinks;
@@ -348,13 +323,15 @@ public class Contributor {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT childid " + "FROM contribcontriblink " + "WHERE contribcontriblink.contributorid =" + m_id;
+			l_sql = "SELECT DISTINCT childid, function_lov_id " + "FROM contribcontriblink " + "WHERE contribcontriblink.contributorid =" + m_id;
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_contrib_contriblinks.removeAllElements();
+			m_contrib_contriblinkfunctions.removeAllElements();
 
 			while (l_rs.next()) {
 				m_contrib_contriblinks.addElement(l_rs.getString("CHILDID"));
+				m_contrib_contriblinkfunctions.addElement(l_rs.getString("FUNCTION_LOV_ID"));
 
 			}
 			l_rs.close();
@@ -392,85 +369,37 @@ public class Contributor {
 
 			// Check to make sure that it can be added
 			if (validateObjectForDB()) {
-				System.out.println("In add 1");
 				sqlString = "INSERT INTO Contributor " + "(PREFIX, FIRST_NAME, MIDDLE_NAME, LAST_NAME, SUFFIX, DISPLAY_NAME, OTHER_NAMES, "
 						+ "GENDER, DDDATE_OF_BIRTH, MMDATE_OF_BIRTH, " + "YYYYDATE_OF_BIRTH, PLACE_OF_BIRTH, PLACE_OF_DEATH, NATIONALITY, ADDRESS, " + "SUBURB, STATE, POSTCODE, "
 						+ "EMAIL, NOTES, NLA, DDDATE_OF_DEATH, MMDATE_OF_DEATH, " + "YYYYDATE_OF_DEATH, COUNTRYID, entered_by_user, entered_date) " + "VALUES (" + "'"
-						+ m_db.plSqlSafeString(m_prefix)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_name)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_m_name)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_l_name)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_suffix)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_display_name)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_other_names)
-						+ "', "
-						+ +Integer.parseInt(m_gender_id)
-						+ ", "
-						+ "'"
-						+ m_db.plSqlSafeString(m_dob_d)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_dob_m)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_dob_y)
-						+ "', "
-						+ m_db.plSqlSafeString(m_place_of_birth.equals("") ? "null" : m_place_of_birth)
-						+ ","
-						+ m_db.plSqlSafeString(m_place_of_death.equals("") ? "null" : m_place_of_death)
-						+ ","
-						+ "'"
-						+ m_db.plSqlSafeString(m_nationality)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_address)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_town)
-						+ "', "
-						+ +Integer.parseInt(m_state)
-						+ ","
-						+ m_db.plSqlSafeString(m_post_code.equals("") ? "null" : m_post_code)
-						+ ","
-						+ "'"
-						+ m_db.plSqlSafeString(m_email)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_notes)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_nla)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_dod_d)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_dod_m)
-						+ "', "
-						+ "'"
-						+ m_db.plSqlSafeString(m_dod_y)
-						+ "', "
-						+ ""
-						+ Integer.parseInt(m_country_id)
-						+ ", "
-						+ "'"
-						+ m_db.plSqlSafeString(m_entered_by_user) + "', NOW())";
+						+ m_db.plSqlSafeString(m_prefix) + "', "
+						+ "'" + m_db.plSqlSafeString(m_name) + "', "
+						+ "'" + m_db.plSqlSafeString(m_m_name) + "', "
+						+ "'" + m_db.plSqlSafeString(m_l_name) + "', "
+						+ "'" + m_db.plSqlSafeString(m_suffix) + "', "
+						+ "'" + m_db.plSqlSafeString(m_display_name) + "', "
+						+ "'" + m_db.plSqlSafeString(m_other_names) + "', "
+						+ Integer.parseInt(m_gender_id) + ", "
+						+ "'" + m_db.plSqlSafeString(m_dob_d) + "', "
+						+ "'" + m_db.plSqlSafeString(m_dob_m) + "', "
+						+ "'" + m_db.plSqlSafeString(m_dob_y) + "', "
+						+ m_db.plSqlSafeString(m_place_of_birth.equals("") ? "null" : m_place_of_birth) + ","
+						+ m_db.plSqlSafeString(m_place_of_death.equals("") ? "null" : m_place_of_death) + ","
+						+ "'" + m_db.plSqlSafeString(m_nationality) + "', "
+						+ "'" + m_db.plSqlSafeString(m_address) + "', "
+						+ "'" + m_db.plSqlSafeString(m_town) + "', "
+						+ Integer.parseInt(m_state) + ","
+						+ m_db.plSqlSafeString(m_post_code.equals("") ? "null" : m_post_code) + ","
+						+ "'" + m_db.plSqlSafeString(m_email) + "', "
+						+ "'" + m_db.plSqlSafeString(m_notes) + "', "
+						+ "'" + m_db.plSqlSafeString(m_nla) + "', "
+						+ "'" + m_db.plSqlSafeString(m_dod_d) + "', "
+						+ "'" + m_db.plSqlSafeString(m_dod_m) + "', "
+						+ "'" + m_db.plSqlSafeString(m_dod_y) + "', "
+						+ Integer.parseInt(m_country_id) + ", "
+						+ "'" + m_db.plSqlSafeString(m_entered_by_user) + "', NOW())";
 
 				m_db.runSQL(sqlString, stmt);
-				System.out.println("In add 2");
-				System.out.println(sqlString);
 
 				// Get the inserted index & set the id state of this object
 				setId(Integer.parseInt(m_db.getInsertedIndexValue(stmt, "CONTRIBUTORID_SEQ")));
@@ -491,7 +420,6 @@ public class Contributor {
 					}
 				}
 				ret = true;
-				System.out.println("In add 3");
 			}
 			modifyConOrgLinks();
 			modifyContribContribLinks(INSERT);
@@ -523,7 +451,6 @@ public class Contributor {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
-			System.out.println("In update 1");
 			// trim the notes first to db specified max chars (-1) before
 			// updating
 			if (m_notes.length() >= 600) m_notes = m_notes.substring(0, 599);
@@ -547,20 +474,37 @@ public class Contributor {
 				m_place_of_death = "null";
 			}
 
-			sqlString = "UPDATE Contributor " + "SET PREFIX= '" + m_db.plSqlSafeString(m_prefix) + "'," + "FIRST_NAME= '" + m_db.plSqlSafeString(m_name) + "'," + "MIDDLE_NAME= '"
-					+ m_db.plSqlSafeString(m_m_name) + "'," + "LAST_NAME= '" + m_db.plSqlSafeString(m_l_name) + "'," + "SUFFIX= '" + m_db.plSqlSafeString(m_suffix) + "',"
-					+ "DISPLAY_NAME= '" + m_db.plSqlSafeString(m_display_name) + "'," + "OTHER_NAMES= '" + m_db.plSqlSafeString(m_other_names) + "'," + "GENDER= " + m_gender_id
-					+ "," + "DDDATE_OF_BIRTH= '" + m_db.plSqlSafeString(m_dob_d) + "'," + "MMDATE_OF_BIRTH= '" + m_db.plSqlSafeString(m_dob_m) + "'," + "YYYYDATE_OF_BIRTH= '"
-					+ m_db.plSqlSafeString(m_dob_y) + "'," + "PLACE_OF_BIRTH= " + m_place_of_birth + "," + "PLACE_OF_DEATH= " + m_place_of_death + "," + "NATIONALITY= '"
-					+ m_db.plSqlSafeString(m_nationality) + "'," + "ADDRESS= '" + m_db.plSqlSafeString(m_address) + "'," + "SUBURB= '" + m_db.plSqlSafeString(m_town) + "',"
-					+ "STATE= " + m_state + "," + "POSTCODE= " + m_post_code + "," + "EMAIL= '" + m_db.plSqlSafeString(m_email) + "'," + "NOTES= '" + m_db.plSqlSafeString(m_notes)
-					+ "'," + "NLA= '" + m_db.plSqlSafeString(m_nla) + "'," + "DDDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_d) + "'," + "MMDATE_OF_DEATH= '"
-					+ m_db.plSqlSafeString(m_dod_m) + "'," + "YYYYDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_y) + "'," + "UPDATED_BY_USER = '"
-					+ m_db.plSqlSafeString(m_updated_by_user) + "'," + " UPDATED_DATE =  now() , " + "COUNTRYID= " + m_country_id + " " + "WHERE CONTRIBUTORID = " + m_id;
+			sqlString = "UPDATE Contributor " 
+					+ "SET PREFIX= '" + m_db.plSqlSafeString(m_prefix) + "'," 
+					+ "FIRST_NAME= '" + m_db.plSqlSafeString(m_name) + "'," 
+					+ "MIDDLE_NAME= '" + m_db.plSqlSafeString(m_m_name) + "'," 
+					+ "LAST_NAME= '" + m_db.plSqlSafeString(m_l_name) + "'," 
+					+ "SUFFIX= '" + m_db.plSqlSafeString(m_suffix) + "',"
+					+ "DISPLAY_NAME= '" + m_db.plSqlSafeString(m_display_name) + "'," 
+					+ "OTHER_NAMES= '" + m_db.plSqlSafeString(m_other_names) + "'," 
+					+ "GENDER= " + m_gender_id + "," 
+					+ "DDDATE_OF_BIRTH= '" + m_db.plSqlSafeString(m_dob_d) + "'," 
+					+ "MMDATE_OF_BIRTH= '" + m_db.plSqlSafeString(m_dob_m) + "'," 
+					+ "YYYYDATE_OF_BIRTH= '" + m_db.plSqlSafeString(m_dob_y) + "'," 
+					+ "PLACE_OF_BIRTH= " + m_place_of_birth + "," 
+					+ "PLACE_OF_DEATH= " + m_place_of_death + "," 
+					+ "NATIONALITY= '" + m_db.plSqlSafeString(m_nationality) + "'," 
+					+ "ADDRESS= '" + m_db.plSqlSafeString(m_address) + "'," 
+					+ "SUBURB= '" + m_db.plSqlSafeString(m_town) + "',"
+					+ "STATE= " + m_state + "," 
+					+ "POSTCODE= " + m_post_code + "," 
+					+ "EMAIL= '" + m_db.plSqlSafeString(m_email) + "'," 
+					+ "NOTES= '" + m_db.plSqlSafeString(m_notes) + "'," 
+					+ "NLA= '" + m_db.plSqlSafeString(m_nla) + "'," 
+					+ "DDDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_d) + "'," 
+					+ "MMDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_m) + "'," 
+					+ "YYYYDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_y) + "'," 
+					+ "UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) + "'," 
+					+ "UPDATED_DATE = now(), " 
+					+ "COUNTRYID= " + m_country_id + " " 
+					+ "WHERE CONTRIBUTORID = " + m_id;
 
 			m_db.runSQL(sqlString, stmt);
-			System.out.println("In update 2");
-			System.out.println(sqlString);
 
 			if (!m_contfunct_ids.equals("")) {
 				// now lets delete the old relationship between
@@ -683,13 +627,13 @@ public class Contributor {
 			ContributorContributorLink temp_object = new ContributorContributorLink(m_db);
 			switch (modifyType) {
 			case UPDATE:
-				temp_object.update(Integer.toString(m_id), m_contrib_contriblinks);
+				temp_object.update(Integer.toString(m_id), m_contrib_contriblinks, m_contrib_contriblinkfunctions);
 				break;
 			case DELETE:
 				temp_object.deleteContributorContributorLinksForContributor(Integer.toString(m_id));
 				break;
 			case INSERT:
-				temp_object.add(Integer.toString(m_id), m_contrib_contriblinks);
+				temp_object.add(Integer.toString(m_id), m_contrib_contriblinks, m_contrib_contriblinkfunctions);
 				break;
 			}
 		} catch (Exception e) {
@@ -972,6 +916,10 @@ public class Contributor {
 		m_contrib_contriblinks = p_contrib_contriblinks;
 	}
 
+	public void setContributorContributorLinkFunctions(Vector<String> p_contrib_contriblinkfunctions) {
+		m_contrib_contriblinkfunctions = p_contrib_contriblinkfunctions;
+	}
+
 	// /////////////////////////////
 	// GET FUNCTIONS
 	// ////////////////////////////
@@ -1147,6 +1095,10 @@ public class Contributor {
 		return m_contrib_contriblinks;
 	}
 
+	public Vector<String> getAssociatedContributorFunctions() {
+		return m_contrib_contriblinkfunctions;
+	}
+
 	// //////////////////////
 	// Utility methods
 	// //////////////////////
@@ -1305,7 +1257,7 @@ public class Contributor {
 
 	/*************************************************************************
 	 * this method is used for passing in a vector containing id strings of the
-	 * relevent object. i.e eventids, contributor ids etc. It then appends the
+	 * relevant object. i.e eventids, contributor ids etc. It then appends the
 	 * appropriate display info to the id as a string. Such that when used in
 	 * the displayLinkedItem method from item_addedit.jsp it has all the
 	 * information as a string per element ready to be displayed.
@@ -1336,7 +1288,7 @@ public class Contributor {
 	 * Parameters: p_contributor_id - The id of the contributor.
 	 * 
 	 * Returns: A ResultSet with item information if the contributor is found to
-	 * be accociated.
+	 * be associated.
 	 */
 
 	public ResultSet getAssociatedItems(int p_contributor_id, Statement p_stmt) {
@@ -1370,7 +1322,7 @@ public class Contributor {
 	 * Parameters: p_contributor_id - The id of the contributor.
 	 * 
 	 * Returns: A ResultSet with item information if the contributor is found to
-	 * be accociated.
+	 * be associated.
 	 */
 
 	public ResultSet getAssociatedWorks(int p_contributor_id, Statement p_stmt) {
