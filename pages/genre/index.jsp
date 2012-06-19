@@ -21,11 +21,9 @@
 <%@ page import = "ausstage.AusstageCommon"%>
 <%@ include file="../../public/common.jsp"%>
 <cms:include property="template" element="head" />
-<%@ include file="../../templates/MainMenu.jsp"%>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
-	<tr>
-		<td>
+
+<div class='record'>
 			<%
 			ausstage.Database          db_ausstage_for_drill       = new ausstage.Database ();
 			db_ausstage_for_drill.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
@@ -71,21 +69,30 @@
 
 			secondaryGenre = new SecondaryGenre(db_ausstage_for_drill);
 			secondaryGenre.loadFromPrefId(Integer.parseInt(secondarygenreId));
-			if (displayUpdateForm) {
-				displayUpdateForm(secondarygenreId, "SecondaryGenre", secondaryGenre.getName(), out,
-					request, ausstage_search_appconstants_for_drill);
-			}
+
 			
-			if (groupNames.contains("Administrators") || groupNames.contains("Secondary Genre Editor"))
-			out.println("<a class='editLink' target='_blank' href='/custom/second_genre_addedit.jsp?act=edit&f_selected_second_genre_id=" + secondaryGenre.getId() + "'>Edit</a>");
+
 
 			// Secondary Genre
 			%>
-			<table align="center" width='98%' border="0" cellpadding="3" cellspacing="0">
+			<table class='record-table'>
 				<tr>
-					<td width = '25%' align='right'  class='general_heading_light f-186' valign='top'>Secondary Genre Name</td>
-					<td>&nbsp;</td>
-					<td width ='75%' ><b><%=secondaryGenre.getName()%></b></td>
+					<th class='record-label b-90 bold'><img src='../../../resources/images/icon-blank.png' class='box-icon'>Secondary Genre Name</th>
+					
+					<td class='record-value bold'><%=secondaryGenre.getName()%>
+					<%
+					if (groupNames.contains("Administrators") || groupNames.contains("Secondary Genre Editor"))
+					out.println("[<a class='editLink' target='_blank' href='/custom/second_genre_addedit.jsp?act=edit&f_selected_second_genre_id=" + secondaryGenre.getId() + "'>Edit</a>]");
+					%>
+					</td>
+					<td rowspan=2 valign='top'>
+					<%
+					if (displayUpdateForm) {
+					displayUpdateForm(secondarygenreId, "SecondaryGenre", secondaryGenre.getName(), out,
+					request, ausstage_search_appconstants_for_drill);
+					}
+					%>
+					</td>
 				</tr>
 				<%
 				
@@ -94,9 +101,9 @@
 				if (rset != null && rset.isBeforeFirst()) {
 				%>
 					<tr>
-						<td align='right'  class='general_heading_light f-186' valign='top'>Events</td>
-						<td>&nbsp;</td>
-						<td>
+						<th class='record-label b-90 '>Events</th>
+						
+						<td class='record-value'>
 							<table border="0" cellpadding="0" cellspacing="0">
 								<%
 								while(rset.next()) {
@@ -130,11 +137,11 @@
 				if(rset != null && rset.isBeforeFirst()) {
 				%>
 					<tr>
-						<td align='right' class='general_heading_light f-186' valign='top'>Resources</td>
-						<td>&nbsp;</td>
-						<td>
+						<th class='record-label b-90 '>Resources</th>
+						
+						<td class='record-value'>
 							<table border="0" cellpadding="0" cellspacing="0">
-							<%
+								<%
 								while(rset.next()) {
 								%>
 									<tr>
@@ -155,31 +162,27 @@
 				
 				//CI identifer
 				%>
-				<tr class="b-185">
-					<td align='right' class='general_heading_light f-186' valign='top'>Secondary Genre Identifier</td>
-					<td>&nbsp;</td>
-					<td><%=secondaryGenre.getId()%></td>
+				<tr>
+					<th class='record-label b-90 '>Secondary Genre Identifier</th>
+					
+					<td class='record-value'><%=secondaryGenre.getId()%></td>
 				</tr>
 			 	
-				<tr>
-					<td>&nbsp;</td>
-				</tr>
+				
 			</table>
 			
 			<%
 			// close statement
 			stmt.close();
 			%>
-			<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>
+			<!--<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>-->
 			<!-- AddThis Button BEGIN -->
-			<div align="right" class="addthis_toolbox addthis_default_style ">
+			<!--<div align="right" class="addthis_toolbox addthis_default_style ">
 				<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
 				<a class="addthis_button_tweet"></a>
 				<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
 				<a class="addthis_counter addthis_pill_style"></a>
-			</div>
+			</div>-->
 
-		</td>
-	</tr>
-</table>
+</div>
 <cms:include property="template" element="foot" />

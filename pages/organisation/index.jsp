@@ -21,20 +21,19 @@
 <%@ page import = "ausstage.AusstageCommon"%>
 <%@ include file="../../public/common.jsp"%>
 <cms:include property="template" element="head" />
-<%@ include file="../../templates/MainMenu.jsp"%>
 <script type="text/javascript">
 	function displayRow(name){
 		document.getElementById("venue").style.display = 'none';
-		document.getElementById("venuebtn").style.backgroundColor = '#c0c0c0';
+		document.getElementById("venuebtn").style.backgroundColor = '#aaaaaa';
 		document.getElementById("organisation").style.display = 'none';
-		document.getElementById("organisationbtn").style.backgroundColor = '#c0c0c0';
+		document.getElementById("organisationbtn").style.backgroundColor = '#aaaaaa';
 		document.getElementById("contributor").style.display = 'none';
-		document.getElementById("contributorbtn").style.backgroundColor = '#c0c0c0';
+		document.getElementById("contributorbtn").style.backgroundColor = '#aaaaaa';
 		document.getElementById("events").style.display = 'none';
-		document.getElementById("eventsbtn").style.backgroundColor = '#c0c0c0';
+		document.getElementById("eventsbtn").style.backgroundColor = '#aaaaaa';
 	
 		document.getElementById(name).style.display = '';
-		document.getElementById(name+"btn").style.backgroundColor = '#000000';
+		document.getElementById(name+"btn").style.backgroundColor = '#666666';
 	}
 	
 	function showHide(name) {
@@ -45,40 +44,8 @@
 		}
 	}
 </script>
-<style type="text/css">
-	#tabs {
-		padding: 10px;
-		padding-top:35px;
-	}
-	
-	#tabs a {
-		padding-top: 8px;
-		padding-bottom: 8px;
-		padding-left: 14px;
-		padding-right: 10px;
-		text-decoration: none;
-		background-color: #c0c0c0;
-		color: white;
-	}   
-	
-	#tabs a:hover {
-		background-color: #bbbbbb;
-	}
-	
-	#tabs .currentPage {
-		background-color: #333333;
-	}
-	
-	#tabs a:active {
-		background-color: black;
-	}
-</style>
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
-	<tr>
-		<td>
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
-				<tr>
-					<td>
+
+<div class='record'>
 						<%
 						ausstage.Database          db_ausstage_for_drill       = new ausstage.Database ();
 						db_ausstage_for_drill.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
@@ -130,22 +97,27 @@
 						organisation = new Organisation(db_ausstage_for_drill);
 						organisation.load(Integer.parseInt(org_id));
 						country = new Country(db_ausstage_for_drill);
-						
-						if (displayUpdateForm) {
-							displayUpdateForm(org_id, "Organisation", organisation.getName(), out,
-								request, ausstage_search_appconstants_for_drill);
-						}
-				    
-						if (groupNames.contains("Administrators") || groupNames.contains("Organisation Editor"))
-							out.println("<a class='editLink' target='_blank' href='/custom/organisation_addedit.jsp?act=edit&f_selected_organisation_id=" + organisation.getId() + "'>Edit</a>");
-						
+
 						//Name
 						%>
-						<table align="center" width='98%' border="0" cellpadding="3" cellspacing="0">
-							<tr class="b-185">
-							<td align='right' width ='25%' class='general_heading_light f-186' valign='top'>Organisation Name</td>
-							<td>&nbsp;</td>
-							<td width='75%'><b><%=organisation.getName()%></b></td>
+						<table class='record-table'>
+							<tr>
+							<th class='record-label b-121 bold'><img src='../../../resources/images/icon-organisation.png' class='box-icon'>Organisation Name</th>
+							
+							<td class='record-value bold' > <%=organisation.getName()%>
+							<%
+								if (groupNames.contains("Administrators") || groupNames.contains("Organisation Editor"))
+								out.println("[<a class='editLink' target='_blank' href='/custom/organisation_addedit.jsp?act=edit&f_selected_organisation_id=" + organisation.getId() + "'>Edit</a>]");
+							%>
+							</td>
+							<td valign='top' rowspan=2>
+							<%
+								if (displayUpdateForm) {
+								displayUpdateForm(org_id, "Organisation", organisation.getName(), out,
+								request, ausstage_search_appconstants_for_drill);
+								}
+							%>
+							</td>
 						</tr>
 						<%
 						
@@ -153,9 +125,9 @@
 						if (hasValue(organisation.getOtherNames1()) || hasValue(organisation.getOtherNames2()) || hasValue(organisation.getOtherNames3())) {
 						%>
 							<tr>
-								<td align='right' class='general_heading_light f-186' valign='top'>Other names</td>
-								<td>&nbsp;</td>
-								<td>
+								<th class='record-label b-121'>Other names</th>
+								
+								<td class='record-value' colspan=2>
 									<div><%=organisation.getOtherNames1()%></div>
 									<div><%=organisation.getOtherNames2()%></div>
 									<div><%=organisation.getOtherNames3()%></div>
@@ -166,10 +138,10 @@
 				
 						//Address
 						%>
-						<tr class="b-185">
-							<td align='right' class='general_heading_light f-186' valign='top'>Address</td>
-							<td>&nbsp;</td>
-							<td><%=organisation.getAddress()%>
+						<tr>
+							<th class='record-label b-121'>Address</th>
+							
+							<td class='record-value'><%=organisation.getAddress()%>
 				    		<%
 							if (hasValue(organisation.getAddress()) && (hasValue(organisation.getSuburb()) || hasValue(organisation.getStateName()) || hasValue(organisation.getPostcode())))
 								out.print("<br>");
@@ -193,9 +165,9 @@
 						if (hasValue(organisation.getWebLinks())) {
 						%>
 							<tr>
-								<td align='right' class='general_heading_light f-186' valign='top'>Website</td>
-								<td>&nbsp;</td>
-								<td>
+								<th class='record-label b-121'>Website</th>
+								
+								<td class='record-value'>
 									<a href="<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>">
 										<%=organisation.getWebLinks()%>
 									</a>
@@ -219,10 +191,10 @@
 						//Functions
 						if (hasValue(organisation.getFunction(Integer.parseInt(org_id)))) {
 						%>
-							<tr class="b-185">
-								<td align='right' class='general_heading_light f-186' valign='top'>Functions</b></td>
-								<td>&nbsp;</td>
-								<td><%=organisation.getFunction(Integer.parseInt(org_id))%></td>
+							<tr>
+								<th class='record-label b-121'>Functions</th>
+								
+								<td class='record-value'><%=organisation.getFunction(Integer.parseInt(org_id))%></td>
 							</tr>
 						<%
 						}
@@ -230,10 +202,10 @@
 						//NLA
 						if(hasValue(organisation.getNLA())) {
 						%>
-							<tr class="b-185">
-								<td align='right' class='general_heading_light f-186' valign='top'>NLA</b></td>
-								<td>&nbsp;</td>
-								<td><%=organisation.getNLA()%></td>
+							<tr >
+								<th class='record-label b-121'>NLA</th>
+								
+								<td class='record-value'><%=organisation.getNLA()%></td>
 							</tr>
 						<%
 						}
@@ -241,23 +213,25 @@
 						//Notes
 						if(hasValue(organisation.getNotes())) {
 						%>
-							<tr class="b-185">
-								<td align='right' class='general_heading_light f-186' valign='top'>Notes</b></td>
-								<td>&nbsp;</td>
-								<td><%=organisation.getNotes()%></td>
+							<tr>
+								<th class='record-label b-121'>Notes</th>
+								
+								<td class='record-value'><%=organisation.getNotes()%></td>
 							</tr>
 						<%
 						}
 					%>  
 				
 					<tr>
-						<td align='right' class='general_heading_light' valign='top'></td>
-						<td>&nbsp;</td>
-						<td id="tabs" colspan=3>
-							<a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a>
-							<a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a>   
-							<a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a> 	
-							<a href="#" onclick="displayRow('venue')" id='venuebtn'>Venues</a>
+						<th class='record-label b-121'></td>
+						
+						<td class='record-value' id="tabs" colspan=2>
+							<ul class='record-tabs label'>
+								<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
+								<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>   
+								<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a></li> 	
+								<li><a href="#" onclick="displayRow('venue')" id='venuebtn'>Venues</a></li>
+							</ul>
 						</td>
 					</tr>
 				    
@@ -271,9 +245,9 @@
 					
 					if (crset.size() > 0) {
 					%>
-							<td align='right' class='general_heading_light' valign='top'></td>
-							<td>&nbsp;</td>
-							<td valign="top">
+							<th class='record-label b-121'></th>
+							
+							<td class='record-value'>
 								<ul>
 								<%
 								while(crset.next()) {
@@ -322,9 +296,9 @@
 					String prevOrg = "";
 					if (crset.size() > 0) {
 						%>
-						<td align='right' class='general_heading_light' valign='top'></td>
-				 		<td>&nbsp;</td>
-				 		<td valign="top">
+						<th class='record-label b-121'></td>
+				 		
+				 		<td class='record-value'>
 						
 						<%	
 						while (crset.next()){
@@ -391,9 +365,9 @@
 					String prevVen = "";
 					if (crset.size() > 0) {
 					%>
-						<td align='right' class='general_heading_light' valign='top'></td>
-				 		<td>&nbsp;</td>
-				 		<td valign="top">
+						<th class='record-label b-121'></td>
+				 		
+				 		<td class='record-value'>
 						
 						<%
 						while (crset.next()) {
@@ -461,9 +435,9 @@
 					String prevCont = "";
 					if (crset.size() > 0) {
 					%>
-						<td align='right' class='general_heading_light' valign='top'></td>
-				 		<td>&nbsp;</td>
-				 		<td valign="top">
+						<th class='record-label b-121'></td>
+				 		
+				 		<td class='record-value'>
 						
 						<%	
 						while (crset.next()){
@@ -508,8 +482,8 @@
 					rset = organisation.getAssociatedWorks(Integer.parseInt(org_id), stmt);
 					if(rset != null && rset.isBeforeFirst()) {
 					%>
-					<tr class="b-185">
-						<td align='right' class='general_heading_light' valign='top'>
+					<tr >
+						<th class='record-label b-121'>
 							<a class='f-186' href="#" onclick="showHide('works')">Works</a>
 							<table id='works' width="<%=secTableWdth %>" border="0" cellpadding="0" cellspacing="0">
 							<%
@@ -526,7 +500,7 @@
 							}
 							%>
 							</table>
-						</td>
+						</th>
 					</tr>
 					<%
 					}
@@ -537,9 +511,9 @@
 					if(rset != null && rset.isBeforeFirst()) {
 					%>
 						<tr>
-					 		<td align='right' class='general_heading_light f-186' valign='top'><a class='f-186' href="#" onclick="showHide('resources')">Resources</a></td>
-							<td>&nbsp;</td>
-							<td>
+					 		<th class='record-label b-121'><a class='f-186' href="#" onclick="showHide('resources')">Resources</a></th>
+							
+							<td class='record-value'>
 								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
 								<%
 								while(rset.next()) {
@@ -562,39 +536,32 @@
 					
 					//Organisation ID
 					%>
-					<tr bgcolor='#eeeeee'>
-						<td align='right' class='general_heading_light f-186' valign='top'>Organisation Identifier</td>
-						<td width="<%=baseCol2Wdth%>">&nbsp;</td>
-						<td width="<%=baseCol3Wdth%>"><%=organisation.getId()%></td>
+					<tr>
+						<th class='record-label b-121'>Organisation Identifier</th>
+						
+						<td class='record-value'><%=organisation.getId()%></td>
 					</tr>	
 					
 					<%
 					// close statement
 					stmt.close();
 					%>
-					<tr>
-						<td>
-							<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>
+					<!--<tr>
+						<td>-->
+							<!--<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>-->
 							<!-- AddThis Button BEGIN -->
-							<div align="right" class="addthis_toolbox addthis_default_style ">
+							<!--<div align="right" class="addthis_toolbox addthis_default_style ">
 								<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
 								<a class="addthis_button_tweet"></a>
 								<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
 								<a class="addthis_counter addthis_pill_style"></a>
-							</div>
+							</div>-->
 							<script>displayRow("events");
 								if (!document.getElementById("venue").innerHTML.match("[A-Za-z]")) document.getElementById("venuebtn").style.display = "none";
 								if (!document.getElementById("organisation").innerHTML.match("[A-Za-z]")) document.getElementById("organisationbtn").style.display = "none";
 								if (!document.getElementById("contributor").innerHTML.match("[A-Za-z]")) document.getElementById("contributorbtn").style.display = "none";
 								if (!document.getElementById("events").innerHTML.match("[A-Za-z]")) document.getElementById("eventsbtn").style.display = "none";
 							</script>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+							
+</div>
 <cms:include property="template" element="foot" />

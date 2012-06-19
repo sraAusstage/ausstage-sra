@@ -38,41 +38,91 @@ Should probably put this in a seperate .js file
 	    	}
     		
 	    	//check the search_from value to determine which tables we need to check
-		url = "index_ajax.jsp?f_keyword="+$("#header-search-keywords").val()+"&f_search_from=";	    	
-	    	             
-	    	ajaxRequest.open("GET", url+"event", false);
+		//url = "index_ajax.jsp?f_keyword="+$("#header-search-keywords").val()+"&f_search_from=";	    	
+	    	
+	    	//if there are search terms
+	    	if ($('#header-search-keywords').val().trim().length>0){
+	    		url = "../search/results/";
+	    		var eventUrl = url + "event_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
+	    				+ "&f_search_from=event"
+    					+ "&f_sql_switch=and"
+    					+ "&f_sort_by=alphab_frwd"
+    					+ "&f_year=";
+    			var contribUrl = url + "contrib_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
+	    				+ "&f_search_from=contributor"
+    					+ "&f_sql_switch=and"
+    					+ "&f_sort_by=alphab_frwd"
+    					+ "&f_year=";
+    			var venueUrl = url + "venue_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
+	    				+ "&f_search_from=venue"
+    					+ "&f_sql_switch=and"
+    					+ "&f_sort_by=alphab_frwd"
+    					+ "&f_year=";	
+    			var orgUrl = url + "org_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
+	    				+ "&f_search_from=organisation"
+    					+ "&f_sql_switch=and"
+    					+ "&f_sort_by=alphab_frwd"
+    					+ "&f_year=";
+    			var genreUrl = 	"index_ajax.jsp?f_keyword=" + $("#header-search-keywords").val() +"&f_search_from=genre";
+    			var functUrl = 	"index_ajax.jsp?f_keyword=" + $("#header-search-keywords").val() +"&f_search_from=function";	
+	    		var subjUrl = 	"index_ajax.jsp?f_keyword=" + $("#header-search-keywords").val() +"&f_search_from=subject";
+	    		var workUrl = 	url + "work_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
+	    				+ "&f_search_from=work"
+    					+ "&f_sql_switch=and"
+    					+ "&f_sort_by=alphab_frwd"
+    					+ "&f_year=";
+    			var resUrl = 	url + "resource_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
+	    				+ "&f_search_from=resource"
+    					+ "&f_sql_switch=and"
+    					+ "&f_sort_by=alphab_frwd"
+    					+ "&f_year=";
+	    			
+	    	} else {
+	    		url = "index_ajax.jsp?f_keyword="+$("#header-search-keywords").val()+"&f_search_from=";
+	    		var eventUrl = 	url + "event";
+    			var contribUrl = url + "contributor";
+    			var venueUrl = 	url + "venue";	
+    			var orgUrl = 	url + "organisation" ;
+    			var genreUrl = 	url + "genre";
+    			var functUrl = 	url + "function";	
+	    		var subjUrl = 	url + "subject";
+	    		var workUrl = 	url + "works";
+    			var resUrl = 	url + "resource";	
+	    	
+	    	}
+	    	ajaxRequest.open("GET", eventUrl , false);			
 	    	ajaxRequest.send(null);
 	    	updateCount("event",$.trim(ajaxRequest.responseText))
 	    		
-	    	ajaxRequest.open("GET", url+"contributor", false);
+	    	ajaxRequest.open("GET", contribUrl, false);			
 	    	ajaxRequest.send(null);
 	    	updateCount("contrib",$.trim(ajaxRequest.responseText))
 	    		
-	    	ajaxRequest.open("GET", url+"venue", false);
+	    	ajaxRequest.open("GET", venueUrl, false);
 	    	ajaxRequest.send(null);
 	    	updateCount("venue",$.trim(ajaxRequest.responseText));
 	    		
-	    	ajaxRequest.open("GET", url+"organisation", false);
+	    	ajaxRequest.open("GET", orgUrl, false);
 	    	ajaxRequest.send(null);
 	    	updateCount("org",$.trim(ajaxRequest.responseText));
 	 		
-	 	ajaxRequest.open("GET", url+"genre", false);
+	 	ajaxRequest.open("GET", genreUrl, false);
 	    	ajaxRequest.send(null);
 	    	updateCount("genre",$.trim(ajaxRequest.responseText));
 	 		
-	 	ajaxRequest.open("GET", url+"function", false);
+	 	ajaxRequest.open("GET", functUrl, false);
 	    	ajaxRequest.send(null);
 	    	updateCount("function",$.trim(ajaxRequest.responseText));
 	    		
-	    	ajaxRequest.open("GET", url+"subject", false);
+	    	ajaxRequest.open("GET", subjUrl, false);
 	    	ajaxRequest.send(null);
 	    	updateCount("subject",$.trim(ajaxRequest.responseText));
 	    		
-	    	ajaxRequest.open("GET", url+"works", false);
+	    	ajaxRequest.open("GET", workUrl, false);
 	    	ajaxRequest.send(null);
 	    	updateCount("works",$.trim(ajaxRequest.responseText));
 	    		
-	    	ajaxRequest.open("GET", url+"resource", false);
+	    	ajaxRequest.open("GET", resUrl, false);
 	    	ajaxRequest.send(null);
 	    	updateCount("resource",$.trim(ajaxRequest.responseText));
 	    	
@@ -104,6 +154,7 @@ Should probably put this in a seperate .js file
     	//update the links. IF no search terms each box links to the associated browse. 
     	//otherwise link to search results using search terms
     	function updateLinks(){
+    		
     		//if search terms
     	    	if ($('#header-search-keywords').val().trim().length>0){
     	    		var boxesToChange = $('.box');
@@ -132,6 +183,12 @@ Should probably put this in a seperate .js file
     	    			})	
     	    		}
     	    	}
+    	    	//finally if results are 0 disable the link
+    	    	$.each($('.box'), function(){
+    	    		if($(this).children('.box-count').text()=="0"){
+    	    		$(this).attr( "onclick", "null" );}
+    	    	})
+    	    	
     	}
     	
     	function submitSearch(searchType){
@@ -144,7 +201,8 @@ Should probably put this in a seperate .js file
 		//set the action for the search header (will be different for different pages)
 		$("#header-search-form").attr("action","/pages/browse/");
 		$("#header-search-form").attr("onsubmit","clearAll();return getCounts()");
-		clearAll();getCounts();
+		//clearAll();
+		getCounts();
 	});	
 	
 </script>

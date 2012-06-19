@@ -492,7 +492,7 @@ font-weight:bold;
 	}
 
 }
-  //-->
+
   </script>
   
   <%

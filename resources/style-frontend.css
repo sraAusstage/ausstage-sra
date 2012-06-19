@@ -123,6 +123,10 @@ a:hover {
 .bold {
 	font-weight: bold;
 	}
+	
+.top {
+	valign: top!important;
+	}
 
 h1 {
 	font-size: 1.3em;

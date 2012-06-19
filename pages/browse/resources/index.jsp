@@ -50,7 +50,7 @@
 
 <div class="browse-bar b-153">
 
-    <img src="../../../resources/images/icon-event.png" class="browse-icon">
+    <img src="../../../resources/images/icon-resource.png" class="browse-icon">
     
     <span class="browse-heading large">Resources</span>
 

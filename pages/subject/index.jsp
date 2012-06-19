@@ -21,14 +21,8 @@
 <%@ page import = "ausstage.AusstageCommon"%>
 <%@ include file="../../public/common.jsp"%>
 <cms:include property="template" element="head" />
-<%@ include file="../../templates/MainMenu.jsp"%>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
-	<tr>
-		<td>
-			<table width="100%" align="right" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse">
-				<tr>
-					<td bgcolor="#FFFFFF">
+<div class='record'>
 
 						<%
 						ausstage.Database db_ausstage_for_drill = new ausstage.Database ();
@@ -70,22 +64,29 @@
 
 						ContentIndicator contentIndicator = new ContentIndicator(db_ausstage_for_drill);
 						contentIndicator.load(Integer.parseInt(contentindicatorid)); 
-						
-						if (displayUpdateForm) {
-							displayUpdateForm(contentindicatorid, "ContentIndicator", contentIndicator.getName(), out,
-								request, ausstage_search_appconstants_for_drill);
-						}
-						
-						if (groupNames.contains("Administrators") || groupNames.contains("Content Indicator Editor"))
-							out.println("<a class='editLink' target='_blank' href='/custom/primary_content_ind_addedit.jsp?mode=edit&f_primary_cont_ind_id=" + contentIndicator.getId() + "'>Edit</a>");
-						
+			
 						//Content Indicator
 						%>
-						<table align="center" width='98%' border="0" cellpadding="3" cellspacing="0">
+						<table class='record-table'>
 							<tr>
-								<td width='25%' align='right' class='general_heading_light f-186' valign='top'>Subject</td>
-								<td>&nbsp;</td>
-								<td width='75%'><b><%=contentIndicator.getName()%></b></td>
+								<th class='record-label b-90 bold'><img src='../../../resources/images/icon-blank.png' class='box-icon'>Subject</td>
+								
+								<td class='record-value bold'><%=contentIndicator.getName()%>
+								<%
+								if (groupNames.contains("Administrators") || groupNames.contains("Content Indicator Editor"))
+								out.println("[<a class='editLink' target='_blank' href='/custom/primary_content_ind_addedit.jsp?mode=edit&f_primary_cont_ind_id=" + contentIndicator.getId() + "'>Edit</a>]");
+
+								%>
+								</td>
+								<td rowspan=2 valign='top'>
+								<%
+								if (displayUpdateForm) {
+								displayUpdateForm(contentindicatorid, "ContentIndicator", contentIndicator.getName(), out,
+								request, ausstage_search_appconstants_for_drill);
+								}
+								%>
+								</td>
+								
 							</tr>
 							<%
 							//Events
@@ -94,10 +95,10 @@
 							
 							if (rset != null && rset.isBeforeFirst()) {
 							%>
-							<tr class="b-185">
-								<td align='right' class='general_heading_light f-186' valign='top'>Events</td>
-								<td>&nbsp;</td>
-								<td>
+							<tr >
+								<th class='record-label b-90'>Events</th>
+								
+								<td class='record-value'>
 									<table border="0" cellpadding="0" cellspacing="0">
 									<%
 									while (rset.next()) {
@@ -129,10 +130,10 @@
 
 							if(rset != null && rset.isBeforeFirst()) {
 							%>
-							<tr class="b-185">
-								<td align='right' class='general_heading_light f-186' valign='top'>Resources</td>
-								<td>&nbsp;</td>
-								<td>
+							<tr>
+								<th class='record-label b-90'>Resources</th>
+								
+								<td class='record-value'>
 									<table border="0" cellpadding="0" cellspacing="0">
 									<%
 									while(rset.next()) {
@@ -156,26 +157,19 @@
 							//CI identifer
 							%>
 							<tr>
-								<td align='right' class='general_heading_light f-186' valign='top'>Subject Identifier</td>
-		    					<td>&nbsp;</td>
-		    					<td><%=contentIndicator.getId()%></td>
+								<th class='record-label b-90'>Subject Identifier</th>
+		    					
+		    					<td class='record-value'><%=contentIndicator.getId()%></td>
 							</tr>
-							<tr>
-								<td>&nbsp;</td>
-							</tr>
+							
 						</table>
-						<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>
+						<!--<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>-->
 						<!-- AddThis Button BEGIN -->
-						<div align="right" class="addthis_toolbox addthis_default_style ">
+						<!--<div align="right" class="addthis_toolbox addthis_default_style ">
 							<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
 							<a class="addthis_button_tweet"></a>
 							<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
 							<a class="addthis_counter addthis_pill_style"></a>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>
+						</div>-->
+</div>
 <cms:include property="template" element="foot" />
