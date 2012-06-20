@@ -102,7 +102,7 @@
  //System.out.println(eventeventLinks.toString());
 //add the selected event to the event
   if (f_select_this_event_id != null) {
-	EventEventLink eel = new EventEventLink(m_db);
+	EventEventLink eel = new EventEventLink(db_ausstage);
 	eel.load(f_select_this_event_id);
 	eventEventLinks.add(eel);
 	event.setEventEventLinks(eventEventLinks);        
@@ -111,8 +111,10 @@
   //remove event from the event
   if (f_unselect_this_event_id != null) {
 	for (EventEventLink existing : eventEventLinks) {
-		if (existing.getChildId().equals(f_unselect_this_event_id)) 
+		if (existing.getChildId().equals(f_unselect_this_event_id)) {
 			eventEventLinks.remove(existing);
+			break;
+		}
 	}
     event.setEventEventLinks(eventEventLinks);   
   }
@@ -180,10 +182,9 @@
   buttons_actions.addElement ("Javascript:search_form.action='event_event_functions.jsp';search_form.submit();");
   
   selected_db_sql       = "";
-  Vector<Event> selectedevents = new Vector();
+  Vector selectedevents = new Vector();
   Vector temp_vector    = new Vector();
   String temp_string    = "";
-  selectedevents  = event.getAssociatedEvents();
 
   //because the vector that gets returned contains only linked
   //event ids as strings we need to create a temp vector
@@ -192,10 +193,10 @@
   //i.e. "4455, Luke Sullivan".
 
   //for each event id get name and add the id and the name to a temp vector.
-  for(int i = 0; i < selectedevents.size(); i ++){
-	  temp_string = event.getEventInfoForDisplay(Integer.parseInt(selectedevents.get(i).getEventid()), stmt);
+  for(int i = 0; i < eventEventLinks.size(); i ++){
+	  temp_string = event.getEventInfoForDisplay(Integer.parseInt(eventEventLinks.get(i).getChildId()), stmt);
 	  // FUNCTIONS?
-    temp_vector.add(selectedevents.get(i).getEventid());//add the id to the temp vector.
+    temp_vector.add(eventEventLinks.get(i).getChildId());//add the id to the temp vector.
     temp_vector.add(temp_string);//add the event name to the temp_vector.
    
   }
