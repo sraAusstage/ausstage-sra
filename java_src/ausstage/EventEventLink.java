@@ -246,6 +246,7 @@ public class EventEventLink {
 				eventEventLink = new EventEventLink(m_db);
 				eventEventLink.setEventId(rset.getString("eventId"));
 				eventEventLink.setChildId(rset.getString("childId"));
+				eventEventLink.setFunctionLovId(rset.getString("function_lov_Id"));
 				eventEventLink.setNotes(rset.getString("notes"));
 
 				allEventEventLinks.add(eventEventLink);
