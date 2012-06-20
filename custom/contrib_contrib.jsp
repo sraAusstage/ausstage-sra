@@ -107,7 +107,10 @@
 	//remove contributor from the contributor
 	if (f_unselect_this_contributor_id != null) {
 		for (ContributorContributorLink existing : contribContribLinks) {
-			if (existing.getChildId().equals(f_unselect_this_contributor_id)) contribContribLinks.remove(existing);
+			if (existing.getChildId().equals(f_unselect_this_contributor_id)) {
+				contribContribLinks.remove(existing);
+				break;
+			}
 		}
 		contributor.setContributorContributorLinks(contribContribLinks);
 	}
@@ -159,7 +162,7 @@
 	//for each contributor id get name and add the id and the name to a temp vector.
 
 	for (int i = 0; i < selectedContributors.size(); i++) {
-		temp_string = contributor.getContributorInfoForDisplay(Integer.parseInt(selectedContributors.get(i).getId(), stmt));
+		temp_string = contributor.getContributorInfoForDisplay(selectedContributors.get(i).getId(), stmt);
 		
 		temp_vector.add(selectedContributors.get(i).getId());//add the id to the temp vector.
 		temp_vector.add(temp_string);//add the contributor name to the temp_vector.

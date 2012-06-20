@@ -102,8 +102,10 @@
  //remove  venue from the venue
   if (f_unselect_this_org_id != null) {
       for (OrganisationOrganisationLink existing : OrgOrgLinks) {
-    	  if (existing.getChildId().equals(f_unselect_this_org_id))
-    	      OrgOrgLinks.remove(existing);  
+    	  if (existing.getChildId().equals(f_unselect_this_org_id)) {
+    		  OrgOrgLinks.remove(existing);
+    		  break;
+    	  }
       }
 	  
       organisation.setOrgOrgLinks(OrgOrgLinks);   

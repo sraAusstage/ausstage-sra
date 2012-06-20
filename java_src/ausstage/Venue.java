@@ -969,32 +969,15 @@ public class Venue {
 	 * Returns: None
 	 */
 	private void loadLinkedVenues() {
-		ResultSet l_rs = null;
-		String l_sql = "";
-
 		try {
-			Statement stmt = m_db.m_conn.createStatement();
-
-			l_sql = "SELECT DISTINCT venuevenuelinkid " + "FROM venuevenuelink " + "WHERE venuevenuelink.venueid =" + m_venue_id;
-			l_rs = m_db.runSQLResultSet(l_sql, stmt);
-			// Reset the object
-			m_venue_venuelinks.removeAllElements();
-
-			while (l_rs.next()) {
-				VenueVenueLink venueVenueLink = new VenueVenueLink(m_db);
-				venueVenueLink.load(l_rs.getString("VENUEVENUELINKID"));
-				m_venue_venuelinks.addElement(venueVenueLink);
-
-			}
-			l_rs.close();
-			stmt.close();
+			VenueVenueLink venueVenueLink = new VenueVenueLink(m_db);
+			m_venue_venuelinks = venueVenueLink.getVenueVenueLinksForVenue(Integer.parseInt(m_venue_id));
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 			System.out.println("An Exception occured in loadLinkedVenues().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());
-			System.out.println("sqlString: " + l_sql);
 			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
 		}
 	}

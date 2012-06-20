@@ -53,7 +53,7 @@
     </tr>
     <tr>
       <td class="bodytext" colspan=3><%
-      out.println("<input type='hidden' name='f_child_organisation_id_" + i + "' id='f_child_organisation_id_" + i + "' value='" + organisationOrganisationLinks.elementAt(i) + "'>");
+      out.println("<input type='hidden' name='f_child_organisation_id_" + i + "' id='f_child_organisation_id_" + i + "' value='" + organisationOrganisationLinks.elementAt(i).getChildId() + "'>");
       out.println("<select name='f_function_lov_id_" + i + "' id='f_function_lov_id_" + i + "' size='1' class='line150' >");
 
       out.print("<option value='0'>--Select new Function--</option>");

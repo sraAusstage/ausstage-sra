@@ -69,7 +69,8 @@ public class VenueVenueLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM VenueVenueLink, lookup_codes " + " WHERE venuevenuelinkId = " + p_venuevenuelink_id
+			sqlString = "SELECT * FROM VenueVenueLink, lookup_codes " 
+					+ " WHERE venuevenuelinkId = " + p_venuevenuelink_id
 					+ "   AND venuevenuelink.function_lov_id=lookup_codes.code_lov_id";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -227,6 +228,7 @@ public class VenueVenueLink {
 				venueVenueLink = new VenueVenueLink(m_db);
 				venueVenueLink.setVenueId(rset.getString("venueId"));
 				venueVenueLink.setChildId(rset.getString("childId"));
+				venueVenueLink.setFunctionLovId(rset.getString("function_lov_id"));
 				venueVenueLink.setNotes(rset.getString("notes"));
 
 				allVenueVenueLinks.add(venueVenueLink);

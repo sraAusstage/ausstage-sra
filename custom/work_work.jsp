@@ -93,7 +93,10 @@
 	//remove work from the work
 	if (f_unselect_this_work_id != null) {
 		for (WorkWorkLink existing : workWorkLinks) {
-			if (existing.getChildId().equals(f_unselect_this_work_id)) workWorkLinks.remove(f_unselect_this_work_id);
+			if (existing.getChildId().equals(f_unselect_this_work_id)) {
+				workWorkLinks.remove(f_unselect_this_work_id);
+				break;
+			}
 		}
 
 		work.setWorkWorkLinks(workWorkLinks);

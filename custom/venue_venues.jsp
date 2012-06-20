@@ -113,8 +113,10 @@
   if(f_unselect_this_venue_id != null)
   {
     for (VenueVenueLink existing : venuevenueLinks) {
-    	if (existing.getChildId().equals(f_unselect_this_venue_id))
-    	    venuevenueLinks.remove(existing);
+    	if (existing.getChildId().equals(f_unselect_this_venue_id)) {
+    		venuevenueLinks.remove(existing);
+    		break;
+    	}
     }
     venue.setVenueVenueLinks(venuevenueLinks);   
   }  

@@ -17,7 +17,7 @@
   Venue		venueObj        = (Venue)session.getAttribute("venueObj");
   String 	venueid		= venueObj.getVenueId();
   //System.out.println("Venue Id:"+venueid);
-  Vector venueVenueLinks = venueObj.getAssociatedVenues();
+  Vector<VenueVenueLink> venueVenueLinks = venueObj.getVenueVenueLinks();
   String functionId   = "";
   String functionDesc = "";
   String notes        = "";
@@ -39,19 +39,18 @@
   }
 
   for(int i=0; i < venueVenueLinks.size(); i++) {
-  	VenueVenueLink venueVenueLink = new VenueVenueLink(db_ausstage);
-	venueVenueLink.load((String)venueVenueLinks.elementAt(i));
+  	VenueVenueLink venueVenueLink = venueVenueLinks.elementAt(i);
     
     // Load up the child items so that we can get the title and citation for display
     Venue tempVenue = new Venue(db_ausstage);
-    tempVenue.load(Integer.parseInt((String)venueVenueLinks.elementAt(i)));
+    tempVenue.load(Integer.parseInt(venueVenueLink.getChildId()));
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Venue:</b> <%=venueObj.getName()%><br><br></td>
     </tr>
     <tr>
       <td class="bodytext" colspan=3><%
-      out.println("<input type='hidden' name='f_child_venue_id_" + i + "' id='f_child_venue_id_" + i + "' value='" + venueVenueLinks.elementAt(i) + "'>");
+      out.println("<input type='hidden' name='f_child_venue_id_" + i + "' id='f_child_venue_id_" + i + "' value='" + venueVenueLinks.elementAt(i).getChildId() + "'>");
       out.println("<select name='f_function_lov_id_" + i + "' id='f_function_lov_id_" + i + "' size='1' class='line150' >");
 
       out.print("<option value='0'>--Select new Function--</option>");

@@ -30,7 +30,7 @@
   String                  currentUser_authId = session.getAttribute("authId").toString();
   Hashtable                    hidden_fields = new Hashtable();
   Vector venue_name_vec		= new Vector();
-  Vector<VenueVenueLink> venue_link_vec		= new Vector();
+  Vector<VenueVenueLink> venue_link_vec		= new Vector<VenueVenueLink>();
   
   String isPreviewForVenueVenue  = request.getParameter("isPreviewForVenueVenue");
   
@@ -38,29 +38,26 @@
   pageFormater.writePageTableHeader (out, "", ausstage_main_page_link);
   
   if(venue_id == null) venue_id = "";
-	//use a new Venue object that is not from the session.
-	if(action != null && action.equals("add")){
+  //use a new Venue object that is not from the session.
+  if(action != null && action.equals("add")){
 		 //System.out.println("Insert");
 	    action = "add";
 	    venue_id = "";	    
-	}
-	else if (action != null && action.equals("edit")){ //editing existing Venue
-    if (venue_id == null) {
-    	venue_id = "";
-    }
+  }
+  else if (action != null && action.equals("edit")){ //editing existing Venue
     if (venue_id != null && !venue_id.equals("") && !venue_id.equals("null")) {  
       venueObj.load(Integer.parseInt(venue_id));
     }
-	}
-	else{ //use the venue object from the session.
-	    venueObj = (Venue)session.getAttribute("venueObj");
-	    venue_id  = venueObj.getVenueId();
-	}
+  }
+  else{ //use the venue object from the session.
+	venueObj = (Venue)session.getAttribute("venueObj");
+	venue_id  = venueObj.getVenueId();
+  }
 	
   if (isPreviewForVenueVenue == null || isPreviewForVenueVenue.equals("null")) 
 	  isPreviewForVenueVenue = "";
-	  if(isPreviewForVenueVenue.equals("true") || (action != null && action.equals("ForVenueForVenue")))
-	    action = "ForVenue";
+  if(isPreviewForVenueVenue.equals("true") || (action != null && action.equals("ForVenueForVenue")))
+    action = "ForVenue";
   
   
   // get the initial state of the object(s) associated with this venue
@@ -246,7 +243,7 @@ document.body.onload=function(){load();};
     venueTemp = new Venue(db_ausstage);
     
     venueTemp.load(Integer.parseInt(venue_link_vec.get(i).getChildId())); 
-    venue_name_vec.add(venueTemp.getVenueInfoForVenueDisplay(Integer.parseInt(venueTemp.getVenueId()), stmt1));
+    venue_name_vec.add(venueTemp.getVenueInfoForVenueDisplay(Integer.parseInt(venue_link_vec.get(i).getChildId()), stmt1));
    }
 	
 	out.println (htmlGenerator.displayLinkedItem("",
