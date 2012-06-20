@@ -71,8 +71,9 @@ public class OrganisationOrganisationLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM OrgOrgLink, lookup_codes " + " WHERE OrgOrgLinkId = " + p_organisationorganisationlink_id
-					+ "   AND OrgOrgLink.function_lov_id=lookup_codes.code_lov_id";
+			sqlString = " SELECT * FROM OrgOrgLink"
+					+ " left join lookup_codes on orgorgLink.function_lov_id=lookup_codes.code_lov_id"
+					+ " WHERE OrgOrgLinkId = " + p_organisationorganisationlink_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
