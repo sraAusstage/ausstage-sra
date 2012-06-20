@@ -83,8 +83,9 @@ public class ItemItemLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM ItemItemLink, lookup_codes " + " WHERE itemitemlinkId = " + p_itemitemlink_id
-					+ "   AND ItemItemLink.function_lov_id=lookup_codes.code_lov_id";
+			sqlString = " SELECT * FROM ItemItemLink"
+					+ " left join lookup_codes on ItemItemLink.function_lov_id=lookup_codes.code_lov_id" 
+					+ " WHERE itemitemlinkId = " + p_itemitemlink_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
