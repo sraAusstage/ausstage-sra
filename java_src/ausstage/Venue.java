@@ -64,7 +64,7 @@ public class Venue {
 	private String m_mmlast_date;
 	private String m_yyyylast_date;
 
-	private Vector m_venue_venuelinks;
+	private Vector<VenueVenueLink> m_venue_venuelinks;
 
 	/*
 	 * Name: Venue ()
@@ -112,7 +112,7 @@ public class Venue {
 		m_regional_or_metro = "";
 		m_entered_by_user = "";
 		m_updated_by_user = "";
-		m_venue_venuelinks = new Vector();
+		m_venue_venuelinks = new Vector<VenueVenueLink>();
 		m_is_in_copy_mode = false;
 		m_ddfirst_date = "";
 		m_mmfirst_date = "";
@@ -221,8 +221,14 @@ public class Venue {
 		m_db = p_db;
 	}
 
-	public Vector getVenues() {
-		return m_venue_venuelinks;
+	public Vector<Venue> getVenues() {
+		Vector<Venue> venues = new Vector<Venue>();
+		for (VenueVenueLink vvl : m_venue_venuelinks) {
+			Venue venue = new Venue(m_db);
+			venue.load(Integer.parseInt(vvl.getChildId()));
+			venues.add(venue);
+		}
+		return venues;
 	}
 
 	/*
@@ -572,7 +578,7 @@ public class Venue {
 		m_updated_by_user = p_user_name;
 	}
 
-	public void setVenueVenueLinks(Vector p_venue_venuelinks) {
+	public void setVenueVenueLinks(Vector<VenueVenueLink> p_venue_venuelinks) {
 		m_venue_venuelinks = p_venue_venuelinks;
 	}
 
@@ -698,11 +704,11 @@ public class Venue {
 		return m_updated_by_user;
 	}
 
-	public Vector getAssociatedVenues() {
-		return m_venue_venuelinks;
+	public Vector<Venue> getAssociatedVenues() {
+		return getVenues();
 	}
 
-	public Vector getVenueVenueLinks() {
+	public Vector<VenueVenueLink> getVenueVenueLinks() {
 		return m_venue_venuelinks;
 	}
 
@@ -969,13 +975,15 @@ public class Venue {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT childid " + "FROM venuevenuelink " + "WHERE venuevenuelink.venueid =" + m_venue_id;
+			l_sql = "SELECT DISTINCT venuevenuelinkid " + "FROM venuevenuelink " + "WHERE venuevenuelink.venueid =" + m_venue_id;
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_venue_venuelinks.removeAllElements();
 
 			while (l_rs.next()) {
-				m_venue_venuelinks.addElement(l_rs.getString("CHILDID"));
+				VenueVenueLink venueVenueLink = new VenueVenueLink(m_db);
+				venueVenueLink.load(l_rs.getString("VENUEVENUELINKID"));
+				m_venue_venuelinks.addElement(venueVenueLink);
 
 			}
 			l_rs.close();

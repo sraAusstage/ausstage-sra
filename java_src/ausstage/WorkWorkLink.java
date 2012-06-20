@@ -118,7 +118,7 @@ public class WorkWorkLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	public boolean add(String p_workId, Vector p_childLinks) {
+	public boolean add(String p_workId, Vector<WorkWorkLink> p_childLinks) {
 		return update(p_workId, p_childLinks);
 	}
 
@@ -133,10 +133,7 @@ public class WorkWorkLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	// System.out.println("Before update:" + p_childLinks);
-	public boolean update(String p_workId, Vector p_childLinks) {
-		// System.out.println("In update:" + p_childLinks + ", Work Id:"+
-		// p_workId);
+	public boolean update(String p_workId, Vector<WorkWorkLink> p_childLinks) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
@@ -146,21 +143,13 @@ public class WorkWorkLink {
 			m_db.runSQL(sqlString, stmt);
 
 			if (p_childLinks != null) {
-				// System.out.println("Work:" + p_childLinks + ", Work Id:"+
-				// p_workId);
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					try {
-						sqlString = "INSERT INTO WorkWorkLink " + "(workId, childId, function_lov_id) " + "VALUES (" + p_workId + ", "
-								+ ((WorkWorkLink) p_childLinks.get(i)).getChildId() + ", null)";
-					} catch (Exception e) {
-						sqlString = "INSERT INTO WorkWorkLink " + "(workId, childId, function_lov_id) " + "VALUES (" + p_workId + ", " + p_childLinks.get(i) + ", null)";
-					}
-					// System.out.println("Work loop:" + p_childLinks.get(i));
+					sqlString = "INSERT INTO WorkWorkLink " + "(workId, childId, function_lov_id) " + "VALUES (" + p_workId + ", "
+							+ ((WorkWorkLink) p_childLinks.get(i)).getChildId() + ", " + ((WorkWorkLink) p_childLinks.get(i)).getFunctionId() + ")";
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;
 			}
-			// System.out.println("In update2:" + p_childLinks);
 			stmt.close();
 			return l_ret;
 		} catch (Exception e) {
@@ -238,8 +227,8 @@ public class WorkWorkLink {
 	 * Returns: A Vector of all WorkWorkLinks for this work.
 	 */
 
-	public Vector getWorkWorkLinksForWork(int workId) {
-		Vector allWorkWorkLinks = new Vector();
+	public Vector<WorkWorkLink> getWorkWorkLinksForWork(int workId) {
+		Vector<WorkWorkLink> allWorkWorkLinks = new Vector<WorkWorkLink>();
 		CachedRowSet rset = this.getWorkWorkLinks(workId);
 		WorkWorkLink workWorkLink = null;
 
@@ -247,6 +236,7 @@ public class WorkWorkLink {
 			while (rset.next()) {
 				workWorkLink = new WorkWorkLink(m_db);
 				workWorkLink.setWorkId(rset.getString("workId"));
+				workWorkLink.setFunctionLovId(rset.getString("function_Lov_Id"));
 				workWorkLink.setChildId(rset.getString("childId"));
 				workWorkLink.setNotes(rset.getString("notes"));
 

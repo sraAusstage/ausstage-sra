@@ -17,8 +17,7 @@
   Contributor	contributorObj        = (Contributor)session.getAttribute("contributor");
   String 	contributorid		= Integer.toString(contributorObj.getId());
   System.out.println("Contributor Id:"+contributorid);
-  Vector contributorContributorLinks = contributorObj.getAssociatedContributors();
-  Vector<String> contributorContributorLinkFunctions = contributorObj.getAssociatedContributorFunctions();
+  Vector<ContributorContributorLink> contributorContributorLinks = contributorObj.getContributorContributorLinks();
   
   String functionId   = "";
   String functionDesc = "";
@@ -40,23 +39,12 @@
   }
 
     for(int i=0; i < contributorContributorLinks.size(); i++) {
-         Contributor contributor = new Contributor(db_ausstage);
-        ContributorContributorLink contributorContributorLink = new ContributorContributorLink(db_ausstage);
-  	try{
-  	  contributorContributorLink.load((String)contributorContributorLinks.elementAt(i));
-  
-  	}catch(Exception e){
-  	  System.out.println(e.toString()+ "Exception :"+contributorContributorLinks.elementAt(i));
-	  contributorContributorLink.load((String)contributorContributorLinks.elementAt(i));
-	}
+    ContributorContributorLink contributorContributorLink = contributorContributorLinks.elementAt(i);
   	
     // Load up the child Contributors
     Contributor tempContributor = new Contributor(db_ausstage);
-    try{
-     tempContributor.load(Integer.parseInt((String) contributorContributorLinks.elementAt(i)));
-    }catch(Exception e){
-      tempContributor.load(Integer.parseInt(contributorContributorLink.getChildId()));
-    }
+    tempContributor.load(Integer.parseInt(contributorContributorLink.getChildId()));
+    
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Contributor:</b> <%=contributorObj.getName() +" "+ contributorObj.getLastName() %><br><br></td>
@@ -78,7 +66,7 @@
         out.print(">" + rsetContributorFuncLookUps.getString ("description") + "</option>");
       }%>
       </select>*<br><br>
-    </td>
+      </td>
     </tr>
     <tr>
       <td class="bodytext" colspan=3><b>Associated Contributor:</b> <%=tempContributor.getName() +" "+ tempContributor.getLastName()%></td>
@@ -108,4 +96,5 @@ function validateForm() {
   } %>
   return (true);
 }
-</script><cms:include property="template" element="foot" />
+</script>
+<cms:include property="template" element="foot" />

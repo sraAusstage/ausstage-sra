@@ -118,7 +118,7 @@ public class EventEventLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	public boolean add(String p_eventId, Vector p_childLinks) {
+	public boolean add(String p_eventId, Vector<EventEventLink> p_childLinks) {
 		return update(p_eventId, p_childLinks);
 	}
 
@@ -133,7 +133,7 @@ public class EventEventLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	public boolean update(String p_eventId, Vector p_childLinks) {
+	public boolean update(String p_eventId, Vector<EventEventLink> p_childLinks) {
 		// System.out.println("In update:" + p_childLinks + ", Event Id:"+
 		// p_eventId);
 		try {
@@ -148,14 +148,9 @@ public class EventEventLink {
 				// System.out.println("Event:" + p_childLinks + ", Event Id:"+
 				// p_eventId);
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					try {
-						sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id) " + "VALUES (" + p_eventId + ", "
-								+ ((EventEventLink) p_childLinks.get(i)).getChildId() + ", null)";
-					} catch (Exception e) {
-						sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id) " + "VALUES (" + p_eventId + ", " + p_childLinks.get(i) + ", null)";
-						System.out.println("Inserted child Id:" + childId);
-						System.out.println("In insert");
-					}
+					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id) " + "VALUES (" + p_eventId + ", "
+						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ")";
+					
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;
@@ -240,8 +235,8 @@ public class EventEventLink {
 	 * Returns: A Vector of all ConEvLinks for this Event.
 	 */
 
-	public Vector getEventEventLinksForEvent(int eventId) {
-		Vector allEventEventLinks = new Vector();
+	public Vector<EventEventLink> getEventEventLinksForEvent(int eventId) {
+		Vector<EventEventLink> allEventEventLinks = new Vector<EventEventLink>();
 		CachedRowSet rset = this.getEventEventLinks(eventId);
 		EventEventLink eventEventLink = null;
 
@@ -252,7 +247,7 @@ public class EventEventLink {
 				eventEventLink.setChildId(rset.getString("childId"));
 				eventEventLink.setNotes(rset.getString("notes"));
 
-				allEventEventLinks.add(eventEventLink.getChildId());
+				allEventEventLinks.add(eventEventLink);
 			}
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");

@@ -20,8 +20,8 @@
   //String venueId = request.getParameter("f_venue_id");
   String venueId        	= venueObj.getVenueId();
   //System.out.println("Venue Id:" + venueId        	);
-  Vector venueVenueLinks 	= venueObj.getAssociatedVenues();
-  Vector tempVenueVenueLinks 	= new Vector();
+  Vector<VenueVenueLink> venueVenueLinks 	= venueObj.getVenueVenueLinks();
+  Vector<VenueVenueLink> tempVenueVenueLinks 	= new Vector();
   String error_msg   		= "";
   String functionId   		= "";
   String notes        		= "";

@@ -20,8 +20,8 @@
   //String organisationId        =request.getParameter("f_organisation_id");
   String organisationId        = Integer.toString(organisationObj.getId());
   //System.out.println("Organisation Id:" + organisationId);
-  Vector organisationOrganisationLinks = organisationObj.getAssociatedOrganisations();
-  Vector tempOrganisationOrganisationLinks = new Vector();
+  Vector<OrganisationOrganisationLink> organisationOrganisationLinks = organisationObj.getOrganisationOrganisationLinks();
+  Vector<OrganisationOrganisationLink> tempOrganisationOrganisationLinks = new Vector<OrganisationOrganisationLink>();
   String error_msg   = "";
   String functionId   = "";
   String notes        = "";

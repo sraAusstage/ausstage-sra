@@ -22,8 +22,8 @@
   ausstage.Country      countryObj      = new ausstage.Country(db_ausstage);
   CachedRowSet          rset;
   ResultSet             l_rs;
-  Vector                  m_org_orglinks;
-  Vector org_link_vec	= new Vector();
+  Vector<OrganisationOrganisationLink> m_org_orglinks;
+  Vector<OrganisationOrganisationLink> org_link_vec	= new Vector<OrganisationOrganisationLink>();
   Vector org_name_vec	= new Vector();
   String action         = request.getParameter("action");
   String stateLeadingSubString = "", stateTrailingSubString = "";
@@ -43,19 +43,13 @@
   if(organisation_id == null) organisation_id = "";
   //use a new Organisation object that is not from the session.
   if(action != null && action.equals("add")){
-    //System.out.println("Insert");
     action = "add";
     organisation_id = "0";	    
   }
   else if (action != null && action.equals("edit")){ //editing existing Orgs
-    //System.out.println("Edit");
-   // System.out.println("Edit" + organisation_id );
     if (organisation_id == null) {
       organisation_id = "";
     }
-    //if (organisation_id != null && !organisation_id.equals("")) {  // try the item id first
-     // organisationObj.load(Integer.parseInt(organisation_id ));
-    //}
     if (organisation_id != null && !organisation_id.equals("") && !organisation_id.equals("null")) {  
         organisationObj.load(Integer.parseInt(organisation_id));
     } 
@@ -63,7 +57,6 @@
   else {//use the org object from the session.
       organisationObj = (Organisation)session.getAttribute("organisationObj");
       organisation_id  = Integer.toString(organisationObj.getId());
-      //System.out.println(organisation_id);
   }
   
   if (isPreviewForOrgOrg == null || isPreviewForOrgOrg.equals("null")) 
@@ -72,23 +65,16 @@
     action = "ForOrganisation";
 		  
   // get the initial state of the object(s) associated with this venue
-  m_org_orglinks      = organisationObj.getAssociatedOrganisations(); 
-  org_link_vec	        = organisationObj.getOrganisation();
+  org_link_vec	        = organisationObj.getOrganisationOrganisationLinks();
   Organisation orgTemp 			= null;
  
   for(int i=0; i < org_link_vec.size(); i++ ){
 	 orgTemp = new Organisation(db_ausstage);
-	 //orgTemp.load(Integer.parseInt((String) org_link_vec.get(i)));
-	 try {
-            orgTemp.load(Integer.parseInt((String) ((OrganisationOrganisationLink) org_link_vec.get(i)).getChildId())); 
-        } catch (Exception e) {
-        orgTemp.load(Integer.parseInt((String) org_link_vec.get(i))); 
-        }
+	 orgTemp.load(Integer.parseInt(org_link_vec.get(i).getChildId()));
 	 org_name_vec.add(orgTemp.getOrganisationInfoForOrganisationDisplay(orgTemp.getId(), stmt));
   }
 	
   String f_selected_venue_id = request.getParameter("f_selected_venue_id");
-  //System.out.println("Selected Id:" + f_selected_venue_id);
 
   if (f_selected_venue_id != null){
       if (request.getParameter("place_of_origin") != null)
@@ -106,7 +92,6 @@
    else//adding a new organisation
    {
      out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp' method='post' onsubmit='return checkMandatoryFields();'>");
-    // System.out.println("Adding a new organisation");
    }
 
   pageFormater.writeHelper(out, "Enter the Organisation Details", "helpers_no1.gif");
@@ -168,7 +153,6 @@
   pageFormater.writeTwoColTableHeader (out, "Place of Demise");
   out.println("<input type='hidden' name='f_place_of_demise' value='" + organisationObj.getPlaceOfDemise() + "'>");
   Venue pod = new Venue(db_ausstage);
-  //pod.load(Integer.parseInt("0"+organisationObj.getPlaceOfDemise()));
   pod.load(Integer.parseInt((organisationObj.getPlaceOfDemise()!=null&&!organisationObj.getPlaceOfDemise().equals(""))?organisationObj.getPlaceOfDemise():"0"));
 
   out.println("<input type='text' name='f_place_of_demise_venue_name' readonly size='50' class ='line300' value=\"" + pod.getName() + "\">");
@@ -297,12 +281,9 @@
   out.println("<textarea name=\"f_notes\" rows=\"5\" cols=\"50\" class=\"line300\">" + organisationObj.getNotes() + "</textarea>");
   pageFormater.writeTwoColTableFooter(out);
   
- // if (organisationObj.getNLA() != null && !organisationObj.getNLA().equals("")) {
   pageFormater.writeTwoColTableHeader(out, "NLA");
   out.println("<input type=\"text\" name=\"f_nla\" size=\"100\" class=\"line300\" maxlength=2048 value=\"" + organisationObj.getNLA() + "\">");
-  pageFormater.writeTwoColTableFooter(out);
- // }
-  
+  pageFormater.writeTwoColTableFooter(out);  
   
   /***************************
   Organisation Association/s
@@ -361,11 +342,9 @@
  
   // reset/set the state of the Organisation object 
   session.setAttribute("organisationObj", organisationObj);
-  //System.out.println("Session:" + organisationObj);
 %>
 </form>
 <script language="javascript">
-<!--
   function checkFields(){
     var msg = "";
     if(isBlank(document.org_form.f_orgname.value))
@@ -381,9 +360,6 @@
     }
     return true;
   }
-  
-
-//-->
 </script>
 <%
   stmt.close();

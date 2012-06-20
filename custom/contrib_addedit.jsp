@@ -2,7 +2,7 @@
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import = "java.sql.*, sun.jdbc.rowset.*, java.util.*, ausstage.Event, ausstage.Venue, ausstage.ConEvLink, admin.Common"%>
+<%@ page import = "java.sql.*, sun.jdbc.rowset.*, java.util.*, ausstage.LookupCode, ausstage.Event, ausstage.Venue, ausstage.ConEvLink, admin.Common"%>
 <%@ page import = " ausstage.Database, ausstage.Work, ausstage.Contributor, ausstage.ContributorContributorLink"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
@@ -23,10 +23,9 @@
   ausstage.Country             country       = new ausstage.Country(db_ausstage);
   Vector                       selectedItems = new Vector();
   Vector                       selectedOrgs  = new Vector();
-  Vector                  m_contrib_contriblinks;
   Vector                  temp_display_info;
-  Vector contributor_name_vec							= new Vector();
-  Vector contributor_link_vec							=	new Vector();
+  Vector<String> contributor_name_vec		= new Vector<String>();
+  Vector<ContributorContributorLink> contributor_link_vec	=	new Vector<ContributorContributorLink>();
   boolean preview = false;
   Hashtable                    hidden_fields = new Hashtable();
   Common                  common               = new Common();
@@ -223,24 +222,14 @@
     if(contrib_funct_ids == null)   {contrib_funct_ids = "";}
     if(contrib_contrib_ids == null)   {contrib_contrib_ids = "";}
     
-    m_contrib_contriblinks          = contributor.getAssociatedContributors();
-    contributor_link_vec	    = contributor.getContributors();
-    Contributor contributorTemp     = null;
-    ContributorContributorLink contributorContributorLink     = null;
+    contributor_link_vec	    = contributor.getContributorContributorLinks();
+    LookupCode lc = new LookupCode(db_ausstage);
     
-    for(int i=0; i < contributor_link_vec.size(); i++ ){
-    	contributorTemp = new Contributor(db_ausstage);
-    	try {
-    	  	contributorTemp.load(Integer.parseInt((String) ((ContributorContributorLink) contributor_link_vec.get(i)).getChildId())); 
-    	  	System.out.println("Try:"+((ContributorContributorLink) contributor_link_vec.get(i)).getChildId());
-    	    } catch (Exception e) {
-    	  	contributorTemp.load(Integer.parseInt((String) contributor_link_vec.get(i))); 
-    	  	System.out.println("Exception:"+ contributor_link_vec.get(i));
-    	    }
-    	    System.out.println("Exception outside:"+ contributor_link_vec.get(i));
-    	//contributorTemp.load(Integer.parseInt((String) contributor_link_vec.get(i)));
-    	//contributor_name_vec.add(contributorTemp.getName());	   
-    	contributor_name_vec.add(contributorTemp.getContributorInfoForDisplay(contributorTemp.getId(), stmt));
+    for(ContributorContributorLink ccl : contributor_link_vec){
+    	Contributor contributorTemp = new Contributor(db_ausstage);
+    	contributorTemp.load(Integer.parseInt(ccl.getChildId()));
+		lc.load(Integer.parseInt(ccl.getFunctionId()));
+    	contributor_name_vec.add(contributorTemp.getDisplayName() + " (" + lc.getDescription() + ")");
      }
     
     String f_selected_venue_id = request.getParameter("f_selected_venue_id");

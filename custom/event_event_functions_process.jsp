@@ -17,8 +17,8 @@
 	
 	Event eventObj = (Event) session.getAttribute("eventObj");
 	String eventId = eventObj.getEventid();
-	Vector eventEventLinks = eventObj.getAssociatedEvents();
-	Vector tempEventEventLinks = new Vector();
+	Vector<EventEventLink> eventEventLinks = eventObj.getEventEventLinks();
+	Vector<EventEventLink> tempEventEventLinks = new Vector<EventEventLink>();
 	String error_msg = "";
 	String functionId = "";
 	String notes = "";

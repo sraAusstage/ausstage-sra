@@ -24,14 +24,13 @@
   String              countryLeadingSubString = "", countryTrailingSubString = "";
   String              stateLeadingSubString = "", stateTrailingSubString = "";
   Vector                  temp_display_info;
-  Vector                  m_venue_venuelinks;
   CachedRowSet        rset;
   String              action       = request.getParameter("action");
   Common              common       = new Common();
   String                  currentUser_authId = session.getAttribute("authId").toString();
   Hashtable                    hidden_fields = new Hashtable();
   Vector venue_name_vec		= new Vector();
-  Vector venue_link_vec		= new Vector();
+  Vector<VenueVenueLink> venue_link_vec		= new Vector();
   
   String isPreviewForVenueVenue  = request.getParameter("isPreviewForVenueVenue");
   
@@ -65,8 +64,7 @@
   
   
   // get the initial state of the object(s) associated with this venue
-  m_venue_venuelinks      = venueObj.getAssociatedVenues();
-  venue_link_vec	        = venueObj.getVenues();
+  venue_link_vec	        = venueObj.getVenueVenueLinks();
   Venue venueTemp 			= null;
   
  
@@ -82,40 +80,6 @@ function load() {
 	geocoder = new google.maps.Geocoder();
 }
 
-/*function checkMandatoryFields(){
-    //all fields are empty
-    if(document.venue_addedit_form.f_street.value == ""){      
-      alert("Please enter street and suburb details.");
-      return (false);
-    }   
-    msg = "";
-  }*/
-
-/*function showAddress() {
-	
-	if(document.venue_addedit_form.f_street.value == ""){      
-	      alert("Please enter street name.");
-	      return (false);
-	    }   
-	    msg = "";
-	    
-	    if(document.venue_addedit_form.f_suburb.value == ""){      
-		      alert("Please enter suburb name.");
-		      return (false);
-		    }   
-		    msg = "";
-	    
-	var address = document.venue_addedit_form.f_street.value + " " + document.venue_addedit_form.f_suburb.value + " " + document.venue_addedit_form.f_postcode.value;
-	
-	geocoder.geocode({'address':address}, function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK) {
-			var point = results[0].geometry.location;
-			document.venue_addedit_form.f_latitude.value = Math.round(point.lat()*1000000)/1000000;
-			document.venue_addedit_form.f_longitude.value = Math.round(point.lng()*1000000)/1000000;
-		}
-	});
-	return false;
-}*/
 
 document.body.onload=function(){load();};
 </script>
@@ -275,20 +239,13 @@ document.body.onload=function(){load();};
   /***************************
   Venue Association/s
   ****************************/
-  //out.println("<a name='venue_venue_link' />");
   pageFormater.writeHelper(out, "Venue Association/s", "helpers_no2.gif");
   hidden_fields.clear();
 
   for(int i=0; i < venue_link_vec.size(); i++ ){
     venueTemp = new Venue(db_ausstage);
-    // venueTemp.load(Integer.parseInt((String) venue_link_vec.get(i))); //Origional
-    //venueTemp.load(Integer.parseInt((String) venue_link_vec.get(i).getChildId())); 
     
-    try {
-        venueTemp.load(Integer.parseInt((String) ((VenueVenueLink) venue_link_vec.get(i)).getChildId())); 
-      } catch (Exception e) {
-        venueTemp.load(Integer.parseInt((String) venue_link_vec.get(i))); 
-      }
+    venueTemp.load(Integer.parseInt(venue_link_vec.get(i).getChildId())); 
     venue_name_vec.add(venueTemp.getVenueInfoForVenueDisplay(Integer.parseInt(venueTemp.getVenueId()), stmt1));
    }
 	

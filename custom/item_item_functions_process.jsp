@@ -20,7 +20,7 @@
   System.out.println("Item Object:" + itemObj);
   String itemId        = itemObj.getItemId();
   System.out.println("Item Id:" + itemId);
-	Vector itemItemLinks = itemObj.getAssociatedItems();
+	Vector<ItemItemLink> itemItemLinks = itemObj.getItemItemLinks();
   String error_msg   = "";
 	String functionId   = "";
 	String notes        = "";
@@ -42,12 +42,7 @@
       itemItemLink.setFunctionLovId(functionId);
       itemItemLink.setNotes(notes);
 
-      ///*for(int j=0; j < i; j++) // Make sure the user hasn't entered any duplicate ConEvLinks.
-     // {
-      //  if (conEvLink.sameContributorAndFunction((ConEvLink)conEvLinks.get(j)))
-     //     warning_msg = "Warning: Duplicate Contributor Links.";
-    //  }*/
-      //if (error_msg.length() == 0)
+
       itemItemLinks.set(i, itemItemLink);
     }
   }

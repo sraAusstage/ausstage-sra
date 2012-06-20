@@ -24,9 +24,8 @@
   Vector                  temp_display_info;
   Vector                  m_work_orglinks;
   Vector                  m_work_conlinks;
-  Vector		  m_work_worklinks;
-  Vector work_link_vec	  			= new Vector();
-  Vector work_name_vec				= new Vector();
+  Vector<WorkWorkLink> work_link_vec = new Vector();
+  Vector work_name_vec				 = new Vector();
   String                  work_title           = "";
   String                  alter_work_title     = "0";
   String                  action               = request.getParameter("action");
@@ -100,23 +99,15 @@
   // get the initial state of the object(s) associated with this work
   m_work_orglinks      = work.getAssociatedOrganisations();
   m_work_conlinks      = work.getAssociatedContributors();
-  m_work_worklinks     = work.getAssociatedWorks();
+  work_link_vec        = work.getWorkWorkLinks();
   
-  work_link_vec	        = work.getWorks();
-  //System.out.println("worklinkvec+" + work_link_vec);
   Work workTemp 			= null;
   WorkWorkLink workWorkLink     = null;
 
   for(int i=0; i < work_link_vec.size(); i++ ){
 	  workTemp = new Work(db_ausstage);
-	  try{
-	    workTemp.load(Integer.parseInt((String) ((WorkWorkLink) work_link_vec.get(i)).getChildId()));
-	    System.out.println((String) ((WorkWorkLink) work_link_vec.get(i)).getChildId());
-	  }catch(Exception e){
-	    workTemp.load(Integer.parseInt((String) work_link_vec.get(i)));
-	  }
-	  //workTemp.load(Integer.parseInt((String) work_link_vec.get(i)));
-	  //work_name_vec.add(workTemp.getWorkTitle());	    
+	  workTemp.load(Integer.parseInt(work_link_vec.get(i).getChildId()));
+	      
 	  work_name_vec.add(workTemp.getWorkInfoForDisplay(Integer.parseInt(workTemp.getWorkId()), stmt));	
    }
  

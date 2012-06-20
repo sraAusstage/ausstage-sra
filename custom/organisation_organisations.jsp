@@ -46,7 +46,6 @@
   
   Hashtable hidden_fields = new Hashtable();
   Organisation organisation = (Organisation)session.getAttribute("organisationObj");
-  //System.out.println("get Org = " + organisation);
   if (organisation == null) organisation = new Organisation(db_ausstage);
   //we don't want to loose any info added to the contrib_addedit.jsp form.
   //only set the contributor attributes if we have come from the addedit page.
@@ -91,22 +90,25 @@
   String f_unselect_this_org_id = request.getParameter("f_unselect_this_org_id");
   String orderBy = request.getParameter ("f_order_by");
   
-  Vector OrgOrgLinks = organisation.getAssociatedOrganisation();
+  Vector<OrganisationOrganisationLink> OrgOrgLinks = organisation.getOrganisationOrganisationLinks();
   //System.out.println(OrgOrgLinks.toString());
   //add the selected venue to the venue
-   if (f_select_this_org_id != null)
-  {
-	   OrgOrgLinks.add(f_select_this_org_id);
-     organisation.setOrgOrgLinks(OrgOrgLinks);        
-    
-  } 
+  if (f_select_this_org_id != null) {
+	  OrganisationOrganisationLink ool = new OrganisationOrganisationLink(db_ausstage);
+	  ool.load(f_select_this_org_id);
+	  OrgOrgLinks.add(ool);
+      organisation.setOrgOrgLinks(OrgOrgLinks);
+  }
  //remove  venue from the venue
-   if (f_unselect_this_org_id != null)
- 	{
-	   OrgOrgLinks.remove(f_unselect_this_org_id);
- 		 organisation.setOrgOrgLinks(OrgOrgLinks);   
-   }  
-   session.setAttribute("organisationObj", organisation);
+  if (f_unselect_this_org_id != null) {
+      for (OrganisationOrganisationLink existing : OrgOrgLinks) {
+    	  if (existing.getChildId().equals(f_unselect_this_org_id))
+    	      OrgOrgLinks.remove(existing);  
+      }
+	  
+      organisation.setOrgOrgLinks(OrgOrgLinks);   
+  }  
+  session.setAttribute("organisationObj", organisation);
   
   
   // Get the form parameters that are used to create the SQL that determines what
@@ -150,19 +152,19 @@
   buttons_actions.addElement ("Javascript:search_form.action='org_org_functions.jsp';search_form.submit();");
  
   selected_db_sql = "";
-  Vector selectedOrganisations = new Vector();
+  Vector<OrganisationOrganisationLink> selectedOrganisations = new Vector<OrganisationOrganisationLink>();
   Vector temp_vector          = new Vector();
   String temp_string          = "";         
-  selectedOrganisations = organisation.getAssociatedOrganisation();
+  selectedOrganisations = organisation.getOrganisationOrganisationLinks();
   
   for (int i=0; i < selectedOrganisations.size(); i++){
-	    temp_string = organisation.getOrganisationInfoForOrganisationDisplay(Integer.parseInt((String)selectedOrganisations.get(i)), stmt);
-	    temp_vector.add(selectedOrganisations.get(i));//add the id to the temp vector.
-	    temp_vector.add(temp_string);//add the venue name to the temp_vector.
-	  }
-    selectedOrganisations = temp_vector;
+	  temp_string = organisation.getOrganisationInfoForOrganisationDisplay(Integer.parseInt(selectedOrganisations.get(i).getChildId()), stmt);
+	  temp_vector.add(selectedOrganisations.get(i).getChildId());//add the id to the temp vector.
+	  temp_vector.add(temp_string);//add the venue name to the temp_vector.
+  }
+  selectedOrganisations = temp_vector;
    
-	  stmt.close();
+  stmt.close();
   
 
   // if first time this form has been loaded
@@ -191,10 +193,6 @@
       list_db_sql += "and organisation.organisationid=" + filter_id + " ";
     if (!filter_name.equals (""))
       list_db_sql += "and LOWER(organisation.name) like '%" + db_ausstage.plSqlSafeString(filter_name.toLowerCase()) + "%' ";
-   // if (!filter_state.equals (""))
-     //list_db_sql += "and LOWER(states.state) like '%" + db_ausstage.plSqlSafeString(filter_state.toLowerCase()) + "%' ";
-//   if (!filter_suburb.equals (""))
-  //   list_db_sql += "and LOWER(suburb) like '%" + db_ausstage.plSqlSafeString(filter_suburb.toLowerCase()) + "%' ";*/
   
     list_db_sql += "Group by organisation.organisationid ";
   }

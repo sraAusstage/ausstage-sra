@@ -17,7 +17,7 @@
   Organisation          organisationObj       = (Organisation)session.getAttribute("organisationObj");
   String        organisationid        = Integer.toString(organisationObj.getId());
   //System.out.println("Org Id:"+organisationid);
-  Vector organisationOrganisationLinks = organisationObj.getAssociatedOrganisations();
+  Vector<OrganisationOrganisationLink> organisationOrganisationLinks = organisationObj.getOrganisationOrganisationLinks();
   String functionId   = "";
   String functionDesc = "";
   String notes        = "";
@@ -40,14 +40,13 @@
   }
 
   for(int i=0; i < organisationOrganisationLinks.size(); i++) {
-    OrganisationOrganisationLink organisationOrganisationLink = new OrganisationOrganisationLink(db_ausstage);
-    organisationOrganisationLink.load((String)organisationOrganisationLinks.elementAt(i));
+    OrganisationOrganisationLink organisationOrganisationLink = organisationOrganisationLinks.elementAt(i);
     //System.out.println("Child Orgs:"+organisationOrganisationLinks.elementAt(i));
     //organisationOrganisationLink.load(organisationid, organisationOrganisationLinks.elementAt(i)+"");
     
     // Load up the child organisations so that we can get the title and citation for display
     Organisation tempOrganisation = new Organisation(db_ausstage);
-    tempOrganisation.load(Integer.parseInt((String)organisationOrganisationLinks.elementAt(i)));
+    tempOrganisation.load(Integer.parseInt(organisationOrganisationLink.getChildId()));
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Organisation:</b> <%=organisationObj.getName()%><br><br></td>
