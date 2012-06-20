@@ -160,9 +160,7 @@ import java.util.GregorianCalendar;
   	    CachedRowSet l_crset = null;
   	    
   		
-  		m_sql_string.append("SELECT count(*) "
-  							+"FROM secgenreclass WHERE "
-  							+"genreclass LIKE '"+m_key_word+"'");
+  		m_sql_string.append("SELECT COUNT(*) From `secgenreclass` WHERE genreclass like '%"+keyword+"%'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -188,9 +186,9 @@ import java.util.GregorianCalendar;
   	    CachedRowSet l_crset = null;
   	    
   		
-  		m_sql_string.append("SELECT count(*) "
-  							+"FROM contributorfunctpreferred WHERE "
-  							+"preferredterm LIKE '"+m_key_word+"'");
+  		m_sql_string.append("select count(*) from (SELECT COUNT(*) From `contributorfunctpreferred` "+
+  				"INNER JOIN contfunctlink ON (contributorfunctpreferred.contributorfunctpreferredid = contfunctlink.contributorfunctpreferredid) "+
+  				"WHERE lcase(`contributorfunctpreferred`.`preferredterm`) LIKE '%" + keyword + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid`) a ");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -216,9 +214,12 @@ import java.util.GregorianCalendar;
   	    Statement l_stmt;
   	    CachedRowSet l_crset = null;
   		
-  		m_sql_string.append("SELECT count(*) "
-  							+"FROM contentindicator WHERE "
-  							+"contentindicator LIKE '"+m_key_word+"'");
+  		m_sql_string.append("SELECT COUNT(*) FROM (SELECT contentindicator.contentindicator,contentindicator.contentindicatorid, count(distinct events.eventid) eventnum, "+
+  				"count(distinct itemcontentindlink.itemid) itemcount FROM contentindicator "+
+  				"LEFT JOIN events ON (contentindicator.contentindicatorid = events.content_indicator) "+
+  				"LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) "+
+  				"WHERE lcase(contentindicator.contentindicator) LIKE '%" + m_key_word + "%' "+
+  				"group by contentindicator.contentindicatorid) contentindicator WHERE contentindicator.eventnum > 0 or contentindicator.itemcount > 0 ");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
