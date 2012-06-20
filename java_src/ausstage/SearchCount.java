@@ -160,7 +160,7 @@ import java.util.GregorianCalendar;
   	    CachedRowSet l_crset = null;
   	    
   		
-  		m_sql_string.append("SELECT COUNT(*) From `secgenreclass` WHERE genreclass like '%"+keyword+"%'");
+  		m_sql_string.append("SELECT COUNT(*) From `secgenreclass` WHERE genreclass like '%"+m_key_word+"%'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -188,7 +188,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("select count(*) from (SELECT COUNT(*) From `contributorfunctpreferred` "+
   				"INNER JOIN contfunctlink ON (contributorfunctpreferred.contributorfunctpreferredid = contfunctlink.contributorfunctpreferredid) "+
-  				"WHERE lcase(`contributorfunctpreferred`.`preferredterm`) LIKE '%" + keyword + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid`) a ");
+  				"WHERE lcase(`contributorfunctpreferred`.`preferredterm`) LIKE '%" + m_key_word + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid`) a ");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
