@@ -103,7 +103,8 @@
 //add the selected event to the event
   if (f_select_this_event_id != null) {
 	EventEventLink eel = new EventEventLink(db_ausstage);
-	eel.load(f_select_this_event_id);
+	eel.setEventId(f_eventid);
+	eel.setChildId(f_select_this_event_id);
 	eventEventLinks.add(eel);
 	event.setEventEventLinks(eventEventLinks);        
     
@@ -194,8 +195,8 @@
 
   //for each event id get name and add the id and the name to a temp vector.
   for(int i = 0; i < eventEventLinks.size(); i ++){
-	  temp_string = event.getEventInfoForDisplay(Integer.parseInt(eventEventLinks.get(i).getChildId()), stmt);
-	  // FUNCTIONS?
+	temp_string = event.getEventInfoForDisplay(Integer.parseInt(eventEventLinks.get(i).getChildId()), stmt);
+	
     temp_vector.add(eventEventLinks.get(i).getChildId());//add the id to the temp vector.
     temp_vector.add(temp_string);//add the event name to the temp_vector.
    

@@ -99,7 +99,8 @@
 	//add the selected contributors to the contributor
 	if (f_select_this_contributor_id != null) {
 		ContributorContributorLink ccl = new ContributorContributorLink(db_ausstage);
-		ccl.load(f_select_this_contributor_id);
+		ccl.setContributorId(f_contribid);
+		ccl.setChildId(f_select_this_contributor_id);
 		contribContribLinks.add(ccl);
 		contributor.setContributorContributorLinks(contribContribLinks);
 	}
@@ -148,10 +149,10 @@
 	buttons_actions.addElement("Javascript:search_form.action='contrib_contrib_functions.jsp';search_form.submit();");
 
 	selected_db_sql = "";
-	Vector<Contributor> selectedContributors = new Vector<Contributor>();
+	Vector<ContributorContributorLink> selectedContributors = new Vector<ContributorContributorLink>();
 	Vector temp_vector = new Vector();
 	String temp_string = "";
-	selectedContributors = contributor.getAssociatedContributors();
+	selectedContributors = contributor.getContributorContributorLinks();
 
 	//because the vector that gets returned contains only linked
 	//contributor ids as strings we need to create a temp vector
@@ -162,9 +163,9 @@
 	//for each contributor id get name and add the id and the name to a temp vector.
 
 	for (int i = 0; i < selectedContributors.size(); i++) {
-		temp_string = contributor.getContributorInfoForDisplay(selectedContributors.get(i).getId(), stmt);
+		temp_string = contributor.getContributorInfoForDisplay(Integer.parseInt(selectedContributors.get(i).getChildId()), stmt);
 		
-		temp_vector.add(selectedContributors.get(i).getId());//add the id to the temp vector.
+		temp_vector.add(Integer.parseInt(selectedContributors.get(i).getChildId()));//add the id to the temp vector.
 		temp_vector.add(temp_string);//add the contributor name to the temp_vector.
 		// System.out.println("Temp STring:"+temp_string);
 	}

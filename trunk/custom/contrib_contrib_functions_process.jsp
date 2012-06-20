@@ -46,6 +46,8 @@
 	}
 
 	if (error_msg.equals("")) {
+		contributorObj.setContributorContributorLinks(tempContributorContributorLinks);
+		session.setAttribute("contributor", contributorObj);
 		pageFormater.writeText(out, "Contributor to contributor process successful.");
 	} else {
 		pageFormater.writeText(out, error_msg);

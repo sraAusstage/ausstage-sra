@@ -48,6 +48,8 @@
 	}
 
 	if (error_msg.equals("")) {
+		workObj.setWorkWorkLinks(tempWorkWorkLinks);
+		session.setAttribute("work", workObj);
 		pageFormater.writeText(out, "Work to work process successful.");
 	} else {
 		pageFormater.writeText(out, error_msg);

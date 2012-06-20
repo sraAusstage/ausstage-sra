@@ -56,7 +56,7 @@
       while (rsetWorkFuncLookUps.next()) {
         String tempFunctionId = rsetWorkFuncLookUps.getString ("code_lov_id");
         out.print("<option value='" + tempFunctionId + "'");
-          if (workWorkLink.getFunctionId().equals(tempFunctionId)) {
+          if (tempFunctionId.equals(workWorkLink.getFunctionId())) {
           out.print(" selected");
         }
         out.print(">" + rsetWorkFuncLookUps.getString ("description") + "</option>");

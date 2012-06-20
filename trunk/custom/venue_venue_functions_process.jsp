@@ -54,9 +54,9 @@
   }
 
   if(error_msg.equals("")) {
-		//venueObj.setVenueVenueLinks(venueVenueLinks);
-		//session.setAttribute("venue", venueObj);
-     pageFormater.writeText(out, "Venue to venue process successful.");
+	venueObj.setVenueVenueLinks(tempVenueVenueLinks);
+	session.setAttribute("venueObj", venueObj);
+    pageFormater.writeText(out, "Venue to venue process successful.");
   }
   else {
     pageFormater.writeText(out, error_msg);

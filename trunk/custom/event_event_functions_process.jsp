@@ -34,7 +34,7 @@
 			childEventId = request.getParameter("f_child_event_id_" + i);
 			functionId = request.getParameter("f_function_lov_id_" + i);
 			notes = request.getParameter("f_notes_" + i);
-			
+
 			eventEventLink.setChildId(childEventId);
 			eventEventLink.setFunctionLovId(functionId);
 			eventEventLink.setNotes(notes);
@@ -46,6 +46,8 @@
 	}
 
 	if (error_msg.equals("")) {
+		eventObj.setEventEventLinks(tempEventEventLinks);
+		session.setAttribute("eventObj", eventObj);
 		pageFormater.writeText(out, "Event to event process successful.");
 	} else {
 		pageFormater.writeText(out, error_msg);

@@ -228,9 +228,13 @@
     for(ContributorContributorLink ccl : contributor_link_vec){
     	Contributor contributorTemp = new Contributor(db_ausstage);
     	contributorTemp.load(Integer.parseInt(ccl.getChildId()));
-		lc.load(Integer.parseInt(ccl.getFunctionId()));
-    	contributor_name_vec.add(contributorTemp.getDisplayName() + " (" + lc.getDescription() + ")");
-     }
+    	if (ccl.getFunctionId() != null) {
+			lc.load(Integer.parseInt(ccl.getFunctionId()));
+			contributor_name_vec.add(contributorTemp.getDisplayName() + " (" + lc.getDescription() + ")");
+		} else {
+			contributor_name_vec.add(contributorTemp.getDisplayName());
+		}
+	}
     
     String f_selected_venue_id = request.getParameter("f_selected_venue_id");
 

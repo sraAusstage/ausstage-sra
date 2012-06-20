@@ -59,7 +59,7 @@
         String tempFunctionId = rsetVenueFuncLookUps.getString ("code_lov_id");
         out.print("<option value='" + tempFunctionId + "'");
   
-        if (venueVenueLink.getFunctionId().equals(tempFunctionId)) {
+        if (tempFunctionId.equals(venueVenueLink.getFunctionId())) {
           out.print(" selected");
         }
         out.print(">" + rsetVenueFuncLookUps.getString ("description") + "</option>");

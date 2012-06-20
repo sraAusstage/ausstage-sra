@@ -599,18 +599,35 @@ public class Event {
 	 * Returns: None
 	 */
 	private void loadEventEventLinks() {
-		EventEventLink temp_object = new EventEventLink(m_db);
+		ResultSet l_rs = null;
+		String l_sql = "";
 
 		try {
-			m_event_eventlinks = temp_object.getEventEventLinksForEvent(Integer.parseInt(m_eventid));
+			Statement stmt = m_db.m_conn.createStatement();
+
+			l_sql = "SELECT DISTINCT eventeventlinkid " + "FROM eventeventlink " + "WHERE eventeventlink.eventid =" + m_eventid;
+			l_rs = m_db.runSQLResultSet(l_sql, stmt);
+			// Reset the object
+			m_event_eventlinks.removeAllElements();
+
+			while (l_rs.next()) {
+				EventEventLink eel = new EventEventLink(m_db);
+				eel.load(l_rs.getString("EVENTEVENTLINKID"));
+				m_event_eventlinks.addElement(eel);
+
+			}
+			l_rs.close();
+			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-			System.out.println("An Exception occured in loadEventEventLinks().");
+			System.out.println("An Exception occured in loadLinkedContributors().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println("sqlString: " + l_sql);
 			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
 		}
+		
 	}
 
 	/*

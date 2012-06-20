@@ -104,7 +104,8 @@
   //add the selected venue to the venue
   if (f_select_this_venue_id != null) {
 	VenueVenueLink vvl = new VenueVenueLink(db_ausstage);
-	vvl.load(f_select_this_venue_id);
+	vvl.setChildId(f_select_this_venue_id);
+	vvl.setVenueId(f_venueid);
     venuevenueLinks.add(vvl);
     venue.setVenueVenueLinks(venuevenueLinks);  
              

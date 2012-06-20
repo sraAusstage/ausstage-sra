@@ -84,7 +84,7 @@
 	//add the selected work to the work  
 	if (f_select_this_work_id != null) {
 		WorkWorkLink newWWL = new WorkWorkLink(db_ausstage);
-		newWWL.setWorkId(workId + "");
+		newWWL.setWorkId(f_workid);
 		newWWL.setChildId(f_select_this_work_id);
 		
 		workWorkLinks.add(newWWL);
@@ -94,7 +94,7 @@
 	if (f_unselect_this_work_id != null) {
 		for (WorkWorkLink existing : workWorkLinks) {
 			if (existing.getChildId().equals(f_unselect_this_work_id)) {
-				workWorkLinks.remove(f_unselect_this_work_id);
+				workWorkLinks.remove(existing);
 				break;
 			}
 		}

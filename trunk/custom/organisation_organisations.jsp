@@ -95,7 +95,9 @@
   //add the selected venue to the venue
   if (f_select_this_org_id != null) {
 	  OrganisationOrganisationLink ool = new OrganisationOrganisationLink(db_ausstage);
-	  ool.load(f_select_this_org_id);
+	  ool.setOrganisationId(f_organisation_id);
+	  ool.setChildId(f_select_this_org_id);
+		
 	  OrgOrgLinks.add(ool);
       organisation.setOrgOrgLinks(OrgOrgLinks);
   }

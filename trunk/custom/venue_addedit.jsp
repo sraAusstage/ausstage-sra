@@ -239,11 +239,17 @@ document.body.onload=function(){load();};
   pageFormater.writeHelper(out, "Venue Association/s", "helpers_no2.gif");
   hidden_fields.clear();
 
+  LookupCode lc = new LookupCode(db_ausstage);
   for(int i=0; i < venue_link_vec.size(); i++ ){
     venueTemp = new Venue(db_ausstage);
     
     venueTemp.load(Integer.parseInt(venue_link_vec.get(i).getChildId())); 
-    venue_name_vec.add(venueTemp.getVenueInfoForVenueDisplay(Integer.parseInt(venue_link_vec.get(i).getChildId()), stmt1));
+	 if (venue_link_vec.get(i).getFunctionId() != null) {
+		lc.load(Integer.parseInt(venue_link_vec.get(i).getFunctionId()));
+		venue_name_vec.add(venueTemp.getName() + " (" + lc.getDescription() + ")");
+	 } else {
+		venue_name_vec.add(venueTemp.getName());
+	 }
    }
 	
 	out.println (htmlGenerator.displayLinkedItem("",
