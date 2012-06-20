@@ -84,7 +84,6 @@ public class WorkWorkLink {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = " SELECT * FROM WorkWorkLink"
-					+ " left join lookup_codes on WorkWorkLink.function_lov_id=lookup_codes.code_lov_id"
 					+ " WHERE workworklinkId = " + p_workworklink_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 

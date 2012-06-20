@@ -83,8 +83,7 @@ public class EventEventLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM EventEventLink, "
-					+ " left join lookup_codes on EventEventLink.function_lov_id=lookup_codes.code_lov_id"
+			sqlString = " SELECT * FROM EventEventLink "
 				+ " WHERE eventeventlinkId = " + p_eventeventlink_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 

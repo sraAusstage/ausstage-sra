@@ -70,7 +70,6 @@ public class VenueVenueLink {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = "SELECT * FROM VenueVenueLink"
-					+ " left join lookup_codes on venuevenuelink.function_lov_id=lookup_codes.code_lov_id" 
 					+ " WHERE venuevenuelinkId = " + p_venuevenuelink_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 
