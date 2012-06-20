@@ -161,8 +161,8 @@ import java.util.GregorianCalendar;
   	    
   		
   		m_sql_string.append("SELECT count(*) "
-  							+"FROM secgenrepreferred WHERE "
-  							+"preferredterm LIKE '"+m_key_word+"'");
+  							+"FROM secgenreclass WHERE "
+  							+"genreclass LIKE '"+m_key_word+"'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
