@@ -115,7 +115,7 @@
   
   // Setup the ConOrgLinks from the session
   contributor.setConOrgLinks(((Contributor)session.getAttribute("contributor")).getConOrgLinks());
-  contributor.setContributorContributorLinks(((Contributor)session.getAttribute("contributor")).getAssociatedContributors());
+  contributor.setContributorContributorLinks(((Contributor)session.getAttribute("contributor")).getContributorContributorLinks());
 
   out.println("<form name='ContentForm' id='ContentForm' method='post' action='contrib_addedit_process.jsp'>");
 %>

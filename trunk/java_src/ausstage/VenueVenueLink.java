@@ -105,7 +105,7 @@ public class VenueVenueLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean add(String p_venueId, Vector p_childLinks) {
+	public boolean add(String p_venueId, Vector<VenueVenueLink> p_childLinks) {
 		return update(p_venueId, p_childLinks);
 	}
 
@@ -121,28 +121,21 @@ public class VenueVenueLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean update(String p_venueId, Vector p_childLinks) {
+	public boolean update(String p_venueId, Vector<VenueVenueLink> p_childLinks) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			boolean l_ret = false;
 
-			System.out.println("In update");
 			sqlString = "DELETE FROM VenueVenueLink where " + "venueId=" + p_venueId;
 			m_db.runSQL(sqlString, stmt);
 
 			if (p_childLinks != null) {
-
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					try {
-						sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id) " + "VALUES (" + p_venueId + ", "
-								+ ((VenueVenueLink) p_childLinks.get(i)).getChildId() + ", null)";
-					} catch (Exception e) {
-						sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id) " + "VALUES (" + p_venueId + ", " + p_childLinks.get(i) + ", null)";
-					}
+					sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id) " + "VALUES (" + p_venueId + ", "
+						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ")";
+					
 					m_db.runSQL(sqlString, stmt);
-					System.out.println("Inserted child Id:" + childId);
-					System.out.println("In insert");
 				}
 				l_ret = true;
 			}
@@ -224,8 +217,8 @@ public class VenueVenueLink {
 	 * Returns: A Vector of all VenueVenueLinks for this venue.
 	 */
 
-	public Vector getVenueVenueLinksForVenue(int venueId) {
-		Vector allVenueVenueLinks = new Vector();
+	public Vector<VenueVenueLink> getVenueVenueLinksForVenue(int venueId) {
+		Vector<VenueVenueLink> allVenueVenueLinks = new Vector<VenueVenueLink>();
 		CachedRowSet rset = this.getVenueVenueLinks(venueId);
 		VenueVenueLink venueVenueLink = null;
 

@@ -9,11 +9,8 @@ import sun.jdbc.rowset.CachedRowSet;
 
 public class ContributorContributorLink {
 	private Database m_db;
-	// private AppConstants AppConstants = new AppConstants();
-	// private Common Common = new Common();
 
 	// All of the record information
-	// private String ContributorContributorLinkId;
 	private String contributorId;
 	private String childId;
 	private String functionLovId;
@@ -29,6 +26,7 @@ public class ContributorContributorLink {
 	 * 
 	 * Returns: None
 	 */
+	
 	public ContributorContributorLink(ausstage.Database m_db2) {
 		m_db = m_db2;
 		initialise();
@@ -43,8 +41,8 @@ public class ContributorContributorLink {
 	 * 
 	 * Returns: None
 	 */
+	
 	public void initialise() {
-		// ContributorContributorLinkId = "0";
 		contributorId = "0";
 		childId = "0";
 		functionLovId = "0";
@@ -60,7 +58,7 @@ public class ContributorContributorLink {
 	 * 
 	 * Returns: None
 	 */
-
+	
 	public void load(String p_contributorcontributorlink_id) {
 		CachedRowSet l_rs;
 		String sqlString;
@@ -76,8 +74,6 @@ public class ContributorContributorLink {
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
-				// ContributorContributorlinkId =
-				// l_rs.getString("ContributorContributorlinkId");
 				contributorId = l_rs.getString("contributorId");
 				childId = l_rs.getString("childId");
 				functionLovId = l_rs.getString("function_lov_id");
@@ -108,8 +104,8 @@ public class ContributorContributorLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean add(String p_contributorId, Vector p_childLinks, Vector<String> p_functionIds) {
-		return update(p_contributorId, p_childLinks, p_functionIds);
+	public boolean add(String p_contributorId, Vector<ContributorContributorLink> p_childLinks) {
+		return update(p_contributorId, p_childLinks);
 	}
 
 	/*
@@ -124,9 +120,7 @@ public class ContributorContributorLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean update(String p_contributorId, Vector p_childLinks, Vector<String> p_functionIds) {
-		// System.out.println("In update:" + p_childLinks + ", Con Id:"+
-		// p_contributorId);
+	public boolean update(String p_contributorId, Vector<ContributorContributorLink> p_childLinks) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
@@ -136,24 +130,14 @@ public class ContributorContributorLink {
 			m_db.runSQL(sqlString, stmt);
 
 			if (p_childLinks != null) {
-				// System.out.println("Contributor:" + p_childLinks +
-				// ", Con Id:"+ p_contributorId);
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					try {
-						sqlString = "INSERT INTO ContribContribLink " 
-								+ "(contributorId, childId, function_lov_id) " 
-								+ "VALUES (" + p_contributorId + ", " + ((ContributorContributorLink) p_childLinks.get(i)).getChildId() + ", " + p_functionIds.get(i) + ")";
-					} catch (Exception e) {
-						sqlString = "INSERT INTO ContribContribLink " 
-								+ "(contributorId, childId, function_lov_id) " 
-								+ "VALUES (" + p_contributorId + ", " + p_childLinks.get(i) + ", " + p_functionIds.get(i) + ")";
-					}
-					// System.out.println("Con loop:" + p_childLinks.get(i));
+					sqlString = "INSERT INTO ContribContribLink " 
+							+ "(contributorId, childId, function_lov_id) " 
+							+ "VALUES (" + p_contributorId + ", " + p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ")";
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;
 			}
-			// System.out.println("In update2:" + p_childLinks);
 			stmt.close();
 			return l_ret;
 		} catch (Exception e) {
@@ -172,6 +156,7 @@ public class ContributorContributorLink {
 	 * 
 	 * Returns: None
 	 */
+	
 	public void deleteContributorContributorLinksForContributor(String contributorId) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
@@ -200,6 +185,7 @@ public class ContributorContributorLink {
 	 * 
 	 * Returns: A record set.
 	 */
+	
 	public CachedRowSet getContributorContributorLinks(int contributorId) {
 		CachedRowSet l_rs;
 		String sqlString;
@@ -226,16 +212,16 @@ public class ContributorContributorLink {
 	/*
 	 * Name: getContributorContributorLinksForContributor (contributorId)
 	 * 
-	 * Purpose: Returns a Vector containing all the ConEvLinks for this
+	 * Purpose: Returns a Vector containing all the ContributorContributorLinks for this
 	 * Contributor.
 	 * 
 	 * Parameters: Contributor Id
 	 * 
-	 * Returns: A Vector of all ConEvLinks for this Contributor.
+	 * Returns: A Vector of all ContributorContributorLinks for this Contributor.
 	 */
 
-	public Vector getContributorContributorLinksForContributor(int contributorId) {
-		Vector allContributorContributorLinks = new Vector();
+	public Vector<ContributorContributorLink> getContributorContributorLinksForContributor(int contributorId) {
+		Vector<ContributorContributorLink> allContributorContributorLinks = new Vector<ContributorContributorLink>();
 		CachedRowSet rset = this.getContributorContributorLinks(contributorId);
 		ContributorContributorLink contributorContributorLink = null;
 

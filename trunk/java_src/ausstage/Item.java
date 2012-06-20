@@ -29,7 +29,6 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import java.sql.*;
-import java.sql.Statement;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -74,7 +73,7 @@ public class Item {
   // Derived Objects
   private Vector m_item_evlinks;
   private Vector m_item_contentindlinks;
-  private Vector m_item_itemlinks;
+  private Vector<ItemItemLink> m_item_itemlinks;
   private Vector m_item_orglinks;
   private Vector m_item_creator_orglinks;
 
@@ -197,7 +196,7 @@ public class Item {
     // Derived Objects
     m_item_evlinks = new Vector();
     m_item_contentindlinks = new Vector();
-    m_item_itemlinks = new Vector();
+    m_item_itemlinks = new Vector<ItemItemLink>();
     m_item_orglinks = new Vector();
     m_item_creator_orglinks = new Vector();
     m_item_venuelinks = new Vector();
@@ -799,8 +798,18 @@ public class Item {
     return m_item_workslinks;
   }
 
-  public Vector getAssociatedItems() {
-    return m_item_itemlinks;
+  public Vector<Item> getAssociatedItems() {
+	Vector<Item> items = new Vector<Item>();
+	for (ItemItemLink iil : m_item_itemlinks) {
+		Item item = new Item(m_db);
+		item.load(Integer.parseInt(iil.getChildId()));
+		items.add(item);
+	}
+	return items;
+  }
+	  
+  public Vector<ItemItemLink> getItemItemLinks() {
+	return m_item_itemlinks;
   }
 
   public Vector getAssociatedOrganisations() {
@@ -1223,8 +1232,7 @@ public class Item {
           }
 
           for (int i = 0; i < m_item_itemlinks.size(); i++) {
-            ItemItemLink itemItemLink = 
-              (ItemItemLink)m_item_itemlinks.elementAt(i);
+            ItemItemLink itemItemLink = m_item_itemlinks.elementAt(i);
             l_sql = 
                 "INSERT INTO itemitemlink (ITEMID, CHILDID, FUNCTION_LOV_ID, NOTES) " + 
                 "VALUES (" + l_item_id + "," + itemItemLink.getChildId() + 

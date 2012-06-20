@@ -23,7 +23,6 @@
   String notes        = "";
   LookupCode lookUps = new LookupCode(db_ausstage);
   CachedRowSet rsetVenueFuncLookUps = lookUps.getLookupCodes("VENUE_FUNCTION");
-  //CachedRowSet rsetVenueFuncLookUps = lookUps.getLookupCodes("ITEM_FUNCTION");
 
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);
@@ -42,17 +41,10 @@
   for(int i=0; i < venueVenueLinks.size(); i++) {
   	VenueVenueLink venueVenueLink = new VenueVenueLink(db_ausstage);
 	venueVenueLink.load((String)venueVenueLinks.elementAt(i));
-	//System.out.println("Child Venues:"+venueVenueLinks.elementAt(i));
-//VenueVenueLink venueVenueLink = venueVenueLinks.elementAt(i);
-  //  VenueVenueLink venueVenueLink = new VenueVenueLink(venueVenueLinks.elementAt(i));
-    //VenueVenueLink venueVenueLink = (VenueVenueLink)venueVenueLinks.elementAt(i);
-    //venueVenueLink.load(venueVenueLinks.elementAt(i)+"");
     
     // Load up the child items so that we can get the title and citation for display
     Venue tempVenue = new Venue(db_ausstage);
-   // tempVenue.load(Integer.parseInt(venueVenueLink.getChildId()));
     tempVenue.load(Integer.parseInt((String)venueVenueLinks.elementAt(i)));
-    //System.out.println( "Temp:"+ Integer.parseInt(venueVenueLink.getChildId()));
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Venue:</b> <%=venueObj.getName()%><br><br></td>

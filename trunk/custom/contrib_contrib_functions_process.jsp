@@ -17,8 +17,8 @@
 
 	Contributor contributorObj = (Contributor) session.getAttribute("contributor");
 	String contributorId = Integer.toString(contributorObj.getId());
-	Vector contributorContributorLinks = contributorObj.getAssociatedContributors();
-	Vector tempContributorContributorLinks = new Vector();
+	Vector<ContributorContributorLink> contributorContributorLinks = contributorObj.getContributorContributorLinks();
+	Vector<ContributorContributorLink> tempContributorContributorLinks = new Vector<ContributorContributorLink>();
 	String error_msg = "";
 	String functionId = "";
 	String notes = "";

@@ -69,8 +69,7 @@ public class Contributor {
 	// delete me
 	// Derived Objects
 	private Vector m_conOrgLinks = new Vector();
-	private Vector m_contrib_contriblinks = new Vector();
-	private Vector<String> m_contrib_contriblinkfunctions = new Vector<String>();
+	private Vector<ContributorContributorLink> m_contrib_contriblinks = new Vector<ContributorContributorLink>();
 
 	/*
 	 * Name: Contributor ()
@@ -259,7 +258,17 @@ public class Contributor {
 		}
 	}
 
-	public Vector getContributors() {
+	public Vector<Contributor> getContributors() {
+		Vector<Contributor> contributors = new Vector<Contributor>();
+		for (ContributorContributorLink ccl : m_contrib_contriblinks) {
+			Contributor contributor = new Contributor(m_db);
+			contributor.load(Integer.parseInt(ccl.getChildId()));
+			contributors.add(contributor);
+		}
+		return contributors;
+	}
+	
+	public Vector<ContributorContributorLink> getContributorContributorLinks() {
 		return m_contrib_contriblinks;
 	}
 
@@ -323,15 +332,15 @@ public class Contributor {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT childid, function_lov_id " + "FROM contribcontriblink " + "WHERE contribcontriblink.contributorid =" + m_id;
+			l_sql = "SELECT DISTINCT contribcontriblinkid " + "FROM contribcontriblink " + "WHERE contribcontriblink.contributorid =" + m_id;
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_contrib_contriblinks.removeAllElements();
-			m_contrib_contriblinkfunctions.removeAllElements();
 
 			while (l_rs.next()) {
-				m_contrib_contriblinks.addElement(l_rs.getString("CHILDID"));
-				m_contrib_contriblinkfunctions.addElement(l_rs.getString("FUNCTION_LOV_ID"));
+				ContributorContributorLink ccl = new ContributorContributorLink(m_db);
+				ccl.load(l_rs.getString("CONTRIBCONTRIBLINKID"));
+				m_contrib_contriblinks.addElement(ccl);
 
 			}
 			l_rs.close();
@@ -627,13 +636,13 @@ public class Contributor {
 			ContributorContributorLink temp_object = new ContributorContributorLink(m_db);
 			switch (modifyType) {
 			case UPDATE:
-				temp_object.update(Integer.toString(m_id), m_contrib_contriblinks, m_contrib_contriblinkfunctions);
+				temp_object.update(Integer.toString(m_id), m_contrib_contriblinks);
 				break;
 			case DELETE:
 				temp_object.deleteContributorContributorLinksForContributor(Integer.toString(m_id));
 				break;
 			case INSERT:
-				temp_object.add(Integer.toString(m_id), m_contrib_contriblinks, m_contrib_contriblinkfunctions);
+				temp_object.add(Integer.toString(m_id), m_contrib_contriblinks);
 				break;
 			}
 		} catch (Exception e) {
@@ -912,13 +921,10 @@ public class Contributor {
 		m_updated_by_user = p_user_name;
 	}
 
-	public void setContributorContributorLinks(Vector p_contrib_contriblinks) {
+	public void setContributorContributorLinks(Vector<ContributorContributorLink> p_contrib_contriblinks) {
 		m_contrib_contriblinks = p_contrib_contriblinks;
 	}
 
-	public void setContributorContributorLinkFunctions(Vector<String> p_contrib_contriblinkfunctions) {
-		m_contrib_contriblinkfunctions = p_contrib_contriblinkfunctions;
-	}
 
 	// /////////////////////////////
 	// GET FUNCTIONS
@@ -1091,12 +1097,8 @@ public class Contributor {
 		return m_conOrgLinks;
 	}
 
-	public Vector getAssociatedContributors() {
-		return m_contrib_contriblinks;
-	}
-
-	public Vector<String> getAssociatedContributorFunctions() {
-		return m_contrib_contriblinkfunctions;
+	public Vector<Contributor> getAssociatedContributors() {
+		return getContributors();
 	}
 
 	// //////////////////////
@@ -1132,8 +1134,6 @@ public class Contributor {
 		ResultSet l_rs = null;
 
 		try {
-
-			// Statement stmt = m_db.m_conn.createStatement();
 			sqlString = "SELECT contributor.`contributorid`,concat_ws(' ', last_name, first_name) as name, "
 					+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) dates, "
 					+ "group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') preferredterm, "
@@ -1270,7 +1270,7 @@ public class Contributor {
 		for (int i = 0; i < p_ids.size(); i++) {
 			if (p_id_type.equals("contributor")) {
 				Contributor childContributor = new Contributor(m_db);
-				int childContributorId = Integer.parseInt(((ContributorContributorLink) m_contrib_contriblinks.elementAt(i)).getChildId());
+				int childContributorId = Integer.parseInt((m_contrib_contriblinks.elementAt(i)).getChildId());
 				l_info_to_add = childContributor.getContributorInfoForContributorDisplay(childContributorId, p_stmt);
 
 				// Get the selected item function
@@ -1281,7 +1281,7 @@ public class Contributor {
 	}
 
 	/*
-	 * Name: getAccociatedItems (int p_contributor_id)
+	 * Name: getAssociatedItems (int p_contributor_id)
 	 * 
 	 * Purpose: Find any items that are associated to a contributor.
 	 * 

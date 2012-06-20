@@ -57,7 +57,7 @@ public class Organisation {
 	private Date m_entered_date;
 	private String m_updated_by_user;
 	private Date m_updated_date;
-	private Vector m_org_orglinks;
+	private Vector<OrganisationOrganisationLink> m_org_orglinks;
 	private String m_ddfirst_date;
 	private String m_mmfirst_date;
 	private String m_yyyyfirst_date;
@@ -191,7 +191,6 @@ public class Organisation {
 				m_place_of_origin = l_rs.getString("PLACE_OF_ORIGIN");
 				m_place_of_demise = l_rs.getString("PLACE_OF_DEMISE");
 				m_nla = l_rs.getString("NLA");
-				System.out.println("NLA: " + m_nla);
 
 				if (m_organisation_name == null) m_organisation_name = "";
 				if (m_other_names1 == null) m_other_names1 = "";
@@ -252,7 +251,7 @@ public class Organisation {
 		}
 	}
 
-	public Vector getOrganisation() {
+	public Vector<OrganisationOrganisationLink> getOrganisationOrganisationLinks() {
 		return m_org_orglinks;
 	}
 
@@ -268,7 +267,6 @@ public class Organisation {
 	 */
 	public boolean add() {
 		try {
-			System.out.println("In add 1");
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			boolean ret = false;
@@ -348,8 +346,6 @@ public class Organisation {
 						+ ","
 						+ m_db.plSqlSafeString(m_place_of_demise.equals("") ? "null" : m_place_of_demise) + "," + "'" + m_db.plSqlSafeString(m_nla) + "'" + ")";
 				m_db.runSQL(sqlString, stmt);
-				System.out.println("In add 3");
-				System.out.println(sqlString);
 				// Get the inserted index
 				m_organisation_id = Integer.parseInt(m_db.getInsertedIndexValue(stmt, "organisationid_seq"));
 				ret = true;
@@ -376,7 +372,6 @@ public class Organisation {
 	 */
 	public boolean update() {
 		try {
-			System.out.println("In update 1");
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			boolean l_ret = false;
@@ -398,7 +393,6 @@ public class Organisation {
 				if (m_place_of_demise == null || m_place_of_demise.equals("") || m_place_of_demise.equals("0")) {
 					m_place_of_demise = "null";
 				}
-				System.out.println("In update 2");
 				sqlString = "UPDATE organisation set name='" + m_db.plSqlSafeString(m_organisation_name) + "', " + " updated_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user)
 						+ "'" + ", updated_DATE =  now(),  " + "other_names1='" + m_db.plSqlSafeString(m_other_names1) + "', " + "other_names2='"
 						+ m_db.plSqlSafeString(m_other_names2) + "', " + "other_names3='" + m_db.plSqlSafeString(m_other_names3) + "', " + "address='"
@@ -413,13 +407,10 @@ public class Organisation {
 						+ m_place_of_origin + "," + "PLACE_OF_Demise= " + m_place_of_demise + "," + "NLA= '" + m_db.plSqlSafeString(m_nla) + "'" + " where organisationid="
 						+ m_organisation_id;
 				m_db.runSQL(sqlString, stmt);
-				System.out.println(sqlString);
 				l_ret = true;
 			}
-			System.out.println("In update 3");
 			modifyOrgOrgLinks(UPDATE);
 			stmt.close();
-			System.out.println("In update 4");
 			return (l_ret);
 		} catch (Exception e) {
 			m_error_string = "Unable to update the organisation. The data may be invalid.";
@@ -803,14 +794,6 @@ public class Organisation {
 		return (m_error_string);
 	}
 
-	public Vector getAssociatedOrganisation() {
-		return m_org_orglinks;
-	}
-
-	public Vector getAssociatedOrganisations() {
-		return m_org_orglinks;
-	}
-
 	public String getEnteredByUser() {
 		return m_entered_by_user;
 	}
@@ -880,13 +863,15 @@ public class Organisation {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT childid " + "FROM orgorglink " + "WHERE orgorglink.organisationid =" + m_organisation_id;
+			l_sql = "SELECT DISTINCT orgorglinkid " + "FROM orgorglink " + "WHERE orgorglink.organisationid =" + m_organisation_id;
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_org_orglinks.removeAllElements();
 
 			while (l_rs.next()) {
-				m_org_orglinks.addElement(l_rs.getString("CHILDID"));
+				OrganisationOrganisationLink ool = new OrganisationOrganisationLink(m_db);
+				ool.load(l_rs.getString("ORGORGLINKID"));
+				m_org_orglinks.addElement(ool);
 
 			}
 			l_rs.close();
@@ -986,20 +971,6 @@ public class Organisation {
 		this.m_nla = request.getParameter("f_nla");
 		if (m_nla == null) m_nla = "";
 
-		// this.m_entered_by_user = request.getParameter("f_entered_by_user");
-		// if (m_entered_by_user == null)
-		// m_entered_by_user = "";
-		// this.m_entered_date = request.getParameter("f_entered_date");
-		// if (m_entered_date == null)
-		// m_entered_date = "";
-		// this.m_updated_by_user = request.getParameter("f_updated_by_user");
-		// if (m_updated_by_user == null)
-		// m_updated_by_user = "";
-		// this.m_updated_date = request.getParameter("m_updated_date");
-		// if (m_updated_date == null)
-		// m_updated_date = "";
-
-		//
 
 	}
 
@@ -1187,7 +1158,7 @@ public class Organisation {
 	 * Parameters: p_organisation_id - The id of the organisation.
 	 * 
 	 * Returns: A ResultSet with item information if the organisation is found
-	 * to be accociated.
+	 * to be associated.
 	 */
 
 	public ResultSet getAssociatedItems(int p_organisation_id, Statement p_stmt) {
@@ -1222,7 +1193,7 @@ public class Organisation {
 	 * Parameters: p_contributor_id - The id of the contributor.
 	 * 
 	 * Returns: A ResultSet with item information if the contributor is found to
-	 * be accociated.
+	 * be associated.
 	 */
 
 	public ResultSet getAssociatedWorks(int p_org_id, Statement p_stmt) {

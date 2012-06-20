@@ -17,14 +17,12 @@
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
   Work		workObj        = (Work)session.getAttribute("work");
   String 	workid		= workObj.getWorkId();
- //System.out.println("Work Id:"+workid);
-  Vector workWorkLinks = workObj.getAssociatedWorks();
+  Vector<WorkWorkLink> workWorkLinks = workObj.getWorkWorkLinks();
   String functionId   = "";
   String functionDesc = "";
   String notes        = "";
   LookupCode lookUps = new LookupCode(db_ausstage);
   CachedRowSet rsetWorkFuncLookUps = lookUps.getLookupCodes("WORK_FUNCTION");
-  //CachedRowSet rsetWorkFuncLookUps = lookUps.getLookupCodes("ITEM_FUNCTION");
 
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);
@@ -39,24 +37,12 @@
   }
 
   for(int i=0; i < workWorkLinks.size(); i++) {
-    System.out.println("Child Works:"+workWorkLinks.elementAt(i));
-    WorkWorkLink workWorkLink = new WorkWorkLink(db_ausstage);
-    try{
-      //workWorkLink.load(workWorkLink.getChildId()); 
-      workWorkLink.load((String)workWorkLinks.elementAt(i)); 	  
-    }catch(Exception e){
-      workWorkLink.load((String)workWorkLinks.elementAt(i));
-    }
+    WorkWorkLink workWorkLink = workWorkLinks.elementAt(i);
     
     // Load up the child works 
     Work tempWork = new Work(db_ausstage);
-    try{
-      //tempWork.load(Integer.parseInt(workWorkLink.getChildId()));
-      tempWork.load(Integer.parseInt((String)workWorkLinks.elementAt(i)));
-    }catch(Exception e){
-      tempWork.load(Integer.parseInt((String)workWorkLinks.elementAt(i)));
-    }
-
+    tempWork.load(Integer.parseInt(workWorkLinks.elementAt(i).getChildId()));
+    
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Work:</b> <%=workObj.getName()%><br><br></td>

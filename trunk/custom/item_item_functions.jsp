@@ -22,7 +22,7 @@
   String        itemid        = itemObj.getItemId();
    System.out.println("Item Id:"+itemid        );
 
-	Vector itemItemLinks = itemObj.getAssociatedItems();
+	Vector<ItemItemLink> itemItemLinks = itemObj.getItemItemLinks();
   
 	String functionId   = "";
 	String functionDesc = "";
@@ -46,13 +46,11 @@
   }
 
   for(int i=0; i < itemItemLinks.size(); i++) {
-    ItemItemLink itemItemLink = (ItemItemLink)itemItemLinks.elementAt(i);
-    //itemItemLink.load(itemid, itemItemLinks.elementAt(i)+"");
-    
+    ItemItemLink itemItemLink = itemItemLinks.elementAt(i);
+
     // Load up the child items so that we can get the title and citation for display
     Item tempItem = new Item(db_ausstage);
     tempItem.load(Integer.parseInt(itemItemLink.getChildId()));
-    System.out.println( "Temp:"+ Integer.parseInt(itemItemLink.getChildId()));
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Resource:</b> <%=itemObj.getCitation()%><br><br></td>

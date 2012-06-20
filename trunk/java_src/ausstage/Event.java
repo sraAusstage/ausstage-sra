@@ -91,7 +91,7 @@ public class Event {
 	private Vector m_sec_content_indicator_evlinks;
 	private Vector m_sec_genre_evlinks;
 	private Vector m_con_evlinks;
-	private Vector m_event_eventlinks;
+	private Vector <EventEventLink> m_event_eventlinks;
 	private Vector m_org_evlinks;
 	private Vector m_organisations;
 	private Vector m_works;
@@ -301,7 +301,7 @@ public class Event {
 		m_sec_content_indicator_evlinks = new Vector();
 		m_sec_genre_evlinks = new Vector();
 		m_con_evlinks = new Vector();
-		m_event_eventlinks = new Vector();
+		m_event_eventlinks = new Vector<EventEventLink>();
 		m_org_evlinks = new Vector();
 		m_organisations = new Vector();
 		m_works = new Vector();
@@ -562,31 +562,6 @@ public class Event {
 		}
 	}
 
-	/*
-	 * Name: loadSecContentIndEvLinks ()
-	 * 
-	 * Purpose: Sets the class to a contain the Secondary Content Indicator
-	 * EvLink information for the specified event id.
-	 * 
-	 * Parameters: None
-	 * 
-	 * Returns: None
-	 */
-	/*
-	 * private void loadSecContentIndicatorEvLinks() { CachedRowSet l_rs; String
-	 * sqlString; SecContentIndicatorEvLink temp_object = new
-	 * SecContentIndicatorEvLink(m_db);;
-	 * 
-	 * try { m_sec_content_indicator_evlinks =
-	 * temp_object.getSecContentIndicatorEvLinksForEvent
-	 * (Integer.parseInt(m_eventid)); } catch (Exception e) {
-	 * System.out.println(">>>>>>>> EXCEPTION <<<<<<<<"); System.out.println
-	 * ("An Exception occured in loadSecContentIndicatorEvLinks().");
-	 * System.out.println("MESSAGE: " + e.getMessage());
-	 * System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-	 * System.out.println("CLASS.TOSTRING: " + e.toString());
-	 * System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<"); } }
-	 */
 	/*
 	 * Name: loadConEvLinks ()
 	 * 
@@ -1401,57 +1376,6 @@ public class Event {
 		}
 	}
 
-	/*
-	 * Name: modifySecContentIndicatorEvLinks ()
-	 * 
-	 * Purpose: Modifies this object in the database.
-	 * 
-	 * Parameters: modifyType - Update, Delete or Insert
-	 * 
-	 * Returns: None
-	 */
-	/*
-	 * private void modifySecContentIndicatorEvLinks(int modifyType) {
-	 * SecContentIndicatorEvLink temp_object = new
-	 * SecContentIndicatorEvLink(m_db);
-	 * 
-	 * try { switch (modifyType) { case UPDATE: temp_object.update(m_eventid,
-	 * m_sec_content_indicator_evlinks); break; case DELETE:
-	 * temp_object.deleteSecContentIndicatorEvLinksForEvent(m_eventid); break;
-	 * case INSERT: temp_object.add(m_eventid, m_sec_content_indicator_evlinks);
-	 * break; } } catch (Exception e) {
-	 * System.out.println(">>>>>>>> EXCEPTION <<<<<<<<"); System.out.println(
-	 * "An Exception occured in modifySecContentIndicatorEvLinks().");
-	 * System.out.println("MESSAGE: " + e.getMessage());
-	 * System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-	 * System.out.println("CLASS.TOSTRING: " + e.toString());
-	 * System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<"); } }
-	 */
-	/*
-	 * Name: modifyArticles ()
-	 * 
-	 * Purpose: Modifies this object in the database.
-	 * 
-	 * Parameters: modifyType - Update, Delete or Insert
-	 * 
-	 * Returns: None
-	 */
-	/*
-	 * private void modifyArticles(int modifyType) { Articles temp_object;
-	 * 
-	 * try { switch (modifyType) { case UPDATE: case DELETE: //
-	 * temp_object.delete(); break; }
-	 * 
-	 * for (int i=0; i < m_articles.size(); i++) { temp_object =
-	 * (Articles)m_articles.get(i); switch (modifyType) { case UPDATE: case
-	 * INSERT: // temp_object.addLink(m_eventid); break; } } } catch (Exception
-	 * e) { System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-	 * System.out.println ("An Exception occured in modifyArticles().");
-	 * System.out.println("MESSAGE: " + e.getMessage());
-	 * System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-	 * System.out.println("CLASS.TOSTRING: " + e.toString());
-	 * System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<"); } }
-	 */
 
 	/*
 	 * Name: modifyEventEventLinks ()
@@ -1701,10 +1625,6 @@ public class Event {
 		return m_description;
 	}
 
-	/*
-	 * public boolean getPartOfATour() { return m_part_of_a_tour; }
-	 */
-
 	public boolean getWorldPremier() {
 		return m_world_premier;
 	}
@@ -1792,11 +1712,7 @@ public class Event {
 	public boolean getEstimatedDates() {
 		return m_estimated_dates;
 	}
-
-	// public boolean getEstimatedFirstDate () {return m_est_first_date;}
-	// public boolean getEstimatedLastDate () {return m_est_last_date;}
-	// public boolean getEstimatedOpenDate () {return m_est_open_date;}
-
+	
 	public String getError() {
 		return m_error_string;
 	}
@@ -1873,10 +1789,20 @@ public class Event {
 
 	// Derived Objects
 
-	public Vector getAssociatedEvents() {
+	public Vector<Event> getAssociatedEvents() {
+		Vector<Event> events = new Vector<Event>();
+		for (EventEventLink eel : m_event_eventlinks) {
+			Event event = new Event(m_db);
+			event.load(Integer.parseInt(eel.getChildId()));
+			events.add(event);
+		}
+		return events;
+	}
+	
+	public Vector<EventEventLink> getEventEventLinks() {
 		return m_event_eventlinks;
 	}
-
+	
 	public Venue getVenue() {
 		return m_venue;
 	}
@@ -1909,12 +1835,8 @@ public class Event {
 		return m_con_evlinks;
 	}
 
-	public Vector getEventEventLinks() {
-		return m_event_eventlinks;
-	}
-
-	public Vector getEvents() {
-		return m_event_eventlinks;
+	public Vector<Event> getEvents() {
+		return getAssociatedEvents();
 	}
 
 	public Vector getOrgEvLinks() {
@@ -2082,7 +2004,7 @@ public class Event {
 		m_con_evlinks = v;
 	}
 
-	public void setEventEventLinks(Vector v) {
+	public void setEventEventLinks(Vector<EventEventLink> v) {
 		m_event_eventlinks = v;
 	}
 
@@ -2108,13 +2030,6 @@ public class Event {
 
 	public void setResEvLinks(Vector v) {
 		m_res_evlinks = v;
-	}
-
-	public// with this set method we also have to automatically set
-			// the contributor, venue and organisation objects
-			//
-	void setItemEvLinks(Vector p_event_eventlinks, Statement p_stmt, boolean p_removing_links) {
-		m_event_eventlinks = p_event_eventlinks;
 	}
 
 	// Database Object
@@ -2606,15 +2521,15 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT events.eventid, events.event_name, events.first_date, venue.venue_name  " + "FROM events "
-					+ "LEFT JOIN eventeventlink on events.eventid = eventeventlink.eventid " + "INNER join venue on events.venueid = venue.venueid   " + "WHERE events.eventid="
-					+ m_eventid + " " + "ORDER BY first_date desc, event_name";
+			l_sql = "SELECT eventeventlinkid  " + "FROM eventeventlink " + "WHERE eventid=" + m_eventid;
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();
 			// System.out.println("loadLinkedEvents");
 			while (l_rs.next()) {
-				m_event_eventlinks.addElement(l_rs.getString("eventid"));
+				EventEventLink eel = new EventEventLink(m_db);
+				eel.load(l_rs.getString("eventeventlinkid"));
+				m_event_eventlinks.addElement(eel);
 			}
 			l_rs.close();
 			stmt.close();

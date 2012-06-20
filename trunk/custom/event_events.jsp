@@ -98,20 +98,23 @@
   //get me all the events from the current item
   //object in the session.
 
-  Vector eventeventLinks = event.getAssociatedEvents();
+  Vector<EventEventLink> eventEventLinks = event.getEventEventLinks();
  //System.out.println(eventeventLinks.toString());
 //add the selected event to the event
-   if (f_select_this_event_id != null)
-  {
-	   eventeventLinks.add(f_select_this_event_id);
-    event.setEventEventLinks(eventeventLinks);        
+  if (f_select_this_event_id != null) {
+	EventEventLink eel = new EventEventLink(m_db);
+	eel.load(f_select_this_event_id);
+	eventEventLinks.add(eel);
+	event.setEventEventLinks(eventEventLinks);        
     
   }
   //remove event from the event
-   if (f_unselect_this_event_id != null)
-  {
-	   eventeventLinks.remove(f_unselect_this_event_id);
-    event.setEventEventLinks(eventeventLinks);   
+  if (f_unselect_this_event_id != null) {
+	for (EventEventLink existing : eventEventLinks) {
+		if (existing.getChildId().equals(f_unselect_this_event_id)) 
+			eventEventLinks.remove(existing);
+	}
+    event.setEventEventLinks(eventEventLinks);   
   }
 
   session.setAttribute("eventObj", event);
@@ -177,9 +180,9 @@
   buttons_actions.addElement ("Javascript:search_form.action='event_event_functions.jsp';search_form.submit();");
   
   selected_db_sql       = "";
-  Vector selectedevents = new Vector();
+  Vector<Event> selectedevents = new Vector();
   Vector temp_vector    = new Vector();
-  String temp_string    = "";       
+  String temp_string    = "";
   selectedevents  = event.getAssociatedEvents();
 
   //because the vector that gets returned contains only linked
@@ -190,12 +193,9 @@
 
   //for each event id get name and add the id and the name to a temp vector.
   for(int i = 0; i < selectedevents.size(); i ++){
-	  try {
-		    temp_string = event.getEventInfoForDisplay(Integer.parseInt((String) selectedevents.get(i)), stmt);
-	  } catch (Exception e) {
-		    temp_string = event.getEventInfoForDisplay(Integer.parseInt(((EventEventLink) selectedevents.get(i)).getChildId()), stmt);
-	  }
-    temp_vector.add(selectedevents.get(i));//add the id to the temp vector.
+	  temp_string = event.getEventInfoForDisplay(Integer.parseInt(selectedevents.get(i).getEventid()), stmt);
+	  // FUNCTIONS?
+    temp_vector.add(selectedevents.get(i).getEventid());//add the id to the temp vector.
     temp_vector.add(temp_string);//add the event name to the temp_vector.
    
   }

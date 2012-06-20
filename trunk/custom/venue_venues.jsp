@@ -56,32 +56,31 @@
   selected_db_sql = "";
   Vector temp_vector          = new Vector();
   String temp_string          = "";         
-  Vector selectedVenues       = new Vector();
-  selectedVenues = venue.getAssociatedVenues();
+  Vector<VenueVenueLink> selectedVenues = venue.getVenueVenueLinks();
   
   boolean fromVenuePage = true;
   boolean isPreviewForVenue = false;
   boolean isPartOfThisVenue = false;
   
   if (request.getParameter("isPreviewForVenue") == null) {
-	    isPreviewForVenue = true;
-	    String venue_id = request.getParameter("f_venue_id");
-	    String name = request.getParameter("f_venuename");
-	    String address = request.getParameter("f_address");
-	    String suburb = request.getParameter("f_suburb");
-	    String state = request.getParameter("f_evstate");
-	    String postcode = request.getParameter("f_postcode");
-	    String capacity = request.getParameter("f_capacity");
-	    String contact = request.getParameter("f_contact");
-	    String contact_phone1 = request.getParameter("f_contact_phone1");
-	    String contact_fax = request.getParameter("f_contact_fax");
-	    String contact_email = request.getParameter("f_contact_email");
-	    String web_link = request.getParameter("f_web_link");
-	    String country = request.getParameter("f_country");
-	    String longitude = request.getParameter("f_longitude");
-	    String latitude = request.getParameter("f_latitude");
-	    String notes = request.getParameter("f_notes");
-	  }
+    isPreviewForVenue = true;
+    String venue_id = request.getParameter("f_venue_id");
+    String name = request.getParameter("f_venuename");
+    String address = request.getParameter("f_address");
+    String suburb = request.getParameter("f_suburb");
+    String state = request.getParameter("f_evstate");
+    String postcode = request.getParameter("f_postcode");
+    String capacity = request.getParameter("f_capacity");
+    String contact = request.getParameter("f_contact");
+    String contact_phone1 = request.getParameter("f_contact_phone1");
+    String contact_fax = request.getParameter("f_contact_fax");
+    String contact_email = request.getParameter("f_contact_email");
+    String web_link = request.getParameter("f_web_link");
+    String country = request.getParameter("f_country");
+    String longitude = request.getParameter("f_longitude");
+    String latitude = request.getParameter("f_latitude");
+    String notes = request.getParameter("f_notes");
+  }
   if (request.getParameter("fromVenuePage") == null)
 	  fromVenuePage = false;
   if (fromVenuePage) {
@@ -96,24 +95,27 @@
   hidden_fields.put("f_venueid", f_venueid);
 
   String f_select_this_venue_id   = request.getParameter("f_select_this_venue_id");
-  //System.out.println("Selected Venue:" +f_select_this_venue_id);
   String f_unselect_this_venue_id = request.getParameter("f_unselect_this_venue_id");
   String orderBy = request.getParameter ("f_order_by");
   //get me all the venues from the current venue
   //object in the session.
-  Vector venuevenueLinks = venue.getAssociatedVenues();
+  Vector<VenueVenueLink> venuevenueLinks = venue.getVenueVenueLinks();
   
   //add the selected venue to the venue
-  if (f_select_this_venue_id != null)
-  {
-    venuevenueLinks.add(f_select_this_venue_id);
+  if (f_select_this_venue_id != null) {
+	VenueVenueLink vvl = new VenueVenueLink(db_ausstage);
+	vvl.load(f_select_this_venue_id);
+    venuevenueLinks.add(vvl);
     venue.setVenueVenueLinks(venuevenueLinks);  
              
   } 
   //remove venue from the venue
   if(f_unselect_this_venue_id != null)
   {
-    venuevenueLinks.remove(f_unselect_this_venue_id);
+    for (VenueVenueLink existing : venuevenueLinks) {
+    	if (existing.getChildId().equals(f_unselect_this_venue_id))
+    	    venuevenueLinks.remove(existing);
+    }
     venue.setVenueVenueLinks(venuevenueLinks);   
   }  
   session.setAttribute("venueObj", venue);
@@ -165,18 +167,12 @@
 
   //for each venue id get the name and add the id and the name to a temp vector.
   for(int i = 0; i < selectedVenues.size(); i ++){
-  	try{
-	     // temp_string = venue.getVenueInfoForVenueDisplay(Integer.parseInt(venue.getVenueId()), stmt);
-	      temp_string = venue.getVenueInfoForVenueDisplay(Integer.parseInt((String)selectedVenues.get(i)), stmt);
-	}catch(Exception e){
-	      temp_string = venue.getVenueInfoForVenueDisplay(Integer.parseInt((String)selectedVenues.get(i)), stmt);
-	}
-	    temp_vector.add(selectedVenues.get(i));//add the id to the temp vector.
-	    //System.out.println("In for loop: " + selectedVenues.get(i));
-	    temp_vector.add(temp_string);//add the venue name to the temp_vector.
-	  }
+  	temp_string = venue.getVenueInfoForVenueDisplay(Integer.parseInt(selectedVenues.get(i).getChildId()), stmt);
+	
+    temp_vector.add(selectedVenues.get(i).getChildId());//add the id to the temp vector.
+	temp_vector.add(temp_string);//add the venue name to the temp_vector.
+  }
   selectedVenues = temp_vector;
- //System.out.println("selected after " + selectedVenues);
   stmt.close();
   
   // if first time this form has been loaded

@@ -147,14 +147,14 @@
   buttons_actions.addElement ("Javascript:search_form.action='item_item_functions.jsp';search_form.submit();");
 
   selected_db_sql       = "";
-  Vector selectedItem = new Vector();
+  Vector<ItemItemLink> selectedItem = new Vector<ItemItemLink>();
   Vector temp_vector    = new Vector();
   String temp_string    = "";
-  selectedItem = item.getAssociatedItems();
+  selectedItem = item.getItemItemLinks();
   selected_db_sql       = "";
  
   for(int i = 0; i < selectedItem.size(); i ++){
-    int childItemId = Integer.parseInt(((ItemItemLink)selectedItem.elementAt(i)).getChildId());
+    int childItemId = Integer.parseInt(selectedItem.elementAt(i).getChildId());
     temp_string = item.getItemInfoForItemDisplay(childItemId, stmt);
     temp_vector.add(childItemId+"");//add the id to the temp vector.
     temp_vector.add(temp_string);//add the event name to the temp_vector.

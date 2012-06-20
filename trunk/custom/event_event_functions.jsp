@@ -18,7 +18,7 @@
   Event          eventObj       = (Event)session.getAttribute("eventObj");
   String        eventid        = eventObj.getEventid();
   //System.out.println("Event Id:"+eventid        );
-  Vector eventEventLinks = eventObj.getAssociatedEvents();
+  Vector<EventEventLink> eventEventLinks = eventObj.getEventEventLinks();
   String functionId   = "";
   String functionDesc = "";
   String notes        = "";
@@ -42,15 +42,11 @@
   }
 
   for(int i=0; i < eventEventLinks.size(); i++) {
-    EventEventLink eventEventLink = new EventEventLink(db_ausstage);
-    eventEventLink.load((String)eventEventLinks.elementAt(i));
-    //System.out.println("Child Venues:"+eventEventLinks.elementAt(i));
-    //EventEventLink eventEventLink = (EventEventLink)eventEventLinks.elementAt(i);
-    //eventEventLink.load(eventid, eventEventLinks.elementAt(i)+"");
+    EventEventLink eventEventLink = eventEventLinks.elementAt(i);
     
     // Load up the child events so that we can get the title and citation for display
     Event tempEvent = new Event(db_ausstage);
-    tempEvent.load(Integer.parseInt((String)eventEventLinks.elementAt(i)));
+    tempEvent.load(Integer.parseInt(eventEventLink.getChildId()));
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Event:</b> <%=eventObj.getEventName()%><br><br></td>

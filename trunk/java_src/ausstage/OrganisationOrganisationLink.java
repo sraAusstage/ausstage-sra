@@ -76,8 +76,6 @@ public class OrganisationOrganisationLink {
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
-				// OrganisationOrganisationlinkId =
-				// l_rs.getString("OrganisationOrganisationlinkId");
 				organisationId = l_rs.getString("organisationId");
 				childId = l_rs.getString("childId");
 				functionLovId = l_rs.getString("function_lov_id");
@@ -108,7 +106,7 @@ public class OrganisationOrganisationLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean add(String p_organisationId, Vector p_childLinks) {
+	public boolean add(String p_organisationId, Vector<OrganisationOrganisationLink> p_childLinks) {
 		return update(p_organisationId, p_childLinks);
 	}
 
@@ -124,9 +122,7 @@ public class OrganisationOrganisationLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean update(String p_organisationId, Vector p_childLinks) {
-		// System.out.println("In update:" + p_childLinks + ", Org Id:"+
-		// p_organisationId);
+	public boolean update(String p_organisationId, Vector<OrganisationOrganisationLink> p_childLinks) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
@@ -136,24 +132,14 @@ public class OrganisationOrganisationLink {
 			m_db.runSQL(sqlString, stmt);
 
 			if (p_childLinks != null) {
-				// System.out.println("Org:" + p_childLinks + ", Org Id:"+
-				// p_organisationId);
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					try {
-						sqlString = "INSERT INTO OrgOrgLink " + "(organisationId, childId, function_lov_id) " + "VALUES (" + p_organisationId + ", "
-								+ ((OrganisationOrganisationLink) p_childLinks.get(i)).getChildId() + ", null)";
-						// System.out.println("Org loop:" +
-						// p_childLinks.get(i)); ((OrganisationOrganisationLink)
-						// p_childLinks.get(i)).getChildId()
-					} catch (Exception e) {
-						sqlString = "INSERT INTO OrgOrgLink " + "(organisationId, childId, function_lov_id) " + "VALUES (" + p_organisationId + ", " + p_childLinks.get(i)
-								+ ", null)";
-					}
+					sqlString = "INSERT INTO OrgOrgLink " + "(organisationId, childId, function_lov_id) " + "VALUES (" + p_organisationId + ", "
+							+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ")";
+					
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;
 			}
-			// System.out.println("In update2:" + p_childLinks);
 			stmt.close();
 			return l_ret;
 		} catch (Exception e) {
@@ -234,8 +220,8 @@ public class OrganisationOrganisationLink {
 	 * organisation.
 	 */
 
-	public Vector getOrganisationOrganisationLinksForOrganisation(int organisationId) {
-		Vector allOrganisationOrganisationLinks = new Vector();
+	public Vector<OrganisationOrganisationLink> getOrganisationOrganisationLinksForOrganisation(int organisationId) {
+		Vector<OrganisationOrganisationLink> allOrganisationOrganisationLinks = new Vector<OrganisationOrganisationLink>();
 		CachedRowSet rset = this.getOrganisationOrganisationLinks(organisationId);
 		OrganisationOrganisationLink organisationOrganisationLink = null;
 
@@ -244,6 +230,7 @@ public class OrganisationOrganisationLink {
 				organisationOrganisationLink = new OrganisationOrganisationLink(m_db);
 				organisationOrganisationLink.setOrganisationId(rset.getString("organisationId"));
 				organisationOrganisationLink.setChildId(rset.getString("childId"));
+				organisationOrganisationLink.setFunctionLovId(rset.getString("function_Lov_Id"));
 				organisationOrganisationLink.setNotes(rset.getString("notes"));
 
 				allOrganisationOrganisationLinks.add(organisationOrganisationLink);

@@ -56,8 +56,8 @@
   Vector articles_link_vec          = new Vector();
   Vector contributor_link_vec       = new Vector();
   Vector contributor_name_vec       = new Vector();
-  Vector event_name_vec							= new Vector();
-  Vector event_link_vec							= new Vector();
+  Vector event_name_vec				= new Vector();
+  Vector<EventEventLink> event_link_vec	= new Vector<EventEventLink>();
   Vector organisation_link_vec      = new Vector();
   Vector organisation_name_vec      = new Vector();
   Vector national_play_vec          = new Vector();
@@ -141,20 +141,13 @@
    // work_name_vec.add(work.getWorkTitle());
   }
 
-  event_link_vec	        = eventObj.getEvents();
+  event_link_vec	        = eventObj.getEventEventLinks();
   Event event 			= null;
   EventEventLink eventEventLink     = null;
- // System.out.println("== " + event_link_vec);
   for(int i=0; i < event_link_vec.size(); i++ ){
 	  event = new Event(db_ausstage);
-	  //event.load(Integer.parseInt((String) event_link_vec.get(i)));
-	  //event_name_vec.add(event.getEventName());
-	  try{
-	    event.load(Integer.parseInt((String) ((EventEventLink)event_link_vec.get(i)).getChildId()));
-	  }catch(Exception e){
-	    event.load(Integer.parseInt((String)event_link_vec.get(i)));
-	  }
-	  
+	  event.load(Integer.parseInt(event_link_vec.get(i).getChildId()));
+	  // THE FUNCTION HERE
 	  event_name_vec.add(event.getEventInfoForDisplay(Integer.parseInt(event.getEventid()), stmt));
   }
   
@@ -239,14 +232,6 @@
   out.println("<input type='radio' name='f_world_premier' value='no' " +
               (eventObj.getWorldPremier()?"":"checked") + ">");
   pageFormater.writeTwoColTableFooter(out);
-/*
-  pageFormater.writeTwoColTableHeader(out, "Interesting Performance History");
-  out.println("<input type='radio' name='f_int_perf_history' value='yes' " +
-              (eventObj.getIntPerfHistory()?"checked":"") + ">");
-  out.println("<input type='radio' name='f_int_perf_history' value='no' " +
-              (eventObj.getIntPerfHistory()?"":"checked") + ">");
-  pageFormater.writeTwoColTableFooter(out);
-*/
   // Status
   pageFormater.writeTwoColTableHeader(out, "Status *");
   out.println("<select name='f_status' size='1' class='line250'>");

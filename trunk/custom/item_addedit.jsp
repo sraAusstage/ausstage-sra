@@ -23,7 +23,7 @@
   String                  catalogueID          = request.getParameter("f_catalogue_id");
   Vector                  temp_display_info;
   Vector                  m_item_evlinks;
-  Vector                  m_item_itemlinks;
+  Vector<ItemItemLink>    m_item_itemlinks;
   Vector                  m_item_secgenrelinks;
   Vector                  m_item_orglinks;
   Vector                  m_item_creator_orglinks;
@@ -100,7 +100,7 @@
   // get the initial state of the object(s) associated with this event
   m_item_evlinks            = item.getAssociatedEvents();
   m_item_secgenrelinks      = item.getAssociatedSecGenres();
-  m_item_itemlinks          = item.getAssociatedItems();
+  m_item_itemlinks          = item.getItemItemLinks();
   m_item_orglinks           = item.getAssociatedOrganisations();
   m_item_creator_orglinks   = item.getAssociatedCreatorOrganisations();
   m_item_venuelinks         = item.getAssociatedVenues();
@@ -613,7 +613,7 @@
   temp_display_info = item.generateDisplayInfo(m_item_itemlinks, "item", stmt);
   
   for(int i=0; i < m_item_itemlinks.size(); i++) {
-    ItemItemLink itemItemLink = (ItemItemLink)m_item_itemlinks.elementAt(i);
+    ItemItemLink itemItemLink = m_item_itemlinks.elementAt(i);
     LookupCode lookUpCode = new LookupCode(db_ausstage);
     lookUpCode.load(Integer.parseInt(itemItemLink.getFunctionId()));
     String tempString = (String)temp_display_info.elementAt(i);

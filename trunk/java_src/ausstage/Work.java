@@ -28,7 +28,7 @@ public class Work {
 	private String m_error_string;
 	private Vector m_work_orglinks;
 	private Vector m_work_conlinks;
-	private Vector m_work_worklinks;
+	private Vector<WorkWorkLink> m_work_worklinks;
 	private String m_entered_by_user;
 	private Date m_entered_date;
 	private String m_updated_by_user;
@@ -48,7 +48,7 @@ public class Work {
 		m_alter_work_title = "";
 		m_work_orglinks = new Vector();
 		m_work_conlinks = new Vector();
-		m_work_worklinks = new Vector();
+		m_work_worklinks = new Vector<WorkWorkLink>();
 		m_entered_by_user = "";
 		m_updated_by_user = "";
 	}
@@ -153,15 +153,25 @@ public class Work {
 		return m_work_conlinks;
 	}
 
-	public Vector getAssociatedWorks() {
-		return m_work_worklinks;
+	public Vector<Work> getAssociatedWorks() {
+		return getWorks();
 	}
 
 	public String getErrorMessage() {
 		return m_error_string;
 	}
 
-	public Vector getWorks() {
+	public Vector<Work> getWorks() {
+		Vector<Work> works = new Vector<Work>();
+		for (WorkWorkLink wwl : m_work_worklinks) {
+			Work work = new Work(m_db);
+			work.load(Integer.parseInt(wwl.getChildId()));
+			works.add(work);
+		}
+		return works;
+	}
+
+	public Vector<WorkWorkLink> getWorkWorkLinks() {
 		return m_work_worklinks;
 	}
 
@@ -176,7 +186,7 @@ public class Work {
 			m_workid = m_db.getInsertedIndexValue(stmt, "workid_seq");
 			ResultSet l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			if (!l_rs.next()) {
-				l_sql = "INSERT INTO work (WORK_TITLE, ALTER_WORK_TITLE, entered_by_user, entered_date) V" + "ALUES (";
+				l_sql = "INSERT INTO work (WORK_TITLE, ALTER_WORK_TITLE, entered_by_user, entered_date) VALUES (";
 				l_sql = (new StringBuilder(String.valueOf(l_sql))).append("'").append(m_db.plSqlSafeString(m_work_title)).append("', ").append("'")
 						.append(m_db.plSqlSafeString(m_alter_work_title)).append("', ").append("'").append(m_db.plSqlSafeString(m_entered_by_user)).append("', NOW())").toString();
 				m_db.runSQLResultSet(l_sql, stmt);
@@ -553,11 +563,15 @@ public class Work {
 		String l_sql = "";
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			l_sql = (new StringBuilder("SELECT DISTINCT childid FROM workworklink WHERE workworklink.workid =")).append(m_workid).toString();
+			l_sql = "SELECT DISTINCT workworklinkid FROM workworklink WHERE workworklink.workid = " + m_workid;
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			m_work_worklinks.removeAllElements();
-			for (; l_rs.next(); m_work_worklinks.addElement(l_rs.getString("CHILDID"))) {
+			while (l_rs.next()) {
+				WorkWorkLink wwl = new WorkWorkLink(m_db);
+				wwl.load(l_rs.getString("WORKWORKLINKID"));
+				m_work_worklinks.addElement(wwl);
 			}
+			
 			l_rs.close();
 			stmt.close();
 		} catch (Exception e) {
@@ -626,7 +640,7 @@ public class Work {
 		m_updated_by_user = p_user_name;
 	}
 
-	public void setWorkWorkLinks(Vector p_work_worklinks) {
+	public void setWorkWorkLinks(Vector<WorkWorkLink> p_work_worklinks) {
 		m_work_worklinks = p_work_worklinks;
 	}
 
