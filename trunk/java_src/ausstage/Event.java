@@ -620,7 +620,7 @@ public class Event {
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-			System.out.println("An Exception occured in loadLinkedContributors().");
+			System.out.println("An Exception occured in loadEventEventLinks().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());

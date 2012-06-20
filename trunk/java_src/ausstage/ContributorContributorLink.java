@@ -69,8 +69,7 @@ public class ContributorContributorLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM ContribContribLink"
-					+ " left join lookup_codes on ContribContribLink.function_lov_id=lookup_codes.code_lov_id" 
+			sqlString = " SELECT * FROM ContribContribLink" 
 					+ " WHERE ContribContribLinkId = " + p_contributorcontributorlink_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 
