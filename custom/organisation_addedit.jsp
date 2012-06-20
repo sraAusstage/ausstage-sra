@@ -68,10 +68,16 @@
   org_link_vec	        = organisationObj.getOrganisationOrganisationLinks();
   Organisation orgTemp 			= null;
  
+  LookupCode lc = new LookupCode(db_ausstage);
   for(int i=0; i < org_link_vec.size(); i++ ){
 	 orgTemp = new Organisation(db_ausstage);
 	 orgTemp.load(Integer.parseInt(org_link_vec.get(i).getChildId()));
-	 org_name_vec.add(orgTemp.getOrganisationInfoForOrganisationDisplay(orgTemp.getId(), stmt));
+	 if (org_link_vec.get(i).getFunctionId() != null) {
+		lc.load(Integer.parseInt(org_link_vec.get(i).getFunctionId()));
+		org_name_vec.add(orgTemp.getName() + " (" + lc.getDescription() + ")");
+	 } else {
+		org_name_vec.add(orgTemp.getName());
+	 }
   }
 	
   String f_selected_venue_id = request.getParameter("f_selected_venue_id");

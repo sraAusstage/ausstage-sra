@@ -103,12 +103,19 @@
   
   Work workTemp 			= null;
   WorkWorkLink workWorkLink     = null;
-
+  
+  LookupCode lc = new LookupCode(db_ausstage);
+  
   for(int i=0; i < work_link_vec.size(); i++ ){
 	  workTemp = new Work(db_ausstage);
 	  workTemp.load(Integer.parseInt(work_link_vec.get(i).getChildId()));
-	      
-	  work_name_vec.add(workTemp.getWorkInfoForDisplay(Integer.parseInt(workTemp.getWorkId()), stmt));	
+	  
+	  if (work_link_vec.get(i).getFunctionId() != null) {
+		lc.load(Integer.parseInt(work_link_vec.get(i).getFunctionId()));
+		work_name_vec.add(workTemp.getWorkTitle() + " (" + lc.getDescription() + ")");
+	  } else {
+		work_name_vec.add(workTemp.getWorkTitle());
+	  }
    }
  
   if (action != null && action.equals("ForItem") || isPreviewForItemWork.equals("true")){

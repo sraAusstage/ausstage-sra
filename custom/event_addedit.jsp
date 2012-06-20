@@ -9,6 +9,7 @@
 <%@ page import = "ausstage.SecGenreEvLink"%>
 <%@ page import = "ausstage.State"%>
 <%@ page import = "ausstage.Country"%>
+<%@ page import = "ausstage.LookupCode"%>
 <%@ page import = "ausstage.Work"%>
 <%@ page import = "ausstage.PrimContentIndicatorEvLink, ausstage.SecContentIndicatorEvLink"%>
 <%@ page import = "ausstage.Venue, ausstage.ConEvLink,ausstage.EventEventLink, ausstage.Contributor, ausstage.WorkWorkLink"%>
@@ -132,7 +133,6 @@
    
 
   work_link_vec = eventObj.getWorks();
-  WorkWorkLink workWorkLink = null;
   for (int i=0; i < work_link_vec.size(); i++) {
     Work work = new Work(db_ausstage);
     work.load(Integer.parseInt(work_link_vec .get(i)+""));
@@ -141,14 +141,18 @@
    // work_name_vec.add(work.getWorkTitle());
   }
 
+  LookupCode lc = new LookupCode(db_ausstage);
   event_link_vec	        = eventObj.getEventEventLinks();
   Event event 			= null;
-  EventEventLink eventEventLink     = null;
   for(int i=0; i < event_link_vec.size(); i++ ){
 	  event = new Event(db_ausstage);
 	  event.load(Integer.parseInt(event_link_vec.get(i).getChildId()));
-	  // THE FUNCTION HERE
-	  event_name_vec.add(event.getEventInfoForDisplay(Integer.parseInt(event.getEventid()), stmt));
+	  if (event_link_vec.get(i).getFunctionId() != null) {
+		  lc.load(Integer.parseInt(event_link_vec.get(i).getFunctionId()));
+		  event_name_vec.add(event.getEventName() + " (" + lc.getDescription() + ")");
+	  } else {
+		  event_name_vec.add(event.getEventName());
+	  }
   }
   
   for (int i=0; i < resource_link_vec.size(); i++) {

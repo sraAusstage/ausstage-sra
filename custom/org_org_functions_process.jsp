@@ -53,8 +53,8 @@
   }
 
   if(error_msg.equals("")) {
-		//organisationObj.setOrgOrgLinks(organisationOrganisationLinks);
-		//session.setAttribute("organisation", organisationObj);
+		organisationObj.setOrgOrgLinks(tempOrganisationOrganisationLinks);
+		session.setAttribute("organisationObj", organisationObj);
      pageFormater.writeText(out, "Organisation to organisation process successful.");
   }
   else {

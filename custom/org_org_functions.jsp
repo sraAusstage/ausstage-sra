@@ -62,7 +62,7 @@
         String tempFunctionId = rsetOrganisationFuncLookUps.getString ("code_lov_id");
         out.print("<option value='" + tempFunctionId + "'");
   
-        if (organisationOrganisationLink.getFunctionId().equals(tempFunctionId)) {
+        if (tempFunctionId.equals(organisationOrganisationLink.getFunctionId())) {
           out.print(" selected");
         }
         out.print(">" + rsetOrganisationFuncLookUps.getString ("description") + "</option>");

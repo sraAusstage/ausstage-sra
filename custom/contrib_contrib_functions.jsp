@@ -60,7 +60,7 @@
         String tempFunctionId = rsetContributorFuncLookUps.getString ("code_lov_id");
         out.print("<option value='" + tempFunctionId + "'");
   
-        if (contributorContributorLink.getFunctionId().equals(tempFunctionId)) {
+        if (tempFunctionId.equals(contributorContributorLink.getFunctionId())) {
           out.print(" selected");
         }
         out.print(">" + rsetContributorFuncLookUps.getString ("description") + "</option>");
