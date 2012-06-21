@@ -180,33 +180,38 @@ public class Work {
 		boolean l_ret = false;
 		String l_work_id = "";
 		try {
+			int conCount = 0;
+			String cons = "";
+			for (WorkContribLink wcl : (Vector<WorkContribLink>) m_work_conlinks) {
+				conCount ++;
+				cons += ", " + wcl.getContribId();
+			}
+			
+			int orgCount = 0;
+			String orgs = "";
+			for (WorkOrganLink wol : (Vector<WorkOrganLink>) m_work_orglinks) {
+				orgCount ++;
+				orgs += ", " + wol.getOrganId();
+			}
+			
 			// Check for another work with the same title, contributors and organisations
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql = "SELECT workid FROM work WHERE work_title = '" + m_db.plSqlSafeString(m_work_title) + "'" +
-					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0";
-			int conCount = 0;
-			for (WorkContribLink wcl : (Vector<WorkContribLink>) m_work_conlinks) {
-				conCount ++;
-				l_sql += ", " + wcl.getContribId();
-			}
-			l_sql += ")) = " + conCount 
-					+ " and (select count(*) from workorglink where workid = work.workid and organisationid in (0";
-			int orgCount = 0;
-			for (WorkOrganLink wol : (Vector<WorkOrganLink>) m_work_orglinks) {
-				orgCount ++;
-				l_sql += ", " + wol.getOrganId();
-			}
-			l_sql += ")) = " + orgCount; 
+					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0" + cons + ")) = " + conCount + 
+					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0," + cons + ")) = 0" +
+					" and (select count(*) from workorglink where workid = work.workid and organisationid in (0" + orgs + ")) = " + orgCount +
+					" and (select count(*) from workorglink where workid = work.workid and organisationid not in (0" + orgs + ")) = 0"; 
 			System.out.println("Work check SQL: " + l_sql);
 			
 			m_workid = m_db.getInsertedIndexValue(stmt, "workid_seq");
 			ResultSet l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			if (!l_rs.next()) {
-				l_sql = "INSERT INTO work (WORK_TITLE, ALTER_WORK_TITLE, entered_by_user, entered_date) VALUES (";
-				l_sql = (new StringBuilder(String.valueOf(l_sql))).append("'").append(m_db.plSqlSafeString(m_work_title)).append("', ").append("'")
-						.append(m_db.plSqlSafeString(m_alter_work_title)).append("', ").append("'").append(m_db.plSqlSafeString(m_entered_by_user)).append("', NOW())").toString();
+				l_sql = "INSERT INTO work (WORK_TITLE, ALTER_WORK_TITLE, entered_by_user, entered_date) VALUES ('"+
+						m_db.plSqlSafeString(m_work_title) + "', '" +
+						m_db.plSqlSafeString(m_alter_work_title) + "', '" +
+						m_db.plSqlSafeString(m_entered_by_user) + "', NOW())";
 				m_db.runSQLResultSet(l_sql, stmt);
-				l_sql = (new StringBuilder("SELECT workid FROM work WHERE work_title='")).append(m_db.plSqlSafeString(m_work_title)).append("'").toString();
+				l_sql = "SELECT workid FROM work WHERE work_title='" + m_db.plSqlSafeString(m_work_title) + "' ORDER BY workid DESC";
 				l_rs = m_db.runSQLResultSet(l_sql, stmt);
 				if (l_rs.next()) {
 					l_work_id = l_rs.getString("workid");
@@ -231,7 +236,7 @@ public class Work {
 				}
 				l_ret = true;
 			} else {
-				setErrorMessage("Unable to add the Work. A work with this work title already exists");
+				setErrorMessage("Unable to add the Work. A work with this work title, contributors and organisations already exists");
 				l_ret = false;
 			}
 			stmt.close();
@@ -255,23 +260,27 @@ public class Work {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
+			int conCount = 0;
+			String cons = "";
+			for (WorkContribLink wcl : (Vector<WorkContribLink>) m_work_conlinks) {
+				conCount ++;
+				cons += ", " + wcl.getContribId();
+			}
+			
+			int orgCount = 0;
+			String orgs = "";
+			for (WorkOrganLink wol : (Vector<WorkOrganLink>) m_work_orglinks) {
+				orgCount ++;
+				orgs += ", " + wol.getOrganId();
+			}
+			
 			// Check for another work with the same title, contributors and organisations
 			l_sql = "SELECT workid FROM work WHERE work_title = '" + m_db.plSqlSafeString(m_work_title) + "'" +
 					" workid != " + m_workid +
-					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0";
-			int conCount = 0;
-			for (WorkContribLink wcl : (Vector<WorkContribLink>) m_work_conlinks) {
-				conCount ++;
-				l_sql += ", " + wcl.getContribId();
-			}
-			l_sql += ")) = " + conCount 
-					+ " and (select count(*) from workorglink where workid = work.workid and organisationid in (0";
-			int orgCount = 0;
-			for (WorkOrganLink wol : (Vector<WorkOrganLink>) m_work_orglinks) {
-				orgCount ++;
-				l_sql += ", " + wol.getOrganId();
-			}
-			l_sql += ")) = " + orgCount; 
+					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0" + cons + ")) = " + conCount + 
+					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0," + cons + ")) = 0" +
+					" and (select count(*) from workorglink where workid = work.workid and organisationid in (0" + orgs + ")) = " + orgCount +
+					" and (select count(*) from workorglink where workid = work.workid and organisationid not in (0" + orgs + ")) = 0"; 
 			System.out.println("Work check (update) SQL: " + l_sql);
 			
 			ResultSet l_rs = m_db.runSQLResultSet(l_sql, stmt);
