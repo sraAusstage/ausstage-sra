@@ -180,9 +180,25 @@ public class Work {
 		boolean l_ret = false;
 		String l_work_id = "";
 		try {
+			// Check for another work with the same title, contributors and organisations
 			Statement stmt = m_db.m_conn.createStatement();
-			l_sql = "SELECT workid FROM work WHERE work_title = '";
-			l_sql = (new StringBuilder(String.valueOf(l_sql))).append(m_db.plSqlSafeString(m_work_title)).append("'").toString();
+			l_sql = "SELECT workid FROM work WHERE work_title = '" + m_db.plSqlSafeString(m_work_title) + "'" +
+					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0";
+			int conCount = 0;
+			for (WorkContribLink wcl : (Vector<WorkContribLink>) m_work_conlinks) {
+				conCount ++;
+				l_sql += ", " + wcl.getContribId();
+			}
+			l_sql += ")) = " + conCount 
+					+ " and (select count(*) from workorglink where workid = work.workid and organisationid in (0";
+			int orgCount = 0;
+			for (WorkOrganLink wol : (Vector<WorkOrganLink>) m_work_orglinks) {
+				orgCount ++;
+				l_sql += ", " + wol.getOrganId();
+			}
+			l_sql += ")) = " + orgCount; 
+			System.out.println("Work check SQL: " + l_sql);
+			
 			m_workid = m_db.getInsertedIndexValue(stmt, "workid_seq");
 			ResultSet l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			if (!l_rs.next()) {
@@ -238,9 +254,26 @@ public class Work {
 		boolean l_ret = false;
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			l_sql = "SELECT workid FROM work WHERE work_title = '";
-			l_sql = (new StringBuilder(String.valueOf(l_sql))).append(m_db.plSqlSafeString(m_work_title)).append("'").toString();
-			l_sql = (new StringBuilder(String.valueOf(l_sql))).append(" and workid != ").append(m_workid).toString();
+
+			// Check for another work with the same title, contributors and organisations
+			l_sql = "SELECT workid FROM work WHERE work_title = '" + m_db.plSqlSafeString(m_work_title) + "'" +
+					" workid != " + m_workid +
+					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0";
+			int conCount = 0;
+			for (WorkContribLink wcl : (Vector<WorkContribLink>) m_work_conlinks) {
+				conCount ++;
+				l_sql += ", " + wcl.getContribId();
+			}
+			l_sql += ")) = " + conCount 
+					+ " and (select count(*) from workorglink where workid = work.workid and organisationid in (0";
+			int orgCount = 0;
+			for (WorkOrganLink wol : (Vector<WorkOrganLink>) m_work_orglinks) {
+				orgCount ++;
+				l_sql += ", " + wol.getOrganId();
+			}
+			l_sql += ")) = " + orgCount; 
+			System.out.println("Work check (update) SQL: " + l_sql);
+			
 			ResultSet l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			if (!l_rs.next()) {
 				if (m_work_title.length() > 150) {
