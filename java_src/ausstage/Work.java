@@ -276,7 +276,7 @@ public class Work {
 			
 			// Check for another work with the same title, contributors and organisations
 			l_sql = "SELECT workid FROM work WHERE work_title = '" + m_db.plSqlSafeString(m_work_title) + "'" +
-					" workid != " + m_workid +
+					" and workid != " + m_workid +
 					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0" + cons + ")) = " + conCount + 
 					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0" + cons + ")) = 0" +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid in (0" + orgs + ")) = " + orgCount +
