@@ -198,7 +198,7 @@ public class Work {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql = "SELECT workid FROM work WHERE work_title = '" + m_db.plSqlSafeString(m_work_title) + "'" +
 					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0" + cons + ")) = " + conCount + 
-					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0," + cons + ")) = 0" +
+					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0" + cons + ")) = 0" +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid in (0" + orgs + ")) = " + orgCount +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid not in (0" + orgs + ")) = 0"; 
 			System.out.println("Work check SQL: " + l_sql);
@@ -278,7 +278,7 @@ public class Work {
 			l_sql = "SELECT workid FROM work WHERE work_title = '" + m_db.plSqlSafeString(m_work_title) + "'" +
 					" workid != " + m_workid +
 					" and (select count(*) from workconlink where workid = work.workid and contributorid in (0" + cons + ")) = " + conCount + 
-					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0," + cons + ")) = 0" +
+					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0" + cons + ")) = 0" +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid in (0" + orgs + ")) = " + orgCount +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid not in (0" + orgs + ")) = 0"; 
 			System.out.println("Work check (update) SQL: " + l_sql);
