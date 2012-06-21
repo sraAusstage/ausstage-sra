@@ -172,7 +172,7 @@
       list_db_sql += " 1=1 ";
     }
  
-    list_db_sql += "group by work_title order by LOWER(" + request.getParameter ("f_order_by") + ")";
+    list_db_sql += "group by work.workid order by LOWER(" + request.getParameter ("f_order_by") + ")";
   }
   
   
