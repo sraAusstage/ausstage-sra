@@ -180,7 +180,7 @@
 			list_db_sql += " 1=1 ";
 		}
 
-		list_db_sql += "group by work_title order by LOWER(" + request.getParameter("f_order_by") + ")";
+		list_db_sql += "group by work.workid order by LOWER(" + request.getParameter("f_order_by") + ")";
 	}
 
 	list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
