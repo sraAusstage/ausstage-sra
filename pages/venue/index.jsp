@@ -347,9 +347,8 @@
 									// Now start the new one
 									%>
 								<a href="/pages/organisation/?id=<%=crset.getString("organisationid")%>">
-									<%=crset.getString("name")%>
+									<h3><%=crset.getString("name")%></h3>
 								</a>
-								<br>
 								<ul>
 									<%
 									prevOrg = crset.getString("name");
@@ -410,9 +409,8 @@
 									// Now start the new one
 									%>
 								<a href="/pages/contributor/?id=<%=crset.getString("contributorid")%>">
-									<%=crset.getString("contributor_name")%>
+									<h3><%=crset.getString("contributor_name")%></h3>
 								</a>
-								<br>
 								<ul>
 									<%
 									prevCont= crset.getString("contributorid");

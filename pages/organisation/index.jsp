@@ -302,16 +302,15 @@
 						
 						<%	
 						while (crset.next()){
-							// If we're starting a new contributor, check if we have to finish the previous one
+							// If we're starting a new organisation, check if we have to finish the previous one
 							if (!prevOrg.equals(crset.getString("name"))) {
 								if (hasValue(prevOrg)) out.print("</ul>");
 								
 								// Now start the new one
 								%>
 							<a href="/pages/organisation/?id=<%=crset.getString("organisationid")%>">
-								<%=crset.getString("name")%>
+								<h3><%=crset.getString("name")%></h3>
 							</a>
-							<br>
 							<ul>
 								<%
 								prevOrg = crset.getString("name");
@@ -377,15 +376,15 @@
 								
 								// Now start the new one
 								%>
+								<h3>
 								<a href="/pages/venue/?id=<%=crset.getString("venueid")%>">
-									<%=crset.getString("venue_name")%>
-								</a><%
+									<%=crset.getString("venue_name")%></a><%
 								if(hasValue(crset.getString("suburb"))) 
 									out.print(", " + crset.getString("suburb"));
 								if(hasValue(crset.getString("state")))
 									out.print(", " + crset.getString("state"));
 								%>
-								<br>
+								</h3>
 								<ul>
 									<%
 									prevVen = crset.getString("venueid");
@@ -448,9 +447,8 @@
 								// Now start the new one
 								%>
 							<a href="/pages/contributor/?id=<%=crset.getString("contributorid")%>">
-								<%=crset.getString("contributor_name")%>
+								<h3><%=crset.getString("contributor_name")%></h3>
 							</a>
-							<br>
 							<ul>
 								<%
 								prevCont= crset.getString("contributorid");
