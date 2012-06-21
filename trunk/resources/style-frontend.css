@@ -354,7 +354,7 @@ th {
 	font-weight: normal;
 }
 
-.browse-table th:hover, browse-table a:hover {
+.browse-table th:hover, .browse-table a:hover{
 	background-color:#666666;
 	text-decoration: none;
 	}
@@ -452,8 +452,8 @@ th {
 	text-decoration: none;
 	font-weight: normal;
 }
-
-.search-table th:hover, .search-table a:hover {
+/*, .search-table a:hover*/
+.search-table th:hover{
 	background-color:#666666;
 	text-decoration: none;
 	}

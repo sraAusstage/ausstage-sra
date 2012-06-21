@@ -51,36 +51,7 @@
   if (letter == null) letter = "a";
     if (letter.length() > 1) letter = letter.substring(0,1);
   letter = letter.toLowerCase();
-%>
-<!--- <div class='letters'>
-  <a href="?letter=A" <%=letter.equals("a")?"class='b-106 bold'":""%>>A</a>
-  <a href="?letter=B" <%=letter.equals("b")?"class='b-106 bold'":""%>>B</a>
-  <a href="?letter=C" <%=letter.equals("c")?"class='b-106 bold'":""%>>C</a>
-  <a href="?letter=D" <%=letter.equals("d")?"class='b-106 bold'":""%>>D</a>
-  <a href="?letter=E" <%=letter.equals("e")?"class='b-106 bold'":""%>>E</a>
-  <a href="?letter=F" <%=letter.equals("f")?"class='b-106 bold'":""%>>F</a>
-  <a href="?letter=G" <%=letter.equals("g")?"class='b-106 bold'":""%>>G</a>
-  <a href="?letter=H" <%=letter.equals("h")?"class='b-106 bold'":""%>>H</a>
-  <a href="?letter=I" <%=letter.equals("i")?"class='b-106 bold'":""%>>I</a>
-  <a href="?letter=J" <%=letter.equals("j")?"class='b-106 bold'":""%>>J</a>
-  <a href="?letter=K" <%=letter.equals("k")?"class='b-106 bold'":""%>>K</a>
-  <a href="?letter=L" <%=letter.equals("l")?"class='b-106 bold'":""%>>L</a>
-  <a href="?letter=M" <%=letter.equals("m")?"class='b-106 bold'":""%>>M</a>
-  <a href="?letter=N" <%=letter.equals("n")?"class='b-106 bold'":""%>>N</a>
-  <a href="?letter=O" <%=letter.equals("o")?"class='b-106 bold'":""%>>O</a>
-  <a href="?letter=P" <%=letter.equals("p")?"class='b-106 bold'":""%>>P</a>
-  <a href="?letter=Q" <%=letter.equals("q")?"class='b-106 bold'":""%>>Q</a>
-  <a href="?letter=R" <%=letter.equals("r")?"class='b-106 bold'":""%>>R</a>
-  <a href="?letter=S" <%=letter.equals("s")?"class='b-106 bold'":""%>>S</a>
-  <a href="?letter=T" <%=letter.equals("t")?"class='b-106 bold'":""%>>T</a>
-  <a href="?letter=U" <%=letter.equals("u")?"class='b-106 bold'":""%>>U</a>
-  <a href="?letter=V" <%=letter.equals("v")?"class='b-106 bold'":""%>>V</a>
-  <a href="?letter=W" <%=letter.equals("w")?"class='b-106 bold'":""%>>W</a>
-  <a href="?letter=X" <%=letter.equals("x")?"class='b-106 bold'":""%>>X</a>
-  <a href="?letter=Y" <%=letter.equals("y")?"class='b-106 bold'":""%>>Y</a>
-  <a href="?letter=Z" <%=letter.equals("z")?"class='b-106 bold'":""%>>Z</a>
-</div> -->
-<%
+
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
   if(pno!=null)
@@ -161,11 +132,11 @@
 <thead>
     <tr>
            
-      <th> <b><a href="#" onClick="reSortData('name')">Name  (<%=l_rs.getString(1)%>)</a></b></div></td>
-      <th><b><a href="#" onClick="reSortData('function')">Functions</a></b></td>
-      <th align="right"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a></b></td>
-      <th align="right"><b><a href="#" onClick="reSortNumbers('num')">Events</a></b></td>
-      <th align="right"><b><a href="#" onClick="reSortNumbers('total')">Resources</a></b></td>
+      <th><a href="#" onClick="reSortData('name')">Name  (<%=l_rs.getString(1)%>)</a></th>
+      <th><a href="#" onClick="reSortData('function')">Functions</a></th>
+      <th align="right"><a href="#" onClick="reSortNumbers('year')">Event Dates</a></th>
+      <th align="right"><a href="#" onClick="reSortNumbers('num')">Events</a></th>
+      <th align="right"><a href="#" onClick="reSortNumbers('total')">Resources</a></th>
     </tr>
 </thead>
     <%
@@ -207,7 +178,7 @@
       </td>  	 
     </tr>
         
-    <div class='letters' >
+
     <%
       i += 1;
       if (i == 100) break;

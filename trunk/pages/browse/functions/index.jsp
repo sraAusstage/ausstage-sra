@@ -96,7 +96,7 @@
   }
   int rowCounter = 0;                  // counts the number of rows emitted
   int evenOddValue = 0;                // alternates between 0 and 1
-  String[] evenOdd = {"even", "odd"};  // two-element String array
+  String[] evenOdd = {"b-185", "b-184"};  // two-element String array
   int next=pageno+1;
   int previous=pageno-1;
   String        sqlString;

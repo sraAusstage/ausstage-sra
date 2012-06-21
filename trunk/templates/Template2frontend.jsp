@@ -1,8 +1,26 @@
+<!DOCTYPE HTML
+    PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
-<!DOCTYPE HTML
-    PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="org.opencms.jsp.*,com.opencms.file.*,java.util.*" %>
+<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
+<%
+CmsJspActionElement menucms = new CmsJspActionElement(pageContext, request, response);
+String currentPage = menucms.getRequestContext().getUri();
+String[] pageName = currentPage.split("pages/");
+currentPage = pageName[1];
+boolean showSearch = true;
+	
+if (currentPage.contains("search/index.jsp") ||currentPage.contains("search/event/index.jsp")||currentPage.contains("search/resource/index.jsp")){
+	showSearch = false;
+}
+
+%>
+
+
+    
 <cms:template element="head">
   <html>
     <head> 
@@ -19,21 +37,22 @@
 
     <div id="header" class="b-184">
 
-      <a href="/pages/browse/index.jsp">
+      <a href="/pages/browse/">
         <img src="/resources/images/ausstage-logo.png" alt="default" border="0" class="header-logo"/>
       </a>
-
+	<%if (showSearch){%>
 	<div class="header-search">
 
-		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/?f_keyword="<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));}%>> 
+		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/" onSubmit="return updateHeader();"> 
 
-		<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));}%>>
-		
-		 <input class="" type="submit" value="Search">
+			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));}%>>
+			<input class="hidden_fields" type="hidden" name="f_keyword" id="f_keyword" value="" />
+		 	<input class="" type="submit" value="Search">
 
 		</form>
 
-	</div>  
+	</div> 
+	<%}%> 
    
 </div>
       
@@ -41,8 +60,8 @@
 
 <ul class="navigation label">
 
-<li><a href="/pages/browse/index.jsp">Browse</a></li>
-<li><a href="/pages/search/index.jsp">Search</a></li>
+<li><a href="/pages/browse/">Browse</a></li>
+<li><a href="/pages/search/">Search</a></li>
 <li><a href="/pages/learn/index.html">Learn</a></li>
 </ul>
 
@@ -63,6 +82,12 @@
 
 <% } %>
 <script type="text/javascript">
+function updateHeader(){
+	$("#header-search-form #f_keyword").attr('value',$("#header-search-form #header-search-keywords").val());
+	console.log($("#header-search-form #f_keyword"));
+	return true;
+}
+
 
 var selectmenu=document.getElementById("mymenu")
 selectmenu.onchange=function(){ //run some code when "onchange" event fires

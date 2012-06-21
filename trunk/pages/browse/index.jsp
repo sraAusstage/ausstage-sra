@@ -159,45 +159,51 @@ Should probably put this in a seperate .js file
     	    	if ($('#header-search-keywords').val().trim().length>0){
     	    		var boxesToChange = $('.box');
     	    		//check the url hasn't already been changed
-    	    		if($('.box').attr('onclick').indexOf('submitSearch') == -1){
-    	    			
-    	    			$.each($('.box'), function(){
-    	    				if ( $(this).attr('id') !='map'){
-    	    					if($(this).attr('onclick')){
-    	    						$(this).attr( "onclick", "submitSearch('"+$(this).attr("id")+"');" );
-    	    					}
+    	    		$.each($('.box'), function(){
+    	    			if ( $(this).attr('id') !='map'){
+    	    				if($(this).attr('onclick')){
+    	    					$(this).attr( "onclick", "submitSearch('"+$(this).attr("id")+"');" );
     	    				}
-    	    			})
-    	    		}
+    	    			}
+    	    		})
     	    	}
     	    	//otherwise set to the browse 
     	    	else {
-    	    		if($('.box').attr('onclick').indexOf('submitSearch') >=0){
-    	    		
-    	    		    	$.each($('.box'), function(){
-    	    		    		if ( $(this).attr('id') !='map'){
-    	    		    			if($(this).attr('onclick')){
-    	    						$(this).attr( "onclick", "location.href='" +$(this).attr("id")+ "s/'" );
-    	    					}
+    	    		$.each($('.box'), function(){
+    	    		    	if ( $(this).attr('id') !='map'){
+    	    		    		if($(this).attr('onclick')){
+    	    					$(this).attr( "onclick", "location.href='" +$(this).attr("id")+ "s/'" );
     	    				}
-    	    			})	
-    	    		}
+    	    			}
+    	    		})	
     	    	}
     	    	//finally if results are 0 disable the link
     	    	$.each($('.box'), function(){
     	    		if($(this).children('.box-count').text()=="0"){
     	    		$(this).attr( "onclick", "null" );}
-    	    	})
-    	    	
+    	    	})	
     	}
     	
     	function submitSearch(searchType){
-    		$('#f_keyword').attr('value',$("#header-search-keywords").val());
-    		$('#f_search_from').attr('value',searchType);
-    		$('#searchForm').submit();
+    		if (searchType == 'genre'){
+    			$('#genreSearchform #f_keyword').attr('value',$("#header-search-keywords").val());
+    			$('#genreSearchForm').submit();
+    		}else if (searchType == 'function'){
+    			$('#functionSearchform #f_keyword').attr('value',$("#header-search-keywords").val());
+    			$('#functionSearchForm').submit();
+    		}else if (searchType == 'subject'){
+    			$('#subjectSearchform #f_keyword').attr('value',$("#header-search-keywords").val());
+    			$('#subjectSearchForm').submit();
+    		}
+    		else if (searchType != 'noResult') {
+    			$('#searchform #f_keyword').attr('value',$("#header-search-keywords").val());
+    			$('#searchform #f_search_from').attr('value',searchType);
+    			$('#searchForm').submit();
+    		}
     	}   	 	
 	
 	$(document).ready(function() {
+		
 		//set the action for the search header (will be different for different pages)
 		$("#header-search-form").attr("action","/pages/browse/");
 		$("#header-search-form").attr("onsubmit","clearAll();return getCounts()");
@@ -276,6 +282,15 @@ Should probably put this in a seperate .js file
 </div>
 <!---------------------------------------------------------------->
 <!--hidden forms-->
+<form name="functionSearchForm" id="functionSearchForm" Method = "POST" action="../search/function/results/" >	
+	<input class="hidden_fields" type="hidden" name="f_keyword" id="f_keyword" value="" />
+</form>
+<form name="genreSearchForm" id="genreSearchForm" Method = "POST" action="../search/genre/results/" >	
+	<input class="hidden_fields" type="hidden" name="f_keyword" id="f_keyword" value="" />
+</form>
+<form name="subjectSearchForm" id="subjectSearchForm" Method = "POST" action="../search/subject/results/" >	
+	<input class="hidden_fields" type="hidden" name="f_keyword" id="f_keyword" value="" />
+</form>
 <form name="searchForm" id="searchForm" Method = "POST" action="../search/results/" >	
 	<input class="hidden_fields" type="hidden" name="f_keyword" id="f_keyword" value="" />
 	<input class="hidden_fields" type="hidden" name="f_search_from" id="f_search_from" value="" />
