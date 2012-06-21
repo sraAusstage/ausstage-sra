@@ -3,7 +3,7 @@
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import="java.sql.*, ausstage.Database, sun.jdbc.rowset.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
-<cms:include property="template" element="head" /><%@ include file="../../../public/common.jsp"%>
+<cms:include property="template" element="head" /><%@ include file="../../../../public/common.jsp"%>
 <!--Script to enable sorting columns  -->
 <script language="JavaScript" type="text/JavaScript">
   <!--
@@ -45,14 +45,11 @@
   -->
 </script>
 
-<div class="browse">
+<div class="search">
 
-<div class="browse-bar b-90">
-   
-    <span class="browse-heading large">Genres</span>
-
-</div>
 <%
+  String keyword = request.getParameter("f_keyword");
+
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
   if(pno!=null)
@@ -61,6 +58,7 @@
   }
   int rowCounter = 0;                  // counts the number of rows emitted
   int evenOddValue = 0;                // alternates between 0 and 1
+  int resultsPerPage = 25;
   String[] evenOdd = {"b-185", "b-184"};  // two-element String array
   
   int next=pageno+1;
@@ -80,18 +78,28 @@
   m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
   Statement stmt    = m_db.m_conn.createStatement ();
       
-  sqlString =	"SELECT COUNT(*) From `secgenreclass`";
+  sqlString =	"SELECT COUNT(*) From `secgenreclass` WHERE genreclass like \"%"+keyword+"%\"";
   l_rs = m_db.runSQL (sqlString, stmt);
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
+       
+       
+  out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
+    		 +"<img src=\"../../../../resources/images/icon-blank.png\" class=\"search-icon\">"
+    		 +"<span class=\"search-heading large\">Genre</span>"
+    		 +"<span class=\"search-index search-index-resource\">search results for \'"+keyword+"\'. "
+    		 +((pageno)* resultsPerPage+ 1)+ " to " + (((pageno*resultsPerPage)+ resultsPerPage) > recordCount?recordCount:((pageno)*resultsPerPage+ resultsPerPage)) + " of " + recordCount + " result(s)."
+    		 +"</span></div>");
+  
 %>
 
-<table class="browse-table">
+<table class="search-table">
   <form name="form_searchSort_report" method="POST" action=".">
   <%-- These are hidden inputs that will be populated by the reSortData() JavaScript function. --%>
     <input type="hidden" name="col" value="<%=sortCol%>">
     <input type="hidden" name="order" value="<%=sortOrd%>">
     <input type="hidden" name="pageno" value="<%=pno%>">
+    <input type="hidden" name="f_keyword" value="<%=keyword%>">
     <thead>
     <tr>
       <th width="40%"><b><a href="#" onClick="reSortData('name')"> Name  (<%=l_rs.getString(1)%>)</a></b></th>
@@ -106,6 +114,7 @@
 			"FROM secgenreclass LEFT JOIN secgenreclasslink ON (secgenreclass.secgenrepreferredid = secgenreclasslink.secgenrepreferredid) "+
             		"LEFT JOIN events ON (secgenreclasslink.eventid = events.eventid) "+
 			"Left Join itemsecgenrelink ON (secgenreclass.`secgenrepreferredid` = itemsecgenrelink.secgenrepreferredid) "+
+			"WHERE secgenreclass.genreclass LIKE \"%"+keyword+"%\" "+
 			"group by `secgenreclass`.`genreclassid` Order by " + sortCol + " " + sortOrd + " limit " + ((pageno)*25) + ",26";
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
@@ -142,17 +151,16 @@
   	i += 1;
   	if (i == 25) break;
     }
+    if (recordCount > resultsPerPage){
     %>
-    <tr>
-      <td colspan="4" bgcolor="aaaaaa"></td>
-    </tr> 
+    
     <tr  width="100%" class="browse-bar b-90" style="height:2.5em;" >
       <td align="right" colspan="5">
         <div class='browse-index browse-index-genre'>
         <%if (previous >= 0) 
         {
-          out.println("<a href='?order="+ sortOrd +"&col="+ sortCol +"'>First</a> ");
-   	  out.println("<a href='?order="+ sortOrd +"&col="+ sortCol +"&pno=" + previous + "'>Previous </a>  ");
+          out.println("<a href='?order="+ sortOrd +"&col="+ sortCol +"&f_keyword="+keyword+"'>First</a> ");
+   	  out.println("<a href='?order="+ sortOrd +"&col="+ sortCol +"&pno=" + previous + "&f_keyword="+keyword+"'>Previous </a>  ");
         }
         int start = pageno-4;
         if (start <= 0) start = 0;
@@ -166,19 +174,20 @@
 	      int k= j+start;      	 
 	      String bold = ""+(k+1);
 	      if (k == pageno) bold = "<b>" + (k+1) + "</b>";
-	      out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'>"+bold+" </a>");
+	      out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"&f_keyword="+keyword+"'>"+bold+" </a>");
 	    }
 	  }
 	  if (i == 25 && l_rs.next()) 
 	  {
-	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" + next + "'>Next</a> ");
-	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" +(recordCount-1)/25 +"'>Last</a> ");
+	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" + next +"&f_keyword="+keyword+ "'>Next</a> ");
+	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" +(recordCount-1)/25 +"&f_keyword="+keyword+"'>Last</a> ");
 	  }
         }
         %>  	
         </div> 
       </td>
     </tr>
+    <%}%>
   </form>
 </table>
 <cms:include property="template" element="foot" />

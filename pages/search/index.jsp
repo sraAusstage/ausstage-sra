@@ -5,13 +5,9 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" />
-<%@ include file="../../templates/MainMenu.jsp"%>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
-<!-- AddThis Button END -->
-    <tr bgcolor="#FFFFFF">
-      <td width="10px" background='ausstagebgside.gif'>&nbsp;</td>
-      <td>     
+
+    
       <%  
       //test
   String search_within_search_for_form = request.getParameter("f_search_within_search");  
@@ -30,79 +26,53 @@
   //////////////////////////////////
 
 %>
-  <form name="searchform" id="searchform" method="post" action ="/pages/search/results/" onsubmit="return checkFields();">  
+
+<div class="boxes">
+
+<span class="box b-175">
+<img src="../../resources/images/icon-blank.png" class="box-icon"> 
+<span class="box-label">Basic Search</span> 
+</span>
+
+<form class="search-basic-box" name="searchform" id="searchform" method="post" action ="/pages/search/results/index.jsp" onsubmit="return checkFields();">  
 <%
   if(!search_within_search_for_form.equals(""))
     out.println("<input type='hidden' name='f_search_within_search' value='"+ search_within_search_for_form + "'>");  
 %>
 
-<style>
-
-.search_text
-{
-  font-family:Verdana;
-  font-size:11px;
-  color:#FFFFFF;
-  font-weight:normal;
-  text-decoration:none;
-  font-style:normal;
-}
-.search_11text { font-family:Verdana; font-size:11px; color:#666666; font-weight:normal; text-decoration:none; font-style:normal; }
-
-.fsearch {
-	padding:0px;
-	padding-left:0px;
-	font-size: 10px;
-	color: #000;
-	border-left: 1px solid #5D9149;
-	border-right: 1px solid #629047;
-	border-bottom: 1px solid #648F48;
-	border-top: 1px solid #639148;
-}
-a.help{
-color : black;
-}
-</style>
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="550">
+<table>
   <tr>
-    <td align="left" valign="top" bgcolor="#FFFFFF">
+    <td>
     <%
   if(!search_within_search_for_form.equals(""))
-    out.println("<br><p style='font-family:verdana;color:#FFFFFF;font-size:11'>Note: You are now performing search within the previous result(s)</p>");
+    out.println("<br><p class='light'>Note: You are now performing search within the previous result(s)</p>");
     %>        
-        </font></b>
+       
     </td>
   </tr>
+ 
   <tr>
         <td align="left">    
-	  <table border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+
 	    <tr>
-	      <td>&nbsp;</td>
-	    </tr>
-	      <tr>
-	      <td>&nbsp;</td>
 	      <td>
-		<input type="text" size="40" name='f_keyword' id='f_keyword'  <%if(request.getParameter("f_keyword") != null) { out.print("value=\"" + request.getParameter("f_keyword") + "\"");}%>>&nbsp;
+		<input type="text" size="40" name='f_keyword' id='f_keyword'  <%if(request.getParameter("f_keyword") != null) { out.print("value=\"" + request.getParameter("f_keyword") + "\"");}%>>
 	      </td>
 	      <td>
 		<select name="f_search_from" id='f_search_from' onchange='javascript:enableDisableSorts()'>
 		  <option value="all">All Records</option>
-		  <option value="event"        <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("event")) { out.print(" selected ");}%> >Events</option>
+		  <option value="event"        <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("event")) { out.print(" selected ");}%>>Events</option>
 		  <option value="contributor"  <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("contributor")) { out.print(" selected 		");}%>>Contributors</option>
 		  <option value="organisation" <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("organisation")) { out.print(" selected 		");}%>>Organisations</option>
 	  	  <option value="venue"        <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("venue")) { out.print(" selected ");}%>>Venues</option>
 		  <option value="resource"     <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("resource")) { out.print(" selected ");}%>>Resources</option>
 	  	  <option value="work"         <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("work")) { out.print(" selected 		");}%>>Works</option>
-		</select>
+	  	</select>
 	      </td>
-	      <td align="center"><input type="submit" value="Search" onclick="return checkFields();"></td>
+	      <td><input type="submit" value="Search"></td>
 	    </tr>
-	    <tr>
-	      <td>&nbsp;</td>
-	    </tr>
-	    <tr>
-	      <td>&nbsp;</td>
-	      <td class="general_heading_white" align="right">Search words using &nbsp;</td>
+	<tr><td>&nbsp;</td></tr>
+	      <td class="light" align="right">Search words using </td>
 	      <td>
 		<select name="f_sql_switch" id ="f_sql_switch">
 		  <option value="and"   <%if(request.getParameter("f_sql_switch") != null && request.getParameter("f_sql_switch").equals("and")) { out.print(" selected ");}%> >And</option>
@@ -112,8 +82,7 @@ color : black;
 	      </td>
 	    </tr>
 	    <tr>
-	      <td>&nbsp;</td>
-	      <td class="general_heading_white" align="right">Sort results by &nbsp;</td>
+	      <td class="light" align="right">Sort results by </td>
 	      <td>
 		<select name="f_sort_by" id="f_sort_by">
 		  <option value="alphab_frwd" <%if(request.getParameter("f_sort_by") != null && request.getParameter("f_sort_by").equals("alphab_frwd")) { out.print(" selected ");}%> >Name</option>
@@ -124,22 +93,27 @@ color : black;
 	      </td>
 	    </tr>
 	    <tr>
-	      <td>&nbsp;</td>
-	      <td align="right" class="general_heading_white">Restrict by year &nbsp;</td>
-	      <td class="general_heading_white" colspan="2">
-		<input type="text" size="9" maxlength="9" name='f_year' id='f_year' <%if(request.getParameter("f_year") != null) { out.print("value=\"" + request.getParameter("f_year") + "\"");}%> >(1999, 1876-2006)
-	      </td>
-	    </tr>
 
-	  </table>
-	</td>
-        <td align="left" valign="top" bgcolor="#FFFFFF"></td>
-      </tr>
-    </table>
-    </td>
-  </tr>
+	      <td align="right" class="light">Restrict by year </td>
+	      <td class="light" colspan="2">
+		<input type="text" size="9" maxlength="9" name='f_year' id='f_year' <%if(request.getParameter("f_year") != null) { out.print("value=\"" + request.getParameter("f_year") + "\"");}%> > yyyy | yyyy-yyyy 
+	      </td>
+</tr>
 </table>
 </form>
+
+
+<br>
+<span class="box b-90" onclick="location.href='event/';" style="cursor:pointer;" onmouseover="this.className='box b-91';" onmouseout="this.className='box b-90 ';">
+<img src="../../resources/images/icon-event.png" class="box-icon"> 
+<span class="box-label"><a href="event/">Event Search</a> </span> </span>
+<br>
+<span class="box b-153" onclick="location.href='resource/';" style="cursor:pointer; margin-top:0.3em;" onmouseover="this.className='box b-154';" onmouseout="this.className='box b-153 ';">
+<img src="../../resources/images/icon-resource.png" class="box-icon"> 
+<span class="box-label"><a href="resource/">Resource Search</a> </span> </span>
+
+</div>
+
 <cms:include property="template" element="foot" />
 <script language="javascript">
     var temp = 1;

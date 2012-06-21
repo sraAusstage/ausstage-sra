@@ -113,7 +113,7 @@
 								out.println("[<a class='editLink' target='_blank' href='/custom/venue_addedit.jsp?f_selected_venue_id=" + venue.getVenueId() + "'>Edit</a>]");
 							%>
 							</td>
-							<td rowspan=3>
+							<td rowspan=2>
 							<%
 							if (displayUpdateForm) {
 								displayUpdateForm(venue_id, "Venue", venue.getName(), out,

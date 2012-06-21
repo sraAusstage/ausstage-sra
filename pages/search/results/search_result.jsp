@@ -258,9 +258,9 @@
 
             String bgcolour = "";
             if ((counter%2) == 0 ) // is it odd or even number???
-              bgcolour = "bgcolor='#e3e3e3'";
+              bgcolour = "class='b-184'";
             else
-              bgcolour = "bgcolor='#FFFFFF'";
+              bgcolour = "class='b-185'";
             out.println("      <tr>");                                               
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/event/?id=" + crset.getString("eventid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("event_name")+  "</a></td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
@@ -329,10 +329,7 @@
         }while(crset.next());
 
     
-       out.println("      <tr>");
-       out.println("       <td colspan=\"9\" bgcolor=\"aaaaaa\" >");      
-       out.println("       </td>");
-       out.println("      </tr>");
+
 
         // PAGINATION DISPLAY //
 
@@ -592,9 +589,9 @@
           if(do_print){
             String bgcolour = "";
             if ((counter%2) == 0 ) // is it odd or even number???
-              bgcolour = "bgcolor='#e3e3e3'";
+              bgcolour = "class='b-184'";
             else
-              bgcolour = "bgcolor='#FFFFFF'";                    
+              bgcolour = "class='b-185'";                    
             out.println("      <tr>");
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/venue/?id=" + crset.getString("venueid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("venue_name") + "</a></td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
@@ -661,10 +658,7 @@
           start_trigger++;          
         }while(crset.next());
        
-	out.println("      <tr>");
-   	out.println("       <td colspan=\"10\" bgcolor=\"aaaaaa\" >");      
-    	out.println("       </td>");
-    	out.println("      </tr>");
+
 
         // PAGINATION DISPLAY //
 
@@ -905,9 +899,9 @@
 
             String bgcolour = "";
             if ((counter%2) == 0 ) // is it odd or even number???
-              bgcolour = "bgcolor='#e3e3e3'";
+              bgcolour = "class='b-184'";
             else
-              bgcolour = "bgcolor='#FFFFFF'";          
+              bgcolour = "class='b-185'";          
           
             out.println("      <tr>");
             out.println("<td width=\"900\" " + bgcolour +  " valign=\"top\"><a href=\"/pages/work/?id=" + crset.getString("workid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("work_title") + "</a></td>");
@@ -940,10 +934,7 @@
           }         
           start_trigger++;          
         }while(crset.next());       
-	out.println("      <tr>");
-   	out.println("       <td colspan=\"9\" bgcolor=\"aaaaaa\" >");
-    	out.println("       </td>");
-    	out.println("      </tr>");
+
 
         // PAGINATION DISPLAY //
 
@@ -1196,9 +1187,9 @@
 
             String bgcolour = "";
             if ((counter%2) == 0 ) // is it odd or even number???
-              bgcolour = "bgcolor='#e3e3e3'";
+              bgcolour = "class='b-184'";
             else
-              bgcolour = "bgcolor='#FFFFFF'";
+              bgcolour = "class='b-185'";
               
             out.println("      <tr>");
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"250\" ><a href=\"/pages/contributor/?id=" + crset.getString("contributorid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("contrib_name") + "</a></td>");
@@ -1256,11 +1247,7 @@
           
         }while(crset.next());
        
-	out.println("      <tr>");
-    	out.println("       <td colspan=\"10\" bgcolor=\"aaaaaa\" >");
-      
-    	out.println("       </td>");
-    	out.println("      </tr>");
+
 
         // PAGINATION DISPLAY //
 
@@ -1489,9 +1476,9 @@
 
             String bgcolour = "";
             if ((counter%2) == 0 ) // is it odd or even number???
-              bgcolour = "bgcolor='#e3e3e3'";
+              bgcolour = "class='b-184'";
             else
-              bgcolour = "bgcolor='#FFFFFF'";
+              bgcolour = "class='b-185'";
               
             out.println("      <tr>");
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\215\" ><a href=\"/pages/organisation/?id=" + crset.getString("organisationid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("name")+"</a></td>");
@@ -1585,11 +1572,7 @@
           start_trigger++;
           
         }while(crset.next());
-        out.println("      <tr>");
-    	out.println("       <td colspan=\"8\" bgcolor=\"aaaaaa\" >");
-      
-    	out.println("       </td>");
-    	out.println("      </tr>");
+
 
 
         // PAGINATION DISPLAY //
@@ -1831,9 +1814,9 @@
           if(do_print){
             String bgcolour = "";
             if ((counter%2) == 0 ) // is it odd or even number???
-              bgcolour = "bgcolor='#e3e3e3'";
+              bgcolour = "class='b-184'";
             else
-              bgcolour = "bgcolor='#FFFFFF'";             
+              bgcolour = "class='b-185'";             
             out.println("      <tr>");
             out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/resource/?id=" + crset.getString("itemid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("citation") + "</a></td>");            
             out.println(      "</tr>");
@@ -1843,10 +1826,7 @@
           }          
           start_trigger++;         
         }while(crset.next());
-        out.println("      <tr>");
-    	out.println("       <td colspan=\"7\" bgcolor=\"aaaaaa\" >");      
-    	out.println("       </td>");
-    	out.println("      </tr>");
+
 
 
         // PAGINATION DISPLAY //

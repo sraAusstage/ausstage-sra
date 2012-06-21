@@ -336,9 +336,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<tr>
 								<td  class='record-value bold' width='25%' >Name</td>
-								
 								<td  class='record-value bold' width='25%' >Function</td>
-								
 								<td  class='record-value bold' width='50%' >Notes</td>
 							</tr>
 						<%
@@ -351,11 +349,9 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 										<%=contributor.getName() + " " + contributor.getLastName()%>
 									</a>
 								</td>
-								<td></td>
 								<td  class='record-value'>
 									<%=(hasValue(conEvLink.getContributorId()) && conEvLink.getContributorId().equals(Integer.toString(contributor.getId())))?conEvLink.getFunctionDesc():"" %>
 								</td>
-								<td></td>
 								<td  class='record-value'>
 									<%=hasValue(conEvLink.getNotes())?conEvLink.getNotes():"" %>
 								</td>
