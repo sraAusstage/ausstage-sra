@@ -107,8 +107,8 @@
   String	  sqlString1;
   
   String sortCol = request.getParameter("col");
-  String validSql = "title contrib year num total ASC DESC";
-  if (sortCol == null || !validSql.contains(sortCol)) sortCol = "title";
+  String validSql = "titlesort contrib year num total ASC DESC";
+  if (sortCol == null || !validSql.contains(sortCol)) sortCol = "titlesort";
   String sortOrd = request.getParameter("order");
   if (sortOrd == null) sortOrd = "ASC";
 
@@ -133,7 +133,7 @@
     <input type="hidden" name="pageno" value="<%=pno%>">
     <thead>
     <tr>
-      <th width="40%"><b><a href="#" onClick="reSortData('title')">Name (<%=l_rs.getString(1)%>)</a></b></th>
+      <th width="40%"><b><a href="#" onClick="reSortData('titlesort')">Name (<%=l_rs.getString(1)%>)</a></b></th>
       <th width="20%" align="left"><b><a href="#" onClick="reSortData('contrib')">Creators</a></b></th>
       <th width="10%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a></b></th>    
       <th width="15%" align="right"><b><a href="#" onClick="reSortNumbers('num')"> Events</a></b></th>
@@ -143,12 +143,13 @@
     <%
       sqlString = 	"SELECT  work.work_title title,contributor.last_name n,contributor.first_name f,`organisation`.`name`,work.workid,min(events.yyyyfirst_date) year,if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))),count(distinct events.eventid) num,  count(distinct itemworklink.itemid) as total, " +
 			"concat_ws(', ', GROUP_CONCAT(distinct if (CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME) = '', null, CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME)) SEPARATOR ', '), group_concat(distinct organisation.name separator ', ')) contrib,  "+
-			"concat_ws(', ', GROUP_CONCAT(distinct if (CONCAT_WS(' ', CONTRIBUTOR.LAST_NAME ,CONTRIBUTOR.FIRST_NAME) = '', null, CONCAT_WS(' ', CONTRIBUTOR.LAST_NAME ,CONTRIBUTOR.FIRST_NAME)) SEPARATOR ', '), group_concat(distinct organisation.name separator ', ')) contribsort  "+
+			"concat_ws(', ', GROUP_CONCAT(distinct if (CONCAT_WS(' ', CONTRIBUTOR.LAST_NAME ,CONTRIBUTOR.FIRST_NAME) = '', null, CONCAT_WS(' ', CONTRIBUTOR.LAST_NAME ,CONTRIBUTOR.FIRST_NAME)) SEPARATOR ', '), group_concat(distinct organisation.name separator ', ')) contribsort,  "+
+			"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title)))) titlesort " +
 			"FROM work  LEFT  JOIN eventworklink ON (work.workid = eventworklink.workid) LEFT  JOIN events ON (eventworklink.eventid = events.eventid)  LEFT  JOIN workconlink ON (work.workid = workconlink.workid) "+
 			"LEFT  JOIN contributor ON (workconlink.contributorid = contributor.contributorid)  Left  Join `workorglink` ON (work.`workid`= `workorglink`.`workid`)"+
  			"Left  Join `organisation` ON (`workorglink`.`organisationid`= `organisation`.`organisationid`)" +
  			"Left join itemworklink On (work.workid = itemworklink.workid) "+
-			"WHERE lcase(`work`.work_title) LIKE '" + letter + "%' group by work.`workid`" +
+			"WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) LIKE '" + letter + "%' group by work.`workid`" +
   			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + " limit " + ((pageno)*25) + ",26";
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;  
