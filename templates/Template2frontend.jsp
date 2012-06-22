@@ -33,7 +33,7 @@ if (currentPage.contains("search/index.jsp") ||currentPage.contains("search/even
     
 <body>
 
-  <div id="wrapper">
+  <div class="wrapper">
 
     <div id="header" class="b-184">
 

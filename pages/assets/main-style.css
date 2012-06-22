@@ -23,20 +23,6 @@
 margin: 0px;
 }
 
-#loginBar select {
-margin: 2px;
-}
-
-#loginBar1 select {
-margin: 2px;
-}
-
-html, body {
-        height: 100%;
-        font-size: 95%;
-        font-family: Helvetica, Verdana, Arial, sans-serif;
-}
-
 
 
 .wrapper {
@@ -44,7 +30,7 @@ html, body {
         height: auto !important;
         height: 100%;
         margin: 0 auto -2em;
-        overflow: hidden;
+        overflow: scroll;
 }
 
 .footer {
@@ -59,43 +45,12 @@ html, body {
 
 .tab-container {
         width: 100%;
-        height: 100%;
+    //    height: 100%;
 }
 
-#tabs {
-        height: 99%;
-        width:  99%;
-}
-
-/* specific styles for the header */
-.header {
-        height: 64px;
-        padding:0px;
-        background-image: url('images/ausstagehomebrand.gif');
-        background-repeat: no-repeat;
-        background-position: top left;
-}
-
-.header h1 {
-        color: #eeeeee;
-        text-align: right;
-        font-weight: normal;
-        padding-top: 24px;
-        padding-right: 10px;
-}
-
-/* ui tabs styles to fix layout issue */
-.fix-ui-tabs {
-        height: 40px;
-}
 
 /* specific styles for the footer */
-.footer  {
-        color:#fff;
-        font-size: 90%;
-        margin-top: 10px;
-        padding-top: 13px;
-}
+
 
 .footer p {
     text-align: center;
@@ -118,69 +73,6 @@ html, body {
         text-decoration: underline;
 }
 
-/* specific styles for the sidebar */
-.sidebar {
-        float: left;
-        padding-left: 10px;
-        padding-right: 10px
-        overflow: hidden;
-        /* width: 150px; */
-        /* temp width */
-        /* don't forget the peekaboo method */
-        width: 265px;
-        padding-bottom: 32767px;
-        margin-bottom: -32767px;
-}
-
-.sidebar ul {
-        margin:0;
-        padding:0;
-        list-style:none;
-}
-
-.sidebar li {
-        margin-bottom:0.25em;
-}
-
-.sidebar a {
-        /* same colour as f-188 */
-        color: #ffffff;
-        text-decoration: none;
-}
-
-.sidebar a:visited {
-        /* same colour as f-188 */
-        color: #ffffff;
-        text-decoration: none;
-}
-
-.sidebar a:hover {
-        color: #ffffff;
-        text-decoration: underline;
-}
-
-.peekaboo-big {
-        font-size: 150%;
-}
-
-.peekaboo-small {
-        float: right; 
-        padding-right: 1em;
-}
-
-/* specific styles for the sidebar1 */
-.sidebar1 {
-        float: left;
-        padding-left: 10px;
-        padding-right: 10px
-        overflow: hidden;
-        /* width: 150px; */
-        /* temp width */
-        /* don't forget the peekaboo method */
-        width: 275px;
-        padding-bottom: 32767px;
-        margin-bottom: -32767px;
-}
 
 .sidebar1 ul {
         margin:0;
@@ -218,34 +110,6 @@ html, body {
         padding-right: 1em;
 }
 
-/* style anchor tags */
-a {
-        /* same colour as f-189 */
-        text-decoration: none;
-        color: #001bcc;
-}
-
-a:visited {
-        /* same colour as f-189 */
-        text-decoration: none;
-        color: #001bcc;
-}
-
-a:hover {
-        /* same colour as f-189 */
-        text-decoration: underline;
-        color: #001bcc;
-}
-
-/* specific styles for the main content div */
-.main {
-       // min-height: 100%;
-      
-}
-
-.main-big {
-        margin-left: 25px;
-}
 
 /* specific styles for messages with the search box */
 .search-status-messages {
@@ -616,3 +480,55 @@ table.mapLegendTable th {
 /* prevent a FOUC */
 .js {display: none;}
 .hideMe {display: none;}
+
+
+/*Positions for things on new pages */
+
+.main1 {
+		min-height: 500px;
+		
+}
+
+#tabs {
+		position: absolute;
+		left: 5px;
+		top: 90px;
+		right: 10px;
+		padding-left: 279px;
+		
+}
+
+/* ui tabs styles to fix layout issue */
+.fix-ui-tabs {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 269px;
+        margin: 0px;
+        padding: 0px;
+}
+
+.fix-ui-tabs a {
+		display: block;
+		width: 240px;
+		margin: 0px;
+}
+
+/* specific styles for the sidebar1 */
+.sidebar1 {
+        position: absolute;
+        left: 5px;
+        top: 200px;
+        width: 275px;
+        z-index: 1;
+}
+
+#tabs-1, #tabs-2, #tabs-3 {
+		min-height: 500px;
+	
+}
+
+.footer {
+        visibility: hidden;
+        height: 50px;
+}
