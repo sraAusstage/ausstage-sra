@@ -142,7 +142,7 @@
 			"FROM contributorfunctpreferred "+
 			"INNER JOIN contfunctlink ON (contributorfunctpreferred.contributorfunctpreferredid = contfunctlink.contributorfunctpreferredid) "+
 			"WHERE lcase(`contributorfunctpreferred`.preferredterm) LIKE '" + letter + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid` " +
-  			"Order by " + sortCol + " " + sortOrd + " limit " + ((pageno)*25) + ",26";  
+  			"Order by " + sortCol + " " + sortOrd + ", preferredterm limit " + ((pageno)*25) + ",26";  
     l_rs = m_db.runSQL (sqlString, stmt);      
     int i = 0;
     while (l_rs.next())

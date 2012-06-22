@@ -106,7 +106,7 @@
 			"FROM secgenreclass LEFT JOIN secgenreclasslink ON (secgenreclass.secgenrepreferredid = secgenreclasslink.secgenrepreferredid) "+
             		"LEFT JOIN events ON (secgenreclasslink.eventid = events.eventid) "+
 			"Left Join itemsecgenrelink ON (secgenreclass.`secgenrepreferredid` = itemsecgenrelink.secgenrepreferredid) "+
-			"group by `secgenreclass`.`genreclassid` Order by " + sortCol + " " + sortOrd + " limit " + ((pageno)*25) + ",26";
+			"group by `secgenreclass`.`genreclassid` Order by " + sortCol + " " + sortOrd + ", name limit " + ((pageno)*25) + ",26";
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
     while (l_rs.next())

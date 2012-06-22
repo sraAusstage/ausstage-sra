@@ -144,7 +144,7 @@
 			"FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) LEFT JOIN events ON (orgevlink.eventid = events.eventid) " +
 			"LEFT JOIN itemorglink ON (organisation.organisationid = itemorglink.organisationid) "+
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) LIKE '" + letter + "%' group by organisation.organisationid " +
-  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":sortCol)+ " " + sortOrd + " LIMIT " + ((pageno)*25) + ",26";
+  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":sortCol)+ " " + sortOrd + ", organisation.name LIMIT " + ((pageno)*25) + ",26";
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
     while (l_rs.next())

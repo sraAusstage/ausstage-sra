@@ -119,7 +119,7 @@
   m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
   Statement stmt    = m_db.m_conn.createStatement ();
       
-  sqlString =	"SELECT COUNT(*) From `work` WHERE lcase(`work`.work_title) LIKE '" + letter + "%'";
+  sqlString =	"SELECT COUNT(*) From `work` WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) LIKE '" + letter + "%'";
   l_rs = m_db.runSQL (sqlString, stmt);
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
@@ -150,7 +150,7 @@
  			"Left  Join `organisation` ON (`workorglink`.`organisationid`= `organisation`.`organisationid`)" +
  			"Left join itemworklink On (work.workid = itemworklink.workid) "+
 			"WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) LIKE '" + letter + "%' group by work.`workid`" +
-  			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + " limit " + ((pageno)*25) + ",26";
+  			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + ", titlesort limit " + ((pageno)*25) + ",26";
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;  
       while (l_rs.next())
