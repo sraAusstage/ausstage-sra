@@ -5,7 +5,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page import="org.opencms.jsp.*,com.opencms.file.*,java.util.*" %>
-<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
 <%
 CmsJspActionElement menucms = new CmsJspActionElement(pageContext, request, response);
 String currentPage = menucms.getRequestContext().getUri();
@@ -17,6 +16,11 @@ if (currentPage.contains("search/index.jsp") ||currentPage.contains("search/even
 	showSearch = false;
 }
 
+if (!currentPage.contains("network/index.jsp") && !currentPage.contains("exchange/index.jsp") && !currentPage.contains("map/index.jsp")) {
+%>
+<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
+<%
+}
 %>
 
 
@@ -112,8 +116,8 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 
 <cms:template element="foot">	
   	
-
- <div id="footer">
+<!--added class=footer for mapping-->
+ <div id="footer" class="footer">
  
  <div class="footer-left">
 <span class="label"><a href="">AusStage</a> &bull; Researching Australian live performance</span>

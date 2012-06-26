@@ -56,7 +56,7 @@ $(document).ready(function(){
         styleButtons();
         
         // setup the accordian
-        $(".accordion").accordion({collapsible:true, active:false, autoHeight: false });
+        $(".accordion").accordion({collapsible:true, active:false, autoHeight: false, icons:false });
         
         // initialise the search page elements
         searchObj.init();       

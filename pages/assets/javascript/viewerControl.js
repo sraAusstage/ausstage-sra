@@ -417,8 +417,8 @@ ViewerControlClass.prototype.init = function() {
     
 	//deal with window resizing	
 	$(window).resize(function() {
-	  	viewer.w = $(window).width() - ($(".sidebar").width()+viewer.spacer);
-		viewer.h =  $(window).height() - ($(".header").height()+$(".footer").height()+$('#fix-ui-tabs').height()+viewer.hSpacer);	  
+	  	viewer.w = $(window).width() - ($("#viewer").offset().left+30);
+		viewer.h =  $(window).height() - ($("#viewer").offset().top+$("#footer").height()+$('#fix-ui-tabs').height()+viewer.hSpacer);	  
         viewerControl.resizeLegend();
 		if(viewer.json.edges.length!=0){
 			viewer.windowResized();			

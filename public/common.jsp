@@ -137,7 +137,11 @@ public void displayUpdateForm(String                p_id,
     p_out.println("<tr><td align='right' ><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
     p_out.println("<tr><td align='right'><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='right' >Export to excel</a></td></tr>");
     
-    if (p_type != null && (p_type.equals("Event")|| p_type.equals("Contributor"))){
+    if (p_type != null && (p_type.equals("Event"))){
+    	p_out.println("<tr><td align='right'><a href='/pages/network/?task=event-centric&rs=2&id=" + p_request.getParameter("id") + "' align='right' >Network</a> | <a href='/pages/map/?complex-map=true&c=&o=&v=&e=" + p_request.getParameter("id") + "' align='left' >Map</a></td></tr>");
+    	
+    }
+    if (p_type != null && (p_type.equals("Contributor"))){
     	p_out.println("<tr><td align='right'><a href='/pages/network/?task=ego-centric&id=" + p_request.getParameter("id") + "' align='right' >Network</a> | <a href='/pages/map/?complex-map=true&c=" + p_request.getParameter("id") + "&o=&v=&e=' align='left' >Map</a></td></tr>");
     	
     }

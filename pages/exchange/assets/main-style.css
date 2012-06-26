@@ -45,11 +45,6 @@
 }
 
 
-/* ui tabs styles to fix layout issue */
-.fix-ui-tabs {
-	height: 40px;
-}
-
 /* specific styles for the footer */
 .footer  {
 	color:#fff;
