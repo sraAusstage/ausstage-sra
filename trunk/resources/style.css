@@ -1,6 +1,6 @@
 body {
     font-family: helvetica, verdana, arial;
-    font-size: 14px;
+    /*font-size: 14px;*/
     }
     
     a {
@@ -15,159 +15,12 @@ body {
     color:black;
     }
     
-    #loginBar{
-    position:absolute;   
-    height:25px;
-    left:200px;
-    top:75px;  
-    right:0px;
-    margin:0px;
-    }
-    #loginBar a {  
-    color: white;
-    }
-    #loginBar a, #loginBar select {
-     float: right;
-    }
-    
-    #loginBar1{
-    position:absolute;   
-    height:25px;
-    left:300px;
-    top:75px;  
-    right:0px;
-    margin:0px;
-    }
-    #loginBar1 a {
-    color: white;
-    }
-    #loginBar1 a, #loginBar1 select {
-     float: right;
-    }
-    
-    #header {
-    position:absolute;
-    top:0px;
-    left:0px;
-    right:0px;
-    height:100px;
-    }
-    
-    #headerLogo {
-    float:left;
-    height:100px;
-    }
-    
-    #headerText {
-    float:right;
-    color:#ffffff;
-    font-family: helvetica;
-    font-size: 20px;
-    font-weight: normal;
-    margin-right: 6px;
-    margin-top: 20px;
-    }
-    
-    #searchbar{
-    background-color: #aaaaaa;
-    padding-top: 12px;
-    padding-bottom: 14px;
-    padding-left: 4px;
-    padding-right: 4px;
-    margin: 5px;
-    }
-    
-     #searchbar a {
-   padding-top: 8px;
-   padding-bottom: 8px;
-   padding-left: 14px;
-   padding-right: 10px;
-   text-decoration: none;
-   
-    color: white;
-    }   
-    
-    #searchbar a:hover {
-    background-color: #bbbbbb;
-    }
-    
-    #searchbar.currentPage {
-    background-color: #333333;
-    }
-    
-    #searchbar a:active {
-    background-color: black;
-    }
-    
-    #topbar2 {
-    min-width:500px;
-    padding-top: 12px;
-    padding-bottom: 14px;
-    padding-left: 4px;
-    padding-right: 4px;
-    }
-    
-     #topbar2 a, #topbar2 span {
-   padding-top: 8px;
-   padding-bottom: 8px;
-   padding-left: 14px;
-   padding-right: 10px;
-   text-decoration: none;
-   
-    color: white;
-    }   
-    
-    
-    #topbar2 a:hover {
-    background-color: #bbbbbb;
-    }
-    
-    #topbar2 .currentPage {
-    background-color: #333333;
-    }
-    
-    #topbar2 a:active {
-    background-color: black;
-    }
-    
-    #topbar {
-    min-width:1000px;
-    padding-top: 12px;
-    padding-bottom: 14px;
-    padding-left: 4px;
-    padding-right: 4px;
-    margin-bottom: 5px;
-    }
-  
-    #topbar a {
-   padding-top: 8px;
-   padding-bottom: 8px;
-   padding-left: 14px;
-   padding-right: 10px;
-   text-decoration: none;
-   
-    color: white;
-    }   
-    
-    
-    #topbar a:hover {
-    background-color: #bbbbbb;
-    }
-    
-    #topbar .currentPage {
-    background-color: #333333;
-    }
-    
-    #topbar a:active {
-    background-color: black;
-    }
-    
-    
+
     #sidebar {
     position:fixed;
     left:0px;
     top: 100px;
-    bottom:0px;
+    bottom:70px;
     width: 175px;
     padding: 10px;
     z-index:5;
@@ -175,11 +28,11 @@ body {
     
     #sidebar1 {
     position:fixed;
-    left:0px;
+    left:10px;
     top: 100px;
-    bottom:0px;
-    width: 275x;
-    padding: 10px;
+    bottom:70px;
+    width: 265px;
+    /*padding: 10px;*/
     z-index:5;
     }
     
@@ -189,7 +42,7 @@ body {
     
     #sidebarAdmin {
     position:fixed;
-    left:0px;
+    left:10px;
     top: 100px;
     bottom:0px;
     width: 215px;
@@ -235,7 +88,7 @@ body {
     right: 0px;
     bottom: 0px;
     overflow: auto;
-    padding: 5px;
+    padding: 0px;
     }
     
     .main-big {
@@ -259,13 +112,13 @@ body {
     left: 35px;
     }
     
-    #footer, .footer {
+    .footer {
     position: fixed;
     bottom: 0px;
     left: 0px;
-    visibility: hidden;
-/*    width: 100%;
-    margin-top: 60px;*/
+    /*visibility: hidden;*/
+    width: 100%;
+    margin-top: 60px;
     height: 0px;
     /*padding-top: 20px;
     background-color: #aaaaaa;

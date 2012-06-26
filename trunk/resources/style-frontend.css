@@ -53,7 +53,8 @@ div {
 #footer{
 	width:100%; 
 	min-height:5em;
-	position:absolute;
+	/*position:absolute;*/
+	position:fixed;
 	bottom:0;
 	left:0;
 	background-color: #aaaaaa;
@@ -96,6 +97,7 @@ a:hover {
 
 .label a:hover {
 	text-decoration: underline;
+	color: #ffffff;
 	}
 
 .light {

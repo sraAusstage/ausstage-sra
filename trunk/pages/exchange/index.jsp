@@ -9,11 +9,8 @@
 <%
 String url = request.getServerName();
 %>
-	<link rel="stylesheet" href="assets/main-style.css"/>
-	<link rel="stylesheet" href="assets/​ausstage-colours.css"/>
-	<link rel="stylesheet" href="assets/​ausstage-background-colours.css"/>
-	<link rel="stylesheet" href="assets/jquery-ui/jquery-ui-1.8.6.custom.css"/>
-	<!--script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script-->
+	<link rel="stylesheet" href="/pages/exchange/assets/main-style.css"/>
+	<link rel="stylesheet" href="/pages/ausstage/assets/jquery-ui/jquery-ui-1.8.6.custom.css"/>
 	<!-- libraries -->
 	<script type="text/javascript" src="assets/javascript/libraries/jquery-1.6.min.js"></script>
 	<script type="text/javascript" src="assets/javascript/libraries/jquery-ui-1.8.12.custom.min.js"></script>
@@ -28,11 +25,10 @@ String url = request.getServerName();
 	<script type="text/javascript" src="assets/javascript/aus_exchange.js"></script>		
 	<script type="text/javascript" src="assets/javascript/tab-selector.js"></script>
 		<!-- main content -->
-		<div class="main1 b-172">
-		<%@ include file="../../templates/MainMenu.jsp"%>
+	<div class="main1 b-172">
 
-		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; padding:0px; border-width:0px;">
-			<ul class="fix-ui-tabs">
+		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; margin-top: 15px; padding:0px; border-width:0px;">
+			<ul class="fix-ui-tabs" style="padding: 0px;">
 				<li><a href="#tabs-1">Exchange Overview</a></li>
 				<li><a href="#tabs-2">Embed Code</a></li>
 				<li><a href="#tabs-3">Secondary Genres</a></li>
@@ -838,5 +834,8 @@ String url = request.getServerName();
 	</div>
 
 	<!-- always at the bottom of the content -->
-	<div class="push"></div></div>
+	<div class="push"></div>
+	
+	</div>
+
 <cms:include property="template" element="foot" />

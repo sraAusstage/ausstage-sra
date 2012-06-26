@@ -458,7 +458,7 @@ function showSearchResults(responseText)  {
 		showLoader("hide");
 	
 		// style the new buttons
-		$("button, input:submit").button();
+		//$("button, input:submit").button();
 		
 		// add a function to each of the choose buttons
 		$(".choose_button").click(function(eventObject) {
@@ -574,7 +574,7 @@ function addSecGenreDialog(data) {
 	});
 	
 	// style the new buttons
-	$("button, input:submit").button();
+	//$("button, input:submit").button();
 
 }
 
@@ -614,7 +614,7 @@ function addContentIndicatorDialog(data) {
 	});
 	
 	// style the new buttons
-	$("button, input:submit").button();
+	//$("button, input:submit").button();
 
 }
 
@@ -654,7 +654,7 @@ function addResSubTypeDialog(data) {
 	});
 	
 	// style the new buttons
-	$("button, input:submit").button();
+	//$("button, input:submit").button();
 
 }
 
