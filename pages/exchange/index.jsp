@@ -27,7 +27,7 @@ String url = request.getServerName();
 		<!-- main content -->
 	<div class="main1 b-172">
 
-		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; margin-top: 15px; padding:0px; border-width:0px;">
+		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; margin-top: 15px; margin-bottom: 60px; padding:0px; border-width:0px;">
 			<ul class="fix-ui-tabs" style="padding: 0px;">
 				<li><a href="#tabs-1">Exchange Overview</a></li>
 				<li><a href="#tabs-2">Embed Code</a></li>
