@@ -36,7 +36,7 @@
     <body topmargin="0" leftmargin="0" bgproperties="fixed" bgcolor="#333333">
     <div class="wrapper">
     <div id="header" class="b-187">
-    	<a href="/pages/search/"><img src="/resources/images/ausstagehomebrand.gif" alt="default" border="0" id="headerLogo"/></a>
+    	<a href="/pages/browse/"><img src="/resources/images/ausstagehomebrand.gif" alt="default" border="0" id="headerLogo"/></a>
     	<h3 id="headerText">Administrator Logon</h3>
     </div>
     

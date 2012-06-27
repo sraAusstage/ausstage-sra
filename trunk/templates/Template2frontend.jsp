@@ -16,7 +16,10 @@ if (currentPage.contains("search/index.jsp") ||currentPage.contains("search/even
 	showSearch = false;
 }
 
-if (!currentPage.contains("network/index.jsp") && !currentPage.contains("exchange/index.jsp") && !currentPage.contains("map/index.jsp")) {
+if (!currentPage.contains("network/index.jsp") && 
+	!currentPage.contains("exchange/index.jsp") && 
+	!currentPage.contains("map/index.jsp") && 
+	!currentPage.contains("analytics/index.jsp")) {
 %>
 <script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
 <%

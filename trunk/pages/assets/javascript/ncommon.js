@@ -27,8 +27,8 @@ var dateFormat = pv.Format.date("%e %b %Y");
 
 //function to apply correct style to buttons
 function styleButtons() {
-    //    $("button, input:submit").button();
-    //    $("button, input:button").button();
+        $("button, input:submit").button();
+	    $("button, input:button").button();
 }
 
 // define a function to build an info message box
