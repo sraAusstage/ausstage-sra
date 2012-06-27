@@ -5,16 +5,13 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" />
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />	
-	<title>Researching Audiences</title>
+
+	<link rel="stylesheet" href="/pages/assets/main-style.css"/>
 	<link rel="stylesheet" href="assets/main-style.css"/>
-	<link rel="stylesheet" href="assets/ausstage-colours.css"/>
-	<link rel="stylesheet" href="assets/ausstage-background-colours.css"/>
-	<link rel="stylesheet" href="assets/jquery-ui-1.8.6.custom.css"/>
-        <link rel="stylesheet" href="assets/vis.css"/>    
+	<link rel="stylesheet" href="/pages/assets/ausstage-colours.css"/>
+	<link rel="stylesheet" href="/pages/assets/ausstage-background-colours.css"/>
+	<link rel="stylesheet" href="/pages/assets/jquery-ui-1.8.6.custom.css"/>
+    <link rel="stylesheet" href="assets/vis.css"/>    
 	<!-- libraries -->
 	<script type="text/javascript" src="assets/javascript/libraries/jquery-1.5.min.js"></script>
 	<script type="text/javascript" src="assets/javascript/libraries/jquery-ui-1.8.6.custom.min.js"></script>
@@ -23,23 +20,8 @@
         <script type="text/javacript" src="assets/javascript/chain-0.2.js" type="application/x-javascript" charset="utf-8"></script>
         <!-- libraries -->
 	
-	<!-- prevent a FOUC -->
-	<script type="text/javascript">
-		$('html').addClass('js');
-	</script>
-        <script type="text/javascript" charset="utf-8">        
-			  /*** The Jquery document ready. Acts like the main.*/						   
-		   $(document).ready(function() {								
-		});		
-        </script>    
-</head>
-
-<body>
-<div>
-  <div><%@ include file="../../templates/MainMenu.jsp"%><div>	
-  <div>
   <!-- main content -->
-    <div>
+    <div style="margin-bottom: 60px">
       <div id="About">
         <br>
 	<h2>Send feedback on live performance</h2>
@@ -48,13 +30,13 @@
 
 	  <ul class="services">
 	    <li>
-	      <a href="send/index.jsp" title="Send a response">
+	      <a href="send/" title="Send a response">
 		<h3>Send a response</h3><img src="assets/images/response-screengrab.jpg" width="200" height="150" alt="Send a response">
 		<p>Performances now seeking response</p>
 	      </a>
 	    </li>
 	    <li>
-	      <a href="view/index.jsp" title="View response">
+	      <a href="view/" title="View response">
 		<h3>View response</h3>
                 <img src="assets/images/list-screengrab.jpg" width="200" height="150" alt="View Responses">
                 <p>Past performances with response you can view</p>
@@ -73,16 +55,16 @@
 	  <p>Any enquiries you may have concerning this project should be directed to Jonathan Bollen on 8201 5874 or by email to <a href="mailto:jonathan.bollen@flinders.edu.a">jonathan.bollen@flinders.edu.au</a></p>
 
 	  <p class="clear homefooter">
-	    <a href="http://beta.ausstage.edu.au/" title="Aus-e-Stage Project homepage">Aus-e-Stage</a> is funded by <a href="http://www.pfc.org.au/bin/view/Main/NeAT" title="NeAT homepage">NeAT</a>, the National eResaerch Architecture Taskforce. The source code for these services is available on the <a href="http://code.google.com/p/aus-e-stage/" title="Aus-e-Stage Project Wiki and Source Code Repository">aus-e-stage</a> project hosted on Google Code.
+	    <a href="http://beta.ausstage.edu.au/" title="Aus-e-Stage Project homepage">Aus-e-Stage</a> is funded by <a href="http://www.pfc.org.au/bin/view/Main/NeAT" title="NeAT homepage">NeAT</a>, the National eResearch Architecture Taskforce. The source code for these services is available on the <a href="http://code.google.com/p/aus-e-stage/" title="Aus-e-Stage Project Wiki and Source Code Repository">aus-e-stage</a> project hosted on Google Code.
 	  </p>
         </div>
       </div>
-    </div>
     <!-- always at the bottom of the content -->
   <div class="push"></div>
 </div>
                                     
 <!-- include the Google Analytics code -->
 
-<script type="text/javascript"> var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); </script> <script type="text/javascript"> try { var pageTracker = _gat._getTracker("UA-10089663-2"); pageTracker._trackPageview(); } catch(err) {} </script>	</body>
-</html>
+<script type="text/javascript"> var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); </script> <script type="text/javascript"> try { var pageTracker = _gat._getTracker("UA-10089663-2"); pageTracker._trackPageview(); } catch(err) {} </script>
+
+<cms:include property="template" element="foot" />

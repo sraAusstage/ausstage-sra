@@ -113,7 +113,7 @@ function model(name) {
 										var item = data[i];
 										//$(target + ".Performances").append('<li class="arrow">' +
 										$(target + ".Performances").append('<li class="arrow">' +
-												'<a href="add.html?performance=' +
+												'<a href="add.jsp?performance=' +
 												item.id +
                                                                                                 '" ><div class="event">' +
 													item.event + '</div></a>' +
