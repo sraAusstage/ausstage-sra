@@ -28,10 +28,10 @@ function visControllerChooseView(doc) {
                     switch (this.id)
                         {
                         case 'chooseList':
-                          var nextView = 'list.html';
+                          var nextView = 'list.jsp';
                           break;
                         case 'chooseCloud':
-                             var nextView = 'tagcloud.html';
+                             var nextView = 'tagcloud.jsp';
                           break;
                         case 'chooseSignage':
                              var nextView = 'signage.html';

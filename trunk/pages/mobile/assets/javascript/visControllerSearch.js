@@ -58,11 +58,11 @@ function visControllerSearch(newModel) {
 
                                                                                                         '<td class="view">\n\
 \n\
-                                                                                                         <span class="visList"><a href="list.html?performance=' + item.id + '"><img src ="../assets/images/list-icon.png" alt="list" > <br /><span class="label">List</span></a></span> ' +
+                                                                                                         <span class="visList"><a href="list.jsp?performance=' + item.id + '"><img src ="../assets/images/list-icon.png" alt="list" > <br /><span class="label">List</span></a></span> ' +
 													'<span class="visSign"><a href="signage.html?performance=' + item.id + '">\n\
                                                                                                           <img src ="../assets/images/sign-icon.png" alt="Signage" > <br /><span class="label">Signage</span></a></span>' +
 
-                                                                                                          '<span class="visCloud"><a href="tagcloud.html?performance=' + item.id + '">\n\
+                                                                                                          '<span class="visCloud"><a href="tagcloud.jsp?performance=' + item.id + '">\n\
                                                                                                           <img src ="../assets/images/tagcloud-icon.png" alt="Cloud" > <br /><span class="label">Tag Cloud</span></a></span>' +
 
                                                                                                          '<span class="visImage"><a href="image-sequence.html?performance=' + item.id + '">\n\

@@ -5,11 +5,7 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" />
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>Researching Audiences</title>
+
         <link rel="stylesheet" href="../assets/main-style.css"/>
 	<link rel="stylesheet" href="../assets/ausstage-colours.css"/>
 	<link rel="stylesheet" href="../assets/ausstage-background-colours.css"/>
@@ -52,12 +48,7 @@
                                 });                               
 		    });
         </script>        
-    </head>
-
-    <body class="add">
-      <div>
-	<div><%@ include file="/system/modules/au.edu.flinders.ausstage/templates/MainMenu.jsp"%></div>
-	<div>
+	<div style="margin-bottom: 60px">
           <div class="info">
             <h2>Send your response to 
               <span class="event"></span>
@@ -114,8 +105,7 @@ If you have any feedback, questions or queries about the Researching Audiences s
 </p>
 <!-- always at the bottom of the content -->
 <div class="push"></div>
-</div>
    
 <script type="text/javascript"> var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); </script> <script type="text/javascript"> try { var pageTracker = _gat._getTracker("UA-10089663-2"); pageTracker._trackPageview(); } catch(err) {} </script>	</body>
-</body>
-</html>
+
+<cms:include property="template" element="foot" />

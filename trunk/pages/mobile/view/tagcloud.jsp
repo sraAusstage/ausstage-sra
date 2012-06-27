@@ -5,11 +5,7 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" />
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Tag Cloud</title>
+
   <link rel="stylesheet" href="../assets/main-style.css"/>
   <link rel="stylesheet" href="../assets/ausstage-colours.css"/>
   <link rel="stylesheet" href="../assets/ausstage-background-colours.css"/>
@@ -42,12 +38,9 @@
   });
   ;     
   </script>             
-</head>
-<body>
-  <div>
-    <div><%@ include file="/system/modules/au.edu.flinders.ausstage/templates/MainMenu.jsp"%></div>
-   
-    <div>        	
+
+
+    <div style="margin-bottom: 60px">        	
       <div class="ui-state-error ui-corner-all status-messages" id="search_error_message"> 
         <p><span class="ui-icon ui-icon-alert status-icon"></span> 
            <span id="error_text"></span>
@@ -72,12 +65,11 @@
     </div>
     <!-- always at the bottom of the content -->
     <div class="push"></div>
-  </div>
   <!-- include the Google Analytics code -->
   <script type="text/javascript"> 
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); 
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); 
   </script> 
   <script type="text/javascript"> try { var pageTracker = _gat._getTracker("UA-10089663-2"); pageTracker._trackPageview(); } catch(err) {} </script>	
-</body>
-</html>
+
+<cms:include property="template" element="foot" />
