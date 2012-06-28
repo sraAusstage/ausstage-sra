@@ -83,33 +83,33 @@
  	    		</div>
 	  	</div>
 	  	<div class="mapLegendContainer js peekaboo-tohide">
-	    		<div class="accordion">
-	      			<h3><a href="#" id="mapLegendContributorHeading">Contributors</a></h3>
-	      			<div id="mapLegendContributors" class="mapLegendInnerContainer">
-	      		</div>
-	    	</div>
-	    	<div class="accordion">
-	     	 		<h3><a href="#" id="mapLegendOrganisationHeading">Organisations</a></h3>
-	      			<div id="mapLegendOrganisations" class="mapLegendInnerContainer">	
-	      			</div>
-	    	</div>
-	    	<div class="accordion">
-	      		<h3><a href="#" id="mapLegendVenueHeading">Venues</a></h3>
-	      		<div id="mapLegendVenues" class="mapLegendInnerContainer">
-	      		</div>
-	    	</div>
-	    	<div class="accordion">
-	      		<h3><a href="#" id="mapLegendEventsHeading">Events</a></h3>
-	      		<div id="mapLegendEvents" class="mapLegendInnerContainer">
-	      		</div>
-	    	</div>
+    		<div class="accordion">
+      			<h3><a href="#" id="mapLegendContributorHeading">Contributors</a></h3>
+      			<div id="mapLegendContributors" class="mapLegendInnerContainer">
+      		</div>
+    	</div>
+    	<div class="accordion">
+     	 		<h3><a href="#" id="mapLegendOrganisationHeading">Organisations</a></h3>
+      			<div id="mapLegendOrganisations" class="mapLegendInnerContainer">	
+      			</div>
+    	</div>
+    	<div class="accordion">
+      		<h3><a href="#" id="mapLegendVenueHeading">Venues</a></h3>
+      		<div id="mapLegendVenues" class="mapLegendInnerContainer">
+      		</div>
+    	</div>
+    	<div class="accordion">
+      		<h3><a href="#" id="mapLegendEventsHeading">Events</a></h3>
+      		<div id="mapLegendEvents" class="mapLegendInnerContainer">
+      		</div>
+    	</div>
 	</div>
 </div>
 <div id='main1' class="main1 b-184 f-187">
   	<div id="tabs" class="tab-container" style="position: relative">
   		<ul class="fix-ui-tabs">
 			<li style="position: relative; left:65px;"><a href="#tabs-1">Build</a></li>
-			<li style="position: relative; left:70px;"><a href="#tabs-2">Regions</a></li>
+			<li style="position: relative; left:68px;"><a href="#tabs-2">Regions</a></li>
 			<li style="position: relative; left:-120px;"><a href="#tabs-3">Map</a></li> 
 		</ul>
 	<div>
