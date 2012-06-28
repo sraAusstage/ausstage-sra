@@ -44,7 +44,7 @@
 
                                  $("#cancel_btn").click(function(e) {
                                           e.preventDefault(); // stop the page reloading
-                                          window.location.href = 'index.html';
+                                          window.location.href = '.';
                                 });                               
 		    });
         </script>        
