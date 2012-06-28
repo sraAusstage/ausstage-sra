@@ -161,7 +161,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			if (!formatDate(event.getDdlastDate(), event.getMmlastDate(), event.getYyyylastDate()).equals("")) {
 				%>
 				<tr>
-					<th class='record-label b-90'>Opening Date</th>
+					<th class='record-label b-90'>Last Date</th>
 					
 					<td class='record-value'><%=formatDate(event.getDdlastDate(), event.getMmlastDate(), event.getYyyylastDate())%></td>
 				</tr>

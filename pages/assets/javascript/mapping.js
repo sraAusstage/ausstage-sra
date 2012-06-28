@@ -63,6 +63,8 @@ function MappingClass() {
                                                         international: {lat: -25.947028, lng: 133.209639, zoom: 2},
                                                         australia:     {lat: -25.947028, lng: 133.209639, zoom: 4},
                                                         unknown:       {lat: -25.947028, lng: 133.209639, zoom: 4}
+                                                        
+                                                        
                                                  };
                                                  
         // variable to store details of the markers
@@ -562,8 +564,8 @@ MappingClass.prototype.addVenueBrowseData = function(data, display) {
 
 // function to update the list of contributors with data from the search interface
 MappingClass.prototype.addContributorData = function(data, display) {
-console.log(data);
-console.log('Contributorxxxxxxxxxxxx');
+
+
         // declare helper variables
         var hash  = null;
         var idx   = null;
@@ -744,8 +746,7 @@ MappingClass.prototype.addOrganisationData = function(data, display) {
 
 // function to update the list of events with data from the search interface
 MappingClass.prototype.addEventData = function(data, display) {
-console.log("event data being added");
-console.log(data);
+
 
 
         // declare helper variables
@@ -763,6 +764,7 @@ console.log(data);
                 // get the event information and list of venes
                 event  = data[i].extra[0];
                 venues = data[i].venues;
+              
                 
                 // loop through the list of venues
                 for(var x = 0; x < venues.length; x++) {

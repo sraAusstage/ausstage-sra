@@ -289,6 +289,7 @@
     var form = document.searchform;
 
     function checkFields(){
+    
       //all fields are empty
       if(form.f_keywords.value == "" && form.f_firstdate_yyyy.value == "" && form.f_collectingInstitution.value == ""
           && form.f_creator.value == "" && form.f_title.value == "" 
@@ -323,8 +324,8 @@
     
       //Check Integer
       if ((!isBlank(form.f_firstdate_yyyy.value) && !isInteger(form.f_firstdate_yyyy.value)) ||
-    		     (!isBlank(form.f_firstdate_yyyy.value) && form.f_firstdate_yyyy.value != 4) ){
-    		    msg += "- Date year must be a valid\n";
+    		     (!isBlank(form.f_firstdate_yyyy.value) && form.f_firstdate_yyyy.value.length != 4) ){
+    		    msg += "- Date. Year must be valid number using the format YYYY\n";
     		  }
 
       

@@ -52,6 +52,11 @@
 						Statement    stmt = db_ausstage_for_drill.m_conn.createStatement();
 						
 						CachedRowSet crset          = null;
+						CachedRowSet crsetEvt       = null;
+						CachedRowSet crsetCon       = null;
+						CachedRowSet crsetOrg       = null;
+						CachedRowSet crsetVen       = null;
+						
 						ResultSet rset;
 						String formatted_date       = "";
 						String org_id               = request.getParameter("id");
@@ -220,6 +225,69 @@
 							</tr>
 						<%
 						}
+						//get associated objects
+						
+						//events
+						ausstage.Database     m_db = new ausstage.Database ();
+						m_db.connDatabase(AppConstants.DB_ADMIN_USER_NAME, AppConstants.DB_ADMIN_USER_PASSWORD);
+						event = new Event(db_ausstage_for_drill);
+						crsetEvt = event.getEventsByOrg(Integer.parseInt(org_id));
+						
+						//Organisations
+						String sqlString = 
+						"SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
+						"events.first_date,venue.venue_name,venue.suburb,states.state,organisation.organisationid,organisation.name,evcount.num "+
+						"FROM events,venue,states,organisation,orgevlink oe2,orgevlink "+
+						"inner join (SELECT oe.organisationid, count(distinct oe.eventid) num "+
+						"FROM orgevlink oe, orgevlink oe2 where oe2.eventid=oe.eventid and oe2.organisationid=" + org_id + " "+
+						"group by oe.organisationid) evcount ON (evcount.organisationid = orgevlink.organisationid) "+
+						"WHERE oe2.organisationid = " + org_id + " AND "+
+						"orgevlink.organisationid != " + org_id + " AND "+
+						"oe2.eventid = events.eventid AND "+
+						"events.venueid = venue.venueid AND "+
+						"venue.state = states.stateid AND "+
+						"events.eventid = orgevlink.eventid AND "+
+						"orgevlink.organisationid = organisation.organisationid "+
+						"ORDER BY evcount.num desc,organisation.name,events.first_date DESC";
+						crsetOrg = m_db.runSQL(sqlString, stmt);						
+						
+						//venues
+						sqlString = 
+						"SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
+						"events.first_date,venue.venueid,venue.venue_name,venue.suburb,states.state,organisation.organisationid,organisation.name,evcount.num "+
+						"FROM events,venue,states,organisation,orgevlink "+
+						"inner join (SELECT events.venueid, count(distinct orgevlink.eventid) num "+
+						"FROM orgevlink, events where orgevlink.eventid=events.eventid and orgevlink.organisationid=" + org_id + " "+
+						"GROUP BY events.venueid) evcount "+
+						"WHERE orgevlink.organisationid = " + org_id + " AND "+
+						"evcount.venueid = events.venueid AND "+
+						"orgevlink.eventid = events.eventid AND "+
+						"events.venueid = venue.venueid AND "+
+						"venue.state = states.stateid AND "+
+						"events.eventid = orgevlink.eventid AND "+
+						"orgevlink.organisationid = organisation.organisationid "+
+						"ORDER BY evcount.num desc,venue.venue_name,events.first_date DESC";
+						crsetVen = m_db.runSQL(sqlString, stmt);
+						
+						//contributors
+						sqlString	= "SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
+						"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
+						"venue.venue_name,venue.suburb,states.state,evcount.num " +
+						"FROM events,venue,states,orgevlink,conevlink,contributor " +
+						"inner join (SELECT conevlink.contributorid, count(distinct conevlink.eventid) num " +
+						"FROM conevlink, orgevlink where orgevlink.eventid=conevlink.eventid and orgevlink.organisationid=" + org_id + " " +
+						"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
+						"WHERE orgevlink.organisationid = " + org_id + " AND " +
+						"orgevlink.eventid = events.eventid AND " +
+						"events.venueid = venue.venueid AND " +
+						"venue.state = states.stateid AND " +
+						"events.eventid = orgevlink.eventid AND " +
+						"orgevlink.eventid=conevlink.eventid AND " +
+						"conevlink.contributorid = contributor.contributorid " +
+						"ORDER BY evcount.num desc,contributor.last_name,contributor.first_name,events.first_date DESC";
+						crsetCon = m_db.runSQL(sqlString, stmt);
+						
+						if (crsetEvt.size() > 0 || crsetOrg.size() > 0 || crsetCon.size() > 0 || crsetVen.size() > 0){												
 					%>  
 				
 					<tr>
@@ -234,32 +302,30 @@
 							</ul>
 						</td>
 					</tr>
-				    
+				    <%
+				    	}
+				    %>
 				    <tr id='events'>
 					<%
-				    // Events Tab
-					ausstage.Database     m_db = new ausstage.Database ();
-					m_db.connDatabase(AppConstants.DB_ADMIN_USER_NAME, AppConstants.DB_ADMIN_USER_PASSWORD);
-					event = new Event(db_ausstage_for_drill);
-					crset = event.getEventsByOrg(Integer.parseInt(org_id));
 					
-					if (crset.size() > 0) {
+				    // Events Tab	
+					if (crsetEvt.size() > 0) {
 					%>
 							<th class='record-label b-121'></th>
 							
 							<td class='record-value'>
 								<ul>
 								<%
-								while(crset.next()) {
+								while(crsetEvt.next()) {
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crset.getString("eventid")%>">
-					            		<%=crset.getString("event_name")%></a><%
-										if(hasValue(crset.getString("venue_name"))) out.print(", " + crset.getString("venue_name"));
-										if(hasValue(crset.getString("suburb"))) out.print(", " + crset.getString("suburb")); 
-										if(hasValue(crset.getString("state"))) out.print(", " + crset.getString("state")); 
-										if (hasValue(formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE"))))
-											out.print(", " + formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE")));
+									<a href="/pages/event/?id=<%=crsetEvt.getString("eventid")%>">
+					            		<%=crsetEvt.getString("event_name")%></a><%
+										if(hasValue(crsetEvt.getString("venue_name"))) out.print(", " + crsetEvt.getString("venue_name"));
+										if(hasValue(crsetEvt.getString("suburb"))) out.print(", " + crsetEvt.getString("suburb")); 
+										if(hasValue(crsetEvt.getString("state"))) out.print(", " + crsetEvt.getString("state")); 
+										if (hasValue(formatDate(crsetEvt.getString("DDFIRST_DATE"),crsetEvt.getString("MMFIRST_DATE"),crsetEvt.getString("YYYYFIRST_DATE"))))
+											out.print(", " + formatDate(crsetEvt.getString("DDFIRST_DATE"),crsetEvt.getString("MMFIRST_DATE"),crsetEvt.getString("YYYYFIRST_DATE")));
 										%>
 									</li>
 								<%
@@ -274,57 +340,39 @@
 				    
 				    <tr id='organisation'>
 				    <%
-					//Organisation Tab
-				
-					String sqlString = 
-					"SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
-					"events.first_date,venue.venue_name,venue.suburb,states.state,organisation.organisationid,organisation.name,evcount.num "+
-					"FROM events,venue,states,organisation,orgevlink oe2,orgevlink "+
-					"inner join (SELECT oe.organisationid, count(distinct oe.eventid) num "+
-					"FROM orgevlink oe, orgevlink oe2 where oe2.eventid=oe.eventid and oe2.organisationid=" + org_id + " "+
-					"group by oe.organisationid) evcount ON (evcount.organisationid = orgevlink.organisationid) "+
-					"WHERE oe2.organisationid = " + org_id + " AND "+
-					"orgevlink.organisationid != " + org_id + " AND "+
-					"oe2.eventid = events.eventid AND "+
-					"events.venueid = venue.venueid AND "+
-					"venue.state = states.stateid AND "+
-					"events.eventid = orgevlink.eventid AND "+
-					"orgevlink.organisationid = organisation.organisationid "+
-					"ORDER BY evcount.num desc,organisation.name,events.first_date DESC";
-					crset = m_db.runSQL(sqlString, stmt);
-				 
+					//Organisation Tab				 
 					String prevOrg = "";
-					if (crset.size() > 0) {
+					if (crsetOrg.size() > 0) {
 						%>
 						<th class='record-label b-121'></td>
 				 		
 				 		<td class='record-value'>
 						
 						<%	
-						while (crset.next()){
+						while (crsetOrg.next()){
 							// If we're starting a new organisation, check if we have to finish the previous one
-							if (!prevOrg.equals(crset.getString("name"))) {
+							if (!prevOrg.equals(crsetOrg.getString("name"))) {
 								if (hasValue(prevOrg)) out.print("</ul>");
 								
 								// Now start the new one
 								%>
-							<a href="/pages/organisation/?id=<%=crset.getString("organisationid")%>">
-								<h3><%=crset.getString("name")%></h3>
+							<a href="/pages/organisation/?id=<%=crsetOrg.getString("organisationid")%>">
+								<h3><%=crsetOrg.getString("name")%></h3>
 							</a>
 							<ul>
 								<%
-								prevOrg = crset.getString("name");
+								prevOrg = crsetOrg.getString("name");
 							}
 							
 							%>
 								<li>
-								<a href="/pages/event/?id=<%=crset.getString("eventid")%>">
-								<%=crset.getString("event_name")%></a><%
-								if(hasValue(crset.getString("venue_name"))) out.print(", " + crset.getString("venue_name"));
-								if(hasValue(crset.getString("suburb"))) out.print(", " + crset.getString("suburb"));
-								if(hasValue(crset.getString("state"))) out.print(", " + crset.getString("state"));
-								if (hasValue(formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE"))))
-									out.print(", " + formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE")));
+								<a href="/pages/event/?id=<%=crsetOrg.getString("eventid")%>">
+								<%=crsetOrg.getString("event_name")%></a><%
+								if(hasValue(crsetOrg.getString("venue_name"))) out.print(", " + crsetOrg.getString("venue_name"));
+								if(hasValue(crsetOrg.getString("suburb"))) out.print(", " + crsetOrg.getString("suburb"));
+								if(hasValue(crsetOrg.getString("state"))) out.print(", " + crsetOrg.getString("state"));
+								if (hasValue(formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE"))))
+									out.print(", " + formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE")));
 								%>
 								</li>
 							<%	 
@@ -336,67 +384,49 @@
 					}
 				 	
 					out.flush();
-					crset.close();
+					//crset.close();
 					%>
 					</tr>
 					
 					<tr id='venue'>
 					<%
-					//Venue Tab
-					
-					sqlString = 
-					"SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
-					"events.first_date,venue.venueid,venue.venue_name,venue.suburb,states.state,organisation.organisationid,organisation.name,evcount.num "+
-					"FROM events,venue,states,organisation,orgevlink "+
-					"inner join (SELECT events.venueid, count(distinct orgevlink.eventid) num "+
-					"FROM orgevlink, events where orgevlink.eventid=events.eventid and orgevlink.organisationid=" + org_id + " "+
-					"GROUP BY events.venueid) evcount "+
-					"WHERE orgevlink.organisationid = " + org_id + " AND "+
-					"evcount.venueid = events.venueid AND "+
-					"orgevlink.eventid = events.eventid AND "+
-					"events.venueid = venue.venueid AND "+
-					"venue.state = states.stateid AND "+
-					"events.eventid = orgevlink.eventid AND "+
-					"orgevlink.organisationid = organisation.organisationid "+
-					"ORDER BY evcount.num desc,venue.venue_name,events.first_date DESC";
-					crset = m_db.runSQL(sqlString, stmt);
-				 
+					//Venue Tab				 
 					String prevVen = "";
-					if (crset.size() > 0) {
+					if (crsetVen.size() > 0) {
 					%>
 						<th class='record-label b-121'></td>
 				 		
 				 		<td class='record-value'>
 						
 						<%
-						while (crset.next()) {
+						while (crsetVen.next()) {
 							// If we're starting a new venue, check if we have to finish the previous one
-							if (!prevVen.equals(crset.getString("venueid"))) {
+							if (!prevVen.equals(crsetVen.getString("venueid"))) {
 								if (hasValue(prevVen)) out.print("</ul>");
 								
 								// Now start the new one
 								%>
 								<h3>
-								<a href="/pages/venue/?id=<%=crset.getString("venueid")%>">
-									<%=crset.getString("venue_name")%></a><%
-								if(hasValue(crset.getString("suburb"))) 
-									out.print(", " + crset.getString("suburb"));
-								if(hasValue(crset.getString("state")))
-									out.print(", " + crset.getString("state"));
+								<a href="/pages/venue/?id=<%=crsetVen.getString("venueid")%>">
+									<%=crsetVen.getString("venue_name")%></a><%
+								if(hasValue(crsetVen.getString("suburb"))) 
+									out.print(", " + crsetVen.getString("suburb"));
+								if(hasValue(crsetVen.getString("state")))
+									out.print(", " + crsetVen.getString("state"));
 								%>
 								</h3>
 								<ul>
 									<%
-									prevVen = crset.getString("venueid");
+									prevVen = crsetVen.getString("venueid");
 								}
 								
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crset.getString("eventid")%>">
-										<%=crset.getString("event_name")%>
+									<a href="/pages/event/?id=<%=crsetVen.getString("eventid")%>">
+										<%=crsetVen.getString("event_name")%>
 									</a><%
-									if (hasValue(formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE"))))
-										out.print(", " + formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE")));
+									if (hasValue(formatDate(crsetVen.getString("DDFIRST_DATE"),crsetVen.getString("MMFIRST_DATE"),crsetVen.getString("YYYYFIRST_DATE"))))
+										out.print(", " + formatDate(crsetVen.getString("DDFIRST_DATE"),crsetVen.getString("MMFIRST_DATE"),crsetVen.getString("YYYYFIRST_DATE")));
 									%>
 									</li>
 								<%
@@ -412,57 +442,39 @@
 					
 					<tr id='contributor'>
 					<%
-				    //Contributor Tab
-					
-					sqlString	= "SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
-								"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
-								"venue.venue_name,venue.suburb,states.state,evcount.num " +
-								"FROM events,venue,states,orgevlink,conevlink,contributor " +
-								"inner join (SELECT conevlink.contributorid, count(distinct conevlink.eventid) num " +
-								"FROM conevlink, orgevlink where orgevlink.eventid=conevlink.eventid and orgevlink.organisationid=" + org_id + " " +
-								"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
-								"WHERE orgevlink.organisationid = " + org_id + " AND " +
-								"orgevlink.eventid = events.eventid AND " +
-								"events.venueid = venue.venueid AND " +
-								"venue.state = states.stateid AND " +
-								"events.eventid = orgevlink.eventid AND " +
-								"orgevlink.eventid=conevlink.eventid AND " +
-								"conevlink.contributorid = contributor.contributorid " +
-								"ORDER BY evcount.num desc,contributor.last_name,contributor.first_name,events.first_date DESC";
-					crset = m_db.runSQL(sqlString, stmt);
-					
+				    //Contributor Tab			
 					String prevCont = "";
-					if (crset.size() > 0) {
+					if (crsetCon.size() > 0) {
 					%>
 						<th class='record-label b-121'></td>
 				 		
 				 		<td class='record-value'>
 						
 						<%	
-						while (crset.next()){
+						while (crsetCon.next()){
 							// If we're starting a new contributor, check if we have to finish the previous one
-							if (!prevCont.equals(crset.getString("contributorid"))) {
+							if (!prevCont.equals(crsetCon.getString("contributorid"))) {
 								if (hasValue(prevCont)) out.print("</ul>");
 				
 								// Now start the new one
 								%>
-							<a href="/pages/contributor/?id=<%=crset.getString("contributorid")%>">
-								<h3><%=crset.getString("contributor_name")%></h3>
+							<a href="/pages/contributor/?id=<%=crsetCon.getString("contributorid")%>">
+								<h3><%=crsetCon.getString("contributor_name")%></h3>
 							</a>
 							<ul>
 								<%
-								prevCont= crset.getString("contributorid");
+								prevCont= crsetCon.getString("contributorid");
 							}
 							
 							%>
 								<li>
-								<a href="/pages/event/?id=<%=crset.getString("eventid")%>">
-									<%=crset.getString("event_name")%>
+								<a href="/pages/event/?id=<%=crsetCon.getString("eventid")%>">
+									<%=crsetCon.getString("event_name")%>
 								</a><%
-								if(hasValue(crset.getString("suburb"))) out.print(", " + crset.getString("suburb"));
-								if(hasValue(crset.getString("state"))) out.print(", " + crset.getString("state"));
-								if(hasValue(formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE"))))
-				            		out.print(", " + formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE")));
+								if(hasValue(crsetCon.getString("suburb"))) out.print(", " + crsetCon.getString("suburb"));
+								if(hasValue(crsetCon.getString("state"))) out.print(", " + crsetCon.getString("state"));
+								if(hasValue(formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE"))))
+				            		out.print(", " + formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE")));
 								%>
 								</li>
 							<%	 
@@ -544,6 +556,7 @@
 					// close statement
 					stmt.close();
 					%>
+				</table>
 					<!--<tr>
 						<td>-->
 							<!--<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e7960206c641ecd"></script>-->

@@ -355,8 +355,8 @@ th {
 	text-decoration: none;
 	font-weight: normal;
 }
-
-.browse-table th:hover, .browse-table a:hover{
+/*, .browse-table a:hover*/
+.browse-table th:hover{
 	background-color:#666666;
 	text-decoration: none;
 	}

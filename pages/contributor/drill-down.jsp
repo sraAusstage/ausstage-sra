@@ -26,7 +26,12 @@
   ausstage.Database          db_ausstage_for_drill       = new ausstage.Database ();
 db_ausstage_for_drill.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
+CachedRowSet crsetEvt       = null;
+CachedRowSet crsetFun       = null;
+CachedRowSet crsetCon       = null;
+CachedRowSet crsetOrg       = null;
 CachedRowSet crset          = null;
+
 ResultSet    rset;
 Statement     stmt = db_ausstage_for_drill.m_conn.createStatement();
 String formatted_date       = "";
@@ -291,14 +296,106 @@ Vector item_contentindlinks;
 
     }
     </script>
+    <%
+    //get associated objects
     
+    //events
+      	event = new Event(db_ausstage_for_drill);
+	crsetEvt = event.getEventsByContrib(Integer.parseInt(contrib_id));
+    //functions
+	admin.AppConstants constants = new admin.AppConstants();
+	ausstage.Database     m_db = new ausstage.Database ();
+	m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
+	Statement stmt1    = m_db.m_conn.createStatement ();
+	String sqlString = ""; 
+	int eventfunccount = 0;
+	int i=0;
+	sqlString = "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date, "+
+	     "events.yyyyfirst_date,events.first_date,venue.venue_name,venue.suburb,states.state,contributorfunctpreferred.preferredterm, evcount.num "+
+	    "FROM events,venue,states,conevlink,contributor,contributorfunctpreferred "+
+	    "left join ( "+
+	    "SELECT ce.contributorid, cf.contributorfunctpreferredid, count(*) num "+
+	    "FROM conevlink ce,contributorfunctpreferred cf "+
+	    "where ce.function=cf.contributorfunctpreferredid "+
+	    "and ce.contributorid=" + contrib_id + " "+
+	    "group by cf.preferredterm "+
+	    ") evcount ON (evcount.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid) "+
+	    "where contributor.contributorid=" + contrib_id + " "+
+	    "and contributor.contributorid=conevlink.contributorid "+
+	    "and conevlink.eventid=events.eventid "+
+	    "and events.venueid=venue.venueid "+
+	    "and venue.state=states.stateid "+
+	    "AND conevlink.function=contributorfunctpreferred.contributorfunctpreferredid "+
+	    "order by evcount.num desc, contributorfunctpreferred.preferredterm,events.first_date desc";
+    	
+  	crsetFun = m_db.runSQL(sqlString, stmt1);
+  	
+    //contributor
+     	Statement stmt2    = m_db.m_conn.createStatement ();
+     	String sqlString2 = ""; 
+	int eventconcount = 0;
+	sqlString2 = 
+		"select distinct events.event_name, events.eventid, events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date, " +
+		"contributor.contributorid, contributor.first_name, contributor.last_name, " +
+		"concat_ws(', ', venue.venue_name, venue.suburb, if(states.state='O/S', country.countryname, states.state)) venue, " +
+		"concount.counter, functs.funct " +
+		"from contributor " +
+		"inner join conevlink a on (contributor.contributorid = a.contributorid) " +
+		"inner join events on (events.eventid = a.eventid) " +
+		"inner join conevlink b on (a.eventid = b.eventid) " +
+		"inner join venue on (events.venueid = venue.venueid) " +
+		"left join states on (venue.state = states.stateid) " +
+		"left join country on (venue.countryid = country.countryid) " +
+		"left join (" +
+		"select distinct c.contributorid, count(distinct d.eventid) counter " +
+		"from conevlink c " +
+		"inner join conevlink d on (c.eventid = d.eventid)  " +
+		"where d.contributorid = " + contrib_id + " " +
+		"group by c.contributorid" +
+		") concount on (concount.contributorid = contributor.contributorid) " +
+		"inner join ( " +
+		"select e.contributorid, count(cf.preferredterm) functcount, group_concat(distinct cf.preferredterm separator ', ') funct " +
+		"from conevlink e " +
+		"inner join conevlink f on (e.eventid = f.eventid)  " +
+		"inner join contributorfunctpreferred cf on (e.function = cf.contributorfunctpreferredid) " +
+		"where f.contributorid = " + contrib_id + " " +
+		"group by e.contributorid " +
+		"order by count(e.function) desc " +
+		") functs on (functs.contributorid = contributor.contributorid) " +
+		"where b.contributorid = " + contrib_id + " " +
+		"and a.contributorid != " + contrib_id + " " +
+		"order by concount.counter desc, contributor.last_name, contributor.first_name, events.first_date desc";
+	crsetCon = m_db.runSQL(sqlString2, stmt2); 
+	
+    //organisation
+	stmt2    = m_db.m_conn.createStatement ();
+     	sqlString2 = ""; 
+	int eventorgcount = 0;
+	sqlString2 = 
+	    "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
+	  	"events.first_date,venue.venue_name,venue.suburb,states.state,organisation.name,organisation.organisationid,evcount.num "+
+	  	"FROM events,venue,states,organisation,conevlink,orgevlink "+
+	  	"left join (SELECT oe.organisationid, count(distinct oe.eventid) num "+
+	  	"FROM orgevlink oe, conevlink ce where ce.eventid=oe.eventid and ce.contributorid=" + contrib_id + " "+
+	  	"group by oe.organisationid) evcount ON (evcount.organisationid = orgevlink.organisationid)"+
+	  	"WHERE conevlink.contributorid = " + contrib_id + " AND " + 
+	  	"conevlink.eventid = events.eventid AND "+
+	  	"events.venueid = venue.venueid AND "+
+	  	"venue.state = states.stateid AND "+
+	  	"events.eventid = orgevlink.eventid AND "+
+	  	"orgevlink.organisationid = organisation.organisationid "+
+		"ORDER BY evcount.num desc,organisation.name,events.first_date DESC";
+	crsetOrg = m_db.runSQL(sqlString2, stmt2); 
+	
+	if (crsetEvt.size() > 0 || crsetFun.size() > 0 || crsetCon.size() > 0 || crsetOrg.size() > 0) {	
+    %>
  <tr><th class='record-label b-105'></th></tr>   
     
     <tr>
-    <th class='record-label b-105'>Events</th>
+    <th class='record-label b-105'></th>
 <td colspan=2 class="record-value">
 <ul class="record-tabs label">
-    	<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Date</a></li>
+    	<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
     	<li><a href="#" onclick="displayRow('function')" id='functionbtn'>Function</a></li>
     	<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>
     	<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li>
@@ -307,13 +404,11 @@ Vector item_contentindlinks;
     </tr>
     
 <%
+	}
    //Associated Events
-
   out.println("   <tr id='events'>");
-  event = new Event(db_ausstage_for_drill);
-  crset = event.getEventsByContrib(Integer.parseInt(contrib_id));
   int contribEventCount=0;
-  if(crset.next()){
+  if(crsetEvt.next()){
     do{      
       if(contribEventCount==0){
       out.println("     <th class='b-105'></th>");
@@ -322,55 +417,27 @@ Vector item_contentindlinks;
       contribEventCount++;
     }
     out.print("<li><a href=\"/pages/event/index.jsp?id=" +
-                crset.getString("eventid") + "\">"+crset.getString("event_name")+"</a>");
-    if(hasValue(crset.getString("venue_name")))
-      out.print(", " +  crset.getString("venue_name"));
-    if(hasValue(crset.getString("suburb"))) 
-      out.print(", " + crset.getString("suburb"));
-    if(hasValue(crset.getString("state")))
-      out.print(", " + crset.getString("state"));
-    if (hasValue(crset.getString("DDFIRST_DATE")) || hasValue(crset.getString("MMFIRST_DATE")) || hasValue(crset.getString("YYYYFIRST_DATE")))
-      out.print(", " + formatDate(crset.getString("DDFIRST_DATE"),crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE")));
+                crsetEvt.getString("eventid") + "\">"+crsetEvt.getString("event_name")+"</a>");
+    if(hasValue(crsetEvt.getString("venue_name")))
+      out.print(", " +  crsetEvt.getString("venue_name"));
+    if(hasValue(crsetEvt.getString("suburb"))) 
+      out.print(", " + crsetEvt.getString("suburb"));
+    if(hasValue(crsetEvt.getString("state")))
+      out.print(", " + crsetEvt.getString("state"));
+    if (hasValue(crsetEvt.getString("DDFIRST_DATE")) || hasValue(crsetEvt.getString("MMFIRST_DATE")) || hasValue(crsetEvt.getString("YYYYFIRST_DATE")))
+      out.print(", " + formatDate(crsetEvt.getString("DDFIRST_DATE"),crsetEvt.getString("MMFIRST_DATE"),crsetEvt.getString("YYYYFIRST_DATE")));
     out.println("</li>");         
-  }while(crset.next());
+  }while(crsetEvt.next());
 	if(contribEventCount>0)
     out.println("</ul>");
   }
   out.println("   </td></tr>"); 
 
-  //Events by function
-  admin.AppConstants constants = new admin.AppConstants();
-  ausstage.Database     m_db = new ausstage.Database ();
-  m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
-  Statement stmt1    = m_db.m_conn.createStatement ();
-  String sqlString = "";
-  CachedRowSet l_rs = null; 
-  int eventfunccount = 0;
-  int i=0;
-  sqlString = "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date, "+
-     "events.yyyyfirst_date,events.first_date,venue.venue_name,venue.suburb,states.state,contributorfunctpreferred.preferredterm, evcount.num "+
-    "FROM events,venue,states,conevlink,contributor,contributorfunctpreferred "+
-    "left join ( "+
-    "SELECT ce.contributorid, cf.contributorfunctpreferredid, count(*) num "+
-    "FROM conevlink ce,contributorfunctpreferred cf "+
-    "where ce.function=cf.contributorfunctpreferredid "+
-    "and ce.contributorid=" + contrib_id + " "+
-    "group by cf.preferredterm "+
-    ") evcount ON (evcount.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid) "+
-    "where contributor.contributorid=" + contrib_id + " "+
-    "and contributor.contributorid=conevlink.contributorid "+
-    "and conevlink.eventid=events.eventid "+
-    "and events.venueid=venue.venueid "+
-    "and venue.state=states.stateid "+
-    "AND conevlink.function=contributorfunctpreferred.contributorfunctpreferredid "+
-    "order by evcount.num desc, contributorfunctpreferred.preferredterm,events.first_date desc";
-    	
-  l_rs = m_db.runSQL(sqlString, stmt1);
-         
+  //Events by function     
   out.flush();
   out.println("<tr id='function'>");
   String prevFunc = "";
-  if(l_rs.next()){
+  if(crsetFun.next()){
     do{
       if(eventfunccount==0){
  	out.println("     <td class='b-105'></td>");
@@ -378,25 +445,25 @@ Vector item_contentindlinks;
      }
      eventfunccount++;
 
-     if (!prevFunc.equals(l_rs.getString("preferredterm"))) {
+     if (!prevFunc.equals(crsetFun.getString("preferredterm"))) {
         	if (eventfunccount > 1) {
         		out.print("</ul>");
         	}
-        	out.print("<h3>"+l_rs.getString("preferredterm")+ "</h3><ul>");
-        	prevFunc = l_rs.getString("preferredterm");
+        	out.print("<h3>"+crsetFun.getString("preferredterm")+ "</h3><ul>");
+        	prevFunc = crsetFun.getString("preferredterm");
         }
  	        out.print("<li><a href=\"/pages/event/index.jsp?id=" +
- 	        		l_rs.getString("eventid") + "\">"+l_rs.getString("event_name")+"</a>");
-          if(hasValue(l_rs.getString("venue_name")))
-            out.print(", " +  l_rs.getString("venue_name"));
-          if(hasValue(l_rs.getString("suburb"))) 
-           out.print(", " + l_rs.getString("suburb"));
-          if(hasValue(l_rs.getString("state")))
-           out.print(", " + l_rs.getString("state"));
-          if (hasValue(l_rs.getString("DDFIRST_DATE")) || hasValue(l_rs.getString("MMFIRST_DATE")) || hasValue(l_rs.getString("YYYYFIRST_DATE")))
-           out.print(", " + formatDate(l_rs.getString("DDFIRST_DATE"),l_rs.getString("MMFIRST_DATE"),l_rs.getString("YYYYFIRST_DATE")));
+ 	        		crsetFun.getString("eventid") + "\">"+crsetFun.getString("event_name")+"</a>");
+          if(hasValue(crsetFun.getString("venue_name")))
+            out.print(", " +  crsetFun.getString("venue_name"));
+          if(hasValue(crsetFun.getString("suburb"))) 
+           out.print(", " + crsetFun.getString("suburb"));
+          if(hasValue(crsetFun.getString("state")))
+           out.print(", " + crsetFun.getString("state"));
+          if (hasValue(crsetFun.getString("DDFIRST_DATE")) || hasValue(crsetFun.getString("MMFIRST_DATE")) || hasValue(crsetFun.getString("YYYYFIRST_DATE")))
+           out.print(", " + formatDate(crsetFun.getString("DDFIRST_DATE"),crsetFun.getString("MMFIRST_DATE"),crsetFun.getString("YYYYFIRST_DATE")));
        out.println("</li>"); 
-    	 }while(l_rs.next());
+    	 }while(crsetFun.next());
     	 if(eventfunccount>0)
     	 out.println("</ul>");
     	 out.println("</td>");
@@ -406,47 +473,9 @@ Vector item_contentindlinks;
    out.flush();
      
      //Associated Contributor by Events
-     
-     Statement stmt2    = m_db.m_conn.createStatement ();
-     String sqlString2 = "";
-     CachedRowSet ec_rs = null; 
-     int eventconcount = 0;
-     sqlString2 = 
-	"select distinct events.event_name, events.eventid, events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date, " +
-	"contributor.contributorid, contributor.first_name, contributor.last_name, " +
-	"concat_ws(', ', venue.venue_name, venue.suburb, if(states.state='O/S', country.countryname, states.state)) venue, " +
-	"concount.counter, functs.funct " +
-	"from contributor " +
-	"inner join conevlink a on (contributor.contributorid = a.contributorid) " +
-	"inner join events on (events.eventid = a.eventid) " +
-	"inner join conevlink b on (a.eventid = b.eventid) " +
-	"inner join venue on (events.venueid = venue.venueid) " +
-	"left join states on (venue.state = states.stateid) " +
-	"left join country on (venue.countryid = country.countryid) " +
-	"left join (" +
-	"select distinct c.contributorid, count(distinct d.eventid) counter " +
-	"from conevlink c " +
-	"inner join conevlink d on (c.eventid = d.eventid)  " +
-	"where d.contributorid = " + contrib_id + " " +
-	"group by c.contributorid" +
-	") concount on (concount.contributorid = contributor.contributorid) " +
-	"inner join ( " +
-	"select e.contributorid, count(cf.preferredterm) functcount, group_concat(distinct cf.preferredterm separator ', ') funct " +
-	"from conevlink e " +
-	"inner join conevlink f on (e.eventid = f.eventid)  " +
-	"inner join contributorfunctpreferred cf on (e.function = cf.contributorfunctpreferredid) " +
-	"where f.contributorid = " + contrib_id + " " +
-	"group by e.contributorid " +
-	"order by count(e.function) desc " +
-	") functs on (functs.contributorid = contributor.contributorid) " +
-	"where b.contributorid = " + contrib_id + " " +
-	"and a.contributorid != " + contrib_id + " " +
-	"order by concount.counter desc, contributor.last_name, contributor.first_name, events.first_date desc";
-     ec_rs = m_db.runSQL(sqlString2, stmt2);
-     
-     out.println("<tr id='contributor'>");
+    out.println("<tr id='contributor'>");
       String prevCon = "";
-      if(ec_rs.next()){
+      if(crsetCon.next()){
      	 do{
      		 if(eventconcount==0){
   		out.println("     <td class='b-105'></td>");
@@ -454,20 +483,20 @@ Vector item_contentindlinks;
   	        
      		 }
      		eventconcount++;
-     		 if (!prevCon.equals(ec_rs.getString("contributorid"))) {
+     		 if (!prevCon.equals(crsetCon.getString("contributorid"))) {
   	        	if (eventconcount> 1) {
   	        		out.println("</ul>");
   	        	}
-  	        	out.println("<h3><a href=\"/pages/contributor/index.jsp?id=" + ec_rs.getString("contributorid") + "\">" + 
-  	        	ec_rs.getString("first_name")+" "+ec_rs.getString("last_name")+ "</a> - " + ec_rs.getString("funct") + "</h3><ul>");
-  	        	prevCon = ec_rs.getString("contributorid");
+  	        	out.println("<h3><a href=\"/pages/contributor/index.jsp?id=" + crsetCon.getString("contributorid") + "\">" + 
+  	        	crsetCon.getString("first_name")+" "+crsetCon.getString("last_name")+ "</a> - " + crsetCon.getString("funct") + "</h3><ul>");
+  	        	prevCon = crsetCon.getString("contributorid");
   	        }
   	    
   	        out.print("<li><a href=\"/pages/event/index.jsp?id=" +
-  	        	ec_rs.getString("eventid") + "\">"+ec_rs.getString("event_name")+"</a>, " + ec_rs.getString("venue") + ", " + formatDate(ec_rs.getString("DDFIRST_DATE"),ec_rs.getString("MMFIRST_DATE"),ec_rs.getString("YYYYFIRST_DATE")));
+  	        	crsetCon.getString("eventid") + "\">"+crsetCon.getString("event_name")+"</a>, " + crsetCon.getString("venue") + ", " + formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE")));
 
         out.println("</li>"); 
-     	 }while(ec_rs.next());
+     	 }while(crsetCon.next());
      	 if(eventconcount > 0)
      	 out.println("</ul>");
      	 out.println("</td>");
@@ -475,31 +504,10 @@ Vector item_contentindlinks;
           
    out.flush();
      
-     //Events by organisation
-     
-     stmt2    = m_db.m_conn.createStatement ();
-     sqlString2 = "";
-     CachedRowSet eo_rs = null; 
-     int eventorgcount = 0;
-     sqlString2 = 
-    "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
-  	"events.first_date,venue.venue_name,venue.suburb,states.state,organisation.name,organisation.organisationid,evcount.num "+
-  	"FROM events,venue,states,organisation,conevlink,orgevlink "+
-  	"left join (SELECT oe.organisationid, count(distinct oe.eventid) num "+
-  	"FROM orgevlink oe, conevlink ce where ce.eventid=oe.eventid and ce.contributorid=" + contrib_id + " "+
-  	"group by oe.organisationid) evcount ON (evcount.organisationid = orgevlink.organisationid)"+
-  	"WHERE conevlink.contributorid = " + contrib_id + " AND " + 
-  	"conevlink.eventid = events.eventid AND "+
-  	"events.venueid = venue.venueid AND "+
-  	"venue.state = states.stateid AND "+
-  	"events.eventid = orgevlink.eventid AND "+
-  	"orgevlink.organisationid = organisation.organisationid "+
-	"ORDER BY evcount.num desc,organisation.name,events.first_date DESC";
-     eo_rs = m_db.runSQL(sqlString2, stmt2);
-          
+     //Events by organisation          
      out.println("<tr id='organisation'>");
       String prevOrg = "";
-      if(eo_rs.next()){
+      if(crsetOrg.next()){
      	 do{
      		 if(eventorgcount==0){
   		 			out.println("     <td class='b-105'></td>");
@@ -507,27 +515,27 @@ Vector item_contentindlinks;
   	        
      		 }
      		eventorgcount++;
-     		 if (!prevOrg.equals(eo_rs.getString("name"))) {
+     		 if (!prevOrg.equals(crsetOrg.getString("name"))) {
   	        	if (eventorgcount > 1) {
   	        		out.print("</ul>");
   	        	}
-  	        	out.print("<h3><a href=\"/pages/organisation/?id=" + eo_rs.getString("organisationid") + "\">" + 
-  	        		eo_rs.getString("name")+ "</a></h3><ul>");
-  	        	prevOrg = eo_rs.getString("name");
+  	        	out.print("<h3><a href=\"/pages/organisation/?id=" + crsetOrg.getString("organisationid") + "\">" + 
+  	        		crsetOrg.getString("name")+ "</a></h3><ul>");
+  	        	prevOrg = crsetOrg.getString("name");
   	        }
   	    
   	        out.print("<li><a href=\"/pages/event/index.jsp?id=" +
-  	        		eo_rs.getString("eventid") + "\">"+eo_rs.getString("event_name")+"</a>");
-           if(hasValue(eo_rs.getString("venue_name")))
-             out.print(", " +  eo_rs.getString("venue_name"));
-           if(hasValue(eo_rs.getString("suburb"))) 
-            out.print(", " + eo_rs.getString("suburb"));
-           if(hasValue(eo_rs.getString("state")))
-            out.print(", " + eo_rs.getString("state"));
-           if (hasValue(eo_rs.getString("DDFIRST_DATE")) || hasValue(eo_rs.getString("MMFIRST_DATE")) || hasValue(eo_rs.getString("YYYYFIRST_DATE")))
-            out.print(", " + formatDate(eo_rs.getString("DDFIRST_DATE"),eo_rs.getString("MMFIRST_DATE"),eo_rs.getString("YYYYFIRST_DATE")));
+  	        		crsetOrg.getString("eventid") + "\">"+crsetOrg.getString("event_name")+"</a>");
+           if(hasValue(crsetOrg.getString("venue_name")))
+             out.print(", " +  crsetOrg.getString("venue_name"));
+           if(hasValue(crsetOrg.getString("suburb"))) 
+            out.print(", " + crsetOrg.getString("suburb"));
+           if(hasValue(crsetOrg.getString("state")))
+            out.print(", " + crsetOrg.getString("state"));
+           if (hasValue(crsetOrg.getString("DDFIRST_DATE")) || hasValue(crsetOrg.getString("MMFIRST_DATE")) || hasValue(crsetOrg.getString("YYYYFIRST_DATE")))
+            out.print(", " + formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE")));
         out.println("</li>"); 
-     	 }while(eo_rs.next());
+     	 }while(crsetOrg.next());
      	 if(eventorgcount > 0)
      	 out.println("</ul>");
      	 out.println("</td>");

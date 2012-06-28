@@ -31,7 +31,8 @@ function ContributorViewerClass(type){
 	/*sizing*/
 	this.spacer = 40;
 	this.hSpacer = 60; 	
-	this.w = $(window).width() - ($(".sidebar").width()+this.spacer);
+	//this.w = $(window).width() - ($(".sidebar").width()+this.spacer);
+	this.w = $(window).width() - ($(".sidebar1").width()+this.spacer);
 	this.h = $(window).height() - ($(".header").height()+$(".footer").height()+$('#fix-ui-tabs').height()+this.hSpacer);
 	
 	/*this.viewType = type;*/
@@ -139,7 +140,10 @@ ContributorViewerClass.prototype.destroy = function(){
 
 //render the graph
 ContributorViewerClass.prototype.renderGraph = function(json){
+
 	this.json = json;
+	
+	
 	//prepare data for render
 	this.prepareData();
 	initGraph(this);
@@ -209,7 +213,8 @@ function initGraph(obj){
 
     	obj.render();
     	obj.renderComplete=true;
-	
+
+
 }
 
 //refresh network 
@@ -505,6 +510,7 @@ ContributorViewerClass.prototype.getEdgeLineWidth = function(p){
 ====================================================================================================================*/
 //display the network properties
 ContributorViewerClass.prototype.displayNetworkProperties = function(){	
+
 		var collabCount = 0;
 		var tempHtml = "";
 		for (i=0;i<this.json.edges.length;i++){
@@ -516,11 +522,16 @@ ContributorViewerClass.prototype.displayNetworkProperties = function(){
 	  				"<tr class=\"d0\"><th scope='row'><input type=\"submit\" name=\"submit\" class=\"button\" id=\"find_centre\" value=\"Centre\" /></th><td>"+
 	  				"<a href=" + contribUrl +""+ this.json.nodes[this.centralNode].id+" target=\"_blank\">"+	
 	  				this.json.nodes[this.centralNode].nodeName+"</a><p>";
+	  
     	for (var i=0; i<this.json.nodes[this.centralNode].functions.length; i++){
+    	
     		tempHtml+= comma + this.json.nodes[this.centralNode].functions[i];
     		comma = ", ";
+    		
     	}
-    	html += constrain(tempHtml, $(".sidebar").width()-70, "legendBody", "ellipsis");
+    	
+    	html += constrain(tempHtml, $(".sidebar1").width()-70, "legendBody", "ellipsis");
+
     	html += "</p>";
     	html += "</td></tr>"+
     				"<tr class=\"d1\"><th scope='row'>Contributors</th><td> "+this.json.nodes.length+"</td></tr>"+					
@@ -528,16 +539,17 @@ ContributorViewerClass.prototype.displayNetworkProperties = function(){
 					"<tr class=\"d1\"><th scope='row'>Collaborations</th><td>"+collabCount+"</td></tr></table>";							
  		$("#network_properties_body").empty();
 		$("#network_properties_body").append(html);
+		
 		$(".ellipsis").tipsy({gravity: $.fn.tipsy.autoNS});
 		
 		//style the centre button
 		$('#find_centre').button();
-		
+	
 }
 
 //display information about the selected element.
 ContributorViewerClass.prototype.displayPanelInfo = function(what){
-	
+
 	var comma = "";
 	var eventUrl = "/pages/event/?id="; 
 	var contributorUrl = "/pages/contributor/?id="
@@ -573,7 +585,7 @@ ContributorViewerClass.prototype.displayPanelInfo = function(what){
     		tempHtml+= comma + this.json.nodes[this.nodeIndex].functions[i];
     		comma = ", ";
     	}
-		titleHtml += constrain(tempHtml, $(".sidebar").width()-50, "legendHeader", "ellipsis header");
+		titleHtml += constrain(tempHtml, $(".sidebar1").width()-50, "legendHeader", "ellipsis header");
 	    tempHtml = "";
 
     	titleHtml +="</p>";
@@ -606,7 +618,7 @@ ContributorViewerClass.prototype.displayPanelInfo = function(what){
     			tempHtml+= comma + this.json.nodes[contributorList[i].index].functions[x];
     			comma = ", ";
 	    	}
-	    	html += constrain(tempHtml, $(".sidebar").width()-20, "legendBody", "ellipsis");
+	    	html += constrain(tempHtml, $(".sidebar1").width()-20, "legendBody", "ellipsis");
 	    	tempHtml = "";
 			html+="</p></td></tr>";
 
@@ -636,7 +648,7 @@ ContributorViewerClass.prototype.displayPanelInfo = function(what){
     		tempHtml+= comma + this.json.nodes[list[0].index].functions[i];
     		comma = ", ";
     	}
-    	titleHtml += constrain(tempHtml, $(".sidebar").width()-50, "legendHeader", "ellipsis header");
+    	titleHtml += constrain(tempHtml, $(".sidebar1").width()-50, "legendHeader", "ellipsis header");
     	tempHtml = "";
     	titleHtml +="</p>";					
 
@@ -649,7 +661,7 @@ ContributorViewerClass.prototype.displayPanelInfo = function(what){
     		tempHtml+= comma + this.json.nodes[list[1].index].functions[i];
     		comma = ", ";
     	}
-    	titleHtml += constrain(tempHtml, $(".sidebar").width()-50, "legendHeader", "ellipsis header");
+    	titleHtml += constrain(tempHtml, $(".sidebar1").width()-50, "legendHeader", "ellipsis header");
     	tempHtml = "";    	
     	titleHtml +="</p>";					
 
@@ -695,6 +707,7 @@ ContributorViewerClass.prototype.displayPanelInfo = function(what){
 ====================================================================================================================*/
 
 ContributorViewerClass.prototype.prepareData = function(){
+
 	
 	this.centralNode = this.json.nodes.length-1;
 	//fix the central node in position. This is a fix to help the stability of the system	

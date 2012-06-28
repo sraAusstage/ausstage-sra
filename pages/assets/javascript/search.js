@@ -738,7 +738,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                 
                                 // build the url
                                 var url  = BASE_URL + 'markers?type=contributor&id=' + contributors[i];
-                        
+                        console.log(url);
                                 ajaxQueue.add({
                                         success: searchObj.processAjaxData,
                                         url: url
@@ -778,7 +778,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                 
                                 // build the url
                                 var url  = BASE_URL + 'markers?type=organisation&id=' + organisations[i];
-                        
+                        	
                                 ajaxQueue.add({
                                         success: searchObj.processAjaxData,
                                         url: url

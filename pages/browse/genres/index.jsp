@@ -143,9 +143,7 @@
   	if (i == 25) break;
     }
     %>
-    <tr>
-      <td colspan="4" bgcolor="aaaaaa"></td>
-    </tr> 
+
     <tr  width="100%" class="browse-bar b-90" style="height:2.5em;" >
       <td align="right" colspan="5">
         <div class='browse-index browse-index-genre'>

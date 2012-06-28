@@ -104,6 +104,7 @@ function constrain(text, ideal_width, className, linkClass){
     var smaller_text = text;
 
     if (item_width>ideal_width){
+    
         while (item_width > ideal) {
         	smaller_text = smaller_text.substr(0,(smaller_text.lastIndexOf(", ")));
             $('.'+className+'_hide').html(smaller_text + '&hellip;');
@@ -112,6 +113,7 @@ function constrain(text, ideal_width, className, linkClass){
         smaller_text = smaller_text + '<a href="#" class="'+linkClass+'" title="'+text+'">&hellip;</a>'
     }
     $('span.'+className+'_hide').remove();
+
     return smaller_text;
 }	
 
@@ -228,6 +230,3 @@ function getUrlVar(param){
 function getUrlVar(param){
         return getUrlVars()[param];
 }*/
-
-
-

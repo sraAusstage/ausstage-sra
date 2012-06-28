@@ -454,11 +454,10 @@ MapLegendClass.prototype.buildRecordData = function() {
                                           venues:        {ids: [], objects: []},
                                           events:        {ids: [], objects: []}
                                          };
-                                         console.log("**************");
-                                         console.log(mapData);
+                                   
         // loop through the marker data
         for (var i = 0; i < mapData.length; i++) {
-        
+        	
                 // process contributors
                 mapLegendObj.createRecordDataArray(mapData[i].contributors,  recordData.contributors);
                 mapLegendObj.createRecordDataArray(mapData[i].organisations, recordData.organisations);
@@ -485,6 +484,8 @@ MapLegendClass.prototype.buildRecordData = function() {
 
 // copy an array and turn it into the record data array
 MapLegendClass.prototype.createRecordDataArray = function(src, dest) {
+
+
 
         // declare helper variables
         var idx = null;
