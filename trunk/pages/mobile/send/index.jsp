@@ -19,35 +19,35 @@
 	<script type="text/javascript" src="../assets/javascript/libraries/jquery-ui-1.8.6.custom.min.js"></script>
 	<script type="text/javascript" src="../assets/javascript/libraries/jquery.ajaxmanager-3.0.9.js"></script>
 	<script type="text/javascript" src="../assets/javascript/libraries/jquery.form-2.4.3.js"></script>
-    <script type="text/javascript" src="../assets/javascript/chain-0.2.js" type="application/x-javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="../assets/javascript/chain-0.2.js" type="application/x-javascript" charset="utf-8"></script>
 
-            
-    <!-- custom code -->
-    <script src="../assets/javascript/searchModel.js"></script>
-    <script src="../assets/javascript/errorController.js"></script>
-    <script src="../assets/javascript/visControllerSearch.js"></script>
-    <script src="../assets/javascript/visControllerChooseView.js"></script>
+                
+        <!-- custom code -->
+        <script src="../assets/javascript/searchModel.js"></script>
+        <script src="../assets/javascript/errorController.js"></script>
+        <script src="../assets/javascript/visControllerSearch.js"></script>
+        <script src="../assets/javascript/visControllerChooseView.js"></script>
 
 
-    <script type="text/javascript" charset="utf-8">
-       
-	  /**
-	  * The Jquery document ready. Acts like the main. 
-	  */
-				   
-   $(document).ready(function() {			
-	
-		myModel = new model();
-		myModel.controllers.push(new visControllerSearch(myModel)); // Add the timeline controller the model
-		myModel.controllers.push(new visControllerChooseView(this)); // Add the timeline controller the model
-                              myModel.searchPerformances();
+        <script type="text/javascript" charset="utf-8">
+         
+			  /**
+			  * The Jquery document ready. Acts like the main. 
+			  */
+						   
+		   $(document).ready(function() {			
+			
+				myModel = new model();
+				myModel.controllers.push(new visControllerSearch(myModel)); // Add the timeline controller the model
+				myModel.controllers.push(new visControllerChooseView(this)); // Add the timeline controller the model
+                                myModel.searchPerformances();
 
-                              myModel.getPerformances (0,0,'.currentPerformancesBlock'); // See what performances are currently looking for feedback
-		myModel.getPerformances (0,0,'.currentPerformancesBlock'); // See what performances are currently looking for feedback
+                                myModel.getPerformances (0,0,'.currentPerformancesBlock'); // See what performances are currently looking for feedback
+				myModel.getPerformances (0,0,'.currentPerformancesBlock'); // See what performances are currently looking for feedback
 
-});
-
-      </script>
+		});
+		
+        </script>
    <div style="margin-bottom: 60px">
 		<!-- main content -->
                 <div id="content">

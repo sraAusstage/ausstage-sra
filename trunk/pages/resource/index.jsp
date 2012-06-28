@@ -777,6 +777,25 @@
 						<%
 						}
 						
+						//Date Terminated
+						if (!formatDate(item.getDdTerminatedDate(), item.getMmTerminatedDate(), item.getYyyyTerminatedDate()).equals("")) {
+						%>
+							<tr>
+								<th class='record-label b-153'>Date Terminated</th>
+								
+								<td class='record-value'>
+									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
+										<tr>
+											<td valign="top">
+												<%=formatDate(item.getDdTerminatedDate(), item.getMmTerminatedDate(), item.getYyyyTerminatedDate())%>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						<%
+						}
+						
 						//Date Notes
 						if (hasValue(item.getDateNotes())) {
 						%>

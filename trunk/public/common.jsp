@@ -133,7 +133,7 @@ public void displayUpdateForm(String                p_id,
 	  
     p_out.println("<form name=\"UpdateForm\" id=\"UpdateForm\" method=\"POST\" action=\"ausstage/public_comments.jsp\" target=\"public_comments\">");
     p_out.println("<table style=\"float: right;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
-    p_out.println("  <tr><td align='right' nowrap >Comment on this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
+    p_out.println("  <tr><td align='right' nowrap >Provide feedback on this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
     p_out.println("<tr><td align='right' ><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
     p_out.println("<tr><td align='right'><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='right' >Export to excel</a></td></tr>");
     
@@ -143,6 +143,14 @@ public void displayUpdateForm(String                p_id,
     }
     if (p_type != null && (p_type.equals("Contributor"))){
     	p_out.println("<tr><td align='right'><a href='/pages/network/?task=ego-centric&id=" + p_request.getParameter("id") + "' align='right' >Network</a> | <a href='/pages/map/?complex-map=true&c=" + p_request.getParameter("id") + "&o=&v=&e=' align='left' >Map</a></td></tr>");
+    	
+    }
+    if (p_type != null && (p_type.equals("Organisation"))){
+    	p_out.println("<tr><td align='right'><a href='/pages/map/?complex-map=true&c=&o=" + p_request.getParameter("id") + "&v=&e=' align='left' >Map</a></td></tr>");
+    	
+    }
+    if (p_type != null && (p_type.equals("Venue"))){
+    	p_out.println("<tr><td align='right'><a href='/pages/map/?complex-map=true&c=&o=&v=" + p_request.getParameter("id") + "&e=' align='left' >Map</a></td></tr>");
     	
     }
     p_out.println("</table>");
@@ -210,7 +218,7 @@ public void displayUpdateForm(String                p_id,
     p_out.println("     </tr>");
     
     p_out.println("     <tr>");
-    p_out.println("       <td align='right' colspan='3'><a href=\"#\" onclick=\"javascript:validateUpdateForm();\"><img src='/resources/images/ok.gif' border='0' alt='Comment on this record'></td>");
+    p_out.println("       <td align='right' colspan='3'><a href=\"#\" onclick=\"javascript:validateUpdateForm();\"><img src='/resources/images/ok.gif' border='0' alt='Provide feedback on this record'></td>");
     p_out.println("     </tr>");
     
     p_out.println("     </table>");
