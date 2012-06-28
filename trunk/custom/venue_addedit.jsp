@@ -77,6 +77,40 @@ function load() {
 	geocoder = new google.maps.Geocoder();
 }
 
+function checkMandatoryFields(){
+    //all fields are empty
+    if(document.venue_addedit_form.f_street.value == ""){      
+      alert("Please enter street and suburb details.");
+      return (false);
+    }   
+    msg = "";
+  }
+
+function showAddress() {
+	
+	if(document.venue_addedit_form.f_street.value == ""){      
+	      alert("Please enter street name.");
+	      return (false);
+	    }   
+	    msg = "";
+	    
+	    if(document.venue_addedit_form.f_suburb.value == ""){      
+		      alert("Please enter suburb name.");
+		      return (false);
+		    }   
+		    msg = "";
+	    
+	var address = document.venue_addedit_form.f_street.value + " " + document.venue_addedit_form.f_suburb.value + " " + document.venue_addedit_form.f_postcode.value;
+	
+	geocoder.geocode({'address':address}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			var point = results[0].geometry.location;
+			document.venue_addedit_form.f_latitude.value = Math.round(point.lat()*1000000)/1000000;
+			document.venue_addedit_form.f_longitude.value = Math.round(point.lng()*1000000)/1000000;
+		}
+	});
+	return false;
+}
 
 document.body.onload=function(){load();};
 </script>
