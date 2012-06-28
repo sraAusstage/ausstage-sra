@@ -300,7 +300,7 @@ table.searchResults td a {
 .legendBody a {
         font-weight:normal;
         margin:0 0 -5px 0;
-        color:#3300ff;
+        color:#3300ff !important;
 }
 
 .darkLink {

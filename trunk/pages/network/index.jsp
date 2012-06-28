@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/pages/assets/main-style.css">
 <link rel="stylesheet" href="/pages/assets/rangeslider/dev.css" />
 
-<link rel="stylesheet" href="/pages/assets/zoom_slider.css" />
+<link rel="stylesheet" href="/pages/assets/zoomSlider.css" />
 <link rel="stylesheet" href="/pages/assets/ausstage-colours.css"/>
 <link rel="stylesheet" href="/pages/assets/ausstage-background-colours.css"/>
 <link rel="stylesheet" href="/pages/assets/jquery-ui/jquery-ui-1.8.6.custom.css" type="text/css" />
@@ -157,13 +157,14 @@
 								</tr>
 								<tr>
 									<td colspan='2'>Min and max collaborations displayed</td>
-									<tr>
-										<tr>
-											<td colspan='2'>&nbsp;</td>
-											<tr>
-												<td colspan='2'><div id="collabSlider"></div>
-												</td>
-											</tr>
+								</tr>
+								<tr>
+									<td colspan='2'>&nbsp;</td>
+								</tr>
+								<tr>
+									<td colspan='2'><div id="collabSlider"></div>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -341,8 +342,8 @@
 	<div id="tabs" class="tab-container">
 
 		<ul class="fix-ui-tabs" id="fix-ui-tabs">
-			<li><a href="#tabs-0">Build</a></li>
-			<li><a href="#tabs-1">Network</a></li>
+			<li style="margin-left: 10px"><a href="#tabs-0">Build</a></li>
+			<li style="margin-left: 3px"><a href="#tabs-1">Network</a></li>
 		</ul>
 
 		<!--search tab-->
