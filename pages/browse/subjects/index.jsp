@@ -150,7 +150,7 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
       bgcolour = "bgcolor='#FFFFFF'";
       sqlString = "SELECT * FROM (SELECT contentindicator.contentindicator,min(events.yyyyfirst_date) year, max(events.yyyylast_date) , count(distinct events.eventid) num, count(distinct itemcontentindlink.itemid) itemcount, contentindicator.contentindicatorid " +
 		"FROM contentindicator LEFT JOIN events ON (contentindicator.contentindicatorid = events.content_indicator) LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) " +
-		"WHERE lcase(contentindicator.contentindicator) LIKE '" + letter + "%' group by contentindicator.contentindicator order by " + sortCol + " " + sortOrd + ", contentindicator.contentindicator) sub WHERE sub.num > 0 or sub.itemcount > 0 limit " + ((pageno)*25) + ",26";
+		"WHERE lcase(contentindicator.contentindicator) LIKE '" + letter + "%' group by contentindicator.contentindicator order by " + sortCol + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", contentindicator.contentindicator) sub WHERE sub.num > 0 or sub.itemcount > 0 limit " + ((pageno)*25) + ",26";
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;
       while (l_rs.next())

@@ -150,7 +150,7 @@
  			"Left  Join `organisation` ON (`workorglink`.`organisationid`= `organisation`.`organisationid`)" +
  			"Left join itemworklink On (work.workid = itemworklink.workid) "+
 			"WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) LIKE '" + letter + "%' group by work.`workid`" +
-  			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + ", titlesort limit " + ((pageno)*25) + ",26";
+  			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", titlesort limit " + ((pageno)*25) + ",26";
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;  
       while (l_rs.next())

@@ -151,7 +151,7 @@
 			"LEFT JOIN country ON (venue.countryid = country.countryid) "+
 			"LEFT JOIN itemvenuelink ON (venue.venueid = itemvenuelink.venueid) "+
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) LIKE '" + letter + "%' group by venue.venueid " +
-  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME))))":sortCol) + " " + sortOrd + " limit " + ((pageno)*25) + ",26";
+  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME))))":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + " limit " + ((pageno)*25) + ",26";
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
     while (l_rs.next())
