@@ -1297,7 +1297,7 @@ public class Contributor {
 
 		try {
 
-			l_sql = "SELECT contributor.last_name,contributor.first_name, contributor.contributorid,item.itemid,item.citation " + " FROM item "
+			l_sql = "SELECT distinct contributor.last_name,contributor.first_name, contributor.contributorid,item.itemid,item.citation " + " FROM item "
 					+ " INNER JOIN itemconlink ON (item.itemid = itemconlink.itemid) " + " INNER JOIN contributor ON (itemconlink.contributorid = contributor.contributorid) "
 					+ " WHERE itemconlink.contributorid=" + p_contributor_id + " " + " ORDER BY item.citation ";
 
