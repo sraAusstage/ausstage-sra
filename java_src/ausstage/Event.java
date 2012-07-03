@@ -936,7 +936,7 @@ public class Event {
 						+ "', UPDATED_DATE = now() " 
 						+ ", opening_night_date = " + l_openning_night_date
 						+ ", estimated_dates = '" + Common.convertBoolToYesNo(m_estimated_dates) 
-						+ ", part_of_a_tour = '" + Common.convertBoolToYesNo(m_part_of_a_tour) 
+						+ "', part_of_a_tour = '" + Common.convertBoolToYesNo(m_part_of_a_tour) 
 						+ "'  where eventid =  " + m_eventid;
 
 				// lets do some uniqueness check here
