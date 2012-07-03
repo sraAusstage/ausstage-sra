@@ -188,7 +188,7 @@
 									out.println("[<a class='editLink' target='_blank' href='/custom/item_addedit.jsp?action=edit&f_itemid=" + item.getItemId() + "'>Edit</a>]");
 									%>
 								</td>
-								<td rowspan=3 valign='top>
+								<td rowspan=3 valign='top'>
 								<%
 								if (displayUpdateForm) {
 								displayUpdateForm(item_id, "Resource", item.getTitle(), out,
@@ -234,12 +234,13 @@
 								<table width="100%" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (ItemContribLink itemContribLink : (Vector <ItemContribLink>) item_creator_conlinks) {
+										
 										String name = "";
 										String contribId;
 										String functionId;
 										String functionDesc = "";
 										LookupCode lookups = new LookupCode(db_ausstage_for_drill);
-						
+										lookups.load(Integer.parseInt(itemContribLink.getFunctionId()));
 										contribId  = itemContribLink.getContribId();
 						
 										// use the contribId to load a new contributor each time:
@@ -247,12 +248,12 @@
 										contribId = "" + contributorCreator.getId();
 										name = contributorCreator.getName() + " " + contributorCreator.getLastName();
 										
-										%>
+										%>	
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/contributor/?id=<%=contribId%>">
+												<a href="/pages/contributor/<%=contribId%>">
 													<%=name%>
-												</a><%=hasValue(contributorCreator.getContFunctPreffTermByContributor(contribId))?", " +  contributorCreator.getContFunctPreffTermByContributor(contribId):"" %>
+												</a><%=hasValue(lookups.getDescription())?", " +  lookups.getDescription():"" %>
 											</td>
 										</tr>
 										<%
@@ -283,7 +284,7 @@
 										%>
 										<tr>
 											<td width="<%=secCol1Wdth%>"  valign="top">
-												<a href="/pages/organisation/?id=<%=organisationCreator.getId()%>">
+												<a href="/pages/organisation/<%=organisationCreator.getId()%>">
 													<%=organisationCreator.getName()%>
 												</a>
 											</td>
@@ -330,7 +331,7 @@
 										%>
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/genre/?id=<%=secondaryGenre.getId()%>">
+												<a href="/pages/genre/<%=secondaryGenre.getId()%>">
 													<%=secondaryGenre.getName()%>
 												</a>
 											</td>
@@ -361,7 +362,7 @@
 										%>
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/subject/?id=<%=contentIndicator.getId()%>">       
+												<a href="/pages/subject/<%=contentIndicator.getId()%>">       
 													<%=contentIndicator.getName()%>
 												</a>
 											</td>
@@ -392,7 +393,7 @@
 										%>
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/work/?id=<%=work.getId()%>">       
+												<a href="/pages/work/<%=work.getId()%>">       
 													<%=work.getWorkTitle()%>
 												</a>
 											</td>
@@ -426,7 +427,7 @@
 										<tr>
 											<td valign="top">
 												<%=lookUpCode.getDescription() %>
-												<a href="/pages/resource/?id=<%=assocItem.getItemId()%>">       
+												<a href="/pages/resource/<%=assocItem.getItemId()%>">       
 													<%=assocItem.getCitation()%>
 												</a>
 											</td>
@@ -456,7 +457,7 @@
 												%>
 												<tr>
 													<td width="<%=secCol1Wdth%>" valign="top">
-														<a href="/pages/event/?id=<%=rset.getString("eventid")%>">
+														<a href="/pages/event/<%=rset.getString("eventid")%>">
 															<%=rset.getString("event_name")%>
 														</a><%
 														out.print(rset.getString("venue_name") + ", " + rset.getString("suburb") + ", " + rset.getString("state") + ", ");
@@ -494,7 +495,7 @@
 										%>
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/contributor/?id=<%=contribId%>">
+												<a href="/pages/contributor/<%=contribId%>">
 													<%=name%>
 												</a>
 											</td>
@@ -524,7 +525,7 @@
 										%>
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/organisation/?id=<%=organisation.getId()%>">
+												<a href="/pages/organisation/<%=organisation.getId()%>">
 													<%=organisation.getName()%>
 												</a>
 											</td>
@@ -554,7 +555,7 @@
 										%>
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/venue/?id=<%=venue.getVenueId()%>"><%=venue.getName()%></a>, <%=venue.getSuburb()%>, <%=state.getName(Integer.parseInt(venue.getState()))%> 
+												<a href="/pages/venue/<%=venue.getVenueId()%>"><%=venue.getName()%></a>, <%=venue.getSuburb()%>, <%=state.getName(Integer.parseInt(venue.getState()))%> 
 											</td>
 										</tr>
 										<%
@@ -576,7 +577,7 @@
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
-												<a href="/pages/resource/?id=<%=item.getSourceId()%>">
+												<a href="/pages/resource/<%=item.getSourceId()%>">
 													<%=item.getSourceCitation()%>
 												</a>
 											</td>
@@ -837,7 +838,7 @@
 								<th class='record-label b-153'>Holding Institution</th>
 								
 								<td class='record-value'>
-									<a href="/pages/organisation/?id=<%=item.getInstitutionId()%>" valign="top"><%=institutionName%></a>
+									<a href="/pages/organisation/<%=item.getInstitutionId()%>" valign="top"><%=institutionName%></a>
 								</td>
 							</tr>
 						<%
