@@ -131,7 +131,7 @@ public void displayUpdateForm(String                p_id,
 	  p_out.println("-->");
 	  p_out.println("</script>");
 	  
-    p_out.println("<form name=\"UpdateForm\" id=\"UpdateForm\" method=\"POST\" action=\"ausstage/public_comments.jsp\" target=\"public_comments\">");
+    p_out.println("<form name=\"UpdateForm\" id=\"UpdateForm\" method=\"POST\" action=\"/pages/ausstage/public_comments.jsp\" target=\"public_comments\">");
     p_out.println("<table style=\"float: right;\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
     p_out.println("  <tr><td align='right' nowrap >Provide feedback on this record&nbsp;&nbsp;&nbsp;<a style=\"cursor:pointer\" onclick=\"javascript:toggleUpdateForm();\"><img id=\"UpdateFormImg\" border=\"0\" src='/resources/images/add.gif'></a></td></tr>");
     p_out.println("<tr><td align='right' ><a href='#' align='right' onclick='window.print();return false;'>Print</a></td></tr>");
