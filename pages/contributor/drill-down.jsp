@@ -164,7 +164,7 @@ Vector item_contentindlinks;
             pob.load(Integer.parseInt("0"+contributor.getPlaceOfBirth()));
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Place Of Birth</th>");
-	    out.println("     <td class='record-value'><a href=\"/pages/venue/?id=" + contributor.getPlaceOfBirth() + "\">" + pob.getName() + "</a></td>");
+	    out.println("     <td class='record-value'><a href=\"/pages/venue/" + contributor.getPlaceOfBirth() + "\">" + pob.getName() + "</a></td>");
 	    out.println("   </tr>");
     }
     //Place of Death
@@ -173,15 +173,14 @@ Vector item_contentindlinks;
             pod.load(Integer.parseInt("0"+contributor.getPlaceOfDeath()));
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Place Of Death</th>");
-	    out.println("     <td class='record-value'><a href=\"/pages/venue/?id=" + contributor.getPlaceOfDeath() + "\">" + pod.getName() + "</a></td>");
+	    out.println("     <td class='record-value'><a href=\"/pages/venue/" + contributor.getPlaceOfDeath() + "\">" + pod.getName() + "</a></td>");
 	    out.println("   </tr>");
     }
     //Legally can only display date of birth if the date of death is null. 
 
     // New rules (23/12/2008)
    
-    if (!formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()).equals("") || !formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()).equals("")) 
-    { 
+    if (!hasValue(contributor.getDodYear())) { 
       if(hasValue(contributor.getDobYear()))
       {
 	      //Date of Birth  
@@ -193,16 +192,14 @@ Vector item_contentindlinks;
 	      out.println("   </tr>");
       } 
       
-      if(hasValue(contributor.getDodYear()))  
-      {        	  
-    	//Date of death
-	      out.println("   <tr>");
-	      out.println("     <th class='record-label b-105'>Date of Death</th>");
-	      out.println("     <td class='record-value'>");
-	      out.print(formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
-	      out.println("     </td>");
-	      out.println("   </tr>");
-    	}
+    } else {     	  
+		//Date of death
+		out.println("   <tr>");
+		out.println("     <th class='record-label b-105'>Date of Death</th>");
+		out.println("     <td class='record-value'>");
+		out.print(formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
+		out.println("     </td>");
+		out.println("   </tr>");
     }
     
    /*
@@ -416,7 +413,7 @@ Vector item_contentindlinks;
       out.println("     <ul>");
       contribEventCount++;
     }
-    out.print("<li><a href=\"/pages/event/index.jsp?id=" +
+    out.print("<li><a href=\"/pages/event/" +
                 crsetEvt.getString("eventid") + "\">"+crsetEvt.getString("event_name")+"</a>");
     if(hasValue(crsetEvt.getString("venue_name")))
       out.print(", " +  crsetEvt.getString("venue_name"));
@@ -452,7 +449,7 @@ Vector item_contentindlinks;
         	out.print("<h3>"+crsetFun.getString("preferredterm")+ "</h3><ul>");
         	prevFunc = crsetFun.getString("preferredterm");
         }
- 	        out.print("<li><a href=\"/pages/event/index.jsp?id=" +
+ 	        out.print("<li><a href=\"/pages/event/" +
  	        		crsetFun.getString("eventid") + "\">"+crsetFun.getString("event_name")+"</a>");
           if(hasValue(crsetFun.getString("venue_name")))
             out.print(", " +  crsetFun.getString("venue_name"));
@@ -487,12 +484,12 @@ Vector item_contentindlinks;
   	        	if (eventconcount> 1) {
   	        		out.println("</ul>");
   	        	}
-  	        	out.println("<h3><a href=\"/pages/contributor/index.jsp?id=" + crsetCon.getString("contributorid") + "\">" + 
+  	        	out.println("<h3><a href=\"/pages/contributor/" + crsetCon.getString("contributorid") + "\">" + 
   	        	crsetCon.getString("first_name")+" "+crsetCon.getString("last_name")+ "</a> - " + crsetCon.getString("funct") + "</h3><ul>");
   	        	prevCon = crsetCon.getString("contributorid");
   	        }
   	    
-  	        out.print("<li><a href=\"/pages/event/index.jsp?id=" +
+  	        out.print("<li><a href=\"/pages/event/" +
   	        	crsetCon.getString("eventid") + "\">"+crsetCon.getString("event_name")+"</a>, " + crsetCon.getString("venue") + ", " + formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE")));
 
         out.println("</li>"); 
@@ -519,12 +516,12 @@ Vector item_contentindlinks;
   	        	if (eventorgcount > 1) {
   	        		out.print("</ul>");
   	        	}
-  	        	out.print("<h3><a href=\"/pages/organisation/?id=" + crsetOrg.getString("organisationid") + "\">" + 
+  	        	out.print("<h3><a href=\"/pages/organisation/" + crsetOrg.getString("organisationid") + "\">" + 
   	        		crsetOrg.getString("name")+ "</a></h3><ul>");
   	        	prevOrg = crsetOrg.getString("name");
   	        }
   	    
-  	        out.print("<li><a href=\"/pages/event/index.jsp?id=" +
+  	        out.print("<li><a href=\"/pages/event/" +
   	        		crsetOrg.getString("eventid") + "\">"+crsetOrg.getString("event_name")+"</a>");
            if(hasValue(crsetOrg.getString("venue_name")))
              out.print(", " +  crsetOrg.getString("venue_name"));
@@ -558,7 +555,7 @@ Vector item_contentindlinks;
         out.println("       <ul>");
         Counter++;
       }
-      out.println("<li><a href=\"/pages/resource/?id=" +
+      out.println("<li><a href=\"/pages/resource/" +
                     rset.getString("itemid") + "\">" +
                     rset.getString("citation") + "</a></li>");
     }
@@ -583,7 +580,7 @@ Vector item_contentindlinks;
     	    out.println("       <ul class='record-value'>");
     	    rowCount++;
     	  }    			   	  
-   	out.println("<li><a href=\"/pages/work/?id=" +
+   	out.println("<li><a href=\"/pages/work/" +
                 rset.getString("workid") + "\">" +
                 rset.getString("work_title") + "</a></li>");
       }
