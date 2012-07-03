@@ -59,6 +59,7 @@ div {
 	left:0;
 	background-color: #aaaaaa;
 	padding:0px;
+	z-index: 5;
 }
 
 .footer-left{
