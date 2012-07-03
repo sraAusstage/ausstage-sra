@@ -236,6 +236,16 @@
   out.println("<input type='radio' name='f_world_premier' value='no' " +
               (eventObj.getWorldPremier()?"":"checked") + ">");
   pageFormater.writeTwoColTableFooter(out);
+  pageFormater.writeTwoColTableHeader(out, "");
+  out.println("Yes No");
+  pageFormater.writeTwoColTableFooter(out);
+
+  pageFormater.writeTwoColTableHeader(out, "Part of a Tour");
+  out.println("<input type='radio' name='f_part_of_a_tour' value='yes' " +
+              (eventObj.getPartOfATour()?"checked":"") + ">");
+  out.println("<input type='radio' name='f_part_of_a_tour' value='no' " +
+              (eventObj.getPartOfATour()?"":"checked") + ">");
+  pageFormater.writeTwoColTableFooter(out);
   // Status
   pageFormater.writeTwoColTableHeader(out, "Status *");
   out.println("<select name='f_status' size='1' class='line250'>");

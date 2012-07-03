@@ -49,7 +49,7 @@ public class Event {
 
 	private String m_description;
 
-	// private boolean m_part_of_a_tour;
+	private boolean m_part_of_a_tour;
 	private boolean m_world_premier;
 	private boolean m_review;
 	private boolean m_int_perf_history;
@@ -193,9 +193,14 @@ public class Event {
 		try {
 
 			sqlString = "select distinct events.eventid, events.event_name,  events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date, events.first_date, "
-					+ "venue.venue_name, venue.suburb, states.state " + "from events, venue, conevlink, contributor, states " + "where contributor.contributorid=" + p_contrib_id
-					+ " " + "and contributor.contributorid=conevlink.contributorid " + "and conevlink.eventid=events.eventid " + "and events.venueid=venue.venueid "
-					+ "and venue.state=states.stateid " + "order by events.first_date desc";
+					+ "venue.venue_name, venue.suburb, states.state " 
+					+ "from events, venue, conevlink, contributor, states " 
+					+ "where contributor.contributorid=" + p_contrib_id + " " 
+					+ "and contributor.contributorid=conevlink.contributorid " 
+					+ "and conevlink.eventid=events.eventid " 
+					+ "and events.venueid=venue.venueid "
+					+ "and venue.state=states.stateid " 
+					+ "order by events.first_date desc";
 
 			Statement stmt = m_db.m_conn.createStatement();
 			crset = m_db.runSQL(sqlString, stmt);
@@ -257,7 +262,7 @@ public class Event {
 
 		m_description = "";
 
-		// m_part_of_a_tour = false;
+		m_part_of_a_tour = false;
 		m_world_premier = false;
 		m_review = false;
 		m_int_perf_history = false;
@@ -345,6 +350,7 @@ public class Event {
 				m_world_premier = Common.convertYesNoToBool(l_rs.getString("world_premier"));
 				m_review = Common.convertYesNoToBool(l_rs.getString("review"));
 				m_int_perf_history = Common.convertYesNoToBool(l_rs.getString("interesting_perf_history"));
+				m_part_of_a_tour = Common.convertYesNoToBool(l_rs.getString("part_of_a_tour"));
 				m_status = l_rs.getString("status");
 				m_venueid = l_rs.getString("venueid");
 				m_primary_genre = l_rs.getString("primary_genre");
@@ -904,15 +910,34 @@ public class Event {
 				// Common.convertBoolToYesNo(m_est_last_date) +
 				// ", est_open_date = '" +
 				// Common.convertBoolToYesNo(m_est_open_date) +
-				sqlString = "   UPDATE events SET " + "   event_name = '" + m_db.plSqlSafeString(m_event_name) + "', umbrella = '" + m_db.plSqlSafeString(m_umbrella)
-						+ "', description = '" + m_db.plSqlSafeString(m_description) + "'," + " world_premier = '" + Common.convertBoolToYesNo(m_world_premier) + "', review = '"
-						+ Common.convertBoolToYesNo(m_review) + "', status =  " + m_status + " , venueid =  " + m_venueid + " , primary_genre =  " + m_primary_genre
-						+ " , further_information = '" + m_db.plSqlSafeString(m_further_information) + "', description_source  =  " + m_description_source + ", ddfirst_date = '"
-						+ m_ddfirst_date + "', mmfirst_date = '" + m_mmfirst_date + "', yyyyfirst_date = '" + m_yyyyfirst_date + "', first_date = " + l_fisrt_date
-						+ ", ddlast_date = '" + m_ddlast_date + "', mmlast_date = '" + m_mmlast_date + "', yyyylast_date = '" + m_yyyylast_date + "', last_date = " + l_last_date
-						+ ", ddopening_night  = '" + m_ddopen_date + "', mmopening_night = '" + m_mmopen_date + "', yyyyopening_night = '" + m_yyyyopen_date + "',"
-						+ "UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) + "'," + " UPDATED_DATE =  now() " + ", opening_night_date = " + l_openning_night_date
-						+ ", estimated_dates = '" + Common.convertBoolToYesNo(m_estimated_dates) + "'  where eventid =  " + m_eventid;
+				sqlString = "   UPDATE events SET " 
+						+ "   event_name = '" + m_db.plSqlSafeString(m_event_name) 
+						+ "', umbrella = '" + m_db.plSqlSafeString(m_umbrella)
+						+ "', description = '" + m_db.plSqlSafeString(m_description) 
+						+ "'," + " world_premier = '" + Common.convertBoolToYesNo(m_world_premier) 
+						+ "', review = '" + Common.convertBoolToYesNo(m_review) 
+						+ "', status =  " + m_status 
+						+ " , venueid =  " + m_venueid 
+						+ " , primary_genre =  " + m_primary_genre
+						+ " , further_information = '" + m_db.plSqlSafeString(m_further_information) 
+						+ "', description_source  =  " + m_description_source 
+						+ ", ddfirst_date = '" + m_ddfirst_date 
+						+ "', mmfirst_date = '" + m_mmfirst_date 
+						+ "', yyyyfirst_date = '" + m_yyyyfirst_date 
+						+ "', first_date = " + l_fisrt_date
+						+ ", ddlast_date = '" + m_ddlast_date 
+						+ "', mmlast_date = '" + m_mmlast_date 
+						+ "', yyyylast_date = '" + m_yyyylast_date 
+						+ "', last_date = " + l_last_date
+						+ ", ddopening_night  = '" + m_ddopen_date 
+						+ "', mmopening_night = '" + m_mmopen_date 
+						+ "', yyyyopening_night = '" + m_yyyyopen_date 
+						+ "', UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) 
+						+ "', UPDATED_DATE = now() " 
+						+ ", opening_night_date = " + l_openning_night_date
+						+ ", estimated_dates = '" + Common.convertBoolToYesNo(m_estimated_dates) 
+						+ ", part_of_a_tour = '" + Common.convertBoolToYesNo(m_part_of_a_tour) 
+						+ "'  where eventid =  " + m_eventid;
 
 				// lets do some uniqueness check here
 				if (!existInEvents(UPDATE)) {
@@ -1067,10 +1092,14 @@ public class Event {
 					// ", '" + Common.convertBoolToYesNo(m_est_first_date ) +
 					// ", '" + Common.convertBoolToYesNo(m_est_last_date ) +
 					// ", '" + Common.convertBoolToYesNo(m_est_open_date ) +
-					sqlString = "INSERT INTO events " + "(event_name, umbrella, entered_by_user, entered_date, "
-							+ " description,  world_premier, review,  interesting_perf_history," + " status, venueid, primary_genre, further_information, description_source, "
-							+ " ddfirst_date, mmfirst_date, yyyyfirst_date, first_date, " + " ddlast_date, mmlast_date, yyyylast_date, last_date, "
-							+ " ddopening_night, mmopening_night, yyyyopening_night, opening_night_date, estimated_dates) " + "VALUES (" + "   '"
+					sqlString = "INSERT INTO events " 
+							+ "(event_name, umbrella, entered_by_user, entered_date, "
+							+ " description,  world_premier, review,  interesting_perf_history, part_of_a_tour, " 
+							+ " status, venueid, primary_genre, further_information, description_source, "
+							+ " ddfirst_date, mmfirst_date, yyyyfirst_date, first_date, " 
+							+ " ddlast_date, mmlast_date, yyyylast_date, last_date, "
+							+ " ddopening_night, mmopening_night, yyyyopening_night, opening_night_date, estimated_dates) " 
+							+ "VALUES ('"
 							+ m_db.plSqlSafeString(m_event_name)
 							+ "', '"
 							+ m_db.plSqlSafeString(m_umbrella)
@@ -1086,6 +1115,8 @@ public class Event {
 							+ Common.convertBoolToYesNo(m_review)
 							+ "', '"
 							+ Common.convertBoolToYesNo(m_int_perf_history)
+							+ "', '"
+							+ Common.convertBoolToYesNo(m_part_of_a_tour)
 							+ "',  "
 							+ (m_status)
 							+ " ,  "
@@ -1119,7 +1150,10 @@ public class Event {
 							+ "', '"
 							+ (m_yyyyopen_date)
 							+ "', "
-							+ l_openning_night_date + ", '" + Common.convertBoolToYesNo(m_estimated_dates) + "')";
+							+ l_openning_night_date 
+							+ ", '" 
+							+ Common.convertBoolToYesNo(m_estimated_dates) 
+							+ "')";
 
 					m_db.runSQL(sqlString, stmt);
 					// assign the newly created id to this bean
@@ -1654,6 +1688,10 @@ public class Event {
 		return m_int_perf_history;
 	}
 
+	public boolean getPartOfATour() {
+		return m_part_of_a_tour;
+	}
+
 	public String getStatus() {
 		return m_status;
 	}
@@ -1900,9 +1938,10 @@ public class Event {
 		m_description = s;
 	}
 
-	/*
-	 * public void setPartOfATour(boolean b) { m_part_of_a_tour = b; }
-	 */
+	public void setPartOfATour(boolean b) {
+		m_part_of_a_tour = b;
+	}
+	
 	public void setWorldPremier(boolean b) {
 		m_world_premier = b;
 	}
@@ -2096,6 +2135,8 @@ public class Event {
 		// Common.convertYesNoToBool(request.getParameter("f_est_last_date"));
 		// this.m_est_open_date =
 		// Common.convertYesNoToBool(request.getParameter("f_est_open_date"));
+		this.m_part_of_a_tour =
+		Common.convertYesNoToBool(request.getParameter("f_part_of_a_tour"));
 
 		// Set m_first_date
 		day = request.getParameter("f_first_date_day");
@@ -2370,9 +2411,15 @@ public class Event {
 			 */
 			// If no day then omit '/'
 			// If no month then omit '/'
-			sqlString = "SELECT DISTINCT concat(concat_ws(', ', events.event_name , venue.venue_name, venue.suburb, " + "states.state," + "concat_ws(' ', events.ddfirst_date, "
-					+ "monthname(concat('2000-',events.mmfirst_date, '-01')), " + "events.yyyyfirst_date))) as display_info " + "FROM events, venue, states " + "WHERE eventid="
-					+ p_event_id + " " + "AND events.venueid = venue.venueid " + "AND states.stateid = venue.state ";
+			sqlString = "SELECT DISTINCT concat(concat_ws(', ', events.event_name , venue.venue_name, venue.suburb, " 
+					+ "states.state," 
+					+ "concat_ws(' ', events.ddfirst_date, "
+					+ "monthname(concat('2000-',events.mmfirst_date, '-01')), " 
+					+ "events.yyyyfirst_date))) as display_info " 
+					+ "FROM events, venue, states " 
+					+ "WHERE eventid=" + p_event_id + " " 
+					+ "AND events.venueid = venue.venueid " 
+					+ "AND states.stateid = venue.state ";
 
 			/*
 			 * list_db_sql = "select eventid, event_name, venue_name, " +
@@ -2435,9 +2482,15 @@ public class Event {
 			 */
 			// If no day then omit '/'
 			// If no month then omit '/'
-			sqlString = "SELECT DISTINCT concat(concat_ws(', ', events.event_name , venue.venue_name, venue.suburb, " + "states.state," + "concat_ws(' ', events.ddfirst_date, "
-					+ "monthname(concat('2000-',events.mmfirst_date, '-01')), " + "events.yyyyfirst_date))) as display_info " + "FROM events, venue, states " + "WHERE eventid="
-					+ p_event_id + " " + "AND events.venueid = venue.venueid " + "AND states.stateid = venue.state ";
+			sqlString = "SELECT DISTINCT concat(concat_ws(', ', events.event_name , venue.venue_name, venue.suburb, " 
+					+ "states.state," 
+					+ "concat_ws(' ', events.ddfirst_date, "
+					+ "monthname(concat('2000-',events.mmfirst_date, '-01')), " 
+					+ "events.yyyyfirst_date))) as display_info " 
+					+ "FROM events, venue, states " 
+					+ "WHERE eventid=" + p_event_id + " " 
+					+ "AND events.venueid = venue.venueid " 
+					+ "AND states.stateid = venue.state ";
 
 			/*
 			 * list_db_sql = "select eventid, event_name, venue_name, " +
@@ -2481,7 +2534,8 @@ public class Event {
 
 			l_sql = "SELECT item.itemid, item.catalogueid,  item.item_description, item.citation,  organisation.name,  states.state,  lookup_codes.code_lov_id,  lookup_codes.description,  lookup_codes.short_code,  `itemevlink`.`eventid` "
 					+ "FROM item INNER JOIN itemevlink ON (itemevlink.itemid = item.itemid)  LEFT JOIN organisation ON (item.institutionid = organisation.organisationid)  LEFT JOIN states ON (organisation.state = states.stateid)  LEFT JOIN lookup_codes ON (item.item_type_lov_id = lookup_codes.code_lov_id) "
-					+ "WHERE itemevlink.eventid=" + p_event_id + " " + "ORDER BY CITATION";
+					+ "WHERE itemevlink.eventid=" + p_event_id + " " 
+					+ "ORDER BY CITATION";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
@@ -2503,8 +2557,11 @@ public class Event {
 
 		try {
 
-			l_sql = "SELECT events.eventid, work.work_title, work.workid " + "FROM events INNER JOIN eventworklink ON (events.eventid = eventworklink.eventid) "
-					+ "INNER JOIN work ON (eventworklink.workid = work.workid) " + "WHERE events.eventid=" + p_event_id + " " + "GROUP BY work.work_title";
+			l_sql = "SELECT events.eventid, work.work_title, work.workid " 
+					+ "FROM events INNER JOIN eventworklink ON (events.eventid = eventworklink.eventid) "
+					+ "INNER JOIN work ON (eventworklink.workid = work.workid) " 
+					+ "WHERE events.eventid=" + p_event_id + " " 
+					+ "GROUP BY work.work_title";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
@@ -2538,7 +2595,9 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT eventeventlinkid  " + "FROM eventeventlink " + "WHERE eventid=" + m_eventid;
+			l_sql = "SELECT eventeventlinkid  " 
+					+ "FROM eventeventlink " 
+					+ "WHERE eventid=" + m_eventid;
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();
