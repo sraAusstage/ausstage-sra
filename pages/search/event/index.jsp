@@ -245,7 +245,7 @@
   <tr>
     <th class='search-form-label b-90'>Secondary Genre</th>
     <td class='search-form-value'>
-      <select name="f_secondary_genre" Size=10 onChange="" multiple>
+      <select name="f_secondary_genre" id="f_secondary_genre" Size=10 onChange="" multiple>
 	<%
   	  crset = secoGenre.getNames(); 
   	  if(crset != null && crset.next())
@@ -354,10 +354,10 @@
     <th class='search-form-label b-90'>Number of results per page</th>
     <td class='search-form-value'>
       <select name='f_limit_by'>
+        <option value='100'>100</option>
+        <option value='75'>75</option>
+        <option value='50'>50</option>
 	<option value='20'>20</option>
-	<option value='50'>50</option>
-	<option value='75'>75</option>
-	<option value='100'>100</option>
       </select>
 
     </td>
@@ -551,7 +551,8 @@ function ajaxFunction(){
 				+ "&f_contributor_id=" + document.advancedSearchForm.f_contributor_id.value
 				+ "&f_assoc_item=" + document.advancedSearchForm.f_assoc_item.value
 				+ "&f_limit_by=" + document.advancedSearchForm.f_limit_by.value
-				+ "&f_order_by=" + document.advancedSearchForm.f_order_by.value , false); 
+				+ "&f_order_by=" + document.advancedSearchForm.f_order_by.value
+				+ "&f_secondary_genre=" +$("#f_secondary_genre").val().join("&f_secondary_genre=") , false); 
 	ajaxRequest.send(null); 
 
 	if (ajaxRequest.responseText == "0") {

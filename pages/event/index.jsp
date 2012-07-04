@@ -120,7 +120,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			%>
 			<tr>
 				<th class='record-label b-90'>Venue</th>
-				<td class='record-value'><a href="/pages/venue/?id=<%=event.getVenueid()%>"><%=event.getVenue().getName()%></a><%=venueLocation%></td>
+				<td class='record-value'><a href="/pages/venue/<%=event.getVenueid()%>"><%=event.getVenue().getName()%></a><%=venueLocation%></td>
 			</tr>
 			<%
 
@@ -196,15 +196,18 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				
 				<td class='record-value'><%=Common.capitalise(Common.convertBoolToYesNo(event.getWorldPremier()), true)%></td>
 			</tr>
+			
 			<%
 			//Part of a tour -- remove me when event-event joins are done
-			/*   if (event.getPartOfATour()) {
-			    out.println("   <tr>");
-			    out.println("     <td  class='general_heading_light f-186' valign='top' align='right'>Part Of A Tour</td>");
-			    out.println("     <td>&nbsp;</td>");
-			    out.println("     <td  valign=\"top\">Yes</td>");
-			    out.println("   </tr>");
-			   }*/
+			if (event.getPartOfATour()) {
+			%>
+			<tr>
+				<th class='record-label b-90'>Part Of A Tour</th>
+				
+				<td class='record-value'>Yes</td>
+			</tr>
+			<%
+			}
 
 			//Description
 			if (hasValue(event.getDescription())) {
@@ -253,7 +256,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						SecondaryGenre tempSecGenre = new SecondaryGenre(db_ausstage_for_drill);
 						tempSecGenre.loadFromPrefId(Integer.parseInt(secGenreEvLink.getSecGenrePreferredId()));
 						%>
-						<a href="/pages/genre/?id=<%=secGenreEvLink.getSecGenrePreferredId()%>">
+						<a href="/pages/genre/<%=secGenreEvLink.getSecGenrePreferredId()%>">
 							<%=tempSecGenre.getName()%>
 						</a>
 						<br>
@@ -276,7 +279,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<%
 					for (PrimContentIndicatorEvLink primContentIndicatorEvLink : (Vector<PrimContentIndicatorEvLink>) event.getPrimContentIndicatorEvLinks()) {
 						%>
-						<a href="/pages/subject/?id=<%=primContentIndicatorEvLink.getPrimaryContentInd().getId()%>">
+						<a href="/pages/subject/<%=primContentIndicatorEvLink.getPrimaryContentInd().getId()%>">
 							<%=primContentIndicatorEvLink.getPrimaryContentInd().getName()%>
 						</a>
 						<br>
@@ -302,7 +305,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 							%>
 							<tr>
 								<td valign="top">
-									<a href="/pages/organisation/?id=<%=organisation.getId()%>&f_event_id=<%=event_id%>"><%=organisation.getName()%></a><%
+									<a href="/pages/organisation/<%=organisation.getId()%>&f_event_id=<%=event_id%>"><%=organisation.getName()%></a><%
 									if (hasValue(orgEvLink.getFunctionDesc())) {
 										out.print(", " + orgEvLink.getFunctionDesc());
 									} else {
@@ -332,27 +335,27 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Contributor Name</th>
 					
-					<td class='record-value'>
+					<td class=''>
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td  class='record-value bold' width='25%' >Name</td>
-								<td  class='record-value bold' width='25%' >Function</td>
-								<td  class='record-value bold' width='50%' >Notes</td>
+								<td  class='record-value bold' width='30%' >Name</td>
+								<td  class='record-value bold' width='30%' >Function</td>
+								<td  class='record-value bold' width='40%' >Notes</td>
 							</tr>
 						<%
 						for (ConEvLink conEvLink : (Vector<ConEvLink>) event.getConEvLinks()) {
 							contributor = conEvLink.getContributorBean();
 							%>
 							<tr>
-								<td  class='record-value'>
-									<a href="/pages/contributor/?id=<%=contributor.getId()%>&f_event_id=<%=event_id%>">
+								<td width='30%' class='record-value'>
+									<a href="/pages/contributor/<%=contributor.getId()%>&f_event_id=<%=event_id%>">
 										<%=contributor.getName() + " " + contributor.getLastName()%>
 									</a>
 								</td>
-								<td  class='record-value'>
+								<td width='30%' class='record-value'>
 									<%=(hasValue(conEvLink.getContributorId()) && conEvLink.getContributorId().equals(Integer.toString(contributor.getId())))?conEvLink.getFunctionDesc():"" %>
 								</td>
-								<td  class='record-value'>
+								<td width='40%' class='record-value'>
 									<%=hasValue(conEvLink.getNotes())?conEvLink.getNotes():"" %>
 								</td>
 							</tr>	
@@ -381,7 +384,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						%>
 							<tr>
 								<td colspan='3' width="100%"  valign="top">
-									<a href="/pages/resource/?id=<%=rset.getString("itemid")%>">
+									<a href="/pages/resource/<%=rset.getString("itemid")%>">
 										<%=rset.getString("citation")%>
 									</a>
 								</td>
@@ -410,7 +413,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 							%>
 								<tr>
 									<td colspan='3' width="100%"  class='record-value'>
-										<a href="/pages/work/?id=<%=rset.getString("workid")%>">
+										<a href="/pages/work/<%=rset.getString("workid")%>">
 											<%=rset.getString("work_title")%>
 										</a>
 									</td>
@@ -458,7 +461,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			//Further Information
 			if (hasValue(event.getFurtherInformation())) {
 			%>
-				<tr class="b-185">
+				<tr>
 					<th class='record-label b-90'>Further Information</th>
 					
 					<td class='record-value'>
@@ -473,7 +476,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Data Source</td>
 					
-					<td vlass='record-value'>
+					<td class=''>
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<tr>
 								<td width='30%' class='record-value bold'>Source</td>
@@ -490,11 +493,11 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 								datasourceEvlink.loadLinkedProperties(Integer.parseInt("0" + datasource.getDatasoureEvlinkId()));
 								%>
 								<tr>
-									<td width='30%' class='record-value bold'><%=datasource.getName()%></td>
+									<td width='30%' class='record-value '><%=datasource.getName()%></td>
 									
-									<td width='30%' class='record-value bold'><%=datasourceEvlink.getDescription()%></td>
+									<td width='30%' class='record-value '><%=datasourceEvlink.getDescription()%></td>
 									
-									<td width='40%' class='record-value bold'><%=datasourceEvlink.isCollection()%></td>
+									<td width='40%' class='record-value '><%=datasourceEvlink.isCollection()%></td>
 								</tr>
 							<%
 							}

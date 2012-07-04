@@ -80,6 +80,7 @@
   String         status                          = request.getParameter("f_status");
   String         primary_genre                   = request.getParameter("f_primary_genre");
   String []      secondary_genre                 = (String [])request.getParameterValues("f_secondary_genre");
+  if (secondary_genre == null) secondary_genre = new String[0];
   String         prim_cont_indi                  = request.getParameter("f_prim_cont_indi");
   String         origin_of_text                  = request.getParameter("f_origin_of_text");
   String         origin_of_production            = request.getParameter("f_origin_of_production");
@@ -117,7 +118,7 @@
   SimpleDateFormat formatPattern                 = new SimpleDateFormat("dd/MM/yyyy");
   AdvancedSearch   advancedSearch                = new AdvancedSearch(db_ausstage_for_result);
   String           resultsPerPage                = request.getParameter("f_limit_by");
-  if (resultsPerPage == null || !"20 50 75 100".contains(resultsPerPage)) resultsPerPage = "20";
+  if (resultsPerPage == null || !"20 50 75 100".contains(resultsPerPage)) resultsPerPage = "100";
 
 
 
@@ -241,6 +242,13 @@
     <input type="hidden" name="f_states" value="<%=state%>">
     <input type="hidden" name="f_umbrella" value="<%=umbrella%>">
     <input type="hidden" name="f_primary_genre" value="<%=primary_genre%>">
+    <%
+    for (String sgenre: secondary_genre) {
+    %>
+    <input type="hidden" name="f_secondary_genre" value="<%=sgenre%>">
+    <%
+    }
+    %>
     <input type="hidden" name="f_status" value="<%=status%>">
     <input type="hidden" name="f_prim_cont_indi" value="<%=prim_cont_indi%>">
     <input type="hidden" name="f_origin_of_text" value="<%=origin_of_text%>">
@@ -292,7 +300,7 @@
           bgcolour = "class=\"b-184\"";
       
         out.println("      <tr>");
-        out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/event/?id=" + crset.getString("eventid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("event_name") + "</a></td>");
+        out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/event/" + crset.getString("eventid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("event_name") + "</a></td>");
         out.println("       <td " + bgcolour +  " valign=\"top\" >" + crset.getString("venue_name") + ", ");         
       
         if(crset.getString("suburb") != null){
@@ -311,9 +319,9 @@
         
         if(crset.getString("total").equals("0"))
         {
-        	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" );   
+        	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" ></td>" );   
         }else{
-        	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" + crset.getString("total"));   
+        	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" + crset.getString("total") + "</td>");   
         }
         
       
@@ -431,16 +439,16 @@
         String highlight_number_str = "";
 
         if(int_page_num == i)
-          highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+          highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
         else if(page_num == null && i == 1)
-          highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+          highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
         else
-          highlight_number_str = Integer.toString(i);
+          highlight_number_str = ">"+Integer.toString(i);
         
         out.println("<a href=\"" + url +        
                     "&f_recset_count=" + recset_count + 
                     "&f_page_num=" + i + 
-                    "\">" + highlight_number_str + "</a>&nbsp;");
+                    "\"" + highlight_number_str + "</a>&nbsp;");
         counter++;
         if(counter == 10)
           break;

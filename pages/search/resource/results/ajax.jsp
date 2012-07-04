@@ -16,6 +16,8 @@
       keyword="";
  
   String         sub_types []                = (String [])request.getParameterValues("f_sub_types");  
+  if(sub_types == null)
+	  sub_types= new String[0];
   String         firstdate_dd                = request.getParameter("f_firstdate_dd");
   String         firstdate_mm                = request.getParameter("f_firstdate_mm");
   String         firstdate_yyyy              = request.getParameter("f_firstdate_yyyy");
@@ -40,9 +42,6 @@
   if(assoc_item == null)    assoc_item="";    
   String         l_organisation              = request.getParameter("f_organisation");
   if(l_organisation == null)    l_organisation="";
-  //String         secondary_genre []          = (String [])request.getParameterValues("f_secondary_genre"); 
-  //if(secondary_genre == null)
-  //  secondary_genre="";
   String         l_boolean                   = request.getParameter("f_boolean");
   if(l_boolean == null)    l_boolean="";
   String         sort_by                     = request.getParameter("f_sort_by");
@@ -79,8 +78,7 @@
     search.setSubTypes(subTypes);
     search.setFirstDate(firstdate_yyyy,firstdate_mm,firstdate_dd);
 
-    //search.setSecondaryGenre(secGenreArray);
-    
+   
     search.setTitle(title);
     search.setSource(source);
     search.setCreator(creator);
