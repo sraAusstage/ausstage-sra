@@ -34,8 +34,10 @@
  	// sizing 
 	this.spacer = 70;
 	this.hSpacer = 80;
- 	this.w = $(window).width() - ($(".sidebar").width()+this.spacer);
-	this.h = $(window).height() - ($(".header").height()+$(".footer").height()+$('#fix-ui-tabs').height()+this.hSpacer);
+ 	//this.w = $(window).width() - ($(".sidebar").width()+this.spacer);
+ 	this.w = $(window).width() - ($("#viewer").offset().left+30);
+	//this.h = $(window).height() - ($(".header").height()+$(".footer").height()+$('#fix-ui-tabs').height()+this.hSpacer);
+	this.h =  $(window).height() - ($("#viewer").offset().top+$("#footer").height()+$('#fix-ui-tabs').height());	
 	//scales 
 	this.startDate;
 	this.endDate;
@@ -124,7 +126,7 @@ EventViewerClass.prototype.renderGraph = function(json){
 EventViewerClass.prototype.displayNetworkProperties = function(){
 	if (this.centralNode!=-1){
 			
-		var eventUrl = "/pages/event/?id="; 		
+		var eventUrl = "/pages/event/"; 		
 	    var html = 	"<table>"+
 	  				"<tr class=\"d0\"><th scope='row'><input type=\"submit\" name=\"submit\" class=\"button\" id=\"find_centre\" value=\"Centre\" /></th><td>"+
 	  				"<a href=" + eventUrl +""+ this.json.nodes[this.centralNode].id+" target=\"_blank\">"+	
@@ -145,8 +147,8 @@ EventViewerClass.prototype.displayNetworkProperties = function(){
 //display information about the selected element.
 EventViewerClass.prototype.displayPanelInfo = function(what){
 	
-	var eventUrl = "/pages/event/?id="; 
-	var contributorUrl = "/pages/contributor/?id="
+	var eventUrl = "/pages/event/"; 
+	var contributorUrl = "/pages/contributor/"
 	var titleHtml = ""
 	var html = "<table>";
 	var tableClass = "";

@@ -80,16 +80,10 @@ div {
 
 /* T E X T */
 
-a {
-	color: #001bcc; /* c-189 */
-	text-decoration: none;
-	border-width: 0;
-	}
-	
 a * {
 	color: #001bcc; /* c-189 */
 	text-decoration: none;
-	border-width: 0;
+	border-width:0;
 	}
     
 a:hover {
@@ -519,7 +513,7 @@ th {
 .search-basic-box {
     zoom:1;
     position: relative;
-    display: inline-block;
+    display: inline;
     height: 156px;
     margin: 0px 10px 10px 0px;
     padding: 5px;

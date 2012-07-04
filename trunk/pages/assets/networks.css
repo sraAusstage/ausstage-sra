@@ -467,3 +467,27 @@ table.nav_control {
 	left: 30px;
 	
 }
+
+.up, .down, .left, .right, .recentre, .zoomIn, .zoomOut, .selectItem  {
+        /* based on jQueryUi icons */
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        /* blue icons */
+        background-image: url(jquery-ui/images/ui-icons_ffffff_256x240.png);
+        /* ui icon help */
+  }      
+.up{background-position: 0 -16px;}
+.down{background-position: -64px -16px;}
+.left{background-position: -96px -16px;}
+.right{background-position: -32px -16px;}
+.recentre{background-position: -96px -160px;}
+.zoomIn{background-position: -16px -128px;}
+.zoomOut{background-position: -48px -128px;}
+.selectItem{background-position: -80px -144px;}
+
+.nav_button{
+	width:16px;
+	border:1px solid #AAAAAA;	
+	background:#AAAAAA!important;	
+}

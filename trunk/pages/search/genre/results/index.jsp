@@ -58,7 +58,7 @@
   }
   int rowCounter = 0;                  // counts the number of rows emitted
   int evenOddValue = 0;                // alternates between 0 and 1
-  int resultsPerPage = 25;
+  int resultsPerPage = 100;
   String[] evenOdd = {"b-185", "b-184"};  // two-element String array
   
   int next=pageno+1;
@@ -126,7 +126,7 @@
       if (rowCounter % 2 == 0) evenOddValue = 0;
       %>
       <tr class="<%=evenOdd[evenOddValue]%>">
-        <td width="40%"><a href="/pages/genre/?id=<%=l_rs.getString(6)%>"><%=l_rs.getString(2)%></a></td>
+        <td width="40%"><a href="/pages/genre/<%=l_rs.getString(6)%>"><%=l_rs.getString(2)%></a></td>
         <td width="20%" align="left"> <% if(l_rs.getString(5).equals("1") || l_rs.getString(3) != null && l_rs.getString(3).equals(l_rs.getString(4)) )
 	{	    
 	  if (l_rs.getString(3) != null) out.write(l_rs.getString(3)); 

@@ -11,7 +11,7 @@ String currentPage = menucms.getRequestContext().getUri();
 String[] pageName = currentPage.split("pages/");
 currentPage = pageName[1];
 boolean showSearch = true;
-	
+
 if (currentPage.contains("search/index.jsp") ||currentPage.contains("search/event/index.jsp")||currentPage.contains("search/resource/index.jsp")){
 	showSearch = false;
 }
@@ -32,7 +32,17 @@ if (!currentPage.contains("network/index.jsp") &&
   <html>
     <head> 
 	<title>AusStage</title>
-	<link rel='stylesheet' href='/resources/style-frontend.css'/>
+	
+	<!--[if lte IE 7]>
+    	<link rel='stylesheet' href='/resources/style-frontend-ie.css'/>
+	<![endif]-->
+	<!--[if gte IE 8]>
+    	<link rel='stylesheet' href='/resources/style-frontend.css'/>
+	<![endif]-->
+	<![if !IE]>
+    	<link rel='stylesheet' href='/resources/style-frontend.css'/>	
+	<![endif]>
+	
 	<link rel='stylesheet' href='/pages/assets/ausstage-colours.css'/>
 	<link rel='stylesheet' href='/pages/assets/ausstage-background-colours.css'/>
 	<link rel='icon' href='/resources/favicon2.ico'/>
@@ -50,11 +60,12 @@ if (!currentPage.contains("network/index.jsp") &&
 	<%if (showSearch){%>
 	<div class="header-search">
 
-		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/" onSubmit="return updateHeader();"> 
+		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/"><!-- onSubmit="return updateHeader();"> -->
 
-			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));}%>>
-			<input class="hidden_fields" type="hidden" name="f_keyword" id="f_keyword" value="" />
-		 	<input class="" type="submit" value="Search">
+			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));} else if(request.getParameter("h_keyword") != null) { out.print(request.getParameter("h_keyword"));} %>>
+			<input class="hidden_fields" type="hidden" name="h_keyword" id="h_keyword" value="" />
+		 	
+		 	<input id="header-search-button" type="button" onclick="headerSearch();" value="Search">
 
 		</form>
 
@@ -82,18 +93,16 @@ if (!currentPage.contains("network/index.jsp") &&
 <option value="/admin/login.jsp">AusStage Login</option>
 </select>
 </form>
-<%
-} else {
-%>     
-<a href="/custom/welcome.jsp" style="padding:2px 10px 2px 0px;"><%=session.getAttribute("fullUserName")%></a>
-
-<% } %>
 <script type="text/javascript">
-function updateHeader(){
+
+
+/*function updateHeader(){
 	$("#header-search-form #f_keyword").attr('value',$("#header-search-form #header-search-keywords").val());
-	console.log($("#header-search-form #f_keyword"));
+	 console.log($("#header-search-form #f_keyword"));
 	return true;
-}
+}*/
+
+
 
 
 var selectmenu=document.getElementById("mymenu")
@@ -103,7 +112,14 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
   window.open(chosenoption.value, "", "") //open target site (based on option's value attr) in new window
  }
 }
-  </script>    
+  </script>
+<%
+} else {
+%>     
+<a href="/custom/welcome.jsp" style="padding:2px 10px 2px 0px;"><%=session.getAttribute("fullUserName")%></a>
+
+<% } %>
+    
     
     </div>
 
@@ -136,5 +152,24 @@ Copyright &copy; AusStage and contributors, 2003-2012.<br>Licensed under Creativ
  </div>
 </body>
 </html>
+<script type="text/javascript">
 
+function headerSearch (){
+
+	$('#header-search-form #h_keyword').attr('value',$("#header-search-keywords").val());
+	$('#header-search-form').submit();
+}
+
+$(document).ready(function() {
+
+	$("#header-search-form").keypress(function(event) {
+	console.log('keypress');
+  		if ( event.which == 13 ) {
+  		console.log('enter');
+     			event.preventDefault(); headerSearch();
+   		}
+   	});				
+});
+
+</script>
 </cms:template>

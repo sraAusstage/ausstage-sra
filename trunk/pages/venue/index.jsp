@@ -117,7 +117,7 @@
 								out.println("[<a class='editLink' target='_blank' href='/custom/venue_addedit.jsp?action=edit&f_selected_venue_id=" + venue.getVenueId() + "'>Edit</a>]");
 							%>
 							</td>
-							<td rowspan=2>
+							<td rowspan=20 class='record-comment'>
 							<%
 							if (displayUpdateForm) {
 								displayUpdateForm(venue_id, "Venue", venue.getName(), out,
@@ -155,21 +155,6 @@
 									<a href="<%=(venue.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=venue.getWebLinks()%>">
 										<%=venue.getWebLinks()%>
 									</a>
-									<br>
-									<script type="text/javascript" src="http://www.shrinktheweb.com/scripts/pagepix.js"></script>
-									<script type="text/javascript">
-										stw_pagepix('<%
-										if(venue.getWebLinks().indexOf("http://") < 0)
-										out.print("http://");
-										%><%=venue.getWebLinks()%>', 'afcb2483151d1a2', 'sm', 0);
-										var anchorElements = document.getElementsByTagName('a');
-										for (var i in anchorElements) {
-											if (anchorElements[i].href.indexOf("shrinktheweb") != -1 || anchorElements[i].href == document.getElementById('url').href){
-												anchorElements[i].onmousedown = function() {}
-												anchorElements[i].href = document.getElementById('url').href;
-											}
-										}
-									</script>
 								</td>
 							</tr>
             			<%
@@ -338,7 +323,7 @@
 								while (crsetEvt.next()) {
 									%>
 									<li>
-									<a href="/pages/event/?id=<%=crsetEvt.getString("eventid")%>">
+									<a href="/pages/event/<%=crsetEvt.getString("eventid")%>">
 										<%=crsetEvt.getString("event_name")%>
 									</a><%
 									if (hasValue(crsetEvt.getString("DDFIRST_DATE")) || hasValue(crsetEvt.getString("MMFIRST_DATE")) || hasValue(crsetEvt.getString("YYYYFIRST_DATE")))
@@ -375,7 +360,7 @@
 									
 									// Now start the new one
 									%>
-								<a href="/pages/organisation/?id=<%=crsetOrg.getString("organisationid")%>">
+								<a href="/pages/organisation/<%=crsetOrg.getString("organisationid")%>">
 									<h3><%=crsetOrg.getString("name")%></h3>
 								</a>
 								<ul>
@@ -385,7 +370,7 @@
 								
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crsetOrg.getString("eventid")%>">
+									<a href="/pages/event/<%=crsetOrg.getString("eventid")%>">
 									<%=crsetOrg.getString("event_name")%></a><%
 									if (hasValue(formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE"))))
 										out.print(", " + formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE")));
@@ -424,7 +409,7 @@
 					
 									// Now start the new one
 									%>
-								<a href="/pages/contributor/?id=<%=crsetCon.getString("contributorid")%>">
+								<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
 									<h3><%=crsetCon.getString("contributor_name")%></h3>
 								</a>
 								<ul>
@@ -434,7 +419,7 @@
 								
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crsetCon.getString("eventid")%>">
+									<a href="/pages/event/<%=crsetCon.getString("eventid")%>">
 										<%=crsetCon.getString("event_name")%>
 									</a><%
 									if(hasValue(crsetCon.getString("suburb"))) out.print(", " + crsetCon.getString("suburb"));
@@ -470,7 +455,7 @@
  	  							%>
 									<tr>
 										<td	valign="top">
-											<a href="/pages/resource/?id=<%=rset.getString("itemid")%>">
+											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>
 										</td>

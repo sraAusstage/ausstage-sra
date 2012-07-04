@@ -159,7 +159,7 @@
       if (rowCounter % 2 == 0) evenOddValue = 0;
     %>
     <tr class="<%=evenOdd[evenOddValue]%>">
-      <td width="30%"><a href="/pages/event/index.jsp?id=<%=l_rs.getString(1)%>"><%=l_rs.getString(2)%></a></td>
+      <td width="30%"><a href="/pages/event/<%=l_rs.getString(1)%>"><%=l_rs.getString(2)%></a></td>
       <td width="40%" align="left">  <% if (l_rs.getString(10) != null) out.write(l_rs.getString(10));
     	    					//if (l_rs.getString(10) != null && l_rs.getString(5) != null) out.write(", ") ;
     	    					

@@ -26,13 +26,13 @@ function AusstageDataEmbed(id_list,div_id,record_type,search_type,limit,sort_by,
 	//define the lookup code - used to point the ausstage url in the right direction regarding the object you're trying to view	
 	switch (search_type){
 		case 'contributor':
-			lookup_code = 'contributor/?id=';
+			lookup_code = 'contributor/';
 			break;
 		case 'organisation':	
-			lookup_code = 'organisation/?id=';
+			lookup_code = 'organisation/';
 			break;
 		case 'venue':
-			lookup_code = 'venue/?id=';
+			lookup_code = 'venue/';
 			break;
 	}
 	

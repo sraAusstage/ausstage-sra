@@ -112,10 +112,10 @@
 							<td class='record-value bold' > <%=organisation.getName()%>
 							<%
 								if (groupNames.contains("Administrators") || groupNames.contains("Organisation Editor"))
-								out.println("[<a class='editLink' target='_blank' href='/custom/organisation_addedit.jsp?act=edit&f_selected_organisation_id=" + organisation.getId() + "'>Edit</a>]");
+								out.println("[<a class='editLink' target='_blank' href='/custom/organisation_addedit.jsp?action=edit&f_selected_organisation_id=" + organisation.getId() + "'>Edit</a>]");
 							%>
 							</td>
-							<td valign='top' rowspan=2>
+							<td rowspan=20 class='record-comment'>
 							<%
 								if (displayUpdateForm) {
 								displayUpdateForm(org_id, "Organisation", organisation.getName(), out,
@@ -176,18 +176,6 @@
 									<a href="<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>">
 										<%=organisation.getWebLinks()%>
 									</a>
-									<br>
-									<script type="text/javascript" src="http://www.shrinktheweb.com/scripts/pagepix.js"></script>
-									<script type="text/javascript">
-										stw_pagepix('<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>', 'afcb2483151d1a2', 'sm', 0);
-										var anchorElements = document.getElementsByTagName('a');
-										for (var i in anchorElements) {
-											if (anchorElements[i].href.indexOf("shrinktheweb") != -1 || anchorElements[i].href == document.getElementById('url').href){
-												anchorElements[i].onmousedown = function() {}
-												anchorElements[i].href = document.getElementById('url').href;
-											}
-										}
-									</script>
 								</td>
 							</tr>
 						<%
@@ -319,7 +307,7 @@
 								while(crsetEvt.next()) {
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crsetEvt.getString("eventid")%>">
+									<a href="/pages/event/<%=crsetEvt.getString("eventid")%>">
 					            		<%=crsetEvt.getString("event_name")%></a><%
 										if(hasValue(crsetEvt.getString("venue_name"))) out.print(", " + crsetEvt.getString("venue_name"));
 										if(hasValue(crsetEvt.getString("suburb"))) out.print(", " + crsetEvt.getString("suburb")); 
@@ -356,7 +344,7 @@
 								
 								// Now start the new one
 								%>
-							<a href="/pages/organisation/?id=<%=crsetOrg.getString("organisationid")%>">
+							<a href="/pages/organisation/<%=crsetOrg.getString("organisationid")%>">
 								<h3><%=crsetOrg.getString("name")%></h3>
 							</a>
 							<ul>
@@ -366,7 +354,7 @@
 							
 							%>
 								<li>
-								<a href="/pages/event/?id=<%=crsetOrg.getString("eventid")%>">
+								<a href="/pages/event/<%=crsetOrg.getString("eventid")%>">
 								<%=crsetOrg.getString("event_name")%></a><%
 								if(hasValue(crsetOrg.getString("venue_name"))) out.print(", " + crsetOrg.getString("venue_name"));
 								if(hasValue(crsetOrg.getString("suburb"))) out.print(", " + crsetOrg.getString("suburb"));
@@ -407,7 +395,7 @@
 								// Now start the new one
 								%>
 								<h3>
-								<a href="/pages/venue/?id=<%=crsetVen.getString("venueid")%>">
+								<a href="/pages/venue/<%=crsetVen.getString("venueid")%>">
 									<%=crsetVen.getString("venue_name")%></a><%
 								if(hasValue(crsetVen.getString("suburb"))) 
 									out.print(", " + crsetVen.getString("suburb"));
@@ -422,7 +410,7 @@
 								
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crsetVen.getString("eventid")%>">
+									<a href="/pages/event/<%=crsetVen.getString("eventid")%>">
 										<%=crsetVen.getString("event_name")%>
 									</a><%
 									if (hasValue(formatDate(crsetVen.getString("DDFIRST_DATE"),crsetVen.getString("MMFIRST_DATE"),crsetVen.getString("YYYYFIRST_DATE"))))
@@ -458,7 +446,7 @@
 				
 								// Now start the new one
 								%>
-							<a href="/pages/contributor/?id=<%=crsetCon.getString("contributorid")%>">
+							<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
 								<h3><%=crsetCon.getString("contributor_name")%></h3>
 							</a>
 							<ul>
@@ -468,7 +456,7 @@
 							
 							%>
 								<li>
-								<a href="/pages/event/?id=<%=crsetCon.getString("eventid")%>">
+								<a href="/pages/event/<%=crsetCon.getString("eventid")%>">
 									<%=crsetCon.getString("event_name")%>
 								</a><%
 								if(hasValue(crsetCon.getString("suburb"))) out.print(", " + crsetCon.getString("suburb"));
@@ -501,7 +489,7 @@
 							%>
 								<tr>
 									<td width="<%=secCol1Wdth%>" valign="top">
-										<a href="/pages/work/?id=<%=rset.getString("workid")%>">
+										<a href="/pages/work/<%=rset.getString("workid")%>">
 											<%=rset.getString("work_title")%>
 										</a>
 									</td>
@@ -530,7 +518,7 @@
 								%>
 									<tr>
 										<td	valign="top">
-											<a href="/pages/resource/?id=<%=rset.getString("itemid")%>">
+											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>
 										</td>

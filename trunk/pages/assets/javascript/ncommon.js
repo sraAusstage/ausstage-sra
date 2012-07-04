@@ -43,7 +43,8 @@ function buildInfoMsgBox(text) {
 
  //create the legend
 function createLegend(element, openFunction, closeFunction){
-	$(element).button({ icons: {primary:'ui-icon-triangle-1-e',secondary:null}});
+	//$(element).button({ icons: {primary:'ui-icon-triangle-1-e',secondary:null}});
+	$(element).button({ icons: {primary:null,secondary:null}});
     //$(element).css({'text-align':'left', 'padding': '0 0 0 0', 'margin':'0 0 0 0'});
     
     $(element).click(function () {
@@ -51,12 +52,14 @@ function createLegend(element, openFunction, closeFunction){
 			$(this).toggleClass("open");
 			$(element).next().slideToggle();
 			if($(this).hasClass("open")){
-				$(this).button( "option", "icons", {primary:'ui-icon-triangle-1-s',secondary:null} );
+				//$(this).button( "option", "icons", {primary:'ui-icon-triangle-1-s',secondary:null} );
+				$(this).button( "option", "icons", {primary:null,secondary:null} );
 				if(openFunction){
 					openFunction();
 				}
 			} else{
-				$(this).button( "option", "icons", {primary:'ui-icon-triangle-1-e',secondary:null} );					
+				//$(this).button( "option", "icons", {primary:'ui-icon-triangle-1-e',secondary:null} );	
+				$(this).button( "option", "icons", {primary:null,secondary:null} );					
 				if(closeFunction){
 					closeFunction();
 				}
@@ -76,7 +79,8 @@ function createLegend(element, openFunction, closeFunction){
 //reset the legend to its closed state 
 function resetLegend(element){
 	if ($(element+'_header').attr('class').indexOf("open") >=0){
-		$(element+'_header').button( "option", "icons", {primary:'ui-icon-triangle-1-e',secondary:null} );
+		//$(element+'_header').button( "option", "icons", {primary:'ui-icon-triangle-1-e',secondary:null} );
+		$(element+'_header').button( "option", "icons", {primary:null,secondary:null} );
 		$(element+'_header').toggleClass("open");
 		$(element+'_body').hide();
 	}

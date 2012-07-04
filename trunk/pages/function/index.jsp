@@ -59,7 +59,7 @@
 					<th class='record-label b-105 bold'><img src='../../../resources/images/icon-blank.png' class='box-icon'>Function</th>
 					
 					<td class='record-value bold'><%=function.getPreferredTerm()%></td>
-					<td rowspan=2 valign='top'>
+					<td rowspan=20 class='record-comment'>
 					<%
 					if(displayUpdateForm) {
 					displayUpdateForm(contfunction_id, "Contributor Function", function.getPreferredTerm(),out,
@@ -85,7 +85,7 @@
 						%>
 							<tr>
 								<td valign="top">
-									<a href="/pages/contributor/?id=<%=rset.getString("contributorid") %>">
+									<a href="/pages/contributor/<%=rset.getString("contributorid") %>">
 										<%=rset.getString("name")%>
 									</a>
 								</td>

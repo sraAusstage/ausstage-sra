@@ -80,7 +80,8 @@
   Statement stmt;
   String m_inc_resource                   = request.getParameter("inc_resources");
   String resultsPerPage                   = request.getParameter("f_limit_by");
-  if (resultsPerPage == null || !"20 50 75 100".contains(resultsPerPage)) resultsPerPage = "20";
+  if (resultsPerPage == null || !"20 50 75 100".contains(resultsPerPage)) resultsPerPage = "100";
+  
     
     ///////////////////////////////////
     //    DISPLAY SEARCH RESULTS
@@ -262,7 +263,7 @@
             else
               bgcolour = "class='b-185'";
             out.println("      <tr>");                                               
-            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/event/?id=" + crset.getString("eventid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("event_name")+  "</a></td>");
+            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/event/" + crset.getString("eventid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("event_name")+  "</a></td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.print("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
 
@@ -404,11 +405,11 @@
             String highlight_number_str = "";
 
             if(int_page_num == i)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
             else if(page_num == null && i == 1)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
             else
-              highlight_number_str = Integer.toString(i);
+              highlight_number_str = ">"+Integer.toString(i);
               
             out.println("<a href=\"" +  
                         "?f_keyword=" + common.URLEncode(keyword) + 
@@ -423,7 +424,7 @@
                         "&sort_order="+ request.getParameter("order")+
                         "&f_order_by=" + request.getParameter("f_order_by") +
                      //   "&f_year=" + unformattedDate +
-                        "\">" + highlight_number_str + "</a>&nbsp;");
+                        "\"" + highlight_number_str + "</a>&nbsp;");
 
             counter++;
             if(counter == 10)
@@ -593,7 +594,7 @@
             else
               bgcolour = "class='b-185'";                    
             out.println("      <tr>");
-            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/venue/?id=" + crset.getString("venueid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("venue_name") + "</a></td>");
+            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/venue/" + crset.getString("venueid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("venue_name") + "</a></td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
 
@@ -733,11 +734,12 @@
             String highlight_number_str = "";
 
             if(int_page_num == i)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-135 bold'>" + Integer.toString(i);
             else if(page_num == null && i == 1)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-135 bold'>" + Integer.toString(i);
             else
-              highlight_number_str = Integer.toString(i);
+              highlight_number_str = ">"+Integer.toString(i);
+
               
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
@@ -747,7 +749,7 @@
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") + 
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">" + highlight_number_str + "</a>&nbsp;");
+                        "\"" + highlight_number_str + "</a>&nbsp;");
 
             counter++;
             if(counter == 10)
@@ -904,7 +906,7 @@
               bgcolour = "class='b-185'";          
           
             out.println("      <tr>");
-            out.println("<td width=\"900\" " + bgcolour +  " valign=\"top\"><a href=\"/pages/work/?id=" + crset.getString("workid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("work_title") + "</a></td>");
+            out.println("<td width=\"900\" " + bgcolour +  " valign=\"top\"><a href=\"/pages/work/" + crset.getString("workid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("work_title") + "</a></td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.println("<td width=\"500\" " + bgcolour +  " valign=\"top\">" + crset.getString("contrib") + "</td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
@@ -1002,11 +1004,11 @@
             String highlight_number_str = "";
 
             if(int_page_num == i)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-154 bold'>" + Integer.toString(i);
             else if(page_num == null && i == 1)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-154 bold'>" + Integer.toString(i);
             else
-              highlight_number_str = Integer.toString(i);
+              highlight_number_str = ">"+Integer.toString(i);
               
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
@@ -1016,7 +1018,7 @@
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") + 
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">" + highlight_number_str + "</a>&nbsp;");
+                        "\"" + highlight_number_str + "</a>&nbsp;");
 
             counter++;
             if(counter == 10)
@@ -1192,7 +1194,7 @@
               bgcolour = "class='b-185'";
               
             out.println("      <tr>");
-            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"250\" ><a href=\"/pages/contributor/?id=" + crset.getString("contributorid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("contrib_name") + "</a></td>");
+            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"250\" ><a href=\"/pages/contributor/" + crset.getString("contributorid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("contrib_name") + "</a></td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
    
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"100\" >");
@@ -1321,11 +1323,11 @@
             String highlight_number_str = "";
 
             if(int_page_num == i)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-106 bold'>" + Integer.toString(i);
             else if(page_num == null && i == 1)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-106 bold'>" + Integer.toString(i);
             else
-              highlight_number_str = Integer.toString(i);
+              highlight_number_str = ">"+Integer.toString(i);
               
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
@@ -1335,7 +1337,7 @@
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") + 
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">" + highlight_number_str + "</a>&nbsp;");
+                        "\"" + highlight_number_str + "</a>&nbsp;");
 
             counter++;
             if(counter == 10)
@@ -1481,7 +1483,7 @@
               bgcolour = "class='b-185'";
               
             out.println("      <tr>");
-            out.println("       <td " + bgcolour +  " valign=\"top\" width=\215\" ><a href=\"/pages/organisation/?id=" + crset.getString("organisationid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("name")+"</a></td>");
+            out.println("       <td " + bgcolour +  " valign=\"top\" width=\215\" ><a href=\"/pages/organisation/" + crset.getString("organisationid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("name")+"</a></td>");
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
            /* out.println("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
 
@@ -1647,11 +1649,11 @@
             String highlight_number_str = "";
 
             if(int_page_num == i)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-122 bold'>" + Integer.toString(i);
             else if(page_num == null && i == 1)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-122 bold'>" + Integer.toString(i);
             else
-              highlight_number_str = Integer.toString(i);
+              highlight_number_str = ">"+Integer.toString(i);
               
             out.println("<a href=\"" +  
                         "?f_keyword=" + common.URLEncode(keyword) + 
@@ -1661,7 +1663,7 @@
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") + 
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">" + highlight_number_str + "</a>&nbsp;");
+                        "\"" + highlight_number_str + "</a>&nbsp;");
 
             counter++;
             if(counter == 10)
@@ -1818,7 +1820,7 @@
             else
               bgcolour = "class='b-185'";             
             out.println("      <tr>");
-            out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/resource/?id=" + crset.getString("itemid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("citation") + "</a></td>");            
+            out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/resource/" + crset.getString("itemid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("citation") + "</a></td>");            
             out.println(      "</tr>");
             counter++;                        
             if(counter == Integer.parseInt(resultsPerPage))
@@ -1894,11 +1896,11 @@
             String highlight_number_str = "";
 
             if(int_page_num == i)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-154 bold'>" + Integer.toString(i);
             else if(page_num == null && i == 1)
-              highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+              highlight_number_str = "class='b-154 bold'>" + Integer.toString(i);
             else
-              highlight_number_str = Integer.toString(i);
+              highlight_number_str = ">"+Integer.toString(i);
               
             out.println("<a href=\"" + 
                         "?f_keyword=" + common.URLEncode(keyword) + 
@@ -1908,7 +1910,7 @@
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") + 
                         "&f_search_within_search=" + search_within_search_for_result +
-                        "\">" + highlight_number_str + "</a>&nbsp;");
+                        "\"" + highlight_number_str + "</a>&nbsp;");
 
             counter++;
             if(counter == 10)
