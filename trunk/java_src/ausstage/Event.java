@@ -932,7 +932,7 @@ public class Event {
 						+ ", ddopening_night  = '" + m_ddopen_date 
 						+ "', mmopening_night = '" + m_mmopen_date 
 						+ "', yyyyopening_night = '" + m_yyyyopen_date 
-						+ "', UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) 
+						+ "', UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_entered_by_user) 
 						+ "', UPDATED_DATE = now() " 
 						+ ", opening_night_date = " + l_openning_night_date
 						+ ", estimated_dates = '" + Common.convertBoolToYesNo(m_estimated_dates) 
