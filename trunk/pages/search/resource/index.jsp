@@ -108,7 +108,7 @@
     <tr>
       <th class='search-form-label b-153 '>Type</th>
       <td class='search-form-value'>
-         <select name="f_sub_types" size='10' id="f_sub_types"  multiple>
+         <select name="f_sub_types" id="f_sub_types" size='10' id="f_sub_types"  multiple>
             <%
               String [] subTypesTemp = (String [])request.getParameterValues("f_sub_types");
               
@@ -439,7 +439,24 @@
 		}
 	}
 	// Create a function that will receive data sent from the server
-	ajaxRequest.open("GET", "results/ajax.jsp?f_title=" + document.searchform.f_title.value+ "&f_creator=" + document.searchform.f_creator.value+ "&f_source=" + document.searchform.f_source.value+ "&f_keywords=" + document.searchform.f_keywords.value+ "&f_firstdate_dd=" + document.searchform.f_firstdate_dd.value+ "&f_firstdate_mm=" + document.searchform.f_firstdate_mm.value+ "&f_firstdate_yyyy=" + document.searchform.f_firstdate_yyyy.value+ "&f_collectingInstitution=" + document.searchform.f_collectingInstitution.value+ "&f_work=" + document.searchform.f_work.value+ "&f_event=" + document.searchform.f_event.value+ "&f_contributor=" + document.searchform.f_contributor.value+ "&f_venue=" + document.searchform.f_venue.value+ "&f_organisation=" + document.searchform.f_organisation.value+ "&f_assoc_item=" + document.searchform.f_assoc_item.value+ "&f_sort_by=" + document.searchform.f_sort_by.value+ "&f_limit_by=" + document.searchform.f_limit_by.value
+	ajaxRequest.open("GET", "results/ajax.jsp?f_title=" + document.searchform.f_title.value
+			+ "&f_creator=" + document.searchform.f_creator.value
+			+ "&f_source=" + document.searchform.f_source.value
+			+ "&f_keywords=" + document.searchform.f_keywords.value
+			+ "&f_firstdate_dd=" + document.searchform.f_firstdate_dd.value
+			+ "&f_firstdate_mm=" + document.searchform.f_firstdate_mm.value
+			+ "&f_firstdate_yyyy=" + document.searchform.f_firstdate_yyyy.value
+			+ "&f_collectingInstitution=" + document.searchform.f_collectingInstitution.value
+			+ "&f_work=" + document.searchform.f_work.value
+			+ "&f_event=" + document.searchform.f_event.value
+			+ "&f_contributor=" + document.searchform.f_contributor.value
+			+ "&f_venue=" + document.searchform.f_venue.value
+			+ "&f_organisation=" + document.searchform.f_organisation.value
+			+ "&f_assoc_item=" + document.searchform.f_assoc_item.value
+			+ "&f_sort_by=" + document.searchform.f_sort_by.value
+			+ "&f_limit_by=" + document.searchform.f_limit_by.value
+			+ "&f_sub_types=" +$("#f_sub_types").val().join("&f_sub_types=")
+
 , false);
 	ajaxRequest.send(null); 
 
@@ -458,10 +475,7 @@
 stmt.close();
 %>
 
-<!--///-->
 
-
-  -->
 <cms:include property="template" element="foot" />
 
 </body>
