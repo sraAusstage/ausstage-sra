@@ -121,7 +121,7 @@ Vector item_contentindlinks;
     }
     
     out.println("   </td>");
-    out.println("   <td rowspan=3>");
+    out.println("   <td rowspan=20 class='record-comment'>");
     if (displayUpdateForm) {
       displayUpdateForm(contrib_id, "Contributor", contributor.getName() + " " + contributor.getLastName(),
                         out,
@@ -543,9 +543,10 @@ Vector item_contentindlinks;
   //Items
   int Counter=0;
   rset = contributor.getAssociatedItems(Integer.parseInt(contrib_id), stmt);  
-  out.println("   <tr>");
+  
   if(rset != null)
   {
+  out.println("   <tr>");
     while(rset.next())
     {
       if(Counter == 0)
@@ -565,12 +566,13 @@ Vector item_contentindlinks;
     out.println("   </tr>");}
    
   //Related Works
-    out.println("   <tr>");
+    
     int rowCount=0;
     rset = contributor.getAssociatedWorks(Integer.parseInt(contrib_id), stmt);
    // String description = "";
     if(rset.next())
     {
+    out.println("   <tr>");
       while(rset.next())
       {
     	  if(rowCount == 0)

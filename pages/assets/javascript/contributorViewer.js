@@ -33,7 +33,9 @@ function ContributorViewerClass(type){
 	this.hSpacer = 60; 	
 	//this.w = $(window).width() - ($(".sidebar").width()+this.spacer);
 	this.w = $(window).width() - ($(".sidebar1").width()+this.spacer);
-	this.h = $(window).height() - ($(".header").height()+$(".footer").height()+$('#fix-ui-tabs').height()+this.hSpacer);
+	//this.h = $(window).height() - ($(".header").height()+$(".footer").height()+$('#fix-ui-tabs').height()+this.hSpacer);
+	//this.h = $(window).height() - ($("#viewer").offset().top+$("#footer").height()+$('#fix-ui-tabs').height()+this.hSpacer);
+	this.h = $(window).height() - ($("#viewer").offset().top+$("#footer").height()+$('#fix-ui-tabs').height());
 	
 	/*this.viewType = type;*/
 	
@@ -517,7 +519,7 @@ ContributorViewerClass.prototype.displayNetworkProperties = function(){
 			collabCount = collabCount+this.json.edges[i].value;
 		}/*									<input type="submit" name="submit" class="button" id="reset_cust_colors" value="Reset" />*/
 		var comma = "";	
-		var contribUrl = "/pages/contributor/?id=";
+		var contribUrl = "/pages/contributor/";
 	    var html = 	"<table>"+
 	  				"<tr class=\"d0\"><th scope='row'><input type=\"submit\" name=\"submit\" class=\"button\" id=\"find_centre\" value=\"Centre\" /></th><td>"+
 	  				"<a href=" + contribUrl +""+ this.json.nodes[this.centralNode].id+" target=\"_blank\">"+	
@@ -551,8 +553,8 @@ ContributorViewerClass.prototype.displayNetworkProperties = function(){
 ContributorViewerClass.prototype.displayPanelInfo = function(what){
 
 	var comma = "";
-	var eventUrl = "/pages/event/?id="; 
-	var contributorUrl = "/pages/contributor/?id="
+	var eventUrl = "/pages/event/"; 
+	var contributorUrl = "/pages/contributor/"
 	var collaborationUrl = '/opencms/nlookup?task=collaboration&id='
 	var titleHtml = ""
 	var html = "<table width=100%>";

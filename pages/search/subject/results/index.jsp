@@ -133,7 +133,7 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
      %>
      <tr class="<%=evenOdd[evenOddValue]%>">
        <td width="40%"> 
-    	  <a href="/pages/subject/?id=<%=l_rs.getString("contentindicatorid")%>"><%=l_rs.getString("contentindicator")%></a>
+    	  <a href="/pages/subject/<%=l_rs.getString("contentindicatorid")%>"><%=l_rs.getString("contentindicator")%></a>
     	</td>
     	<td width="20%"  align="left"><% if(l_rs.getString(4).equals("1") || l_rs.getString(2) != null && l_rs.getString(2).equals(l_rs.getString(3))){
     	  if (l_rs.getString(2) != null) out.write(l_rs.getString(2)); }else{

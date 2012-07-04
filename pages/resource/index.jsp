@@ -188,7 +188,7 @@
 									out.println("[<a class='editLink' target='_blank' href='/custom/item_addedit.jsp?action=edit&f_itemid=" + item.getItemId() + "'>Edit</a>]");
 									%>
 								</td>
-								<td rowspan=3 valign='top'>
+								<td rowspan=20 class='record-comment'>
 								<%
 								if (displayUpdateForm) {
 								displayUpdateForm(item_id, "Resource", item.getTitle(), out,
@@ -601,22 +601,6 @@
 												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%>item.getItemUrl()">
 													<%=item.getItemUrl()%>
 												</a>
-												<br>
-												<br>
-												<script type="text/javascript" src="http://www.shrinktheweb.com/scripts/pagepix.js"></script>
-												<script type="text/javascript">
-													stw_pagepix('<%
-												if(item.getItemUrl().indexOf("http://") < 0)
-													out.print("http://");
-												%><%=item.getItemUrl()%>', 'afcb2483151d1a2', 'sm', 0);
-												var anchorElements = document.getElementsByTagName('a');
-												for (var i in anchorElements) {
-													if (anchorElements[i].href.indexOf("shrinktheweb") != -1 || anchorElements[i].href == document.getElementById('url').href){
-														anchorElements[i].onmousedown = function() {}
-														anchorElements[i].href = document.getElementById('url').href;
-													}
-												}
-												</script>
 											</td>
 										</tr>
 									</table>

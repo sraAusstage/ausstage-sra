@@ -53,6 +53,7 @@
 
 </div>
 <%
+  int resultsPerPage = 100;
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
   if(pno!=null)
@@ -106,7 +107,7 @@
 			"FROM secgenreclass LEFT JOIN secgenreclasslink ON (secgenreclass.secgenrepreferredid = secgenreclasslink.secgenrepreferredid) "+
             		"LEFT JOIN events ON (secgenreclasslink.eventid = events.eventid) "+
 			"Left Join itemsecgenrelink ON (secgenreclass.`secgenrepreferredid` = itemsecgenrelink.secgenrepreferredid) "+
-			"group by `secgenreclass`.`genreclassid` Order by " + sortCol + " " + sortOrd + ", name limit " + ((pageno)*25) + ",26";
+			"group by `secgenreclass`.`genreclassid` Order by " + sortCol + " " + sortOrd + ", name limit " + ((pageno)*resultsPerPage) + ","+(resultsPerPage+1);
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
     while (l_rs.next())
@@ -117,7 +118,7 @@
       if (rowCounter % 2 == 0) evenOddValue = 0;
       %>
       <tr class="<%=evenOdd[evenOddValue]%>">
-        <td width="40%"><a href="/pages/genre/?id=<%=l_rs.getString(6)%>"><%=l_rs.getString(2)%></a></td>
+        <td width="40%"><a href="/pages/genre/<%=l_rs.getString(6)%>"><%=l_rs.getString(2)%></a></td>
         <td width="20%" align="left"> <% if(l_rs.getString(5).equals("1") || l_rs.getString(3) != null && l_rs.getString(3).equals(l_rs.getString(4)) )
 	{	    
 	  if (l_rs.getString(3) != null) out.write(l_rs.getString(3)); 
@@ -140,7 +141,7 @@
       </tr>
       <%
   	i += 1;
-  	if (i == 25) break;
+  	if (i == resultsPerPage) break;
     }
     %>
 
@@ -154,7 +155,7 @@
         }
         int start = pageno-4;
         if (start <= 0) start = 0;
-        int max = (int)(Math.ceil((recordCount-1)/25));
+        int max = (int)(Math.ceil((recordCount-1)/resultsPerPage));
         if (max >= 1) {
 	  if (start + 9 > max && max > 9) start = max-9;
 	  for(int j=0;j<=9;j++) 
@@ -162,15 +163,15 @@
 	    if (j+start <= max) 
 	    {
 	      int k= j+start;      	 
-	      String bold = ""+(k+1);
-	      if (k == pageno) bold = "<b>" + (k+1) + "</b>";
-	      out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'>"+bold+" </a>");
+	      String bold = ">"+(k+1);
+	      	  if (k == pageno) bold = "class='b-91 bold'>" + (k+1) + "";
+	      	  out.println("<a href='?&order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'"+bold+"</a>");
 	    }
 	  }
-	  if (i == 25 && l_rs.next()) 
+	  if (i == resultsPerPage && l_rs.next()) 
 	  {
 	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" + next + "'>Next</a> ");
-	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" +(recordCount-1)/25 +"'>Last</a> ");
+	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" +(recordCount-1)/resultsPerPage+"'>Last</a> ");
 	  }
         }
         %>  	

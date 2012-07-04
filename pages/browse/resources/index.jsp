@@ -56,6 +56,7 @@
 
 </div>
 <%
+  int resultsPerPage = 100;
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
   if(pno!=null)
@@ -106,7 +107,7 @@
     <%
     sqlString = 	"select * from (SELECT lookup_codes.short_code name, count(item.itemid) counter,lookup_codes.code_lov_id FROM lookup_codes  "+
 			"LEFT JOIN item ON (lookup_codes.code_lov_id = item.item_sub_type_lov_id) WHERE lookup_codes.`code_type`='RESOURCE_SUB_TYPE' Group by lookup_codes.short_code "+
-			"Order by " + sortCol + " " + sortOrd + ") a where a.counter > 0  limit " + ((pageno)*25) + ",26 ";
+			"Order by " + sortCol + " " + sortOrd + ") a where a.counter > 0  limit " + ((pageno)*resultsPerPage ) + ","+(resultsPerPage +1);
 			
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
@@ -118,7 +119,7 @@
       if (rowCounter % 2 == 0) evenOddValue = 0;
       %>
       <tr class="<%=evenOdd[evenOddValue]%>">
-        <td width="70%"><a href="/pages/resourcetype/?id=<%=l_rs.getString(3)%>"><%=l_rs.getString(1)%></a></td>
+        <td width="70%"><a href="/pages/resourcetype/<%=l_rs.getString(3)%>"><%=l_rs.getString(1)%></a></td>
        	<td width="30%" align="right"><%if(l_rs.getString(2).equals("0")){
    	  out.write("");}else
    	  out.write(l_rs.getString(2)); %>
@@ -126,13 +127,13 @@
       </tr>
       <%
   	i += 1;
-  	if (i == 25) break;
+  	if (i == resultsPerPage ) break;
     }
     %>
      
     <tr  width="100%" class="browse-bar b-153" style="height:2.5em;">
       <td align="right" colspan="5">
-        <div class='letters'>
+        <div class='browse-index browse-index-subject'>
         <%if (previous >= 0) 
         {
           out.println("<a href='?order="+ sortOrd +"&col="+ sortCol +"'>First</a> ");
@@ -140,7 +141,7 @@
         }
         int start = pageno-4;
         if (start <= 0) start = 0;
-        int max = (int)(Math.ceil((recordCount-1)/25));
+        int max = (int)(Math.ceil((recordCount-1)/resultsPerPage ));
         if (max >= 1) {
 	  if (start + 9 > max && max > 9) start = max-9;
 	  for(int j=0;j<=9;j++) 
@@ -148,15 +149,15 @@
 	    if (j+start <= max) 
 	    {
 	      int k= j+start;      	 
-	      String bold = ""+(k+1);
-	      if (k == pageno) bold = "<b>" + (k+1) + "</b>";
-	      out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'>"+bold+" </a>");
+	     String bold = ">"+(k+1);
+	      	  if (k == pageno) bold = "class='b-91 bold'>" + (k+1) + "";
+	      	  out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'"+bold+"</a>");
 	    }
 	  }
-	  if (i == 25 && l_rs.next()) 
+	  if (i == resultsPerPage && l_rs.next()) 
 	  {
 	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" + next + "'>Next</a> ");
-	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" +(recordCount-1)/25 +"'>Last</a> ");
+	    out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno=" +(recordCount-1)/resultsPerPage +"'>Last</a> ");
 	  }
         }
         %>  	

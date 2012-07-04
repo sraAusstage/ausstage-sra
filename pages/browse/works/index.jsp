@@ -63,35 +63,36 @@
 %>
 
 <div class='browse-index browse-index-work'>
-  <a href="?letter=A" <%=letter.equals("a")?"style='font-weight:bold'":""%>>A</a>
-  <a href="?letter=B" <%=letter.equals("b")?"style='font-weight:bold'":""%>>B</a>
-  <a href="?letter=C" <%=letter.equals("c")?"style='font-weight:bold'":""%>>C</a>
-  <a href="?letter=D" <%=letter.equals("d")?"style='font-weight:bold'":""%>>D</a>
-  <a href="?letter=E" <%=letter.equals("e")?"style='font-weight:bold'":""%>>E</a>
-  <a href="?letter=F" <%=letter.equals("f")?"style='font-weight:bold'":""%>>F</a>
-  <a href="?letter=G" <%=letter.equals("g")?"style='font-weight:bold'":""%>>G</a>
-  <a href="?letter=H" <%=letter.equals("h")?"style='font-weight:bold'":""%>>H</a>
-  <a href="?letter=I" <%=letter.equals("i")?"style='font-weight:bold'":""%>>I</a>
-  <a href="?letter=J" <%=letter.equals("j")?"style='font-weight:bold'":""%>>J</a>
-  <a href="?letter=K" <%=letter.equals("k")?"style='font-weight:bold'":""%>>K</a>
-  <a href="?letter=L" <%=letter.equals("l")?"style='font-weight:bold'":""%>>L</a>
-  <a href="?letter=M" <%=letter.equals("m")?"style='font-weight:bold'":""%>>M</a>
-  <a href="?letter=N" <%=letter.equals("n")?"style='font-weight:bold'":""%>>N</a>
-  <a href="?letter=O" <%=letter.equals("o")?"style='font-weight:bold'":""%>>O</a>
-  <a href="?letter=P" <%=letter.equals("p")?"style='font-weight:bold'":""%>>P</a>
-  <a href="?letter=Q" <%=letter.equals("q")?"style='font-weight:bold'":""%>>Q</a>
-  <a href="?letter=R" <%=letter.equals("r")?"style='font-weight:bold'":""%>>R</a>
-  <a href="?letter=S" <%=letter.equals("s")?"style='font-weight:bold'":""%>>S</a>
-  <a href="?letter=T" <%=letter.equals("t")?"style='font-weight:bold'":""%>>T</a>
-  <a href="?letter=U" <%=letter.equals("u")?"style='font-weight:bold'":""%>>U</a>
-  <a href="?letter=V" <%=letter.equals("v")?"style='font-weight:bold'":""%>>V</a>
-  <a href="?letter=W" <%=letter.equals("w")?"style='font-weight:bold'":""%>>W</a>
-  <a href="?letter=X" <%=letter.equals("x")?"style='font-weight:bold'":""%>>X</a>
-  <a href="?letter=Y" <%=letter.equals("y")?"style='font-weight:bold'":""%>>Y</a>
-  <a href="?letter=Z" <%=letter.equals("z")?"style='font-weight:bold'":""%>>Z</a>
+ <a href="?letter=A" <%=letter.equals("a")?"class='b-154 bold'":""%>>A</a>
+  <a href="?letter=B" <%=letter.equals("b")?"class='b-154 bold'":""%>>B</a>
+  <a href="?letter=C" <%=letter.equals("c")?"class='b-154 bold'":""%>>C</a>
+  <a href="?letter=D" <%=letter.equals("d")?"class='b-154 bold'":""%>>D</a>
+  <a href="?letter=E" <%=letter.equals("e")?"class='b-154 bold'":""%>>E</a>
+  <a href="?letter=F" <%=letter.equals("f")?"class='b-154 bold'":""%>>F</a>
+  <a href="?letter=G" <%=letter.equals("g")?"class='b-154 bold'":""%>>G</a>
+  <a href="?letter=H" <%=letter.equals("h")?"class='b-154 bold'":""%>>H</a>
+  <a href="?letter=I" <%=letter.equals("i")?"class='b-154 bold'":""%>>I</a>
+  <a href="?letter=J" <%=letter.equals("j")?"class='b-154 bold'":""%>>J</a>
+  <a href="?letter=K" <%=letter.equals("k")?"class='b-154 bold'":""%>>K</a>
+  <a href="?letter=L" <%=letter.equals("l")?"class='b-154 bold'":""%>>L</a>
+  <a href="?letter=M" <%=letter.equals("m")?"class='b-154 bold'":""%>>M</a>
+  <a href="?letter=N" <%=letter.equals("n")?"class='b-154 bold'":""%>>N</a>
+  <a href="?letter=O" <%=letter.equals("o")?"class='b-154 bold'":""%>>O</a>
+  <a href="?letter=P" <%=letter.equals("p")?"class='b-154 bold'":""%>>P</a>
+  <a href="?letter=Q" <%=letter.equals("q")?"class='b-154 bold'":""%>>Q</a>
+  <a href="?letter=R" <%=letter.equals("r")?"class='b-154 bold'":""%>>R</a>
+  <a href="?letter=S" <%=letter.equals("s")?"class='b-154 bold'":""%>>S</a>
+  <a href="?letter=T" <%=letter.equals("t")?"class='b-154 bold'":""%>>T</a>
+  <a href="?letter=U" <%=letter.equals("u")?"class='b-154 bold'":""%>>U</a>
+  <a href="?letter=V" <%=letter.equals("v")?"class='b-154 bold'":""%>>V</a>
+  <a href="?letter=W" <%=letter.equals("w")?"class='b-154 bold'":""%>>W</a>
+  <a href="?letter=X" <%=letter.equals("x")?"class='b-154 bold'":""%>>X</a>
+  <a href="?letter=Y" <%=letter.equals("y")?"class='b-154 bold'":""%>>Y</a>
+  <a href="?letter=Z" <%=letter.equals("z")?"class='b-154 bold'":""%>>Z</a>
 </div>
 </div>
 <%
+  int resultsPerPage = 100;
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
   if(pno!=null)
@@ -150,7 +151,7 @@
  			"Left  Join `organisation` ON (`workorglink`.`organisationid`= `organisation`.`organisationid`)" +
  			"Left join itemworklink On (work.workid = itemworklink.workid) "+
 			"WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) LIKE '" + letter + "%' group by work.`workid`" +
-  			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", titlesort limit " + ((pageno)*25) + ",26";
+  			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", titlesort limit " + ((pageno)*resultsPerPage ) + ","+(resultsPerPage +1);
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;  
       while (l_rs.next())
@@ -162,7 +163,7 @@
       %>
       <tr class="<%=evenOdd[evenOddValue]%>">
         <td width="40%"> 
-    	  <a href="/pages/work/?id=<%=l_rs.getString(5)%>"><%=l_rs.getString(1)%></a>
+    	  <a href="/pages/work/<%=l_rs.getString(5)%>"><%=l_rs.getString(1)%></a>
     	</td>
     	<td width="20%" align="left"><%=l_rs.getString("contrib")%></td>
     	<td width="10%" align="left"><% if(l_rs.getString(8).equals("1") ||l_rs.getString(6) != null && l_rs.getString(6).equals(l_rs.getString(7) ) ){
@@ -183,7 +184,7 @@
       <div class='letters'>
       <%
   	i += 1;
-  	if (i == 25) break;
+  	if (i == resultsPerPage ) break;
       }
     %>
    
@@ -198,7 +199,7 @@
           }
           int start = pageno-4;
           if (start <= 0) start = 0;
-          int max = (int)(Math.ceil((recordCount-1)/25));
+          int max = (int)(Math.ceil((recordCount-1)/resultsPerPage ));
           if (max >= 1) {
 	    if (start + 9 > max && max > 9) start = max-9;
 	    for(int j=0;j<=9;j++) 
@@ -206,15 +207,15 @@
 	      if (j+start <= max) 
 	      {
 	        int k= j+start;      	 
-	        String bold = ""+(k+1);
-	        if (k == pageno) bold = "<b>" + (k+1) + "</b>";
-	          out.println("<a href='?letter=" + letter +"&order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'>"+bold+" </a>");
+	       String bold = ">"+(k+1);
+	      	  if (k == pageno) bold = "class='b-154 bold'>" + (k+1) + "";
+	      	  out.println("<a href='?letter=" + letter +"&order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'"+bold+"</a>");
 	      }
 	    }
-	    if (i == 25 && l_rs.next()) 
+	    if (i == resultsPerPage && l_rs.next()) 
 	    {
 	      out.println("<a href='?letter=" + letter + "&order="+ sortOrd +"&col="+ sortCol+"&pno=" + next + "'>Next</a> ");
-	      out.println("<a href='?letter=" + letter + "&order="+ sortOrd +"&col="+ sortCol+"&pno=" + (recordCount-1)/25 +"'>Last</a> ");
+	      out.println("<a href='?letter=" + letter + "&order="+ sortOrd +"&col="+ sortCol+"&pno=" + (recordCount-1)/resultsPerPage +"'>Last</a> ");
 	    }
           }
         %>  	

@@ -103,7 +103,7 @@
 							out.println("[<a class='editLink' target='_blank' href='/custom/work_addedit.jsp?action=edit&f_workid=" + work.getId() + "'>Edit</a>]");
 							%>
 							</td>
-							<td rowspan=3 valign='top'>
+							<td rowspan=20 class='record-comment'>
 							<%
 							if (displayUpdateForm) {
 							displayUpdateForm(work_id, "Work", work.getName(), out,
@@ -140,7 +140,7 @@
 										%>
 											<tr>
 												<td valign="top">
-													<a href="/pages/contributor/?id=<%=rset.getString("contributorid")%>">
+													<a href="/pages/contributor/<%=rset.getString("contributorid")%>">
 														<%=rset.getString("creator")%>
 													</a>
 												</td>
@@ -170,7 +170,7 @@
 										%>
 											<tr>
 												<td valign="top">
-													<a href="/pages/organisation/?id=<%=rset.getString("organisationid")%>">
+													<a href="/pages/organisation/<%=rset.getString("organisationid")%>">
 														<%=rset.getString("name")%>
 													</a>
 												</td>
@@ -266,7 +266,7 @@
 									while (rsetEvt.next()) {
 									%>
 										<li>
-										<a href="/pages/event/?id=<%=rsetEvt.getString("eventid")%>">
+										<a href="/pages/event/<%=rsetEvt.getString("eventid")%>">
 											<%=rsetEvt.getString("event_name")%>
 										</a><%
 										if (hasValue(rsetEvt.getString("Output"))) out.print(", " + rsetEvt.getString("Output"));
@@ -303,7 +303,7 @@
 									
 									// Now start the new one
 									%>
-								<a href="/pages/organisation/?id=<%=crsetOrg.getString("organisationid")%>">
+								<a href="/pages/organisation/<%=crsetOrg.getString("organisationid")%>">
 									<h3><%=crsetOrg.getString("name")%></h3>
 								</a>
 								<ul>
@@ -313,7 +313,7 @@
 								
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crsetOrg.getString("eventid")%>">
+									<a href="/pages/event/<%=crsetOrg.getString("eventid")%>">
 									<%=crsetOrg.getString("event_name")%></a><%
 									if(hasValue(crsetOrg.getString("venue_name"))) 
 										out.print(", " + crsetOrg.getString("venue_name"));
@@ -356,7 +356,7 @@
 					
 									// Now start the new one
 									%>
-								<a href="/pages/contributor/?id=<%=crsetCon.getString("contributorid")%>">
+								<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
 									<h3><%=crsetCon.getString("contributor_name")%></h3>
 								</a>
 								<ul>
@@ -366,7 +366,7 @@
 								
 								%>
 									<li>
-									<a href="/pages/event/?id=<%=crsetCon.getString("eventid")%>">
+									<a href="/pages/event/<%=crsetCon.getString("eventid")%>">
 										<%=crsetCon.getString("event_name")%>
 									</a><%
 									if(hasValue(crsetCon.getString("venue_name"))) out.print(", " + crsetCon.getString("venue_name"));
@@ -402,7 +402,7 @@
  	  							%>
 									<tr>
 										<td	valign="top">
-											<a href="/pages/resource/?id=<%=rset.getString("itemid")%>">
+											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>
 										</td>

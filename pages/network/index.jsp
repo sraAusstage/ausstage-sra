@@ -53,6 +53,7 @@
 <script type="text/javascript"
 	src="/pages/assets/javascript/libraries/jquery.throttle.1.1.js"></script>
 <!-- custom code -->
+
 <script type="text/javascript"
 	src="/pages/assets/javascript/networks.js"></script>
 <script type="text/javascript"
@@ -91,9 +92,10 @@
 </script>
 <!-- Sidebar -->
 <div id="sidebar1" class="sidebar1 b-186 f-184">
-	<p class="label bold large" style="margin-top: 0px;">Network</p>
+	<p class="label bold large" style="margin-top: 0px;">&nbsp;&nbsp;&nbsp;Network</p>
 	<div class="legendContainer">
 		<div id="viewer_options_div">
+				
 				<div class="legendHeader" id="viewer_options_header">Display</div>
 				<div class="legendBody autoHeight" id="viewer_options_body">
 					<!--ego centric labels-->
@@ -278,7 +280,7 @@
 		<div id="exportContainer">
 			<div class="accordion">
 				<h3>
-					<a href="#" id="export_heading">Save</a>
+					<a href="#" id="export_heading">&nbsp;Save</a>
 				</h3>
 				<div id="export_network">
 					<ul>
@@ -294,6 +296,7 @@
 		<!--Network properties - displays information about the network as a whole -->
 		<div id="network_properties_div">
 			<div class="legendHeader" id="network_properties_header">Network</div>
+			
 			<div class="legendBody" id="network_properties_body"></div>
 		</div>
 		<!--Legend/ info window for the network - displays information about the selected section of the graph -->
@@ -304,6 +307,7 @@
 		<!-- faceted browsing div -->
 		<div id="faceted_div">
 			<div class="legendHeader" id="faceted_header">Facets</div>
+			
 			<div class="legendBody" id="faceted_body">
 				<div>
 					<input type="checkbox" name="showAllFaceted" class="checkbox"

@@ -72,7 +72,7 @@
 								<th class='record-label b-153 bold'><img src='../../../resources/images/icon-resource.png' class='box-icon'>Resource Sub Type</th>
 								
 								<td class='record-value bold'><%=lookupcode.getShortCode()%></td>
-								<td rowspan=3 valign='top'>
+								<td rowspan=20 class='record-comment'>
 								<%
 								if (displayUpdateForm) {
 								displayUpdateForm(resource_subtype_id, "Resource Type", lookupcode.getShortCode(), out,
@@ -99,7 +99,7 @@
 										%>
 											<tr>
 												<td valign="top">
-													<a href="/pages/resource/?id=<%=rset.getString("itemid")%>">
+													<a href="/pages/resource/<%=rset.getString("itemid")%>">
 														<%=rset.getString("citation")%>
 													</a>
 												</td>

@@ -78,7 +78,7 @@
 
 								%>
 								</td>
-								<td rowspan=2 valign='top'>
+								<td rowspan=20 class='record-comment'>
 								<%
 								if (displayUpdateForm) {
 								displayUpdateForm(contentindicatorid, "ContentIndicator", contentIndicator.getName(), out,
@@ -105,7 +105,7 @@
 									%>
 										<tr>
 											<td valign="top">
-												<a href="/pages/event/?id=<%=rset.getString("eventid")%>">
+												<a href="/pages/event/<%=rset.getString("eventid")%>">
 													<%=rset.getString("event_name")%></a><%
 												if (hasValue(rset.getString("venue_name"))) out.print(", " +  rset.getString("venue_name"));
 												if (hasValue(rset.getString("suburb"))) out.print(", " + rset.getString("suburb"));
@@ -138,7 +138,7 @@
 									<%
 									while(rset.next()) {
 										out.println("<tr>");
-										out.println("  <td  valign=\"top\"><a href=\"/pages/resource/?id=" +
+										out.println("  <td  valign=\"top\"><a href=\"/pages/resource/" +
 										rset.getString("itemid") + "\">" +
 										rset.getString("title") + "</a>");
 										out.print("</td>");

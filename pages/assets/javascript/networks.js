@@ -30,7 +30,7 @@ $(document).ready(function(){
 	
 	//style the search results accordions - different to legend accordions- legend accordions have been defined by me to be able 
 	//to use anchor links in the header
-	$(".accordion").accordion({collapsible:true, active:false, autoHeight: false });
+	$(".accordion").accordion({collapsible:true, active:false, autoHeight: false, icons:false });
 
 	//initialise the search class.
 	searchObj = new SearchClass();
@@ -42,8 +42,7 @@ $(document).ready(function(){
 
 	//initialise th viewer class
 	viewerControl = new ViewerControlClass();
-	viewerControl.init();	
-	  
+	viewerControl.init();	 
 	// setup the add search result buttons
 	$('.addSearchResult').live('click', addResultsClick);
 

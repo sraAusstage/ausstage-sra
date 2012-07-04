@@ -572,7 +572,7 @@ ViewerControlClass.prototype.displaySelectedContributors = function(){
 //											reset: 0 to leave the sidebar, 1 to reset sidebar.
 ViewerControlClass.prototype.displayNetwork = function(type, id, reset, rad_sim){
 		viewer.hideInteraction();
-		closeLegends();
+		//closeLegends();
 		viewer.destroy(); 
 		updateZoomSlider(1);
 		//show loading msg	

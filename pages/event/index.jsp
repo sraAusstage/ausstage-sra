@@ -100,7 +100,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						%>
 						
 				 	</td>
-				 	<td rowspan=3> <%
+				 	<td rowspan=20 class='record-comment'> <%
 				 		if (displayUpdateForm) {
 							displayUpdateForm(event_id, "Event", event.getEventName(), out, request, ausstage_search_appconstants_for_drill);
 						}
