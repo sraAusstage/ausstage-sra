@@ -432,7 +432,8 @@ public class SecondaryGenre extends AusstageInputOutput {
 
 		try {
 
-			l_sql = "SELECT DISTINCT item.ITEMID, item.citation, secgenreclass.GENRECLASS, secgenreclass.SECGENREPREFERREDID  " + "FROM item "
+			l_sql = "SELECT DISTINCT item.ITEMID, item.citation, secgenreclass.GENRECLASS, secgenreclass.SECGENREPREFERREDID, lookup_codes.description  " + "FROM item "
+					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
 					+ "INNER JOIN itemsecgenrelink ON (item.ITEMID = itemsecgenrelink.ITEMID) "
 					+ "INNER JOIN secgenreclass ON (itemsecgenrelink.SECGENREPREFERREDID = secgenreclass.SECGENREPREFERREDID)  " + "WHERE secgenreclass.SECGENREPREFERREDID="
 					+ p_id + " Order by item.citation";
