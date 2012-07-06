@@ -144,8 +144,20 @@
     
     search.setSqlSwitch("and");
     
-    //search.setSortBy(sort_by);
-    search.setOrderBy(sort_by +" "+sortOrd);
+    String sortSql = "";
+    if (!sort_by.equals("customsort")) {
+    	sortSql = sort_by +" "+sortOrd+",(select last_name from contributor left join itemconlink on (contributor.contributorid = itemconlink.contributorid) where itemconlink.itemid = search_resource.itemid order by itemconlink.creator_flag desc limit 1) asc, " + 
+		"title asc, citation_date desc";
+    } else {
+    	if (sortOrd.equals("ASC")) {
+    		sortSql = "(select last_name from contributor left join itemconlink on (contributor.contributorid = itemconlink.contributorid) where itemconlink.itemid = search_resource.itemid order by itemconlink.creator_flag desc limit 1) asc, " + 
+    		"title asc, citation_date desc";
+    	} else {
+    		sortSql = "(select last_name from contributor left join itemconlink on (contributor.contributorid = itemconlink.contributorid) where itemconlink.itemid = search_resource.itemid order by itemconlink.creator_flag desc limit 1) desc, " + 
+    		"title desc, citation_date asc";
+    	}
+    }
+    search.setOrderBy(sortSql);
       
     search.setFirstDate(firstdate_yyyy,firstdate_mm,firstdate_dd);
 
@@ -226,7 +238,7 @@
 	out.println("<thead>");
     	out.println("	<tr>");
     	out.println("		<th width=\"\"><a href=\"#\" onClick=\"reSortData ('item_sub_type')\">Type</a></th>");
-      	out.println("		<th width=\"\"><a href=\"#\" onClick=\"reSortData ('title')\">Title</a></th> "); 
+      	out.println("		<th width=\"\"><a href=\"#\" onClick=\"reSortData ('customsort')\">Title</a></th> "); 
       	out.println("	</tr>	");	
     	out.println("</thead>");
 
@@ -257,7 +269,7 @@
         
           out.println("      <tr>"); 
           out.println("       <td " + bgcolour +  " valign=\"top\" >" + crsetResult.getString("item_sub_type") + "</td>"); 
-          out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/resource/?id=" + crsetResult.getString("itemid") + "\" >" + crsetResult.getString("citation") + "</a></td>");
+          out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/resource/" + crsetResult.getString("itemid") + "\" >" + crsetResult.getString("citation") + "</a></td>");
           out.println("</tr>");
           counter++;                       
           if(counter == Integer.parseInt(resultsPerPage))
