@@ -379,7 +379,8 @@ public class ContentIndicator {
 
 		try {
 
-			l_sql = "SELECT item.itemid,item.CITATION as title,contentindicator.contentindicator,item.catalogueid  " + "FROM item "
+			l_sql = "SELECT item.itemid,item.CITATION as title,contentindicator.contentindicator,item.catalogueid, lookup_codes.description  " + "FROM item "
+					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "		
 					+ "INNER JOIN itemcontentindlink ON (item.itemid = itemcontentindlink.itemid) "
 					+ "INNER JOIN contentindicator ON (itemcontentindlink.contentindicatorid = contentindicator.contentindicatorid)  "
 					+ "WHERE contentindicator.contentindicatorid=" + p_id + " Order by item.citation ";
