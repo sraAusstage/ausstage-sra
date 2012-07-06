@@ -524,8 +524,9 @@ public class Work {
 		String l_sql = "";
 		ResultSet l_rs = null;
 		try {
-			l_sql = (new StringBuilder("SELECT DISTINCT item.ITEMID,item.citation,work.WORKID FROM item INNER JOIN itemw"
-					+ "orklink ON (item.ITEMID = itemworklink.ITEMID)  INNER JOIN work ON (itemworklink" + ".WORKID = work.WORKID) WHERE  work.workid=")).append(p_id)
+			l_sql = (new StringBuilder("SELECT DISTINCT item.ITEMID,item.citation,work.WORKID, lookup_codes.description FROM item "
+					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
+					+ " INNER JOIN itemworklink ON (item.ITEMID = itemworklink.ITEMID)  INNER JOIN work ON (itemworklink" + ".WORKID = work.WORKID) WHERE  work.workid=")).append(p_id)
 					.append(" order by item.citation").toString();
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 		} catch (Exception e) {
