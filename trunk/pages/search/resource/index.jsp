@@ -222,10 +222,10 @@
           <th class='search-form-label b-153 '>Number of results per page</th>
     	  <td class='search-form-value'>
  	    <select name='f_limit_by'>
-	      <option value='20'>20</option>
-	      <option value='50'>50</option>
-	      <option value='75'>75</option>
 	      <option value='100'>100</option>
+	      <option value='75'>75</option>
+	      <option value='50'>50</option>
+	      <option value='20'>20</option>
             </select>
           </td>
 	</tr>

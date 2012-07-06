@@ -1,3 +1,5 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="_LANGUAGE" xml:lang="_LANGUAGE">
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
@@ -188,7 +190,7 @@
       }
     %>
    
-    <tr  width="100%" class="browse-bar b-153" style="height:2.5em;" >
+    <tr  width="100%" class="browse-bar b-153" >
       <td align="right" colspan="5">
         <div class='browse-index browse-index-work'>
           <%

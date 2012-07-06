@@ -551,7 +551,7 @@ Vector item_contentindlinks;
         out.println("       <ul>");
         Counter++;
       }
-      out.println("<li><a href=\"/pages/resource/" +
+      out.println("<li>"+rset.getString("description")+"&nbsp;<a href=\"/pages/resource/" +
                     rset.getString("itemid") + "\">" +
                     rset.getString("citation") + "</a></li>");
     }

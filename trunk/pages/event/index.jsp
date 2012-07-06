@@ -383,7 +383,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						while (rset.next()) {
 						%>
 							<tr>
-								<td colspan='3' width="100%"  valign="top">
+								<td colspan='3' width="100%"  valign="top"><%=rset.getString("item_sub_type")%>
 									<a href="/pages/resource/<%=rset.getString("itemid")%>">
 										<%=rset.getString("citation")%>
 									</a>
@@ -406,7 +406,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<tr>
 						<th class='record-label b-90'>Works</th>
 						
-						<td class='record-value'>
+						<td class=''>
 							<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<%
 							while (rset.next()) {

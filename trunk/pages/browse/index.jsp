@@ -197,7 +197,7 @@ Should probably put this in a seperate .js file
 		$("#header-search-button").click(function (){clearAll();
 							     return getCounts();});
 		//workaround for onsubmit Internet Explorer issue
-		$("#header-search-form").keypress(function(event) {
+		$("#header-search-keywords").keypress(function(event) {
   			if ( event.which == 13 ) {
      				event.preventDefault(); clearAll();return getCounts();
    			}

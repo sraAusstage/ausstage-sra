@@ -146,7 +146,7 @@
 						<tr>
 							<th class='record-label b-121'>Address</th>
 							
-							<td class='record-value'><%=organisation.getAddress()%>
+							<td class='record-value'><%=hasValue(organisation.getAddress())?organisation.getAddress():""%>
 				    		<%
 							if (hasValue(organisation.getAddress()) && (hasValue(organisation.getSuburb()) || hasValue(organisation.getStateName()) || hasValue(organisation.getPostcode())))
 								out.print("<br>");
@@ -482,7 +482,7 @@
 					%>
 					<tr >
 						<th class='record-label b-121'>
-							<a class='f-186' href="#" onclick="showHide('works')">Works</a>
+							<a class='record-label'  href="#" onclick="showHide('works')">Works</a>
 						</th>
 						<td class='record-value'>
 							<table id='works' width="<%=secTableWdth %>" border="0" cellpadding="0" cellspacing="0">
@@ -511,7 +511,7 @@
 					if(rset != null && rset.isBeforeFirst()) {
 					%>
 						<tr>
-					 		<th class='record-label b-121'><a class='f-186' href="#" onclick="showHide('resources')">Resources</a></th>
+					 		<th class='record-label b-121'><a class='record-label'  href="#" onclick="showHide('resources')">Resources</a></th>
 							
 							<td class='record-value'>
 								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
@@ -519,7 +519,7 @@
 								while(rset.next()) {
 								%>
 									<tr>
-										<td	valign="top">
+										<td	valign="top"><%=rset.getString("description")%>&nbsp;
 											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>

@@ -15,7 +15,7 @@
  * along with the AusStage Mapping Service.  
  * If not, see <http://www.gnu.org/licenses/>.
  */
-
+var viewer;
 //set up for the initial page
 $(document).ready(function(){
 

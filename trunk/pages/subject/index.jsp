@@ -138,7 +138,7 @@
 									<%
 									while(rset.next()) {
 										out.println("<tr>");
-										out.println("  <td  valign=\"top\"><a href=\"/pages/resource/" +
+										out.println("  <td  valign=\"top\">"+rset.getString("description")+"&nbsp;<a href=\"/pages/resource/" +
 										rset.getString("itemid") + "\">" +
 										rset.getString("title") + "</a>");
 										out.print("</td>");
