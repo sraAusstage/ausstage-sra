@@ -217,7 +217,7 @@
      out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
     		 +"<img src=\"../../../../resources/images/icon-event.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Events</span>"
-    		 +"<span class=\"search-index search-index-resource\">search results for \'"+event_name+"\'. "
+    		 +"<span class=\"search-index search-index-resource\">search results " + (event_name.equals("")?"":"for \'"+event_name+"\'. ")
     		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
     		 +"</span></div>");
       out.println("     <table class=\"search-table\">");
@@ -438,12 +438,12 @@
       for(; i < rounded_num_pages + 1; i++){
         String highlight_number_str = "";
 
-        if(int_page_num == i)
-          highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
-        else if(page_num == null && i == 1)
-          highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
-        else
-          highlight_number_str = ">"+Integer.toString(i);
+                  if(int_page_num == i)
+              highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
+            else if(page_num == null && i == 1)
+              highlight_number_str = "class='b-91 bold'>" + Integer.toString(i);
+            else
+              highlight_number_str = ">"+Integer.toString(i);
         
         out.println("<a href=\"" + url +        
                     "&f_recset_count=" + recset_count + 
