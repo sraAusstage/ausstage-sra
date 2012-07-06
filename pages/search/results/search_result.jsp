@@ -1795,6 +1795,7 @@
         // DISPLAY HEADERS AND TITLES
         out.println("      <thead>");          
         out.println("      <tr>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('item_sub_type')\">Type</a></b></th>");
         out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('citation')\">Citation</a></b></th>");
         out.println("      </thead>");
         out.println("      </tr>");
@@ -1820,6 +1821,7 @@
             else
               bgcolour = "class='b-185'";             
             out.println("      <tr>");
+            out.println("       <td " + bgcolour +  " valign=\"top\" >" + crset.getString("item_sub_type") + "</td>");            
             out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/resource/" + crset.getString("itemid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("citation") + "</a></td>");            
             out.println(      "</tr>");
             counter++;                        
@@ -1876,7 +1878,8 @@
                         "&f_page_num=1" + 
                         "&f_recset_count=" + recset_count + 
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
-                        "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") +
+                        "&order=" + sortOrd +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">First</a>&nbsp;");          
             out.println("<a href=\"" + 
@@ -1885,7 +1888,8 @@
                         "&f_page_num=" + (int_page_num - 1) + 
                         "&f_recset_count=" + recset_count + 
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
-                        "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") +
+                        "&order=" + sortOrd +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Previous</a>&nbsp;");
 	  }
@@ -1908,7 +1912,8 @@
                         "&f_page_num=" + i + 
                         "&f_recset_count=" + recset_count + 
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
-                        "&f_sort_by=" + request.getParameter("f_sort_by") + 
+                        "&f_order_by=" + request.getParameter("f_order_by") +
+                        "&order=" + sortOrd +
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\"" + highlight_number_str + "</a>&nbsp;");
 
@@ -1926,7 +1931,8 @@
                           "&f_page_num=" + (int_page_num + 1) + 
                           "&f_recset_count=" + recset_count + 
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
-                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_order_by=" + request.getParameter("f_order_by") +
+                          "&order=" + sortOrd +
                           "&f_search_within_search=" + search_within_search_for_result +
                           "\">Next</a>&nbsp;");
               out.println("<a href=\"" + 
@@ -1935,7 +1941,8 @@
                           "&f_page_num=" + rounded_num_pages + 
                           "&f_recset_count=" + recset_count + 
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
-                          "&f_sort_by=" + request.getParameter("f_sort_by") +
+                          "&f_order_by=" + request.getParameter("f_order_by") +
+                          "&order=" + sortOrd +
                           "&f_search_within_search=" + search_within_search_for_result +
                           "\">Last</a>");                          
             }
