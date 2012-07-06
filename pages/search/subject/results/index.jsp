@@ -79,7 +79,8 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
   Statement stmt    = m_db.m_conn.createStatement ();
   sqlString = "SELECT COUNT(*) FROM (SELECT contentindicator.contentindicator,contentindicator.contentindicatorid, count(distinct events.eventid) eventnum, "+
 	"count(distinct itemcontentindlink.itemid) itemcount FROM contentindicator "+
-	"LEFT JOIN events ON (contentindicator.contentindicatorid = events.content_indicator) "+
+	"LEFT JOIN primcontentindicatorevlink on (contentindicator.contentindicatorid = primcontentindicatorevlink.primcontentindicatorid) " +
+	"LEFT JOIN events ON (primcontentindicatorevlink.eventid = events.eventid) "+
 	"LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) "+
 	"WHERE lcase(contentindicator.contentindicator) LIKE '%" + keyword + "%' "+
 	"group by contentindicator.contentindicatorid) contentindicator WHERE contentindicator.eventnum > 0 or contentindicator.itemcount > 0 ";
@@ -120,7 +121,9 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
       else
       bgcolour = "bgcolor='#FFFFFF'";
       sqlString = "SELECT * FROM (SELECT contentindicator.contentindicator,min(events.yyyyfirst_date) year, max(events.yyyylast_date) , count(distinct events.eventid) num, count(distinct itemcontentindlink.itemid) itemcount, contentindicator.contentindicatorid " +
-		"FROM contentindicator LEFT JOIN events ON (contentindicator.contentindicatorid = events.content_indicator) LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) " +
+		"FROM contentindicator LEFT JOIN primcontentindicatorevlink on (contentindicator.contentindicatorid = primcontentindicatorevlink.primcontentindicatorid) " +
+		"LEFT JOIN events ON (primcontentindicatorevlink.eventid = events.eventid) "+
+		"LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) " +
 		"WHERE lcase(contentindicator.contentindicator) LIKE '%" + keyword + "%' group by contentindicator.contentindicator order by " + sortCol + " " + sortOrd + ") sub WHERE sub.num > 0 or sub.itemcount > 0 limit " + ((pageno)*25) + ",26";
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;
