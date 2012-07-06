@@ -180,20 +180,15 @@ Vector item_contentindlinks;
 
     // New rules (23/12/2008)
    
-    if (!hasValue(contributor.getDodYear())) { 
-      if(hasValue(contributor.getDobYear()))
-      {
-	      //Date of Birth  
-	      out.println("   <tr>");
-	      out.println("     <th class='record-label b-105'>Date of Birth</th>");
-	      out.println("     <td class='record-value'>");
-	      out.print(formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()));
-	      out.println("     </td>");
-	      out.println("   </tr>");
-      } 
-      
-    } else {     	  
-		//Date of death
+    if (hasValue(contributor.getDodYear()) && hasValue(contributor.getDobYear())) {
+	  //Date of Birth  
+	    out.println("   <tr>");
+	    out.println("     <th class='record-label b-105'>Date of Birth</th>");
+	    out.println("     <td class='record-value'>");
+	    out.print(formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()));
+	    out.println("     </td>");
+	    out.println("   </tr>");
+      //Date of death
 		out.println("   <tr>");
 		out.println("     <th class='record-label b-105'>Date of Death</th>");
 		out.println("     <td class='record-value'>");
