@@ -1167,7 +1167,8 @@ public class Organisation {
 
 		try {
 
-			l_sql = "SELECT DISTINCT item.CITATION,item.itemid ,organisation.NAME, organisation.organisationid " + "FROM item  "
+			l_sql = "SELECT DISTINCT item.CITATION,item.itemid ,organisation.NAME, organisation.organisationid, lookup_codes.description " + "FROM item  "
+					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id)"
 					+ "INNER JOIN itemorglink ON (item.ITEMID = itemorglink.ITEMID) " + "INNER JOIN organisation ON (itemorglink.ORGANISATIONID = organisation.ORGANISATIONID) "
 					+ "WHERE organisation.organisationid=" + p_organisation_id + " " + "Order by item.CITATION";
 
