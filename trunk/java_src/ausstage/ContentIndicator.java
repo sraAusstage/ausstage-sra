@@ -350,8 +350,13 @@ public class ContentIndicator {
 			l_sql = "SELECT DISTINCT events.eventid, events.event_name, venue_name, venue.suburb, if(states.state='O/S', country.countryname, states.state) state,  "
 					+ "date_format(STR_TO_DATE(CONCAT_WS(' ', events.yyyyfirst_date,events.mmfirst_date,events.ddfirst_date), '%Y %m %d'), '%e %M %Y') as display_first_date, "
 					+ "STR_TO_DATE(CONCAT_WS(' ', events.yyyyfirst_date,events.mmfirst_date,events.ddfirst_date), '%Y %m %d') as datesort,"
-					+ "events.yyyyfirst_date,events.mmfirst_date,events.ddfirst_date " + "FROM events, venue  " + "INNER JOIN states ON (venue.state = states.stateid) "
-					+ "INNER JOIN country ON (venue.countryid = country.countryid)  " + "WHERE events.venueid = venue.venueid and events.content_indicator=" + p_id
+					+ "events.yyyyfirst_date,events.mmfirst_date,events.ddfirst_date " 
+					+ "FROM events "
+					+ "INNER JOIN venue ON (events.venueid = venue.venueid) " 
+					+ "INNER JOIN states ON (venue.state = states.stateid) "
+					+ "INNER JOIN country ON (venue.countryid = country.countryid)  "
+					+ "INNER JOIN primcontentindicatorevlink ON (primcontentindicatorevlink.eventid = events.eventid)  "
+					+ "WHERE primcontentindicatorevlink.primcontentindicatorid =" + p_id
 					+ " order by datesort DESC";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
