@@ -223,7 +223,7 @@ public class Event {
 
 		try {
 
-			sqlString = "select events.*, search_event.resource_flag from events inner join search_event on events.eventid = search_event.eventid where events.eventid="
+			sqlString = "select events.*, ifnull(search_event.resource_flag, 'N') resource_flag from events left join search_event on events.eventid = search_event.eventid where events.eventid="
 					+ p_event_id;
 
 			Statement stmt = m_db.m_conn.createStatement();
