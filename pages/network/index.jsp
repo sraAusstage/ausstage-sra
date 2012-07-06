@@ -90,6 +90,8 @@
 		s.parentNode.insertBefore(ga, s);
 	})();
 </script>
+<!--keep the ruler span. used in measureText function-->
+<span id="ruler"></span>
 <!-- Sidebar -->
 <div id="sidebar1" class="sidebar1 b-186 f-184">
 	<p class="label bold large" style="margin-top: 0px;">&nbsp;&nbsp;&nbsp;Network</p>

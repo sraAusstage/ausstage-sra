@@ -393,7 +393,7 @@
 						
   	  					if (rset != null && rset.isBeforeFirst()) {
   						%>
-					 		<th class='record-label b-153'><a class='f-186' href="#" onclick="showHide('resources')">Resources</a></th>
+					 		<th class='record-label b-153'><a class='record-label' href="#" onclick="showHide('resources')">Resources</a></th>
 							
 							<td class='record-value'>
 								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
@@ -401,7 +401,7 @@
 	  	  						while (rset.next()) {
  	  							%>
 									<tr>
-										<td	valign="top">
+										<td	valign="top"><%=rset.getString("description")%>&nbsp;
 											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>

@@ -258,10 +258,10 @@ font-weight:bold;
           <td class='general_heading_white' align='right'>Number of results per page &nbsp;</td>
     	  <td>
  	    <select name='f_limit_by'>
-	      <option value='20'>20</option>
-	      <option value='50'>50</option>
-	      <option value='75'>75</option>
 	      <option value='100'>100</option>
+	      <option value='75'>75</option>
+	      <option value='50'>50</option>
+	      <option value='20'>20</option>
             </select>
           </td>
 	</tr>

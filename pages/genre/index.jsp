@@ -145,7 +145,7 @@
 								while(rset.next()) {
 								%>
 									<tr>
-			    	 					<td width="<%=secCol1Wdth%>" valign="top">
+			    	 					<td width="<%=secCol1Wdth%>" valign="top"><%=rset.getString("description")%>&nbsp;
 			    	 						<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>

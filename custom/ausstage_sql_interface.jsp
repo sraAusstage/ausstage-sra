@@ -38,7 +38,7 @@
 
 					out.print("<p>You can <a href=/opencms" + AppConstants.REPORTS_FILE_PATH);
 					out.print("/" + sqlInterface.getCommaDelimFileName());
-					out.print("> <font COLOR='#99CF16'>click here</font></a> to get the comma delimited file. ");
+					out.print("> <font>click here</font></a> to get the comma delimited file. ");
 					out.print("(size " + sqlInterface.getCommaDelimFileSize() + "KB)</p>");
 					if (sqlInterface.isReachedMaxRowAllowed())
 						out.print("<p><font color='FF0000'>Warning. The above list is not a complete listing,<br>as more results were found than could be displayed.<br>Please refine your search.</font></p>");
