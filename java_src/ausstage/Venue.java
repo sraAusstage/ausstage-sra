@@ -999,7 +999,8 @@ public class Venue {
 
 		try {
 
-			l_sql = "SELECT DISTINCT item.CITATION,item.ITEMID,venue.VENUE_NAME,venue.venueid  " + " FROM item "
+			l_sql = "SELECT DISTINCT item.CITATION,item.ITEMID,venue.VENUE_NAME,venue.venueid, lookup_codes.description  " + " FROM item "
+					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id)"
 					+ " INNER JOIN itemvenuelink ON (item.ITEMID = itemvenuelink.ITEMID) " + " INNER JOIN venue ON (itemvenuelink.VENUEID = venue.VENUEID)"
 					+ " WHERE itemvenuelink.venueid=" + p_venue_id + " " + " AND itemvenuelink.itemid = item.itemid ";
 
