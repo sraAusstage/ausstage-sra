@@ -115,13 +115,13 @@
   } 
   
   pageFormater.writeTwoColTableHeader(out, "Organisation Name *");
-  out.println("<input type=\"text\" name=\"f_organisation_name\" size=\"80\" class=\"line300\" maxlength=60 value=\"" + organisationObj.getName() + "\">");
+  out.println("<input type=\"text\" name=\"f_organisation_name\" size=\"80\" class=\"line300\" maxlength=60 value=\"" + ((organisationObj.getName() == null)?"":organisationObj.getName()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Other Names");
-  out.println("<input type=\"text\" name=\"f_other_names1\" size=\"20\" class=\"line300\" maxlength=70 value=\"" + organisationObj.getOtherNames1() + "\">");
-  out.println("<input type=\"text\" name=\"f_other_names2\" size=\"20\" class=\"line300\" maxlength=70 value=\"" + organisationObj.getOtherNames2() + "\">");
-  out.println("<input type=\"text\" name=\"f_other_names3\" size=\"20\" class=\"line300\" maxlength=70 value=\"" + organisationObj.getOtherNames3() + "\">");
+  out.println("<input type=\"text\" name=\"f_other_names1\" size=\"20\" class=\"line300\" maxlength=70 value=\"" + ((organisationObj.getOtherNames1() == null)?"":organisationObj.getOtherNames1()) + "\">");
+  out.println("<input type=\"text\" name=\"f_other_names2\" size=\"20\" class=\"line300\" maxlength=70 value=\"" + ((organisationObj.getOtherNames2() == null)?"":organisationObj.getOtherNames2()) + "\">");
+  out.println("<input type=\"text\" name=\"f_other_names3\" size=\"20\" class=\"line300\" maxlength=70 value=\"" + ((organisationObj.getOtherNames3() == null)?"":organisationObj.getOtherNames3()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
   
    // Display Dates
@@ -129,15 +129,15 @@
   //pageFormater.writeHelper(out, "Dates", "helpers_no2.gif");
   
   pageFormater.writeTwoColTableHeader(out, "First Date");
-  out.println("<input type=\"text\" name=\"f_first_date_day\" size=\"2\" class =\"line25\" maxlength=2 value=  \"" + organisationObj.getDdfirstDate()   + "\">");
-  out.println("<input type=\"text\" name=\"f_first_date_month\" size=\"2\" class =\"line25\" maxlength=2 value=\"" + organisationObj.getMmfirstDate()   + "\">");
-  out.println("<input type=\"text\" name=\"f_first_date_year\" size=\"4\" class =\"line35\" maxlength=4 value= \"" + organisationObj.getYyyyfirstDate() + "\">");
+  out.println("<input type=\"text\" name=\"f_first_date_day\" size=\"2\" class =\"line25\" maxlength=2 value=  \"" + ((organisationObj.getDdfirstDate() == null)?"":organisationObj.getDdfirstDate()) + "\">");
+  out.println("<input type=\"text\" name=\"f_first_date_month\" size=\"2\" class =\"line25\" maxlength=2 value=\"" + ((organisationObj.getMmfirstDate() == null)?"":organisationObj.getMmfirstDate()) + "\">");
+  out.println("<input type=\"text\" name=\"f_first_date_year\" size=\"4\" class =\"line35\" maxlength=4 value= \"" + ((organisationObj.getYyyyfirstDate() == null)?"":organisationObj.getYyyyfirstDate()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
   
   //Place of Origin**********************************
   pageFormater.writeTwoColTableFooter (out);
   pageFormater.writeTwoColTableHeader (out, "Place of Origin");
-  out.println("<input type='hidden' name='f_place_of_origin' value='" + organisationObj.getPlaceOfOrigin() + "'>");
+  out.println("<input type='hidden' name='f_place_of_origin' value='" + ((organisationObj.getPlaceOfOrigin() == null)?"":organisationObj.getPlaceOfOrigin()) + "'>");
       
   Venue pob = new Venue(db_ausstage);
   //pob.load(Integer.parseInt("0"+organisationObj.getPlaceOfOrigin()));
@@ -149,15 +149,15 @@
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Last Date");
-  out.println("<input type=\"text\" name=\"f_last_date_day\" size=\"2\" class =\"line25\" maxlength=2 value=  \"" + organisationObj.getDdlastDate()   + "\">");
-  out.println("<input type=\"text\" name=\"f_last_date_month\" size=\"2\" class =\"line25\" maxlength=2 value=\"" + organisationObj.getMmlastDate()   + "\">");
-  out.println("<input type=\"text\" name=\"f_last_date_year\" size=\"4\" class =\"line35\" maxlength=4 value= \"" + organisationObj.getYyyylastDate() + "\">");
+  out.println("<input type=\"text\" name=\"f_last_date_day\" size=\"2\" class =\"line25\" maxlength=2 value=  \"" + ((organisationObj.getDdlastDate() == null)?"":organisationObj.getDdlastDate()) + "\">");
+  out.println("<input type=\"text\" name=\"f_last_date_month\" size=\"2\" class =\"line25\" maxlength=2 value=\"" + ((organisationObj.getMmlastDate() == null)?"":organisationObj.getMmlastDate()) + "\">");
+  out.println("<input type=\"text\" name=\"f_last_date_year\" size=\"4\" class =\"line35\" maxlength=4 value= \"" + ((organisationObj.getYyyylastDate() == null)?"":organisationObj.getYyyylastDate()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   //Place of Demise******************************
   pageFormater.writeTwoColTableFooter (out);
   pageFormater.writeTwoColTableHeader (out, "Place of Demise");
-  out.println("<input type='hidden' name='f_place_of_demise' value='" + organisationObj.getPlaceOfDemise() + "'>");
+  out.println("<input type='hidden' name='f_place_of_demise' value='" + ((organisationObj.getPlaceOfDemise() == null)?"":organisationObj.getPlaceOfDemise()) + "'>");
   Venue pod = new Venue(db_ausstage);
   pod.load(Integer.parseInt((organisationObj.getPlaceOfDemise()!=null&&!organisationObj.getPlaceOfDemise().equals(""))?organisationObj.getPlaceOfDemise():"0"));
 
@@ -167,11 +167,11 @@
   pageFormater.writeTwoColTableFooter(out);
   
   pageFormater.writeTwoColTableHeader(out, "Address");
-  out.println("<input type=\"text\" name=\"f_org_address\" size=\"20\" class =\"line300\" maxlength=130 value=\"" + organisationObj.getAddress() + "\">");        
+  out.println("<input type=\"text\" name=\"f_org_address\" size=\"20\" class =\"line300\" maxlength=130 value=\"" + ((organisationObj.getAddress() == null)?"":organisationObj.getAddress()) + "\">");        
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Suburb");
-  out.println("<input type=\"text\" name=\"f_org_suburb\" size=\"20\" class =\"line300\" maxlength=40 value=\"" + organisationObj.getSuburb() + "\">");
+  out.println("<input type=\"text\" name=\"f_org_suburb\" size=\"20\" class =\"line300\" maxlength=40 value=\"" + ((organisationObj.getSuburb() == null)?"":organisationObj.getSuburb()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   // State
@@ -199,35 +199,35 @@
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Postcode *");
-  out.println("<input type=\"text\" name=\"f_postcode\" size=\"5\" class=\"line50\" maxlength=40 value=\"" + organisationObj.getPostcode() + "\">");
+  out.println("<input type=\"text\" name=\"f_postcode\" size=\"5\" class=\"line50\" maxlength=40 value=\"" + ((organisationObj.getPostcode() == null)?"":organisationObj.getPostcode()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Contact Name");
-  out.println("<input type=\"text\" name=\"f_contact\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + organisationObj.getContact() + "\">");
+  out.println("<input type=\"text\" name=\"f_contact\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + ((organisationObj.getContact() == null)?"":organisationObj.getContact()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Contact Phone 1");
-  out.println("<input type=\"text\" name=\"f_phone1\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + organisationObj.getPhone1() + "\">");
+  out.println("<input type=\"text\" name=\"f_phone1\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + ((organisationObj.getPhone1() == null)?"":organisationObj.getPhone1()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Contact Phone 2");
-  out.println("<input type=\"text\" name=\"f_contact_phone2\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + organisationObj.getPhone2() + "\">");
+  out.println("<input type=\"text\" name=\"f_contact_phone2\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + ((organisationObj.getPhone2() == null)?"":organisationObj.getPhone2()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Contact Phone 3");
-  out.println("<input type=\"text\" name=\"f_contact_phone3\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + organisationObj.getPhone3() + "\">");
+  out.println("<input type=\"text\" name=\"f_contact_phone3\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + ((organisationObj.getPhone3() == null)?"":organisationObj.getPhone3()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Contact Fax");
-  out.println("<input type=\"text\" name=\"f_fax\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + organisationObj.getFax() + "\">");
+  out.println("<input type=\"text\" name=\"f_fax\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + ((organisationObj.getFax() == null)?"":organisationObj.getFax()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Contact Email");
-  out.println("<input type=\"text\" name=\"f_email\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + organisationObj.getEmail() + "\">");
+  out.println("<input type=\"text\" name=\"f_email\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + ((organisationObj.getEmail() == null)?"":organisationObj.getEmail()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Web Link");
-  out.println("<input type=\"text\" name=\"f_web_links\" size=\"100\" class=\"line300\" maxlength=2048 value=\"" + organisationObj.getWebLinks() + "\">");
+  out.println("<input type=\"text\" name=\"f_web_links\" size=\"100\" class=\"line300\" maxlength=2048 value=\"" + ((organisationObj.getWebLinks() == null)?"":organisationObj.getWebLinks()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   // Countries
@@ -284,11 +284,11 @@
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Notes");
-  out.println("<textarea name=\"f_notes\" rows=\"5\" cols=\"50\" class=\"line300\">" + organisationObj.getNotes() + "</textarea>");
+  out.println("<textarea name=\"f_notes\" rows=\"5\" cols=\"50\" class=\"line300\">" + ((organisationObj.getNotes() == null)?"":organisationObj.getNotes()) + "</textarea>");
   pageFormater.writeTwoColTableFooter(out);
   
   pageFormater.writeTwoColTableHeader(out, "NLA");
-  out.println("<input type=\"text\" name=\"f_nla\" size=\"100\" class=\"line300\" maxlength=2048 value=\"" + organisationObj.getNLA() + "\">");
+  out.println("<input type=\"text\" name=\"f_nla\" size=\"100\" class=\"line300\" maxlength=2048 value=\"" + ((organisationObj.getNLA() == null)?"":organisationObj.getNLA()) + "\">");
   pageFormater.writeTwoColTableFooter(out);  
   
   /***************************
