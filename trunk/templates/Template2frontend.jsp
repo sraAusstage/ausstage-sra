@@ -76,12 +76,7 @@ if (!currentPage.contains("network/index.jsp") &&
       
 <div class="navigation">
 
-<ul class="navigation label">
 
-<li><a href="/pages/browse/">Browse</a></li>
-<li><a href="/pages/search/">Search</a></li>
-<li><a href="/pages/learn/index.html">Learn</a></li>
-</ul>
 
 <div id="loginBar">  
     
@@ -122,7 +117,12 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
     
     
     </div>
+<ul class="navigation label">
 
+<li><a href="/pages/browse/">Browse</a></li>
+<li><a href="/pages/search/">Search</a></li>
+<li><a href="/pages/learn/index.html">Learn</a></li>
+</ul>
 </div>      
       
       
