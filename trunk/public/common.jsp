@@ -106,7 +106,7 @@ public void displayUpdateForm(String                p_id,
 	  p_out.println("}");
 
 	  p_out.println("function validateUpdateForm() {");
-	  p_out.println("  var tag					=	document.getElementById(\"f_tag\");");
+	 // p_out.println("  var tag					=	document.getElementById(\"f_tag\");");
 	  p_out.println("  var userName     = document.getElementById(\"f_public_users_name\");");
 	  p_out.println("  var userEmail    = document.getElementById(\"f_public_users_email\");");
 	  p_out.println("  var userComments = document.getElementById(\"f_public_users_comments\");");
@@ -183,11 +183,11 @@ public void displayUpdateForm(String                p_id,
     p_out.println("       <td width=\"75%\"  valign='top'>" + p_id + "<input type='hidden' name='f_object_id' id='f_object_id' value='" + p_id + "'><input type='hidden' name='f_object_type' id='f_object_type' value='" + p_type + "'></td>");
     p_out.println("     </tr>");
 
-    p_out.println("     <tr>");
-    p_out.println("       <td align='right' class='general_heading_light' valign='top'>&nbsp;Tag</td>");
-    p_out.println("       <td>&nbsp;</td>");
-    p_out.println("       <td  valign='top'><input type='text' name='f_tag' id='f_tag' class='line350' maxlength=20></td>");
-    p_out.println("     </tr>");
+   // p_out.println("     <tr>");
+   // p_out.println("       <td align='right' class='general_heading_light' valign='top'>&nbsp;Tag</td>");
+   // p_out.println("       <td>&nbsp;</td>");
+   // p_out.println("       <td  valign='top'><input type='text' name='f_tag' id='f_tag' class='line350' maxlength=20></td>");
+   // p_out.println("     </tr>");
     //TIR 61 - A.Keatley 13/05/2008 - Display comments field above the name and email fields
     p_out.println("     <tr>");
     p_out.println("       <td align='right' class='general_heading_light' valign='top'>&nbsp;Comments</td>");

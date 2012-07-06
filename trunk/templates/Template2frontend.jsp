@@ -1,12 +1,19 @@
-<!DOCTYPE HTML
-    PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<!DOCTYPE HTML >
+<!-- PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd" -->
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page import="org.opencms.jsp.*,com.opencms.file.*,java.util.*" %>
 <%
 CmsJspActionElement menucms = new CmsJspActionElement(pageContext, request, response);
+String keywords = "";
+
+if(request.getParameter("f_keyword") != null) { 
+	keywords = request.getParameter("f_keyword");
+} else if(request.getParameter("h_keyword") != null) { 
+	keywords = request.getParameter("h_keyword");
+}
+
 String currentPage = menucms.getRequestContext().getUri();
 String[] pageName = currentPage.split("pages/");
 currentPage = pageName[1];
@@ -59,10 +66,10 @@ if (!currentPage.contains("network/index.jsp") &&
       </a>
 	<%if (showSearch){%>
 	<div class="header-search">
-
+<%out.print(keywords);%>
 		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/"><!-- onSubmit="return updateHeader();"> -->
 
-			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<%if(request.getParameter("f_keyword") != null) { out.print(request.getParameter("f_keyword"));} else if(request.getParameter("h_keyword") != null) { out.print(request.getParameter("h_keyword"));} %>>
+			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<% out.print("\""+keywords+"\""); %>>
 			<input class="hidden_fields" type="hidden" name="h_keyword" id="h_keyword" value="" />
 		 	
 		 	<input id="header-search-button" type="button" onclick="headerSearch();" value="Search">
