@@ -216,7 +216,8 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("SELECT COUNT(*) FROM (SELECT contentindicator.contentindicator,contentindicator.contentindicatorid, count(distinct events.eventid) eventnum, "+
   				"count(distinct itemcontentindlink.itemid) itemcount FROM contentindicator "+
-  				"LEFT JOIN events ON (contentindicator.contentindicatorid = events.content_indicator) "+
+  				"LEFT JOIN primcontentindicatorevlink on (contentindicator.contentindicatorid = primcontentindicatorevlink.primcontentindicatorid) " +
+  				"LEFT JOIN events ON (primcontentindicatorevlink.eventid = events.eventid) "+
   				"LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) "+
   				"WHERE lcase(contentindicator.contentindicator) LIKE '%" + m_key_word + "%' "+
   				"group by contentindicator.contentindicatorid) contentindicator WHERE contentindicator.eventnum > 0 or contentindicator.itemcount > 0 ");

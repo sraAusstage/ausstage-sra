@@ -139,7 +139,7 @@
 						item_secgenrelinks      = item.getAssociatedSecGenres();
 						// work
 						item_worklinks  = item.getAssociatedWorks();
-						item_itemlinks  = item.getAssociatedItems();
+						item_itemlinks  = item.getItemItemLinks();
 						// content indicator
 						item_contentindlinks = item.getAssociatedContentIndicators();
 	
