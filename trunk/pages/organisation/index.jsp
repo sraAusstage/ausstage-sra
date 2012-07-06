@@ -112,7 +112,7 @@
 							<td class='record-value bold' > <%=organisation.getName()%>
 							<%
 								if (groupNames.contains("Administrators") || groupNames.contains("Organisation Editor"))
-								out.println("[<a class='editLink' target='_blank' href='/custom/organisation_addedit.jsp?action=edit&f_selected_organisation_id=" + organisation.getId() + "'>Edit</a>]");
+								out.println("[<a class='editLink' target='_blank' href='/custom/organisation_addedit.jsp?action=edit&f_organisation_id=" + organisation.getId() + "'>Edit</a>]");
 							%>
 							</td>
 							<td rowspan=20 class='record-comment'>
@@ -483,6 +483,8 @@
 					<tr >
 						<th class='record-label b-121'>
 							<a class='f-186' href="#" onclick="showHide('works')">Works</a>
+						</th>
+						<td class='record-value'>
 							<table id='works' width="<%=secTableWdth %>" border="0" cellpadding="0" cellspacing="0">
 							<%
 							while(rset.next()) {
@@ -498,7 +500,7 @@
 							}
 							%>
 							</table>
-						</th>
+						</td>
 					</tr>
 					<%
 					}
