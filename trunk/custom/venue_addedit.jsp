@@ -100,7 +100,7 @@ function showAddress() {
 		    }   
 		    msg = "";
 	    
-	var address = document.venue_addedit_form.f_street.value + " " + document.venue_addedit_form.f_suburb.value + " " + document.venue_addedit_form.f_postcode.value;
+	var address = document.venue_addedit_form.f_street.value + " " + document.venue_addedit_form.f_suburb.value + " " + document.venue_addedit_form.f_postcode.value + " " + document.venue_addedit_form.f_state_id.options[document.venue_addedit_form.f_state_id.selectedIndex].text + " " + document.venue_addedit_form.f_country.options[document.venue_addedit_form.f_country.selectedIndex].text;
 	
 	geocoder.geocode({'address':address}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
