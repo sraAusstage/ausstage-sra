@@ -133,9 +133,9 @@
 								<th class='record-label b-121'>Other names</th>
 								
 								<td class='record-value' colspan=2>
-									<div><%=organisation.getOtherNames1()%></div>
-									<div><%=organisation.getOtherNames2()%></div>
-									<div><%=organisation.getOtherNames3()%></div>
+									<div><%=hasValue(organisation.getOtherNames1())?organisation.getOtherNames1():""%></div>
+									<div><%=hasValue(organisation.getOtherNames2())?organisation.getOtherNames2():""%></div>
+									<div><%=hasValue(organisation.getOtherNames3())?organisation.getOtherNames3():""%></div>
 								</td>
 							</tr>
 						<%
