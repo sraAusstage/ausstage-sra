@@ -459,7 +459,7 @@ public class Work {
 			l_sql = (new StringBuilder("SELECT Distinct  work.workid,work.work_title, work.alter_work_title,contributor."
 					+ "last_name, contributor.first_name,contributor.contributorid, concat_ws(' ',contr"
 					+ "ibutor.first_name ,contributor.last_name)  creator  FROM work LEFT OUTER JOIN wo"
-					+ "rkconlink ON (work.workid = workconlink.workid) LEFT OUTER JOIN contributor ON ("
+					+ "rkconlink ON (work.workid = workconlink.workid) JOIN contributor ON ("
 					+ "workconlink.contributorid = contributor.contributorid) LEFT OUTER JOIN conevlink"
 					+ " ON (contributor.contributorid = conevlink.contributorid) WHERE  work.workid=")).append(p_id).append(" ").toString();
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
