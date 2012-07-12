@@ -1002,7 +1002,7 @@ public class Venue {
 			l_sql = "SELECT DISTINCT item.CITATION,item.ITEMID,venue.VENUE_NAME,venue.venueid, lookup_codes.description  " + " FROM item "
 					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id)"
 					+ " INNER JOIN itemvenuelink ON (item.ITEMID = itemvenuelink.ITEMID) " + " INNER JOIN venue ON (itemvenuelink.VENUEID = venue.VENUEID)"
-					+ " WHERE itemvenuelink.venueid=" + p_venue_id + " " + " AND itemvenuelink.itemid = item.itemid ";
+					+ " WHERE itemvenuelink.venueid=" + p_venue_id + " " + " AND itemvenuelink.itemid = item.itemid ORDER BY lookup_codes.description, item.citation";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 

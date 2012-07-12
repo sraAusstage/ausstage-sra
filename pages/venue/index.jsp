@@ -35,14 +35,6 @@
 		document.getElementById(name+"btn").style.backgroundColor = '#666666';
 	
 	}
-	
-	function showHide(name) {
-		if (document.getElementById(name).style.display != 'none') {
-			document.getElementById(name).style.display = 'none';
-		} else {
-			document.getElementById(name).style.display = ''
-		}
-	}
 </script>
 
 
@@ -109,7 +101,7 @@
 					%>
 					<table class='record-table'>
 						<tr>
-							<th class='record-label b-134 bold'><img src='../../../resources/images/icon-venue.png' class='box-icon'>Venue Name</th>
+							<th class='record-label b-134 bold'><img src='../../../resources/images/icon-venue.png' class='box-icon'>Venue</th>
 							
 							<td class='record-value bold'><%=venue.getName()%>
 							<%
@@ -117,7 +109,7 @@
 								out.println("[<a class='editLink' target='_blank' href='/custom/venue_addedit.jsp?action=edit&f_selected_venue_id=" + venue.getVenueId() + "'>Edit</a>]");
 							%>
 							</td>
-							<td rowspan=20 class='record-comment'>
+							<td  class='record-comment'>
 							<%
 							if (displayUpdateForm) {
 								displayUpdateForm(venue_id, "Venue", venue.getName(), out,
@@ -129,7 +121,7 @@
 						<tr >
 							<th class='record-label b-134' >Address</th>
 							
-							<td class='record-value'>
+							<td class='record-value' colspan='2'>
 							<%
 								Vector locationVector = new Vector();
 								locationVector.addElement(venue.getStreet());
@@ -151,7 +143,7 @@
 							<tr>
 								<th class='record-label b-134' >Website</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<a href="<%=(venue.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=venue.getWebLinks()%>">
 										<%=venue.getWebLinks()%>
 									</a>
@@ -166,7 +158,7 @@
 							<tr>
 								<th class='record-label b-134' >Latitude | Longitude</th>
 								
-								<td class='record-value'><%=venue.getLatitude()%> | <%=venue.getLongitude()%></td>
+								<td class='record-value' colspan='2'><%=venue.getLatitude()%> | <%=venue.getLongitude()%></td>
 							</tr>
 
 							<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
@@ -213,7 +205,7 @@
 						    <tr>
 								<th class='record-label b-134' >Map</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<div id="map_canvas" style="width:100%;height:300px;"></div>
 								</td>
 							</tr>
@@ -226,7 +218,7 @@
 							<tr >
 								<th class='record-label b-134' >Radius</th>
 								
-								<td class='record-value'><%=venue.getRadius()%></td>
+								<td class='record-value' colspan='2'><%=venue.getRadius()%></td>
 							</tr>
 						<%
 						}
@@ -237,7 +229,7 @@
 							<tr >
 								<th class='record-label b-134' >Elevation</td>
 								
-								<td class='record-value'><%=venue.getElevation()%></td>
+								<td class='record-value' colspan='2'><%=venue.getElevation()%></td>
 							</tr>
 						<%
 						}
@@ -248,7 +240,7 @@
 							<tr >
 								<th class='record-label b-134' >Notes</td>
 								
-								<td class='record-value'><%=venue.getNotes()%></td>
+								<td class='record-value' colspan='2'><%=venue.getNotes()%></td>
 							</tr>
 						<%
 						}
@@ -298,7 +290,7 @@
 						<tr>
 							<th class='record-label b-134' ></th>
 							
-							<td class="record-value" id="tabs" colspan=3>
+							<td class="record-value" id="tabs" colspan=2>
 								<ul class="record-tabs label">
 									<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
 									<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>   
@@ -317,15 +309,14 @@
 						%>
 							<th class='b-134' ></th>
 							
-							<td class='record-value'>
+							<td class='record-value' colspan='2'>
 								<ul>
 								<%
 								while (crsetEvt.next()) {
 									%>
 									<li>
 									<a href="/pages/event/<%=crsetEvt.getString("eventid")%>">
-										<%=crsetEvt.getString("event_name")%>
-									</a><%
+										<%=crsetEvt.getString("event_name")%></a><%
 									if (hasValue(crsetEvt.getString("DDFIRST_DATE")) || hasValue(crsetEvt.getString("MMFIRST_DATE")) || hasValue(crsetEvt.getString("YYYYFIRST_DATE")))
 										out.print(", " + formatDate(crsetEvt.getString("DDFIRST_DATE"),crsetEvt.getString("MMFIRST_DATE"),crsetEvt.getString("YYYYFIRST_DATE")));
 									%>
@@ -350,7 +341,7 @@
 							%>
 							<th class='b-134' ></th>
 					 		
-					 		<td class='record-value'>
+					 		<td class='record-value' colspan='2'>
 							
 							<%	
 							while (crsetOrg.next()){
@@ -360,9 +351,11 @@
 									
 									// Now start the new one
 									%>
-								<a href="/pages/organisation/<%=crsetOrg.getString("organisationid")%>">
-									<h3><%=crsetOrg.getString("name")%></h3>
-								</a>
+								<h3>
+									<a href="/pages/organisation/<%=crsetOrg.getString("organisationid")%>">
+										<%=crsetOrg.getString("name")%>
+									</a>
+								</h3>
 								<ul>
 									<%
 									prevOrg = crsetOrg.getString("name");
@@ -399,7 +392,7 @@
 						%>
 							<th class='b-134' ></th>
 					 		
-					 		<td class='record-value'>
+					 		<td class='record-value' colspan='2'>
 							
 							<%	
 							while (crsetCon.next()){
@@ -409,9 +402,11 @@
 					
 									// Now start the new one
 									%>
-								<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
-									<h3><%=crsetCon.getString("contributor_name")%></h3>
-								</a>
+								<h3>
+									<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
+										<%=crsetCon.getString("contributor_name")%>
+									</a>
+								</h3>
 								<ul>
 									<%
 									prevCont= crsetCon.getString("contributorid");
@@ -420,10 +415,7 @@
 								%>
 									<li>
 									<a href="/pages/event/<%=crsetCon.getString("eventid")%>">
-										<%=crsetCon.getString("event_name")%>
-									</a><%
-									if(hasValue(crsetCon.getString("suburb"))) out.print(", " + crsetCon.getString("suburb"));
-									if(hasValue(crsetCon.getString("state"))) out.print(", " + crsetCon.getString("state"));
+										<%=crsetCon.getString("event_name")%></a><%
 									if(hasValue(formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE"))))
 					            		out.print(", " + formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE")));
 									%>
@@ -446,15 +438,15 @@
 						
   	  					if (rset != null && rset.isBeforeFirst()) {
   						%>
-					 		<th class='b-134 record-label' ><a class='record-label' href="#" onclick="showHide('resources')">Resources</a></td>
+					 		<th class='b-134 record-label' ><a class='record-label' href="#">Resources</a></td>
 							
-							<td class='record-value'>
+							<td class='record-value' colspan='2'>
 								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
 	  	  						<%
 	  	  						while (rset.next()) {
  	  							%>
 									<tr>
-										<td	valign="top"> <%=rset.getString("description")%>&nbsp;
+										<td	valign="top"> <%=rset.getString("description")%>:&nbsp;
 											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>
@@ -476,7 +468,7 @@
 						<tr>
 							<th class='record-label b-134' >Venue Identifier</th>
 							
-							<td class='record-value'><%=venue.getVenueId()%></td>
+							<td class='record-value' colspan='2'><%=venue.getVenueId()%></td>
 						</tr>
 						
 						<tr>
