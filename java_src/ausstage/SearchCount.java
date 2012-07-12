@@ -45,7 +45,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("SELECT count(*) "
   							+"FROM events WHERE "
-  							+"LOWER(event_name) LIKE '"+m_key_word+"'");
+  							+"LOWER(event_name) LIKE '"+m_db.plSqlSafeString(m_key_word)+"'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -74,7 +74,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("SELECT count(*) "
   							+"FROM contributor WHERE "
-  							+"CONCAT(LOWER(first_name),' ',LOWER(last_name)) LIKE '"+m_key_word+"'");
+  							+"CONCAT(LOWER(first_name),' ',LOWER(last_name)) LIKE '"+m_db.plSqlSafeString(m_key_word)+"'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -104,7 +104,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("SELECT count(*) "
   							+"FROM venue WHERE "
-  							+"venue_name LIKE '"+m_key_word+"'");
+  							+"venue_name LIKE '"+m_db.plSqlSafeString(m_key_word)+"'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -133,7 +133,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("SELECT count(*) "
   							+"FROM organisation WHERE "
-  							+"name LIKE '"+m_key_word+"'");
+  							+"name LIKE '"+m_db.plSqlSafeString(m_key_word)+"'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -160,7 +160,7 @@ import java.util.GregorianCalendar;
   	    CachedRowSet l_crset = null;
   	    
   		
-  		m_sql_string.append("SELECT COUNT(*) From `secgenreclass` WHERE genreclass like '%"+m_key_word+"%'");
+  		m_sql_string.append("SELECT COUNT(*) From `secgenreclass` WHERE genreclass like '%"+m_db.plSqlSafeString(m_key_word)+"%'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -188,7 +188,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("select count(*) from (SELECT COUNT(*) From `contributorfunctpreferred` "+
   				"INNER JOIN contfunctlink ON (contributorfunctpreferred.contributorfunctpreferredid = contfunctlink.contributorfunctpreferredid) "+
-  				"WHERE lcase(`contributorfunctpreferred`.`preferredterm`) LIKE '%" + m_key_word + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid`) a ");
+  				"WHERE lcase(`contributorfunctpreferred`.`preferredterm`) LIKE '%" + m_db.plSqlSafeString(m_key_word) + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid`) a ");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -219,7 +219,7 @@ import java.util.GregorianCalendar;
   				"LEFT JOIN primcontentindicatorevlink on (contentindicator.contentindicatorid = primcontentindicatorevlink.primcontentindicatorid) " +
   				"LEFT JOIN events ON (primcontentindicatorevlink.eventid = events.eventid) "+
   				"LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) "+
-  				"WHERE lcase(contentindicator.contentindicator) LIKE '%" + m_key_word + "%' "+
+  				"WHERE lcase(contentindicator.contentindicator) LIKE '%" + m_db.plSqlSafeString(m_key_word) + "%' "+
   				"group by contentindicator.contentindicatorid) contentindicator WHERE contentindicator.eventnum > 0 or contentindicator.itemcount > 0 ");
   	    
   		try {
@@ -249,7 +249,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("SELECT count(*) "
   							+"FROM item WHERE "
-  							+"title LIKE '"+m_key_word+"'");
+  							+"title LIKE '"+m_db.plSqlSafeString(m_key_word)+"'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
@@ -278,7 +278,7 @@ import java.util.GregorianCalendar;
   		
   		m_sql_string.append("SELECT count(*) "
   							+"FROM work WHERE "
-  							+"work_title LIKE '"+m_key_word+"'");
+  							+"work_title LIKE '"+m_db.plSqlSafeString(m_key_word)+"'");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
