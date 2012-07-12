@@ -91,7 +91,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			%>
 			<table class='record-table'>
 				<tr>
-					<th class='record-label b-90 bold' ><img src='../../../resources/images/icon-event.png' class='box-icon'>Event Name</th>
+					<th class='record-label b-90 bold' ><img src='../../../resources/images/icon-event.png' class='box-icon'>Event</th>
 					<td class='record-value bold' > <%=event.getEventName()%> 
 						<%
 						if (groupNames.contains("Administrators") || groupNames.contains("Event Editor"))
@@ -100,7 +100,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						%>
 						
 				 	</td>
-				 	<td rowspan=20 class='record-comment'> <%
+				 	<td class='record-comment'> <%
 				 		if (displayUpdateForm) {
 							displayUpdateForm(event_id, "Event", event.getEventName(), out, request, ausstage_search_appconstants_for_drill);
 						}
@@ -120,7 +120,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			%>
 			<tr>
 				<th class='record-label b-90'>Venue</th>
-				<td class='record-value'><a href="/pages/venue/<%=event.getVenueid()%>"><%=event.getVenue().getName()%></a><%=venueLocation%></td>
+				<td class='record-value' colspan='2'><a href="/pages/venue/<%=event.getVenueid()%>"><%=event.getVenue().getName()%></a><%=venueLocation%></td>
 			</tr>
 			<%
 
@@ -130,7 +130,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Umbrella Event</th>
 					
-					<td class='record-value'><%=event.getUmbrella()%></td>
+					<td class='record-value' colspan='2'><%=event.getUmbrella()%></td>
 				</tr>
 			<%	
 			}
@@ -141,7 +141,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>First Date</th>
 					
-					<td class='record-value'><%=formatDate(event.getDdfirstDate(), event.getMmfirstDate(), event.getYyyyfirstDate())%></td>
+					<td class='record-value' colspan='2'><%=formatDate(event.getDdfirstDate(), event.getMmfirstDate(), event.getYyyyfirstDate())%></td>
 				</tr>
 			<%
 			}
@@ -152,7 +152,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Opening Date</th>
 
-					<td class='record-value'><%=formatDate(event.getDdopenDate(), event.getMmopenDate(), event.getYyyyopenDate())%></td>
+					<td class='record-value' colspan='2'><%=formatDate(event.getDdopenDate(), event.getMmopenDate(), event.getYyyyopenDate())%></td>
 				</tr>
 			<%
 			}
@@ -163,7 +163,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Last Date</th>
 					
-					<td class='record-value'><%=formatDate(event.getDdlastDate(), event.getMmlastDate(), event.getYyyylastDate())%></td>
+					<td class='record-value' colspan='2'><%=formatDate(event.getDdlastDate(), event.getMmlastDate(), event.getYyyylastDate())%></td>
 				</tr>
 			<%
 			}
@@ -173,7 +173,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			<tr>
 				<th class='record-label b-90'>Dates Estimated</th>
 			
-				<td class='record-value'><%=Common.capitalise(Common.convertBoolToYesNo(event.getEstimatedDates()), true)%></td>
+				<td class='record-value' colspan='2'><%=Common.capitalise(Common.convertBoolToYesNo(event.getEstimatedDates()), true)%></td>
 			</tr>
 			<%
 					
@@ -184,7 +184,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Status</th>
 					
-					<td class='record-value'><%=event.getEventStatus(event.getStatus())%></td>
+					<td class='record-value' colspan='2'><%=event.getEventStatus(event.getStatus())%></td>
 				</tr>
 			<%
 			}
@@ -194,7 +194,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			<tr>
 				<th class='record-label b-90'>World Premiere</th>
 				
-				<td class='record-value'><%=Common.capitalise(Common.convertBoolToYesNo(event.getWorldPremier()), true)%></td>
+				<td class='record-value' colspan='2'><%=Common.capitalise(Common.convertBoolToYesNo(event.getWorldPremier()), true)%></td>
 			</tr>
 			
 			<%
@@ -204,7 +204,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			<tr>
 				<th class='record-label b-90'>Part Of A Tour</th>
 				
-				<td class='record-value'>Yes</td>
+				<td class='record-value' colspan='2'>Yes</td>
 			</tr>
 			<%
 			}
@@ -215,7 +215,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Description</th>
 					
-					<td class='record-value'><%=event.getDescription()%></td>
+					<td class='record-value' colspan='2'><%=event.getDescription()%></td>
 				</tr>
 			<%
 			}
@@ -226,7 +226,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Description Source</th>
 					
-					<td class='record-value'><%=descriptionSource.getDescriptionSource(Integer.parseInt(event.getDescriptionSource()))%></td>
+					<td class='record-value' colspan='2'><%=descriptionSource.getDescriptionSource(Integer.parseInt(event.getDescriptionSource()))%></td>
 				</tr>
 			<%
 			}
@@ -236,7 +236,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			<tr>
 				<th class='record-label b-90'>Primary Genre</th>
 				
-				<td class='record-value'><%
+				<td class='record-value' colspan='2'><%
 				primarygenre = new PrimaryGenre(db_ausstage_for_drill);
 				primarygenre.load(Integer.parseInt(event.getPrimaryGenre()));
 				out.println(primarygenre.getName());
@@ -250,7 +250,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Secondary Genre</th>
 					
-					<td class='record-value'>
+					<td class='record-value' colspan='2'>
 					<%
 					for (SecGenreEvLink secGenreEvLink : (Vector<SecGenreEvLink>) event.getSecGenreEvLinks()) {
 						SecondaryGenre tempSecGenre = new SecondaryGenre(db_ausstage_for_drill);
@@ -275,7 +275,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Subjects</th>
 					
-					<td class='record-value'>
+					<td class='record-value' colspan='2'>
 					<%
 					for (PrimContentIndicatorEvLink primContentIndicatorEvLink : (Vector<PrimContentIndicatorEvLink>) event.getPrimContentIndicatorEvLinks()) {
 						%>
@@ -297,7 +297,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Organisations</th>
 					
-					<td class='record-value'>
+					<td class='record-value' colspan='2'>
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<%
 						for (OrgEvLink orgEvLink : (Vector<OrgEvLink>) event.getOrgEvLinks()) {
@@ -333,29 +333,29 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			if (!event.getConEvLinks().isEmpty()) {
 			%>
 				<tr>
-					<th class='record-label b-90'>Contributor Name</th>
+					<th class='record-label b-90'>Contributors</th>
 					
-					<td class=''>
-						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<td class=''  colspan='2'>
+						<table border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td  class='record-value bold' width='30%' >Name</td>
-								<td  class='record-value bold' width='30%' >Function</td>
-								<td  class='record-value bold' width='40%' >Notes</td>
+								<td  class='record-value light bold'>Name</td>
+								<td  class='record-value light bold'>Function</td>
+								<td  class='record-value light bold'>Notes</td>
 							</tr>
 						<%
 						for (ConEvLink conEvLink : (Vector<ConEvLink>) event.getConEvLinks()) {
 							contributor = conEvLink.getContributorBean();
 							%>
 							<tr>
-								<td width='30%' class='record-value'>
+								<td  class='record-value'>
 									<a href="/pages/contributor/<%=contributor.getId()%>&f_event_id=<%=event_id%>">
 										<%=contributor.getName() + " " + contributor.getLastName()%>
 									</a>
 								</td>
-								<td width='30%' class='record-value'>
+								<td  class='record-value'>
 									<%=(hasValue(conEvLink.getContributorId()) && conEvLink.getContributorId().equals(Integer.toString(contributor.getId())))?conEvLink.getFunctionDesc():"" %>
 								</td>
-								<td width='40%' class='record-value'>
+								<td  class='record-value'>
 									<%=hasValue(conEvLink.getNotes())?conEvLink.getNotes():"" %>
 								</td>
 							</tr>	
@@ -372,18 +372,19 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 
 			//Resources
 			rset = event.getAssociatedItems(Integer.parseInt(event_id), stmt);
+				
 			if (rset != null && rset.isBeforeFirst()) {
 			%>
 				<tr>
 					<th class='record-label b-90'>Resources</th>
 					
-					<td class='record-value'>
+					<td class='record-value'  colspan='2'>
 						<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<%
 						while (rset.next()) {
 						%>
 							<tr>
-								<td colspan='3' width="100%"  valign="top"><%=rset.getString("item_sub_type")%>
+								<td colspan='3' width="100%"  valign="top"><%=rset.getString("item_sub_type")%>:	
 									<a href="/pages/resource/<%=rset.getString("itemid")%>">
 										<%=rset.getString("citation")%>
 									</a>
@@ -435,7 +436,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<tr>
 						<th class='record-label b-90'>Text Nationality</th>
 						
-						<td class='record-value'>
+						<td class='record-value'  colspan='2'>
 						<%=playOrigin.getName() %>
 						</td>
 					</tr>
@@ -450,7 +451,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<tr>
 						<th class='record-label b-90'>Production Nationality</th>
 						
-						<td class='record-value'>
+						<td class='record-value' colspan='2'>
 						<%=prodOrigin.getName() %>
 						</td>
 					</tr>
@@ -464,7 +465,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Further Information</th>
 					
-					<td class='record-value'>
+					<td class='record-value' colspan='2'>
 					<%=event.getFurtherInformation()%>
 					</td>
 				</tr>
@@ -476,14 +477,14 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Data Source</td>
 					
-					<td class=''>
-						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<td class=''  colspan='2'>
+						<table  border="0" cellpadding="0" cellspacing="0">
 							<tr>
-								<td width='30%' class='record-value bold'>Source</td>
+								<td  class='record-value light bold nowrap'>Source</td>
 								
-								<td width='30%' class='record-value bold'>Data Source Description</td>
+								<td  class='record-value light bold nowrap'>Data Source Description</td>
 								
-								<td width='40%' class='record-value bold' >Part of Collection</td>
+								<td  class='record-value light bold nowrap' >Part of Collection</td>
 							</tr>
 							<%
 
@@ -493,11 +494,11 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 								datasourceEvlink.loadLinkedProperties(Integer.parseInt("0" + datasource.getDatasoureEvlinkId()));
 								%>
 								<tr>
-									<td width='30%' class='record-value '><%=datasource.getName()%></td>
+									<td  class='record-value '><%=datasource.getName()%></td>
 									
-									<td width='30%' class='record-value '><%=datasourceEvlink.getDescription()%></td>
+									<td  class='record-value '><%=datasourceEvlink.getDescription()%></td>
 									
-									<td width='40%' class='record-value '><%=datasourceEvlink.isCollection()%></td>
+									<td  class='record-value '><%=datasourceEvlink.isCollection()%></td>
 								</tr>
 							<%
 							}
@@ -519,11 +520,11 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<%
 					if(!hasValue(event.getUpdatedByUser()) || event.getUpdatedByUser().equals("null")){
 					%>
-						<td class='record-value'><%=event.getEnteredByUser()%> on <%=dateFormat.format(event.getEnteredDate())%></td>
+						<td class='record-value' colspan='2'><%=event.getEnteredByUser()%> on <%=dateFormat.format(event.getEnteredDate())%></td>
 					<%
 					} else {
 					%>
-						<td class='record-value'><%=event.getUpdatedByUser()%> on <%=dateFormat.format(event.getUpdatedDate())%></td>
+						<td class='record-value' colspan='2'><%=event.getUpdatedByUser()%> on <%=dateFormat.format(event.getUpdatedDate())%></td>
 					<%
 					}
 					%>	
@@ -537,7 +538,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Event Identifier</td>
 					
-					<td class='record-value'><%=event.getEventid()%></td>
+					<td class='record-value' colspan='2'><%=event.getEventid()%></td>
 				</tr>
 			<%
 			}

@@ -59,7 +59,7 @@
 					<th class='record-label b-105 bold'><img src='../../../resources/images/icon-blank.png' class='box-icon'>Function</th>
 					
 					<td class='record-value bold'><%=function.getPreferredTerm()%></td>
-					<td rowspan=20 class='record-comment'>
+					<td  class='record-comment'>
 					<%
 					if(displayUpdateForm) {
 					displayUpdateForm(contfunction_id, "Contributor Function", function.getPreferredTerm(),out,
@@ -78,7 +78,7 @@
 				<tr>
 					<th class='record-label b-105 '>Contributors</th>
 					
-					<td class='record-value'>
+					<td class='record-value' colspan='2'>
 						<table border="0" cellpadding="0" cellspacing="0">
 						<%	
 						while(rset.next()) {
@@ -102,9 +102,9 @@
 			//Contributor Function Identifier
 			%>
 			<tr>
-				<th class='record-label b-105'>Contributor Function Identifier</th>
+				<th class='record-label b-105'>Function Identifier</th>
 				
-				<td class='record-value'><%=function.getPreferredId()%></td>
+				<td class='record-value' colspan='2'><%=function.getPreferredId()%></td>
 			</tr>
 			
 		</table>
