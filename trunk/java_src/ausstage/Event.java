@@ -2537,7 +2537,7 @@ public class Event {
 			l_sql = "SELECT item.itemid, item.catalogueid,  item.item_description, item.citation, ist.description item_sub_type, organisation.name,  states.state,  lookup_codes.code_lov_id,  lookup_codes.description,  lookup_codes.short_code,  `itemevlink`.`eventid` "
 					+ "FROM item LEFT JOIN lookup_codes ist ON (item.item_sub_type_lov_id = ist.code_lov_id) INNER JOIN itemevlink ON (itemevlink.itemid = item.itemid)  LEFT JOIN organisation ON (item.institutionid = organisation.organisationid)  LEFT JOIN states ON (organisation.state = states.stateid)  LEFT JOIN lookup_codes ON (item.item_type_lov_id = lookup_codes.code_lov_id) "
 					+ "WHERE itemevlink.eventid=" + p_event_id + " " 
-					+ "ORDER BY lookup_codes.description, item.CITATION";
+					+ "ORDER BY ist.description, item.CITATION";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
