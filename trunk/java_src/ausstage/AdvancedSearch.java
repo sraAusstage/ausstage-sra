@@ -728,8 +728,13 @@ public class AdvancedSearch {
 
 		m_sqlString = "SELECT events.eventid, events.event_name, events.status, venue.venue_name, venue.suburb, "
 				+ " venue.state as state_id, states.state as state, events.first_date , if(max(i.ITEM_URL) is null,if(max(i.itemid) is null,'N','Y'),'ONLINE')  ASSOC_ITEM, "
-				+ " count(distinct ie.itemid) as total  " + " FROM " + m_sqlFromString
-				+ " inner join states on states.stateid=venue.state left join itemevlink ie on ie.eventid = events.eventid  left join item i on i.itemid = ie.itemid " + " WHERE "
+				+ " count(distinct ie.itemid) as total, country.countryname  " 
+				+ " FROM " + m_sqlFromString
+				+ " INNER JOIN country ON (venue.countryid = country.countryid)"
+				+ " inner join states on states.stateid=venue.state "
+				+ " left join itemevlink ie on ie.eventid = events.eventid  "
+				+ " left join item i on i.itemid = ie.itemid " 
+				+ " WHERE "
 				+ m_sqlWhereString;
 		// add resource date clause onto the end
 		if (!m_dateClause.equals("")) {
