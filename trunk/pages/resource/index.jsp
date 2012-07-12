@@ -188,7 +188,7 @@
 									out.println("[<a class='editLink' target='_blank' href='/custom/item_addedit.jsp?action=edit&f_itemid=" + item.getItemId() + "'>Edit</a>]");
 									%>
 								</td>
-								<td rowspan=20 class='record-comment'>
+								<td class='record-comment'>
 								<%
 								if (displayUpdateForm) {
 								displayUpdateForm(item_id, "Resource", item.getTitle(), out,
@@ -230,7 +230,7 @@
 						%>
 							<th class='record-label b-153'>Creator Contributors</th>
 							
-							<td class='record-value'>
+							<td class='record-value'  colspan='2'>
 								<table width="100%" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (ItemContribLink itemContribLink : (Vector <ItemContribLink>) item_creator_conlinks) {
@@ -273,7 +273,7 @@
 							<tr>
 								<th class='record-label b-153'>Creator Organisations</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%	
 									// this link is weird the Item Org Link is in the Vector
@@ -306,7 +306,7 @@
 							<tr >
 								<th class='record-label b-153'>Abstract/Description</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td width="<%=baseCol3Wdth%>" valign="top"><%=item.getDescriptionAbstract()%></td>
@@ -323,7 +323,7 @@
 							<tr>
 								<th class='record-label b-153'>Genre</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (String secGenreId : (Vector<String>) item_secgenrelinks) {
@@ -353,7 +353,7 @@
 							<tr>
 								<th class='record-label b-153'>Subjects</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (String contentIndId : (Vector<String>) item_contentindlinks) {
@@ -384,7 +384,7 @@
 							<tr >
 								<th class='record-label b-153'>Related Works</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (String workId : (Vector<String>) item_worklinks) {
@@ -415,7 +415,7 @@
 							<tr>
 								<th class='record-label b-153'>Related Resources</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (ItemItemLink itemItemLink : (Vector <ItemItemLink>) item_itemlinks) {
@@ -447,7 +447,7 @@
 							<tr>
 								<th class='record-label b-153'>Related Events</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (String itemEvLink : (Vector<String>) item_evlinks) {
@@ -482,7 +482,7 @@
 							<tr>
 								<th class='record-label b-153'>Related Contributors</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (ItemContribLink itemContribLink : (Vector<ItemContribLink>) item_conlinks) {
@@ -515,7 +515,7 @@
 							<tr>
 								<th class='record-label b-153'>Related Organisation</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (ItemOrganLink itemOrganLink : (Vector <ItemOrganLink>) item_orglinks) {
@@ -545,7 +545,7 @@
 							<tr>
 								<th class='record-label b-153'>Related Venues</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									// in the item_venuelinks vector we only have the venue id 
@@ -573,7 +573,7 @@
 							<tr>
 								<th class='record-label b-153'>Source</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -594,11 +594,11 @@
 							<tr >
 								<th class='record-label b-153'>Item URL</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
-												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%>item.getItemUrl()">
+												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
 													<%=item.getItemUrl()%>
 												</a>
 											</td>
@@ -615,7 +615,7 @@
 							<tr >
 								<th class='record-label b-153'>Publisher</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -634,7 +634,7 @@
 							<tr >
 								<th class='record-label b-153'>Publisher Location</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -653,7 +653,7 @@
 							<tr >
 								<th class='record-label b-153'>Volume</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getVolume()%>
 								</td>
 							</tr>
@@ -666,7 +666,7 @@
 							<tr >
 								<th class='record-label b-153'>Issue</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getIssue()%>
 								</td>
 							</tr>
@@ -679,7 +679,7 @@
 							<tr >
 								<th class='record-label b-153'>Page</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getPage()%>
 								</td>
 							</tr>
@@ -692,7 +692,7 @@
 							<tr>
 								<th class='record-label b-153'>Date Issued</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -711,7 +711,7 @@
 							<tr>
 								<th class='record-label b-153'>Date Created</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -728,9 +728,9 @@
 						if (!formatDate(item.getDdCopyrightDate(), item.getMmCopyrightDate(), item.getYyyyCopyrightDate()).equals("")) {
 						%>
 							<tr>
-								<th class='record-label b-153'>>Date Of Copyright</th>
+								<th class='record-label b-153'>Date Of Copyright</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -749,7 +749,7 @@
 							<tr>
 								<th class='record-label b-153'>Date Accessioned</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -768,7 +768,7 @@
 							<tr>
 								<th class='record-label b-153'>Date Terminated</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -787,7 +787,7 @@
 							<tr>
 								<th class='record-label b-153'>Date Notes</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getDateNotes()%>
 								</td>
 							</tr>
@@ -800,7 +800,7 @@
 							<tr>
 								<th class='record-label b-153'>Catalogue ID</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getCatalogueId()%>
 								</td>
 							</tr>
@@ -821,7 +821,7 @@
 							<tr>
 								<th class='record-label b-153'>Holding Institution</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<a href="/pages/organisation/<%=item.getInstitutionId()%>" valign="top"><%=institutionName%></a>
 								</td>
 							</tr>
@@ -834,7 +834,7 @@
 							<tr>
 								<th class='record-label b-153'>Rights</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getRights()%>
 								</td>
 							</tr>
@@ -847,7 +847,7 @@
 							<tr>
 								<th class='record-label b-153'>Rights Holder</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getRightsHolder()%>
 								</td>
 							</tr>
@@ -860,7 +860,7 @@
 							<tr>
 								<th class='record-label b-153'>Access Rights</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getRightsAccessRights()%>
 								</td>
 							</tr>
@@ -873,7 +873,7 @@
 							<tr>
 								<th class='record-label b-153'>Language</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=language.getDescription()%>
 								</td>
 							</tr>
@@ -886,7 +886,7 @@
 							<tr>
 								<th class='record-label b-153'>Medium</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getFormatMedium()%>
 								</td>
 							</tr>
@@ -899,7 +899,7 @@
 							<tr>
 								<th class='record-label b-153'>Extent</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getFormatExtent()%>
 								</td>
 							</tr>
@@ -912,7 +912,7 @@
 							<tr>
 								<th class='record-label b-153'>Mimetype</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getFormatMimetype()%>
 								</td>
 							</tr>
@@ -925,7 +925,7 @@
 							<tr>
 								<th class='record-label b-153'>Format</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getFormat()%>
 								</td>
 							</tr>
@@ -938,7 +938,7 @@
 							<tr>
 								<th class='record-label b-153'>ISBN</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getIdentIsbn()%>
 								</td>
 							</tr>
@@ -951,7 +951,7 @@
 							<tr>
 								<th class='record-label b-153'>ISMN</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getIdentIsmn()%>
 								</td>
 							</tr>
@@ -964,7 +964,7 @@
 							<tr>
 								<th class='record-label b-153'>ISSN</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getIdentIssn()%>
 								</td>
 							</tr>
@@ -977,7 +977,7 @@
 							<tr>
 								<th class='record-label b-153'>SRCN</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getIdentSici()%>
 								</td>
 							</tr>
@@ -990,7 +990,7 @@
 							<tr>
 								<th class='record-label b-153'>Comments</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -1009,7 +1009,7 @@
 							<tr>
 								<th class='record-label b-153'>Citation</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
@@ -1028,7 +1028,7 @@
 							<tr>
 								<th class='record-label b-153'>Resource Identifier</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<%=item.getItemId()%>
 								</td>
 							</tr>

@@ -78,7 +78,7 @@
 
 								%>
 								</td>
-								<td rowspan=20 class='record-comment'>
+								<td  class='record-comment'>
 								<%
 								if (displayUpdateForm) {
 								displayUpdateForm(contentindicatorid, "ContentIndicator", contentIndicator.getName(), out,
@@ -98,7 +98,7 @@
 							<tr >
 								<th class='record-label b-90'>Events</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table border="0" cellpadding="0" cellspacing="0">
 									<%
 									while (rset.next()) {
@@ -109,7 +109,7 @@
 													<%=rset.getString("event_name")%></a><%
 												if (hasValue(rset.getString("venue_name"))) out.print(", " +  rset.getString("venue_name"));
 												if (hasValue(rset.getString("suburb"))) out.print(", " + rset.getString("suburb"));
-												if (hasValue(rset.getString("state"))) out.print(", " + rset.getString("state"));
+												if (hasValue(rset.getString("state")) && !rset.getString("state").equals("O/S")) out.print(", " + rset.getString("state"));
 												if (hasValue(formatDate(rset.getString("DDFIRST_DATE"),rset.getString("MMFIRST_DATE"),rset.getString("YYYYFIRST_DATE"))))
 													out.print(", " + formatDate(rset.getString("DDFIRST_DATE"),rset.getString("MMFIRST_DATE"),rset.getString("YYYYFIRST_DATE")));
 												%>
@@ -133,7 +133,7 @@
 							<tr>
 								<th class='record-label b-90'>Resources</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<table border="0" cellpadding="0" cellspacing="0">
 									<%
 									while(rset.next()) {
@@ -159,7 +159,7 @@
 							<tr>
 								<th class='record-label b-90'>Subject Identifier</th>
 		    					
-		    					<td class='record-value'><%=contentIndicator.getId()%></td>
+		    					<td class='record-value' colspan='2'><%=contentIndicator.getId()%></td>
 							</tr>
 							
 						</table>
