@@ -1300,7 +1300,7 @@ public class Contributor {
 			l_sql = "SELECT distinct contributor.last_name,contributor.first_name, contributor.contributorid,item.itemid,item.citation, lookup_codes.description " + " FROM item "
 					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
 					+ " INNER JOIN itemconlink ON (item.itemid = itemconlink.itemid) " + " INNER JOIN contributor ON (itemconlink.contributorid = contributor.contributorid) "
-					+ " WHERE itemconlink.contributorid=" + p_contributor_id + " " + " ORDER BY item.citation ";
+					+ " WHERE itemconlink.contributorid=" + p_contributor_id + " " + " ORDER BY lookup_codes.description, item.citation ";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
