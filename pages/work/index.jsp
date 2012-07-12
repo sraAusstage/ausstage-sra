@@ -234,7 +234,7 @@
 							<td class='record-value' id="tabs" colspan=2>
 								<ul class='record-tabs label'>
 									<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
-									<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>   
+									<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>
 									<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a></li>
 								 </ul>
 							</td>
