@@ -193,8 +193,10 @@ public class Event {
 		try {
 
 			sqlString = "select distinct events.eventid, events.event_name,  events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date, events.first_date, "
-					+ "venue.venue_name, venue.suburb, states.state " 
-					+ "from events, venue, conevlink, contributor, states " 
+					+ "venue.venue_name, venue.suburb, states.state, "
+					+ "concat_ws(', ', venue.venue_name, venue.suburb, if(states.state='O/S', country.countryname, states.state)) venue " 
+					+ "from events, conevlink, contributor, states, venue " 
+					+ "left join country on (venue.countryid = country.countryid) "
 					+ "where contributor.contributorid=" + p_contrib_id + " " 
 					+ "and contributor.contributorid=conevlink.contributorid " 
 					+ "and conevlink.eventid=events.eventid " 
