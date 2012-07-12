@@ -36,13 +36,6 @@
 		document.getElementById(name+"btn").style.backgroundColor = '#666666';
 	}
 	
-	function showHide(name) {
-		if (document.getElementById(name).style.display != 'none') {
-			document.getElementById(name).style.display = 'none';
-		} else {
-			document.getElementById(name).style.display = ''
-		}
-	}
 </script>
 
 <div class='record'>
@@ -107,7 +100,7 @@
 						%>
 						<table class='record-table'>
 							<tr>
-							<th class='record-label b-121 bold'><img src='../../../resources/images/icon-organisation.png' class='box-icon'>Organisation Name</th>
+							<th class='record-label b-121 bold'><img src='../../../resources/images/icon-organisation.png' class='box-icon'>Organisation</th>
 							
 							<td class='record-value bold' > <%=organisation.getName()%>
 							<%
@@ -115,7 +108,7 @@
 								out.println("[<a class='editLink' target='_blank' href='/custom/organisation_addedit.jsp?action=edit&f_organisation_id=" + organisation.getId() + "'>Edit</a>]");
 							%>
 							</td>
-							<td rowspan=20 class='record-comment'>
+							<td class='record-comment'>
 							<%
 								if (displayUpdateForm) {
 								displayUpdateForm(org_id, "Organisation", organisation.getName(), out,
@@ -130,12 +123,12 @@
 						if (hasValue(organisation.getOtherNames1()) || hasValue(organisation.getOtherNames2()) || hasValue(organisation.getOtherNames3())) {
 						%>
 							<tr>
-								<th class='record-label b-121'>Other names</th>
+								<th class='record-label b-121'>Other Names</th>
 								
-								<td class='record-value' colspan=2>
-									<div><%=hasValue(organisation.getOtherNames1())?organisation.getOtherNames1():""%></div>
-									<div><%=hasValue(organisation.getOtherNames2())?organisation.getOtherNames2():""%></div>
-									<div><%=hasValue(organisation.getOtherNames3())?organisation.getOtherNames3():""%></div>
+								<td class='record-value' colspan='2'>
+									<div><%=organisation.getOtherNames1()%></div>
+									<div><%=organisation.getOtherNames2()%></div>
+									<div><%=organisation.getOtherNames3()%></div>
 								</td>
 							</tr>
 						<%
@@ -146,13 +139,13 @@
 						<tr>
 							<th class='record-label b-121'>Address</th>
 							
-							<td class='record-value'><%=hasValue(organisation.getAddress())?organisation.getAddress():""%>
+							<td class='record-value' colspan='2'><%=hasValue(organisation.getAddress())?organisation.getAddress():""%>
 				    		<%
 							if (hasValue(organisation.getAddress()) && (hasValue(organisation.getSuburb()) || hasValue(organisation.getStateName()) || hasValue(organisation.getPostcode())))
 								out.print("<br>");
 							if (hasValue(organisation.getSuburb())) 
 								out.print(organisation.getSuburb() + " ");
-							if (hasValue(organisation.getStateName())) 
+							if (hasValue(organisation.getStateName()) && !organisation.getStateName().equals("O/S")) 
 								out.print(organisation.getStateName() + " ");
 							if (hasValue(organisation.getPostcode()))
 								out.print(organisation.getPostcode());
@@ -172,7 +165,7 @@
 							<tr>
 								<th class='record-label b-121'>Website</th>
 								
-								<td class='record-value'>
+								<td class='record-value' colspan='2'>
 									<a href="<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>">
 										<%=organisation.getWebLinks()%>
 									</a>
@@ -187,7 +180,7 @@
 							<tr>
 								<th class='record-label b-121'>Functions</th>
 								
-								<td class='record-value'><%=organisation.getFunction(Integer.parseInt(org_id))%></td>
+								<td class='record-value' colspan='2'><%=organisation.getFunction(Integer.parseInt(org_id))%></td>
 							</tr>
 						<%
 						}
@@ -198,7 +191,7 @@
 							<tr >
 								<th class='record-label b-121'>NLA</th>
 								
-								<td class='record-value'><%=organisation.getNLA()%></td>
+								<td class='record-value' colspan='2'><%=organisation.getNLA()%></td>
 							</tr>
 						<%
 						}
@@ -209,7 +202,7 @@
 							<tr>
 								<th class='record-label b-121'>Notes</th>
 								
-								<td class='record-value'><%=organisation.getNotes()%></td>
+								<td class='record-value' colspan='2'><%=organisation.getNotes()%></td>
 							</tr>
 						<%
 						}
@@ -284,9 +277,9 @@
 						<td class='record-value' id="tabs" colspan=2>
 							<ul class='record-tabs label'>
 								<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
-								<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>   
-								<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a></li> 	
-								<li><a href="#" onclick="displayRow('venue')" id='venuebtn'>Venues</a></li>
+								<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>   
+								<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li> 	
+								<li><a href="#" onclick="displayRow('venue')" id='venuebtn'>Venue</a></li>
 							</ul>
 						</td>
 					</tr>
@@ -301,7 +294,7 @@
 					%>
 							<th class='record-label b-121'></th>
 							
-							<td class='record-value'>
+							<td class='record-value' colspan='2'>
 								<ul>
 								<%
 								while(crsetEvt.next()) {
@@ -334,7 +327,7 @@
 						%>
 						<th class='record-label b-121'></td>
 				 		
-				 		<td class='record-value'>
+				 		<td class='record-value' colspan='2'>
 						
 						<%	
 						while (crsetOrg.next()){
@@ -344,9 +337,11 @@
 								
 								// Now start the new one
 								%>
-							<a href="/pages/organisation/<%=crsetOrg.getString("organisationid")%>">
-								<h3><%=crsetOrg.getString("name")%></h3>
-							</a>
+							<h3>
+								<a href="/pages/organisation/<%=crsetOrg.getString("organisationid")%>">
+									<%=crsetOrg.getString("name")%>
+								</a>
+							</h3>
 							<ul>
 								<%
 								prevOrg = crsetOrg.getString("name");
@@ -372,7 +367,6 @@
 					}
 				 	
 					out.flush();
-					//crset.close();
 					%>
 					</tr>
 					
@@ -384,7 +378,7 @@
 					%>
 						<th class='record-label b-121'></td>
 				 		
-				 		<td class='record-value'>
+				 		<td class='record-value' colspan='2'>
 						
 						<%
 						while (crsetVen.next()) {
@@ -411,8 +405,7 @@
 								%>
 									<li>
 									<a href="/pages/event/<%=crsetVen.getString("eventid")%>">
-										<%=crsetVen.getString("event_name")%>
-									</a><%
+										<%=crsetVen.getString("event_name")%></a><%
 									if (hasValue(formatDate(crsetVen.getString("DDFIRST_DATE"),crsetVen.getString("MMFIRST_DATE"),crsetVen.getString("YYYYFIRST_DATE"))))
 										out.print(", " + formatDate(crsetVen.getString("DDFIRST_DATE"),crsetVen.getString("MMFIRST_DATE"),crsetVen.getString("YYYYFIRST_DATE")));
 									%>
@@ -436,7 +429,7 @@
 					%>
 						<th class='record-label b-121'></td>
 				 		
-				 		<td class='record-value'>
+				 		<td class='record-value' colspan='2'>
 						
 						<%	
 						while (crsetCon.next()){
@@ -446,9 +439,11 @@
 				
 								// Now start the new one
 								%>
-							<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
-								<h3><%=crsetCon.getString("contributor_name")%></h3>
-							</a>
+							<h3>
+								<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
+									<%=crsetCon.getString("contributor_name")%>
+								</a>
+							</h3>
 							<ul>
 								<%
 								prevCont= crsetCon.getString("contributorid");
@@ -457,8 +452,7 @@
 							%>
 								<li>
 								<a href="/pages/event/<%=crsetCon.getString("eventid")%>">
-									<%=crsetCon.getString("event_name")%>
-								</a><%
+									<%=crsetCon.getString("event_name")%></a><%
 								if(hasValue(crsetCon.getString("suburb"))) out.print(", " + crsetCon.getString("suburb"));
 								if(hasValue(crsetCon.getString("state"))) out.print(", " + crsetCon.getString("state"));
 								if(hasValue(formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE"))))
@@ -484,7 +478,7 @@
 						<th class='record-label b-121'>
 							<a class='record-label'  href="#" onclick="showHide('works')">Works</a>
 						</th>
-						<td class='record-value'>
+						<td class='record-value' colspan='2'>
 							<table id='works' width="<%=secTableWdth %>" border="0" cellpadding="0" cellspacing="0">
 							<%
 							while(rset.next()) {
@@ -511,15 +505,15 @@
 					if(rset != null && rset.isBeforeFirst()) {
 					%>
 						<tr>
-					 		<th class='record-label b-121'><a class='record-label'  href="#" onclick="showHide('resources')">Resources</a></th>
+					 		<th class='record-label b-121'><a class='record-label'  href="#">Resources</a></th>
 							
-							<td class='record-value'>
+							<td class='record-value' colspan='2'>
 								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
 								<%
 								while(rset.next()) {
 								%>
 									<tr>
-										<td	valign="top"><%=rset.getString("description")%>&nbsp;
+										<td	valign="top"><%=rset.getString("description")%>:&nbsp;
 											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>
@@ -539,7 +533,7 @@
 					<tr>
 						<th class='record-label b-121'>Organisation Identifier</th>
 						
-						<td class='record-value'><%=organisation.getId()%></td>
+						<td class='record-value' colspan='2'><%=organisation.getId()%></td>
 					</tr>	
 					
 					<%
