@@ -479,8 +479,8 @@ public class Work {
 		ResultSet l_rs = null;
 		try {
 			l_sql = (new StringBuilder("SELECT distinct work.work_title title,`organisation`.`name` name,work.workid, or"
-					+ "ganisation.organisationid organisationid FROM work   Left  Join `workorglink` ON"
-					+ " (work.`workid`= `workorglink`.`workid`) Left  Join `organisation` ON (`workorgl"
+					+ "ganisation.organisationid organisationid FROM `workorglink` Left  Join work ON"
+					+ " (`workorglink`.`workid` = work.`workid`) Left  Join `organisation` ON (`workorgl"
 					+ "ink`.`organisationid`= `organisation`.`organisationid`) WHERE  work.workid=")).append(p_id).append(" ").toString();
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 		} catch (Exception e) {
