@@ -2353,7 +2353,7 @@ public class Item {
           "WHERE item.itemid = itemconlink.itemid " + 
           "AND itemconlink.contributorid = contributor.contributorid " + 
           "AND item.itemid=" + m_itemid + " " + 
-          "AND (CREATOR_FLAG != 'Y' OR CREATOR_FLAG is null)  order by itemconlink.ORDERBY asc";
+          "AND (CREATOR_FLAG != 'Y' OR CREATOR_FLAG is null)  order by contributor.last_name, contributor.first_name";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_conlinks.removeAllElements();

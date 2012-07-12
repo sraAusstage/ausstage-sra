@@ -436,7 +436,7 @@ public class SecondaryGenre extends AusstageInputOutput {
 					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
 					+ "INNER JOIN itemsecgenrelink ON (item.ITEMID = itemsecgenrelink.ITEMID) "
 					+ "INNER JOIN secgenreclass ON (itemsecgenrelink.SECGENREPREFERREDID = secgenreclass.SECGENREPREFERREDID)  " + "WHERE secgenreclass.SECGENREPREFERREDID="
-					+ p_id + " Order by item.citation";
+					+ p_id + " Order by lookup_codes.description, item.citation";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 

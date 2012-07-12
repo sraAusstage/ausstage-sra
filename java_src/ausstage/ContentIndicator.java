@@ -383,7 +383,7 @@ public class ContentIndicator {
 					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "		
 					+ "INNER JOIN itemcontentindlink ON (item.itemid = itemcontentindlink.itemid) "
 					+ "INNER JOIN contentindicator ON (itemcontentindlink.contentindicatorid = contentindicator.contentindicatorid)  "
-					+ "WHERE contentindicator.contentindicatorid=" + p_id + " Order by item.citation ";
+					+ "WHERE contentindicator.contentindicatorid=" + p_id + " Order by lookup_codes.description, item.citation ";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
