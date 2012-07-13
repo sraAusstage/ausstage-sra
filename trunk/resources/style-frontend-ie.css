@@ -76,7 +76,31 @@ div {
 	text-align:right;
 }
 
+/* S I D E B A R */
+#sidebar {
+	float: left;
+	width: 175px;
+	padding: 10px;
+	margin: 10px;
+}
 
+#sidebar a {
+	display: block;
+	color: white;
+}
+
+#sidebar a.current {
+	font-weight: bold;
+}
+
+#sidebar a.expanded {
+	margin-left: 10px;
+}
+
+.staticpage {
+	margin-left: 220px;
+	padding-bottom: 70px;
+}
 
 /* T E X T */
 
@@ -90,6 +114,10 @@ a:hover {
 	text-decoration: underline;
 	}
     
+.box:hover{
+	text-decoration: none;
+	} 
+	
 .label {
 	color: #ffffff;
 	}
@@ -160,6 +188,9 @@ th {
 	font-weight: normal;
 }
 
+.nowrap{
+	white-space:nowrap;
+}
 
 /* N A V I G A T I O N */
 

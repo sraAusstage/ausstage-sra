@@ -118,11 +118,12 @@ public CmsJspNavElement getFolderLink(org.opencms.jsp.CmsJspActionElement cms, S
 //CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
 
  
-String startingFolder = "/system/modules/au.edu.flinders.ausstage/pages/static/";
+String startingFolder = "/system/modules/au.edu.flinders.ausstage/pages/learn/";
 
 String currentFolder = cms.getRequestContext().getFolderUri();
-String currentPage = cms.getRequestContext().getUri();
+String currentMenuPage = cms.getRequestContext().getUri();
 int indent = (new StringTokenizer(startingFolder,"/")).countTokens() - 1;
 
-buildSiteMap(cms, startingFolder, out, true, currentFolder, currentPage, indent);
+buildSiteMap(cms, startingFolder, out, true, currentFolder, currentMenuPage, indent);
+
 %>

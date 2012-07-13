@@ -29,6 +29,7 @@ if (!currentPage.contains("network/index.jsp") &&
 	!currentPage.contains("analytics/index.jsp")) {
 %>
 <script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-ui-1.8.4.custom.min.js"></script>
 <%
 }
 %>
@@ -49,7 +50,7 @@ if (!currentPage.contains("network/index.jsp") &&
 	<![if !IE]>
     	<link rel='stylesheet' href='/resources/style-frontend.css'/>	
 	<![endif]>
-	
+	<link rel="stylesheet" href="/pages/assets/jquery-ui/jquery-ui-1.8.6.custom.css"/>
 	<link rel='stylesheet' href='/pages/assets/ausstage-colours.css'/>
 	<link rel='stylesheet' href='/pages/assets/ausstage-background-colours.css'/>
 	<link rel='icon' href='/resources/favicon2.ico'/>
@@ -66,7 +67,7 @@ if (!currentPage.contains("network/index.jsp") &&
       </a>
 	<%if (showSearch){%>
 	<div class="header-search">
-<%out.print(keywords);%>
+
 		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/"><!-- onSubmit="return updateHeader();"> -->
 
 			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<% out.print("\""+keywords+"\""); %>>
@@ -97,16 +98,6 @@ if (!currentPage.contains("network/index.jsp") &&
 </form>
 <script type="text/javascript">
 
-
-/*function updateHeader(){
-	$("#header-search-form #f_keyword").attr('value',$("#header-search-form #header-search-keywords").val());
-	 console.log($("#header-search-form #f_keyword"));
-	return true;
-}*/
-
-
-
-
 var selectmenu=document.getElementById("mymenu")
 selectmenu.onchange=function(){ //run some code when "onchange" event fires
  var chosenoption=this.options[this.selectedIndex] //this refers to "selectmenu"
@@ -128,7 +119,7 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 
 <li><a href="/pages/browse/">Browse</a></li>
 <li><a href="/pages/search/">Search</a></li>
-<li><a href="/pages/learn/index.html">Learn</a></li>
+<li><a href="/pages/learn/browse/">Learn</a></li>
 </ul>
 </div>      
       
@@ -146,8 +137,8 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
  <div id="footer" class="footer">
  
  <div class="footer-left">
-<span class="label"><a href="">AusStage</a> &bull; Researching Australian live performance</span>
-<br><span class="label small"><a href="">About</a> | <a href="">Contact</a> | <a href="">Accessibility</a> | <a href="">Cultural Advice</a> | <a href="">Privacy</a> | <a href="">Terms of Use</a> | <a href="">User License</a></span>
+<span class="label"><a href="/pages/browse/">AusStage</a> &bull; Researching Australian live performance</span>
+<br><span class="label small"><a href="/pages/learn/about/">About</a> | <a href="/pages/learn/contact/">Contact</a> | <a href="/pages/learn/contact/accessibility.html">Accessibility</a> | <a href="/pages/learn/contact/cultural-advice.html">Cultural Advice</a> | <a href="/pages/learn/contact/privacy.html">Privacy</a> | <a href="/pages/learn/contact/terms-of-use.html">Terms of Use</a> | <a href="/pages/learn/contact/user-licence.html">User License</a></span>
 </div>
 
 <div class="footer-right label small">
