@@ -192,7 +192,8 @@
 								var marker = new google.maps.Marker({
 									position: myLatlng,
 									map: map,
-									title:  '<%=venue.getName().replaceAll("'","")%>'
+									title:  '<%=venue.getName().replaceAll("'","")%>',
+									icon: "/pages/assets/images/iconography/venue-arch-134.png"
 								});
 								
 								}
@@ -288,13 +289,13 @@
 						%>
 
 						<tr>
-							<th class='record-label b-134' ></th>
+							<th class='record-label b-134' >Events</th>
 							
 							<td class="record-value" id="tabs" colspan=2>
 								<ul class="record-tabs label">
-									<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
-									<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>   
-									<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a></li>
+									<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Date</a></li>
+									<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>   
+									<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li>
 								</ul> 
 							</td>
 						</tr>
