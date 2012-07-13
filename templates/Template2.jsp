@@ -57,7 +57,6 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
       <% 
 	CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
       %>
-      <a class="<%=(cms.getRequestContext().getUri().endsWith("pages/map/"))?"current ":""%>family_links_current" href="/pages/search/">Search</a>
 
       <%@ include file="DynamicMenu.jsp"%>
       
