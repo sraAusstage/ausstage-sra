@@ -81,7 +81,7 @@
 					work = new Work(db_ausstage_for_drill);
 					work.load(Integer.parseInt(work_id));
 					
-					rset = work.getAssociatedEvents(Integer.parseInt(work_id), stmt);
+					//rset = work.getAssociatedEvents(Integer.parseInt(work_id), stmt);
 					
 					//Works
 					%>
@@ -148,6 +148,7 @@
 						}
 
 						//Organisations
+						
 						rset = work.getAssociatedOrganisations(Integer.parseInt(work_id),stmt);
 						if (rset != null && rset.isBeforeFirst()) {
 						%>
@@ -233,9 +234,9 @@
 							
 							<td class='record-value' id="tabs" colspan=2>
 								<ul class='record-tabs label'>
-									<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
-									<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>
-									<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a></li>
+									<li <%=(rsetEvt != null && rsetEvt.isBeforeFirst())?"":"style='display: none'"%>><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
+									<li <%=(crsetCon.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>
+									<li <%=(crsetOrg.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a></li>
 								 </ul>
 							</td>
 						</tr>

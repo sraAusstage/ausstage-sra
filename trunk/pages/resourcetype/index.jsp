@@ -72,7 +72,7 @@
 								<th class='record-label b-153 bold'><img src='../../../resources/images/icon-resource.png' class='box-icon'>Resource Sub Type</th>
 								
 								<td class='record-value bold'><%=lookupcode.getShortCode()%></td>
-								<td rowspan=20 class='record-comment'>
+								<td class='record-comment'>
 								<%
 								if (displayUpdateForm) {
 								displayUpdateForm(resource_subtype_id, "Resource Type", lookupcode.getShortCode(), out,
@@ -92,7 +92,7 @@
 								<tr>
 									<th class='record-label b-153'>Resources</th>
 									
-									<td class='record-value'>
+									<td class='record-value' colspan='2'>
 										<table border="0" cellpadding="0" cellspacing="0">
 										<%
 										while(rset.next()) {
@@ -120,7 +120,7 @@
 							<tr>
 								<th class='record-label b-153'>Resource Sub Type Identifier</th>
 								
-								<td class='record-value'><%=lookupcode.getCodeLovID()%></td>
+								<td class='record-value' colspan='2'><%=lookupcode.getCodeLovID()%></td>
 							</tr>
 						</table>
 						<%

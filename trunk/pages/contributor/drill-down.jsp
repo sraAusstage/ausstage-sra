@@ -121,7 +121,7 @@ Vector item_contentindlinks;
     }
     
     out.println("   </td>");
-    out.println("   <td rowspan=20 class='record-comment'>");
+    out.println("   <td class='record-comment'>");
     if (displayUpdateForm) {
       displayUpdateForm(contrib_id, "Contributor", contributor.getName() + " " + contributor.getLastName(),
                         out,
@@ -135,8 +135,8 @@ Vector item_contentindlinks;
     // other name  
     if(contributor.getOtherNames() != null && !contributor.getOtherNames().equals("")) {
 	    out.println("   <tr>");
-	    out.println("     <th class='record-label b-105'>Other names</th>");
-	    out.println("     <td class='record-value'>");
+	    out.println("     <th class='record-label b-105'>Other Names</th>");
+	    out.println("     <td class='record-value' colspan='2'>");
 	    if(contributor.getOtherNames() != null && !contributor.getOtherNames().equals(""))
 	      out.println(contributor.getOtherNames());
 	    out.println(      "</td>");
@@ -147,7 +147,7 @@ Vector item_contentindlinks;
     if(contributor.getGender() != null && !contributor.getGender().equals("")) {
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Gender</th>");
-	    out.println("     <td class='record-value'>" + contributor.getGender() + "</td>");
+	    out.println("     <td class='record-value' colspan='2'>" + contributor.getGender() + "</td>");
 	    out.println("   </tr>");
     }
     
@@ -155,7 +155,7 @@ Vector item_contentindlinks;
     if(contributor.getNationality() != null && !contributor.getNationality().equals("")) {
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Nationality</th>");
-	    out.println("     <td class='record-value'>" + contributor.getNationality() + "</td>");
+	    out.println("     <td class='record-value' colspan='2'>" + contributor.getNationality() + "</td>");
 	    out.println("   </tr>");
     }
     //Place of Birth
@@ -164,7 +164,7 @@ Vector item_contentindlinks;
             pob.load(Integer.parseInt("0"+contributor.getPlaceOfBirth()));
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Place Of Birth</th>");
-	    out.println("     <td class='record-value'><a href=\"/pages/venue/" + contributor.getPlaceOfBirth() + "\">" + pob.getName() + "</a></td>");
+	    out.println("     <td class='record-value' colspan='2'><a href=\"/pages/venue/" + contributor.getPlaceOfBirth() + "\">" + pob.getName() + "</a></td>");
 	    out.println("   </tr>");
     }
     //Place of Death
@@ -173,7 +173,7 @@ Vector item_contentindlinks;
             pod.load(Integer.parseInt("0"+contributor.getPlaceOfDeath()));
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Place Of Death</th>");
-	    out.println("     <td class='record-value'><a href=\"/pages/venue/" + contributor.getPlaceOfDeath() + "\">" + pod.getName() + "</a></td>");
+	    out.println("     <td class='record-value' colspan='2'><a href=\"/pages/venue/" + contributor.getPlaceOfDeath() + "\">" + pod.getName() + "</a></td>");
 	    out.println("   </tr>");
     }
     //Legally can only display date of birth if the date of death is null. 
@@ -184,14 +184,14 @@ Vector item_contentindlinks;
 	  //Date of Birth  
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Date of Birth</th>");
-	    out.println("     <td class='record-value'>");
+	    out.println("     <td class='record-value' colspan='2'>");
 	    out.print(formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()));
 	    out.println("     </td>");
 	    out.println("   </tr>");
       //Date of death
 		out.println("   <tr>");
 		out.println("     <th class='record-label b-105'>Date of Death</th>");
-		out.println("     <td class='record-value'>");
+		out.println("     <td class='record-value' colspan='2'>");
 		out.print(formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
 		out.println("     </td>");
 		out.println("   </tr>");
@@ -202,7 +202,7 @@ Vector item_contentindlinks;
       //Date of Birth
       out.println("   <tr>");
       out.println("     <th class='record-label b-105'>Date of Birth</th>");
-      out.println("     <td class='record-value'>");
+      out.println("     <td class='record-value' colspan='2'>");
       out.print(formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()));
       out.println("     </td>");
       out.println("   </tr>");
@@ -211,7 +211,7 @@ Vector item_contentindlinks;
       //Date of death
       out.println("   <tr>");
       out.println("     <th class='record-label b-105'>Date of Death</th>");
-      out.println("     <td class='record-value'>");
+      out.println("     <td class='record-value' colspan='2'>");
       out.print(formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
       out.println("     </td>");
       out.println("   </tr>");
@@ -221,7 +221,7 @@ Vector item_contentindlinks;
     //Functions
     out.println("   <tr>");
     out.println("     <th class='record-label b-105'>Functions</th>");
-    out.println("     <td class='record-value'>");
+    out.println("     <td class='record-value' colspan='2'>");
     String contrib_functions = "";
     if(event_id != null && !event_id.equals("")){
       ConEvLink contribeventlink = new ConEvLink(db_ausstage_for_drill);
@@ -248,14 +248,14 @@ Vector item_contentindlinks;
     if(contributor.getNotes() != null && !contributor.getNotes().equals("")) {
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>Notes</th>");
-	    out.println("     <td class='record-value'>" + contributor.getNotes() + "</td>");
+	    out.println("     <td class='record-value' colspan='2'>" + contributor.getNotes() + "</td>");
 	    out.println("   </tr>");
     }
     //NLA
     if(contributor.getNLA() != null && !contributor.getNLA().equals("")) {
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>NLA</th>");
-	    out.println("     <td class='record value' valign='top'>" + contributor.getNLA() + "</td>");
+	    out.println("     <td class='record value' colspan='2' valign='top'>" + contributor.getNLA() + "</td>");
 	    out.println("   </tr>");
     }
 
@@ -304,7 +304,10 @@ Vector item_contentindlinks;
 	int i=0;
 	sqlString = "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date, "+
 	     "events.yyyyfirst_date,events.first_date,venue.venue_name,venue.suburb,states.state,contributorfunctpreferred.preferredterm, evcount.num "+
-	    "FROM events,venue,states,conevlink,contributor,contributorfunctpreferred "+
+	    ",concat_ws(', ', venue.venue_name, venue.suburb, if(states.state='O/S', country.countryname, states.state)) venue " +
+	    "FROM events,venue " +
+	    "left join country on (venue.countryid = country.countryid) " +
+	    ",states,conevlink,contributor,contributorfunctpreferred "+
 	    "left join ( "+
 	    "SELECT ce.contributorid, cf.contributorfunctpreferredid, count(*) num "+
 	    "FROM conevlink ce,contributorfunctpreferred cf "+
@@ -366,7 +369,10 @@ Vector item_contentindlinks;
 	sqlString2 = 
 	    "SELECT DISTINCT events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
 	  	"events.first_date,venue.venue_name,venue.suburb,states.state,organisation.name,organisation.organisationid,evcount.num "+
-	  	"FROM events,venue,states,organisation,conevlink,orgevlink "+
+	  	",concat_ws(', ', venue.venue_name, venue.suburb, if(states.state='O/S', country.countryname, states.state)) venue " +
+	  	"FROM events,states,organisation,conevlink,venue "+
+	  	"left join country on (venue.countryid = country.countryid) "+
+	  	",orgevlink "+
 	  	"left join (SELECT oe.organisationid, count(distinct oe.eventid) num "+
 	  	"FROM orgevlink oe, conevlink ce where ce.eventid=oe.eventid and ce.contributorid=" + contrib_id + " "+
 	  	"group by oe.organisationid) evcount ON (evcount.organisationid = orgevlink.organisationid)"+
@@ -384,10 +390,10 @@ Vector item_contentindlinks;
  <tr><th class='record-label b-105'></th></tr>   
     
     <tr>
-    <th class='record-label b-105'></th>
+    <th class='record-label b-105'>Events</th>
 <td colspan=2 class="record-value">
 <ul class="record-tabs label">
-    	<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
+    	<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Date</a></li>
     	<li><a href="#" onclick="displayRow('function')" id='functionbtn'>Function</a></li>
     	<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>
     	<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li>
@@ -404,18 +410,21 @@ Vector item_contentindlinks;
     do{      
       if(contribEventCount==0){
       out.println("     <th class='b-105'></th>");
-      out.println("     <td class='record-value'>");
+      out.println("     <td class='record-value' colspan='2'>");
       out.println("     <ul>");
       contribEventCount++;
     }
     out.print("<li><a href=\"/pages/event/" +
                 crsetEvt.getString("eventid") + "\">"+crsetEvt.getString("event_name")+"</a>");
-    if(hasValue(crsetEvt.getString("venue_name")))
+    if(hasValue(crsetEvt.getString("venue")))
+      out.print(", " +  crsetEvt.getString("venue"));
+    /*if(hasValue(crsetEvt.getString("venue_name")))
       out.print(", " +  crsetEvt.getString("venue_name"));
     if(hasValue(crsetEvt.getString("suburb"))) 
       out.print(", " + crsetEvt.getString("suburb"));
-    if(hasValue(crsetEvt.getString("state")))
-      out.print(", " + crsetEvt.getString("state"));
+    if((hasValue(crsetEvt.getString("state"))) && (!crsetEvt.getString("state").equals("O/S")))
+    	out.print(", " + crsetEvt.getString("state"));
+	*/
     if (hasValue(crsetEvt.getString("DDFIRST_DATE")) || hasValue(crsetEvt.getString("MMFIRST_DATE")) || hasValue(crsetEvt.getString("YYYYFIRST_DATE")))
       out.print(", " + formatDate(crsetEvt.getString("DDFIRST_DATE"),crsetEvt.getString("MMFIRST_DATE"),crsetEvt.getString("YYYYFIRST_DATE")));
     out.println("</li>");         
@@ -433,7 +442,7 @@ Vector item_contentindlinks;
     do{
       if(eventfunccount==0){
  	out.println("     <td class='b-105'></td>");
- 	out.println("     <td class='record-value'>");
+ 	out.println("     <td class='record-value' colspan='2'>");
      }
      eventfunccount++;
 
@@ -445,13 +454,10 @@ Vector item_contentindlinks;
         	prevFunc = crsetFun.getString("preferredterm");
         }
  	        out.print("<li><a href=\"/pages/event/" +
- 	        		crsetFun.getString("eventid") + "\">"+crsetFun.getString("event_name")+"</a>");
-          if(hasValue(crsetFun.getString("venue_name")))
-            out.print(", " +  crsetFun.getString("venue_name"));
-          if(hasValue(crsetFun.getString("suburb"))) 
-           out.print(", " + crsetFun.getString("suburb"));
-          if(hasValue(crsetFun.getString("state")))
-           out.print(", " + crsetFun.getString("state"));
+ 	        		crsetFun.getString("eventid") + "\">"+crsetFun.getString("event_name")+"</a> ");
+          if(hasValue(crsetFun.getString("venue")))
+          	out.print(" "+crsetFun.getString("venue"));
+          
           if (hasValue(crsetFun.getString("DDFIRST_DATE")) || hasValue(crsetFun.getString("MMFIRST_DATE")) || hasValue(crsetFun.getString("YYYYFIRST_DATE")))
            out.print(", " + formatDate(crsetFun.getString("DDFIRST_DATE"),crsetFun.getString("MMFIRST_DATE"),crsetFun.getString("YYYYFIRST_DATE")));
        out.println("</li>"); 
@@ -471,7 +477,7 @@ Vector item_contentindlinks;
      	 do{
      		 if(eventconcount==0){
   		out.println("     <td class='b-105'></td>");
-  	        out.println("     <td class='record-value'>");
+  	        out.println("     <td class='record-value' colspan='2'>");
   	        
      		 }
      		eventconcount++;
@@ -503,7 +509,7 @@ Vector item_contentindlinks;
      	 do{
      		 if(eventorgcount==0){
   		 			out.println("     <td class='b-105'></td>");
-  	        out.println("     <td class='record-value'>");
+  	        out.println("     <td class='record-value' colspan='2'>");
   	        
      		 }
      		eventorgcount++;
@@ -518,12 +524,14 @@ Vector item_contentindlinks;
   	    
   	        out.print("<li><a href=\"/pages/event/" +
   	        		crsetOrg.getString("eventid") + "\">"+crsetOrg.getString("event_name")+"</a>");
-           if(hasValue(crsetOrg.getString("venue_name")))
+           if(hasValue(crsetOrg.getString("venue")))
+             out.print(", " +  crsetOrg.getString("venue"));
+           /*if(hasValue(crsetOrg.getString("venue_name")))
              out.print(", " +  crsetOrg.getString("venue_name"));
            if(hasValue(crsetOrg.getString("suburb"))) 
             out.print(", " + crsetOrg.getString("suburb"));
            if(hasValue(crsetOrg.getString("state")))
-            out.print(", " + crsetOrg.getString("state"));
+            out.print(", " + crsetOrg.getString("state"));*/
            if (hasValue(crsetOrg.getString("DDFIRST_DATE")) || hasValue(crsetOrg.getString("MMFIRST_DATE")) || hasValue(crsetOrg.getString("YYYYFIRST_DATE")))
             out.print(", " + formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE")));
         out.println("</li>"); 
@@ -547,11 +555,11 @@ Vector item_contentindlinks;
       if(Counter == 0)
       {
         out.println("     <th class='record-label b-105'>Resources</th>");
-        out.println("     <td class='record-value'>");
+        out.println("     <td class='record-value' colspan='2'>");
         out.println("       <ul>");
         Counter++;
       }
-      out.println("<li>"+rset.getString("description")+"&nbsp;<a href=\"/pages/resource/" +
+      out.println("<li>"+rset.getString("description")+":&nbsp<a href=\"/pages/resource/" +
                     rset.getString("itemid") + "\">" +
                     rset.getString("citation") + "</a></li>");
     }
@@ -573,7 +581,7 @@ Vector item_contentindlinks;
     	  if(rowCount == 0)
     	  {
     	    out.println("     <th class='record-label b-105'>Works</th>");
-    	    out.println("     <td class='record-value'>");
+    	    out.println("     <td class='record-value' colspan='2'>");
     	    out.println("       <ul class='record-value'>");
     	    rowCount++;
     	  }    			   	  
@@ -592,7 +600,7 @@ Vector item_contentindlinks;
     //Contributor ID
     out.println("   <tr>");
     out.println("     <th class='record-label b-105'>Identifier</th>");
-    out.println("     <td class='record-value'>" + contributor.getId() +"</td>");
+    out.println("     <td class='record-value' colspan='2'>" + contributor.getId() +"</td>");
     out.println("   </tr>");    
     out.println(" </table>");
   } 

@@ -50,6 +50,10 @@
 <%
   String keyword = request.getParameter("f_keyword");
 
+  String resultPlaceholder;
+  String ONE_RESULT = "result.";
+  String PLURAL_RESULT = "results.";
+  
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
   if(pno!=null)
@@ -83,12 +87,13 @@
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
        
-       
+  if (recordCount == 1){resultPlaceholder = ONE_RESULT;}
+  else resultPlaceholder = PLURAL_RESULT;   
   out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
     		 +"<img src=\"../../../../resources/images/icon-blank.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Genre</span>"
-    		 +"<span class=\"search-index search-index-resource\">search results for \'"+keyword+"\'. "
-    		 +((pageno)* resultsPerPage+ 1)+ " to " + (((pageno*resultsPerPage)+ resultsPerPage) > recordCount?recordCount:((pageno)*resultsPerPage+ resultsPerPage)) + " of " + recordCount + " result(s)."
+    		 +"<span class=\"search-index search-index-resource\">Search results for \'"+keyword+"\'. "
+    		 +((pageno)* resultsPerPage+ 1)+ " to " + (((pageno*resultsPerPage)+ resultsPerPage) > recordCount?recordCount:((pageno)*resultsPerPage+ resultsPerPage)) + " of " + recordCount + " "+ resultPlaceholder
     		 +"</span></div>");
   
 %>

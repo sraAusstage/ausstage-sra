@@ -22,24 +22,11 @@ Should probably put this in a seperate .js file
     		var ajaxRequest;  
         	var url;
         	
-	   	try{// Opera 8.0+, Firefox, Safari
-    			ajaxRequest = new XMLHttpRequest();
-    		} catch (e){// Internet Explorer Browsers
-    			try{
-    				ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
-    			} catch (e) {
-    				try{
-    					ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
-    				} catch (e){
-	    				// Something went wrong
-	   				return false;
-	   			}
- 			}
-	    	}
+                // set up the ajax queue
+                var ajaxQueue = $.manageAjax.create("searchAjaxQueue", {
+                	queue: false
+                });
     		
-	    	//check the search_from value to determine which tables we need to check
-		    	
-	    	
 	    	//if there are search terms
 	    	//if ($('#header-search-keywords').val().trim().length>0){
 	    	if ($.trim($('#header-search-keywords').val()).length>0){
@@ -92,50 +79,64 @@ Should probably put this in a seperate .js file
     			var resUrl = 	url + "resource";	
 	    	
 	    	}
-	    	ajaxRequest.open("GET", eventUrl , false);			
-	    	ajaxRequest.send(null);
-	    	updateCount("event",$.trim(ajaxRequest.responseText))
-	    		
-	    	ajaxRequest.open("GET", contribUrl, false);			
-	    	ajaxRequest.send(null);
-	    	updateCount("contrib",$.trim(ajaxRequest.responseText))
-	    		
-	    	ajaxRequest.open("GET", venueUrl, false);
-	    	ajaxRequest.send(null);
-	    	updateCount("venue",$.trim(ajaxRequest.responseText));
-	    		
-	    	ajaxRequest.open("GET", orgUrl, false);
-	    	ajaxRequest.send(null);
-	    	updateCount("org",$.trim(ajaxRequest.responseText));
+	    	                        
+	    	// queue this request
+                ajaxQueue.add({
+                	success: function(html){updateCount("event",$.trim(html))},
+                        url: eventUrl
+                });
+	    	
+	    	ajaxQueue.add({
+                	success: function(html){updateCount("contrib",$.trim(html))},
+                        url: contribUrl
+                });
+	    	
+	    	ajaxQueue.add({
+                	success: function(html){updateCount("venue",$.trim(html))},
+                        url: venueUrl
+                });	
+
+	    	ajaxQueue.add({
+                	success: function(html){updateCount("org",$.trim(html))},
+                        url: orgUrl
+                });	
+	    	
+	 	ajaxQueue.add({
+                	success: function(html){updateCount("genre",$.trim(html))},
+                        url: genreUrl
+                });
+                	
+	 	ajaxQueue.add({
+                	success: function(html){updateCount("function",$.trim(html))},
+                        url: functUrl
+                });
 	 		
-	 	ajaxRequest.open("GET", genreUrl, false);
-	    	ajaxRequest.send(null);
-	    	updateCount("genre",$.trim(ajaxRequest.responseText));
-	 		
-	 	ajaxRequest.open("GET", functUrl, false);
-	    	ajaxRequest.send(null);
-	    	updateCount("function",$.trim(ajaxRequest.responseText));
+	 	ajaxQueue.add({
+                	success: function(html){updateCount("subject",$.trim(html))},
+                        url: subjUrl
+                });
 	    		
-	    	ajaxRequest.open("GET", subjUrl, false);
-	    	ajaxRequest.send(null);
-	    	updateCount("subject",$.trim(ajaxRequest.responseText));
+	  	ajaxQueue.add({
+                	success: function(html){updateCount("works",$.trim(html))},
+                        url: workUrl
+                });
 	    		
-	    	ajaxRequest.open("GET", workUrl, false);
-	    	ajaxRequest.send(null);
-	    	updateCount("works",$.trim(ajaxRequest.responseText));
+	    	ajaxQueue.add({
+                	success: function(html){updateCount("resource",$.trim(html))},
+                        url: resUrl
+                });
+                
 	    		
-	    	ajaxRequest.open("GET", resUrl, false);
-	    	ajaxRequest.send(null);
-	    	updateCount("resource",$.trim(ajaxRequest.responseText));
-		
     		return false;
   
     	}
     	
     	//function to replace the loading symbol with the number,
     	function updateCount(field, value){
+    		
     		$('#'+field+"-count").empty().append(value).show();
     		$('#'+field+"-count-load").hide();	
+    		//if (value == "0"){$('#'+field+"-count").hide();}
     	}
     	
 
@@ -191,6 +192,9 @@ Should probably put this in a seperate .js file
 	
 	$(document).ready(function() {
 		
+		
+		
+		
 		//set the action for the search header (will be different for different pages)
 		$("#header-search-form").attr("action","/pages/browse/");
 		$("#header-search-form").attr("onsubmit","clearAll();return getCounts()");
@@ -215,6 +219,7 @@ Should probably put this in a seperate .js file
 	});	
 	
 </script>
+
 
 <div class="boxes">
 
@@ -292,3 +297,4 @@ Should probably put this in a seperate .js file
 	</form>
 
 <cms:include property="template" element="foot" />
+<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery.ajaxmanager-3.11.js"></script>

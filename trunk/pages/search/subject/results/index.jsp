@@ -89,11 +89,16 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
   
+  String resultPlaceholder;
+  if (recordCount == 1){
+  	resultPlaceholder = "result";
+  }else resultPlaceholder = "results";
+  
   out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
     		 +"<img src=\"../../../../resources/images/icon-blank.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Subjects</span>"
-    		 +"<span class=\"search-index search-index-resource\">search results for \'"+keyword+"\'. "
-    		 +((pageno)* resultsPerPage+ 1)+ " to " + (((pageno*resultsPerPage)+ resultsPerPage) > recordCount?recordCount:((pageno)*resultsPerPage+ resultsPerPage)) + " of " + recordCount + " result(s)."
+    		 +"<span class=\"search-index search-index-resource\">Search results for \'"+keyword+"\'. "
+    		 +((pageno)* resultsPerPage+ 1)+ " to " + (((pageno*resultsPerPage)+ resultsPerPage) > recordCount?recordCount:((pageno)*resultsPerPage+ resultsPerPage)) + " of " + recordCount + " "+ resultPlaceholder
     		 +"</span></div>");
     		 
 %>

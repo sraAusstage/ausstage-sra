@@ -146,7 +146,7 @@
     <%
     
     sqlString = 	"SELECT venue.venueid,venue.venue_name name,min(events.yyyyfirst_date) year,max(events.yyyylast_date),count(distinct events.eventid) num,venue.longitude,venue.latitude, " +
-			"concat_ws(', ',venue.street, venue.suburb, states.state, country.countryname) as address,count(distinct itemvenuelink.itemid) as total "+
+			"concat_ws(', ',venue.street, venue.suburb, states.state, country.countryname) as address,count(distinct itemvenuelink.itemid) as total, venue.street, venue.suburb, states.state, country.countryname "+
 			"FROM venue LEFT JOIN events ON (venue.venueid = events.venueid) " +
 			"LEFT JOIN states ON (venue.state = states.stateid) "+
 			"LEFT JOIN country ON (venue.countryid = country.countryid) "+
@@ -164,9 +164,37 @@
     %>
     <tr class="<%=evenOdd[evenOddValue]%>">
       <td width="25%"><a href="/pages/venue/<%=l_rs.getString(1)%>"><%=l_rs.getString(2)%></a></td>
-      <td width="35%"> <%=l_rs.getString(8)%></td>
+      <td width="35%"> 
+      <%
+      	String address = "";
+      	if (l_rs.getString("street") != null) 
+      		address = l_rs.getString("street");
+      	
+      	if (l_rs.getString("suburb") != null){ 
+      		if (!address.equals("")){
+      			address += ", ";
+      		}
+      		address += l_rs.getString("suburb") ;
+      	}
+      		
+      	if ((l_rs.getString("state") != null)&&(!l_rs.getString("state").equals("O/S"))){
+    	    	if (!address.equals("")){
+    	    		address += ", ";
+    	    	}
+    	    	address += l_rs.getString("state");
+    	}
+    	if ((l_rs.getString("countryname") != null)&&(l_rs.getString("state").equals("O/S"))){
+    		if (!address.equals("")){
+    	    		address += ", ";
+    	    	}
+    	    	address += l_rs.getString("countryname");
+    	}
+        out.write(address);
+      %>
+      </td>
       <td width="10%" align="left"> 
       <% 
+      
         if(l_rs.getString(5).equals("1") || l_rs.getString(3) != null && l_rs.getString(3).equals(l_rs.getString(4)))
         {
           if (l_rs.getString(3) != null) out.write(l_rs.getString(3)); 

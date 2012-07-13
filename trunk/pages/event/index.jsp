@@ -52,6 +52,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			String location = "";
 
 			State state = new State(db_ausstage_for_drill);
+			Country country = new Country(db_ausstage_for_drill);
 			Event event = null;
 
 			DescriptionSource descriptionSource;
@@ -115,8 +116,12 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			// Get venue location string
 			String venueLocation = "";
 			if (hasValue(event.getVenue().getSuburb())) venueLocation = ", " + event.getVenue().getSuburb();
-			if (hasValue(event.getVenue().getState())) venueLocation += ", " + state.getName(Integer.parseInt(event.getVenue().getState()));
-			
+			if ((hasValue(event.getVenue().getState()))&& (!state.getName(Integer.parseInt(event.getVenue().getState())).equals("O/S"))) { 
+				venueLocation += ", " + state.getName(Integer.parseInt(event.getVenue().getState()));
+			}else if (hasValue(event.getVenue().getCountry())){
+				country.load(Integer.parseInt(event.getVenue().getCountry()));
+			 	venueLocation += ", " + country.getName();
+			}
 			%>
 			<tr>
 				<th class='record-label b-90'>Venue</th>

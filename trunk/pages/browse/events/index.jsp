@@ -133,21 +133,22 @@
     <input type="hidden" name="pageno" value="<%=pno%>">
     <thead>
     <tr>
-      <th width="30%"><a href="#" onClick="reSortData('name')">Event Name (<%=l_rs.getString(1)%>)</a></th>
+      <th width="30%"><a href="#" onClick="reSortData('name')">Name (<%=l_rs.getString(1)%>)</a></th>
       <th width="40%" align="left"><a href="#" onClick="reSortData('vname')">Venue</a></th>
-      <th width="15%" align="right"><a href="#" onClick="reSortNumbers('dat')">First Date</a></th>
+      <th width="15%" align="left"><a href="#" onClick="reSortNumbers('dat')">First Date</a></th>
       <th width="15%" align="right"><a href="#" onClick="reSortNumbers('total')">Resources</a></th>
     </tr>
     </thead>
     <%
     
-    sqlString = "SELECT events.`eventid`,events.event_name name,venue.suburb, states.state,venue.street,"+
+    sqlString = "SELECT events.`eventid`,events.event_name name,venue.suburb, states.state,venue.street, "+
       			"events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date,count(distinct events.eventid),venue.venue_name vname, " +
       			"CONCAT_ws('&nbsp;', TRIM(leading '0' from events.ddfirst_date), fn_get_month_as_string(events.mmfirst_date), events.yyyyfirst_date) as evDate,  "+
-      			"STR_TO_DATE(CONCAT(IFNULL(events.ddfirst_date, '01'),' ',IFNULL(events.mmfirst_date,'01'),' ',IFNULL(events.yyyyfirst_date, '1800')), '%d %m %Y') as dat,count(distinct itemevlink.itemid) as total "+
-			"FROM events INNER JOIN venue ON (events.venueid = venue.venueid)   INNER JOIN states ON (venue.state = states.stateid) Left JOIN itemevlink on (events.eventid = itemevlink.`eventid`)" +
+      			"STR_TO_DATE(CONCAT(IFNULL(events.ddfirst_date, '01'),' ',IFNULL(events.mmfirst_date,'01'),' ',IFNULL(events.yyyyfirst_date, '1800')), '%d %m %Y') as dat,count(distinct itemevlink.itemid) as total, country.countryname "+
+			"FROM events INNER JOIN venue ON (events.venueid = venue.venueid)   INNER JOIN states ON (venue.state = states.stateid) Left JOIN itemevlink on (events.eventid = itemevlink.`eventid`) " +
+			"INNER JOIN country ON (venue.countryid = country.countryid)"+
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME)))) LIKE '" + letter + "%' group by events.eventid Order by " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME))))":(sortCol.equals("vname")?"vname " + sortOrd + ", suburb " + sortOrd + ", state":sortCol)) + " " + sortOrd + " limit " + ((pageno)*100) + ",101";
-  			
+  			 
     l_rs = m_db.runSQL (sqlString, stmt);
     System.out.println(sqlString);
     int i = 0;  
@@ -158,6 +159,23 @@
       evenOddValue = 1;
       if (rowCounter % 2 == 0) evenOddValue = 0;
     %>
+    <!--
+    1 events.`eventid`
+    2 events.event_name name
+    3,venue.suburb, 
+    4 states.state,
+    5 venue.street
+    6 events.ddfirst_date
+    7 events.mmfirst_date
+    8 events.yyyyfirst_date
+    9 ,count(distinct events.eventid)
+    10,venue.venue_name vname,
+    11 evDate
+    12 dat,
+    13 count(distinct itemevlink.itemid) as total,
+    14  country.countryname 
+    -->
+    
     <tr class="<%=evenOdd[evenOddValue]%>">
       <td width="30%"><a href="/pages/event/<%=l_rs.getString(1)%>"><%=l_rs.getString(2)%></a></td>
       <td width="40%" align="left">  <% if (l_rs.getString(10) != null) out.write(l_rs.getString(10));
@@ -166,9 +184,13 @@
     	    					//if (l_rs.getString(5) != null && l_rs.getString(3) != null) out.write(", ") ;
     	    					if (l_rs.getString(3) != null) out.write(", " + l_rs.getString(3));  
     	    					//if (l_rs.getString(4) != null && l_rs.getString(3) != null) out.write(", ") ;
-    	    					if (l_rs.getString(4) != null) out.write(", " + l_rs.getString(4));%>
+    	    					if ((l_rs.getString("state") != null)&&(!l_rs.getString("state").equals("O/S"))){
+    	    					
+    	    							out.write(", " + l_rs.getString("state"));
+    	    					}
+    	    					if ((l_rs.getString("countryname") != null)&&(l_rs.getString("state").equals("O/S"))) out.write(", " + l_rs.getString("countryname")); %>
       </td>
-      <td width="15%" align="right"><%if(l_rs.getString(11) != null) out.write(l_rs.getString(11));%> 
+      <td width="15%" align="left"><%if(l_rs.getString(11) != null) out.write(l_rs.getString(11));%> 
       <td width="15%" align="right"><%if(l_rs.getString(13).equals("0")){
    	  out.write("");}else
    	  out.write(l_rs.getString(13)); %>
