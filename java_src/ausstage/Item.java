@@ -2122,7 +2122,7 @@ public class Item {
           "AND itemorglink.organisationid = organisation.organisationid " + 
           "AND organisation.state = states.stateid " + "AND item.itemid=" + 
           m_itemid + 
-          " AND (creator_flag is null or creator_flag = 'N') order by itemorglink.ORDERBY asc";
+          " AND (creator_flag is null or creator_flag = 'N') order by organisation.name asc";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_orglinks.removeAllElements();
@@ -2172,7 +2172,7 @@ public class Item {
           "AND itemorglink.organisationid = organisation.organisationid " + 
           "AND organisation.state = states.stateid " + "AND item.itemid=" + 
           m_itemid + 
-          " AND creator_flag = 'Y' order by itemorglink.ORDERBY asc";
+          " AND creator_flag = 'Y' order by organisation.name asc";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_creator_orglinks.removeAllElements();
@@ -2402,7 +2402,7 @@ public class Item {
           "WHERE item.itemid = itemconlink.itemid " + 
           "AND itemconlink.contributorid = contributor.contributorid " + 
           "AND item.itemid=" + m_itemid + " " + 
-          "AND CREATOR_FLAG = 'Y' order by itemconlink.ORDERBY asc";
+          "AND CREATOR_FLAG = 'Y' order by contributor.last_name, contributor.first_name";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_creator_conlinks.removeAllElements();
@@ -2450,7 +2450,7 @@ public class Item {
       l_sql = 
           "select c.* " + "from CONTENTINDICATOR c, ITEMCONTENTINDLINK i " + 
           "WHERE c.CONTENTINDICATORID = i.CONTENTINDICATORID " + 
-          "AND i.itemid=" + m_itemid;
+          "AND i.itemid=" + m_itemid + " ORDER BY c.CONTENTINDICATOR";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_contentindlinks.removeAllElements();
