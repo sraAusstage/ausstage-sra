@@ -272,11 +272,11 @@
 					%>  
 				
 					<tr>
-						<th class='record-label b-121'></td>
+						<th class='record-label b-121'>Events</td>
 						
 						<td class='record-value' id="tabs" colspan=2>
 							<ul class='record-tabs label'>
-								<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
+								<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Dates</a></li>
 								<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>   
 								<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li> 	
 								<li><a href="#" onclick="displayRow('venue')" id='venuebtn'>Venue</a></li>

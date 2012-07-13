@@ -56,6 +56,9 @@
   db_ausstage_for_result.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
   CachedRowSet crset                     = null;
+  String resultPlaceholder;
+  String ONE_RESULT = "result.";
+  String PLURAL_RESULT = "results.";
   Search search;
   String formatted_date                  = "";
   String keyword                         = request.getParameter("f_keyword");
@@ -194,6 +197,8 @@
           crset.first();         
         }
 
+	if (recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
+	else resultPlaceholder = PLURAL_RESULT;
               
         // DISPLAY NUMBER OF RESULTS
         // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
@@ -203,8 +208,8 @@
         out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
     		 +"<img src=\"../../../resources/images/icon-event.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Events</span>"
-    		 +"<span class=\"search-index search-index-event\">search results for \'"+keyword+"\'. "
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"<span class=\"search-index search-index-event\">Search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " " + resultPlaceholder
     		 +"</span></div>");
         
         
@@ -228,7 +233,7 @@
         // DISPLAY HEADERS AND TITLES   
         out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('event_name')\"> Event Name</a></b></th>");
+        out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('event_name')\">Name</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Venue</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
@@ -534,6 +539,8 @@
           crset.first();         
         }
 
+	if (recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
+	else resultPlaceholder = PLURAL_RESULT;
 
         // DISPLAY NUMBER OF RESULTS
         // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
@@ -541,8 +548,8 @@
         out.print("<div class=\"search\"><div class=\"search-bar b-134\">"
     		 +"<img src=\"../../../resources/images/icon-venue.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Venues</span>"
-    		 +"<span class=\"search-index search-index-venue\">search results for \'"+keyword+"\'. "
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"<span class=\"search-index search-index-venue\">Search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder
     		 +"</span></div>");
         
         
@@ -560,7 +567,7 @@
 
         out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Venue Name</a></b></th>");
+        out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Name</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('street')\">Address</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
@@ -843,14 +850,15 @@
           crset.first();         
         }
 
-        
+        if (recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
+	else resultPlaceholder = PLURAL_RESULT;
 
         // DISPLAY NUMBER OF RESULTS
         out.print("<div class=\"search\"><div class=\"search-bar b-153\">"
     		 +"<img src=\"../../../resources/images/icon-work.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Works</span>"
-    		 +"<span class=\"search-index search-index-work\">search results for \'"+keyword+"\'. "
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"<span class=\"search-index search-index-work\">Search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+ resultPlaceholder
     		 +"</span></div>");
         
         
@@ -868,7 +876,7 @@
         // DISPLAY HEADERS AND TITLES
         out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('work_title')\">Work Name</a></b></th>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('work_title')\">Name</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('contrib')\">Creators</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
@@ -1003,7 +1011,7 @@
           for(; i < rounded_num_pages + 1; i++){
             String highlight_number_str = "";
 
-            if(int_page_num == i)
+             if(int_page_num == i)
               highlight_number_str = "class='b-154 bold'>" + Integer.toString(i);
             else if(page_num == null && i == 1)
               highlight_number_str = "class='b-154 bold'>" + Integer.toString(i);
@@ -1131,14 +1139,15 @@
           crset.first();         
         }
 
-        
+        if (recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
+	else resultPlaceholder = PLURAL_RESULT;
 
         // DISPLAY NUMBER OF RESULTS
          out.print("<div class=\"search\"><div class=\"search-bar b-105\">"
     		 +"<img src=\"../../../resources/images/icon-contributor.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Contributors</span>"
-    		 +"<span class=\"search-index search-index-contributor\">search results for \'"+keyword+"\'. "
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"<span class=\"search-index search-index-contributor\">Search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder
     		 +"</span></div>");
         
         
@@ -1156,7 +1165,7 @@
         // DISPLAY HEADERS AND TITLES
         out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <th width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('contrib_name')\">Contributor Name</a></b></th>");
+        out.println("       <th width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('contrib_name')\">Name</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"100\" ><b><a href=\"#\" onClick=\"reSortData('event_dates')\">Event Dates</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
@@ -1424,12 +1433,15 @@
           recset_count = Integer.toString(crset.getRow());
           crset.first();         
         }
+        
+        if (recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
+	else resultPlaceholder = PLURAL_RESULT;
 
         out.print("<div class=\"search\"><div class=\"search-bar b-121\">"
     		 +"<img src=\"../../../resources/images/icon-organisation.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Organisations</span>"
-    		 +"<span class=\"search-index search-index-event\">search results for \'"+keyword+"\'. "
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"<span class=\"search-index search-index-event\">Search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder
     		 +"</span></div>");
         
         
@@ -1447,7 +1459,7 @@
         // DISPLAY HEADERS AND TITLES
         out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <th width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('name')\">Organisation Name</a></b></th>");
+        out.println("       <th width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('name')\">Name</a></b></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</b></a></th>");
         out.println("       <th width=\"1\">&nbsp;</th>");
@@ -1773,12 +1785,14 @@
           crset.first();         
         }
 
+        if (recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
+	else resultPlaceholder = PLURAL_RESULT;
         
         out.print("<div class=\"search\"><div class=\"search-bar b-153\">"
     		 +"<img src=\"../../../resources/images/icon-resource.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Resources</span>"
-    		 +"<span class=\"search-index search-index-resource\">search results for \'"+keyword+"\'. "
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"<span class=\"search-index search-index-resource\">Search results for \'"+keyword+"\'. "
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder
     		 +"</span></div>");
         
         

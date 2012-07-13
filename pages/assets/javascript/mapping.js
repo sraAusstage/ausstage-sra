@@ -1087,7 +1087,7 @@ MappingClass.prototype.iconClick = function(event) {
         
                         // build the url
                         var url  = BASE_URL + 'events?task=venue&id=' + objArray[i].id;
-                
+             
                         ajaxQueue.add({
                                 success: mappingObj.processInfoWindowData,
                                 url: url

@@ -60,6 +60,11 @@
   
   db_ausstage_for_collection_result.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
+
+  String resultPlaceholder;
+  String ONE_RESULT = "result.";
+  String PLURAL_RESULT = "results.";
+  
   CachedRowSet crsetResult    = null;
   Search search;
   String formatted_date       = "";
@@ -195,11 +200,14 @@
         crsetResult.first();         
       }	
       
+      if(recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
+      else resultPlaceholder = PLURAL_RESULT;
+      
       out.print("<div class=\"search\"><div class=\"search-bar b-153\">"
     		 +"<img src=\"../../../../resources/images/icon-resource.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Resources</span>"
     		 +"<span class=\"search-index search-index-resource\">search results " + (keyword.equals("")?"":"for \'"+keyword+"\'. ")
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder
     		 +"</span></div>");
       out.println("     <table class=\"search-table\">");
       %>
@@ -238,7 +246,7 @@
 	out.println("<thead>");
     	out.println("	<tr>");
     	out.println("		<th width=\"\"><a href=\"#\" onClick=\"reSortData ('item_sub_type')\">Type</a></th>");
-      	out.println("		<th width=\"\"><a href=\"#\" onClick=\"reSortData ('customsort')\">Title</a></th> "); 
+      	out.println("		<th width=\"\"><a href=\"#\" onClick=\"reSortData ('customsort')\">Citation</a></th> "); 
       	out.println("	</tr>	");	
     	out.println("</thead>");
 
@@ -298,7 +306,7 @@
         out.println("      </tr>");
         out.println("      <tr width=\"100%\" class=\"search-bar b-153\" style=\"height:2.5em;\">");
         out.println("       <td colspan=2 align=\"right\" >");
-        out.println("        <div class=\"search-index search-index-event\">");    
+        out.println("        <div class=\"search-index search-index-resource\">");    
        
         unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage + ""));
         rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
@@ -366,13 +374,13 @@
         String highlight_number_str = "";
 
         if(int_page_num == i)
-          highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+          highlight_number_str = " class='b-154 bold' >" + Integer.toString(i);
         else if(page_num == null && i == 1)
-          highlight_number_str = "<b>" + Integer.toString(i) + "</b>";
+          highlight_number_str = " class='b-154 bold' >" + Integer.toString(i);
         else
-          highlight_number_str = Integer.toString(i);
+          highlight_number_str = " >" +Integer.toString(i);
         
-        out.println("<a href=\"" +pageURL + "&f_page_num=" + i +"\">" + highlight_number_str + "</a>&nbsp;");
+        out.println("<a href=\"" +pageURL + "&f_page_num=" + i + "\"" + highlight_number_str + "</a>&nbsp;");
         counter++;
         if(counter == 10)
           break;
