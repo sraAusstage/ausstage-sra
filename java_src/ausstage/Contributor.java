@@ -1164,7 +1164,7 @@ public class Contributor {
 		ResultSet l_rs = null;
 
 		try {
-			sqlString = "SELECT contributor.`contributorid`,concat_ws(' ', last_name, first_name) as output, "
+			sqlString = "SELECT contributor.`contributorid`,concat_ws(' ', last_name, first_name) as output "
 					+ "WHERE contributor.contributorid="
 					+ p_contrib_id;
 
