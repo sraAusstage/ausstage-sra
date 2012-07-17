@@ -1158,6 +1158,31 @@ public class Contributor {
 		return (retStr);
 
 	}
+	
+	public String getBasicContributorInfoForItemDisplay(int p_contrib_id, Statement p_stmt) {
+		String sqlString = "", retStr = "";
+		ResultSet l_rs = null;
+
+		try {
+			sqlString = "SELECT contributor.`contributorid`,concat_ws(' ', last_name, first_name) as output, "
+					+ "WHERE contributor.contributorid="
+					+ p_contrib_id;
+
+			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);
+
+			if (l_rs.next()) retStr = l_rs.getString("output");
+
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in Contributor.getContributorInfoForItemDisplay().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+		return (retStr);
+
+	}
 
 	public ResultSet getContributorsByItem(int p_contributor_id, Statement p_stmt) {
 		String sqlString = "";

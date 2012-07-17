@@ -654,6 +654,33 @@ public class Work {
 
 		return l_display_info;
 	}
+	
+	public Vector generateBasicDisplayInfo(Vector p_ids, String p_id_type, Statement p_stmt) {
+		Vector l_display_info = new Vector();
+		String l_info_to_add = "";
+		for (int i = 0; i < p_ids.size(); i++) {
+			if (p_id_type.equals("contributor")) {
+				Contributor contributor = new Contributor(m_db);
+				WorkContribLink workContribLink = (WorkContribLink) m_work_conlinks.elementAt(i);
+				l_info_to_add = contributor.getBasicContributorInfoForItemDisplay(Integer.parseInt(workContribLink.getContribId()), p_stmt);
+				l_display_info.add(l_info_to_add);
+			}
+			if (p_id_type.equals("work")) {
+				Work childWork = new Work(m_db);
+				int childWorkId = Integer.parseInt(((WorkWorkLink) m_work_worklinks.elementAt(i)).getChildId());
+				l_info_to_add = childWork.getWorkInfoForWorkDisplay(childWorkId, p_stmt);
+				l_display_info.add(l_info_to_add);
+			}
+			if (p_id_type.equals("organisation")) {
+				Organisation organisation = new Organisation(m_db);
+				WorkOrganLink workOrganLink = (WorkOrganLink) m_work_orglinks.elementAt(i);
+				l_info_to_add = organisation.getOrganisationInfoForOrganisationDisplay(Integer.parseInt(workOrganLink.getOrganId()), p_stmt);
+				l_display_info.add(l_info_to_add);
+			}
+		}
+
+		return l_display_info;
+	}
 
 	public void setWorkOrgLinks(Vector p_work_orglinks) {
 		m_work_orglinks = p_work_orglinks;
