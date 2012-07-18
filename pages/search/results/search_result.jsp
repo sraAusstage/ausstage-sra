@@ -179,9 +179,9 @@
       }    
     	}
       
-      if(table_to_search_from.equals("all"))
-        crset = search.getAll();
-      else
+      //if(table_to_search_from.equals("all"))
+      //  crset = search.getAll();
+      //else
         crset = search.getEvents();
 
       // set the session here
@@ -218,15 +218,15 @@
         <form name="form_searchSort_report" method="POST" action="?">
           <input type="hidden" name="f_order_by" value="<%=orderBy%>">
   				<input type="hidden" name="order" value="<%=sortOrd%>">
-					<input type="hidden" name="f_keyword" value="<%=keyword%>">
+				<input type="hidden" name="f_keyword" value="<%=keyword%>">
   				<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
   				<input type="hidden" name="f_page_num" value="<%=page_num%>">
   				<input type="hidden" name="f_recset_count" value="<%=recset_count%>">
-					<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
+				<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
   				<input type="hidden" name="f_sort_by" value="<%=f_sort_by%>">
   				<input type="hidden" name="f_date_clause" value="<%=f_date_clause%>">
   				<input type="hidden" name="f_search_within_search" value="<%=search_within_search_for_result%>">
-					<input type="hidden" name="inc_resources" value="<%=inc_resources%>">
+				<input type="hidden" name="inc_resources" value="<%=inc_resources%>">
   			</form>
         <%
 
@@ -559,6 +559,7 @@
           <input type="hidden" name="f_order_by" value="<%=orderBy%>">
   				<input type="hidden" name="order" value="<%=sortOrd%>">
 					<input type="hidden" name="f_keyword" value="<%=keyword%>">
+					<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
   				<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
 				</form>
         <%
@@ -866,11 +867,12 @@
  
         %>
         <form name="form_searchSort_report" method="POST" action="?">
-          <input type="hidden" name="f_order_by" value="<%=orderBy%>">
-  				<input type="hidden" name="order" value="<%=sortOrd%>">
-					<input type="hidden" name="f_keyword" value="<%=keyword%>">
-  				<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
-				</form>
+        	<input type="hidden" name="f_order_by" value="<%=orderBy%>">
+  			<input type="hidden" name="order" value="<%=sortOrd%>">
+			<input type="hidden" name="f_keyword" value="<%=keyword%>">
+			<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
+  			<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
+		</form>
         <%
         
         // DISPLAY HEADERS AND TITLES
@@ -1155,11 +1157,12 @@
        
         %>
         <form name="form_searchSort_report" method="POST" action="?">
-          <input type="hidden" name="f_order_by" value="<%=orderBy%>">
-  				<input type="hidden" name="order" value="<%=sortOrd%>">
-					<input type="hidden" name="f_keyword" value="<%=keyword%>">
-  				<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
-				</form>
+        	<input type="hidden" name="f_order_by" value="<%=orderBy%>">
+  			<input type="hidden" name="order" value="<%=sortOrd%>">
+			<input type="hidden" name="f_keyword" value="<%=keyword%>">
+			<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
+  			<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
+		</form>
         <%
         
         // DISPLAY HEADERS AND TITLES
@@ -1449,11 +1452,12 @@
         
         %>
         <form name="form_searchSort_report" method="POST" action="?">
-          <input type="hidden" name="f_order_by" value="<%=orderBy%>">
-  				<input type="hidden" name="order" value="<%=sortOrd%>">
-					<input type="hidden" name="f_keyword" value="<%=keyword%>">
-  				<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
-				</form>
+        	<input type="hidden" name="f_order_by" value="<%=orderBy%>">
+  			<input type="hidden" name="order" value="<%=sortOrd%>">
+			<input type="hidden" name="f_keyword" value="<%=keyword%>">
+			<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
+  			<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
+		</form>
         <%
     
         // DISPLAY HEADERS AND TITLES
@@ -1799,11 +1803,12 @@
         out.println("     <table class=\"search-table\">");
         %>
         <form name="form_searchSort_report" method="POST" action="?">
-          <input type="hidden" name="f_order_by" value="<%=orderBy%>">
-  				<input type="hidden" name="order" value="<%=sortOrd%>">
-					<input type="hidden" name="f_keyword" value="<%=keyword%>">
-  				<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
-				</form>
+        	<input type="hidden" name="f_order_by" value="<%=orderBy%>">
+  			<input type="hidden" name="order" value="<%=sortOrd%>">
+			<input type="hidden" name="f_keyword" value="<%=keyword%>">
+			<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
+  			<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
+		</form>
         <%
        
         // DISPLAY HEADERS AND TITLES
