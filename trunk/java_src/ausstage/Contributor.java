@@ -1164,13 +1164,18 @@ public class Contributor {
 		ResultSet l_rs = null;
 
 		try {
-			sqlString = "SELECT contributor.`contributorid`,concat_ws(' ', last_name, first_name) as output "
-					+ "WHERE contributor.contributorid="
-					+ p_contrib_id;
+			sqlString = "SELECT contributor.`contributorid`,concat_ws(' ', last_name, first_name) as name, "
+				+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) dates, "
+				+ "group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') preferredterm, "
+				+ "concat_ws(', ', concat_ws(' ', contributor.last_name, contributor.first_name), if(min(events.yyyyfirst_date) = max(events.yyyylast_date), min(events.yyyyfirst_date), concat(min(events.yyyyfirst_date), ' - ', max(events.yyyylast_date))) , group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) AS output "
+				+ "FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "
+				+ "LEFT JOIN events ON (conevlink.eventid = events.eventid) "
+				+ "Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) " + "WHERE contributor.contributorid="
+				+ p_contrib_id;
 
 			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);
 
-			if (l_rs.next()) retStr = l_rs.getString("output");
+			if (l_rs.next()) retStr = l_rs.getString("name");
 
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
