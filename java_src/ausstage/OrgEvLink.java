@@ -234,8 +234,11 @@ public class OrgEvLink {
 
 			sqlString = " SELECT orgevlink.orgevlinkid,orgevlink.eventid,orgevlink.organisationid,orgevlink.`function`,"
 					+ "orgevlink.artistic_function,orgfunctmenu.orgfunctionid,orgfunctmenu.orgfunction,contributorfunctpreferred.contributorfunctpreferredid,"
-					+ "contributorfunctpreferred.preferredterm" + " From orgfunctmenu " + "LEFT JOIN orgevlink ON (orgfunctmenu.orgfunctionid = orgevlink.`function`) "
-					+ "LEFT JOIN contributorfunctpreferred ON (orgevlink.artistic_function = contributorfunctpreferred.contributorfunctpreferredid)" + " WHERE eventId  = "
+					+ "contributorfunctpreferred.preferredterm" 
+					+ " From orgevlink " 
+					+ "LEFT JOIN orgfunctmenu ON (orgfunctmenu.orgfunctionid = orgevlink.`function`) "
+					+ "LEFT JOIN contributorfunctpreferred ON (orgevlink.artistic_function = contributorfunctpreferred.contributorfunctpreferredid)" 
+					+ " WHERE eventId  = "
 					+ eventId;
 
 			l_rs = m_db.runSQL(sqlString, stmt);
