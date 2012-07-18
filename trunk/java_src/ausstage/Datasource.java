@@ -187,8 +187,10 @@ public class Datasource {
 		try {
 			Statement l_stmt = m_db.m_conn.createStatement();
 
-			l_sql = "INSERT INTO DATASOURCEEVLINK " + "(DATASOURCEDESCRIPTION, COLLECTION, EVENTID, DATASOURCEID) " + "values ('" + m_db.plSqlSafeString(m_datasource_desc) + "','"
-					+ m_db.plSqlSafeString(m_collection) + "'," + p_eventid + "," + m_datasource_id + ")";
+			l_sql = "INSERT INTO DATASOURCEEVLINK " + "(DATASOURCEEVLINKID, DATASOURCEDESCRIPTION, COLLECTION, EVENTID, DATASOURCEID) " 
+			//+ "values ('" + m_db.plSqlSafeString(m_datasource_desc) + "','"
+			+ "(select (max(datasourceevlinkid)+1),'" + m_db.plSqlSafeString(m_datasource_desc) + "','"
+				+ m_db.plSqlSafeString(m_collection) + "'," + p_eventid + "," + m_datasource_id + ")";
 
 			m_db.runSQL(l_sql, l_stmt);
 
