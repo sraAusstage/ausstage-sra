@@ -434,34 +434,60 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				rset.close();
 			}
 
+			boolean first = true;
 			//Text Nationality
 			for (Country playOrigin : (Vector <Country>) event.getPlayOrigins()) {
 				if (hasValue(playOrigin.getName())) {
+					if (first){
 				%>
 					<tr>
 						<th class='record-label b-90'>Text Nationality</th>
 						
-						<td class='record-value'  colspan='2'>
-						<%=playOrigin.getName() %>
-						</td>
-					</tr>
+						<td class='record-value'  colspan='2'><%=playOrigin.getName()%>
+				<%
+						first = false;
+					}else{
+				%>
+						<%=", "+playOrigin.getName() %>
+					<%
+					}
+					%>
+					
 				<%
 				}
+				
+			}if (!first){
+				%>
+					</td>
+					</tr>
+				<%
 			}
-
+			
+			first = true;
 			// Production Nationality
 			for (Country prodOrigin : (Vector <Country>) event.getProductionOrigins()) {
 				if (hasValue(prodOrigin.getName())) {
+					if(first){
 				%>
 					<tr>
 						<th class='record-label b-90'>Production Nationality</th>
 						
-						<td class='record-value' colspan='2'>
-						<%=prodOrigin.getName() %>
-						</td>
-					</tr>
+						<td class='record-value' colspan='2'><%=prodOrigin.getName()%>
+				<%
+						first = false;
+					}else{
+				%>
+						<%=", "+prodOrigin.getName() %>
+					<%
+					}
+					%>
 				<%
 				}
+			}if (!first){
+				%>
+					</td>
+					</tr>
+				<%
 			}
 
 			//Further Information
@@ -489,7 +515,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 								
 								<td  class='record-value light bold nowrap'>Data Source Description</td>
 								
-								<td  class='record-value light bold nowrap' >Part of Collection</td>
+								<!--<td  class='record-value light bold nowrap' >Part of Collection</td>-->
 							</tr>
 							<%
 
@@ -503,7 +529,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 									
 									<td  class='record-value '><%=datasourceEvlink.getDescription()%></td>
 									
-									<td  class='record-value '><%=datasourceEvlink.isCollection()%></td>
+									<!--<td  class='record-value '></td>-->
 								</tr>
 							<%
 							}

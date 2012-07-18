@@ -176,7 +176,7 @@ public boolean hasValue(String str) {
       out.println("\"\",\"" + organisation.getStateName() + "\"");
     if (hasValue(organisation.getPostcode()))
       out.println("\"\",\"" + organisation.getPostcode() + "\"");
-    if(hasValue(organisation.getCountry())){
+    if(hasValue(organisation.getCountry()))
       country.load(Integer.parseInt(organisation.getCountry()));
     out.println("\"\",\"" + country.getName()  + "\"");
   }
