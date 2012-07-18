@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<website-analytics>
+	<config table-id="ga:25792128" url-pattern="/map" title="Visits to the Mapping Events Service"/>
+	<description title="About These Analytics">
+		<![CDATA[
+			<p>These analytics show usage of the <a href="/pages/map/" title="Mapping Events homepage">Mapping Events</a> service. The service allows researchers to display information about live performance from <a href="http://www.ausstage.edu.au" title="AusStage Website homepage">AusStage</a> on a map.</p>
+			<p><a href="/pages/analytics/?tab=analytics&section=mapping" title="Persistent link to this tab">Persistent Link</a> to these analytics.</p>
+		]]>
+	</description>
+	<sections>
+		<section type="current-month"/>
+		<section type="previous-month"/>
+		<section type="current-year"/>
+		<section type="previous-year"/>
+	</sections>
+</website-analytics>

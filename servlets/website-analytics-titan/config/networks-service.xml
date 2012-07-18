@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<website-analytics>
+	<config table-id="ga:25792128" url-pattern="/network" title="Visits to the Navigating Networks Service"/>
+	<description title="About These Analytics">
+		<![CDATA[
+			<p>These analytics show usage of the <a href="/pages/network/" title="Networks Service homepage">Navigating Networks Service</a>. The service provides an interactive interface for navigating and analysing networks of artistic collaboration in the <a href="http://www.ausstage.edu.au" title="AusStage Website homepage">AusStage</a> dataset.</p>
+			<p><a href="/pages/analytics/?tab=analytics&section=networks" title="Persistent link to this tab">Persistent Link</a> to these analytics.</p>
+		]]>
+	</description>
+	<sections>
+		<section type="current-month"/>
+		<section type="previous-month"/>
+		<section type="current-year"/>
+		<section type="previous-year"/>
+	</sections>
+</website-analytics>
