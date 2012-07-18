@@ -248,8 +248,7 @@ import java.util.GregorianCalendar;
   	    
   		
   		m_sql_string.append("SELECT count(*) "
-  							+"FROM item WHERE "
-  							+"title LIKE '"+m_db.plSqlSafeString(m_key_word)+"'");
+  							+"FROM item");
   	    
   		try {
   	      l_stmt = m_db.m_conn.createStatement();      
