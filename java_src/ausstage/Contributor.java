@@ -1179,7 +1179,7 @@ public class Contributor {
 
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-			System.out.println("An Exception occured in Contributor.getContributorInfoForItemDisplay().");
+			System.out.println("An Exception occured in Contributor.getBasicContributorInfoForItemDisplay().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());
