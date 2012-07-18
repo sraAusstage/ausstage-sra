@@ -183,14 +183,15 @@ public class Datasource {
 
 	public boolean addLink(String p_eventid) {
 		String l_sql;
-
+	
 		try {
+			
 			Statement l_stmt = m_db.m_conn.createStatement();
-
+			
 			l_sql = "INSERT INTO DATASOURCEEVLINK " + "(DATASOURCEEVLINKID, DATASOURCEDESCRIPTION, COLLECTION, EVENTID, DATASOURCEID) " 
 			//+ "values ('" + m_db.plSqlSafeString(m_datasource_desc) + "','"
 			+ "(select (max(datasourceevlinkid)+1),'" + m_db.plSqlSafeString(m_datasource_desc) + "','"
-				+ m_db.plSqlSafeString(m_collection) + "'," + p_eventid + "," + m_datasource_id + ")";
+				+ m_db.plSqlSafeString(m_collection) + "'," + p_eventid + "," + m_datasource_id + " from datasourceevlink)";
 
 			m_db.runSQL(l_sql, l_stmt);
 
