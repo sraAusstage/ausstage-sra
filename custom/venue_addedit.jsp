@@ -118,12 +118,12 @@ document.body.onload=function(){load();};
   
   <%
   if (action != null && action.equals("ForVenue") || isPreviewForVenueVenue.equals("true")){
-      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?action=" + action +  "' method='post' onsubmit='return checkMandatoryFields();'>\n");
+      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?action=" + action +  "' method='post'>\n");
       out.println("<input type='hidden' name='isPreviewForVenueVenue' value='true'>");
       out.println("<input type='hidden' name='ForVenue' value='true'>");
   }
   else{
-      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp' method='post' onsubmit='return checkMandatoryFields();'>");
+      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp' method='post'>");
   }
   
   
