@@ -1,0 +1,560 @@
+/*
+ * This file is part of the AusStage Mapping Service
+ *
+ * The AusStage Mapping Service is free software: you can redistribute
+ * it and/or modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * The AusStage Mapping Service is distributed in the hope that it will 
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the AusStage Mapping Service.  
+ * If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* primary structure styles */
+
+* {
+	margin: 0;
+}
+
+html, body {
+	height: 100%;
+	font-size: 95%;
+	font-family: Helvetica, Verdana, Arial, sans-serif;
+}
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -2em;
+	overflow: hidden;
+}
+
+.footer {
+	clear: both;
+	height: 2em;
+}
+
+.push {
+	clear:both;
+	height: 1px;
+}
+
+.tab-container {
+	width: 100%;
+	height: 100%;
+}
+
+#tabs {
+	height: 100%;
+	width:  100%;
+}
+
+/* specific styles for the header */
+.header {
+	height: 64px;
+	padding:0px;
+	background-image: url('images/ausstagehomebrand.gif');
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+
+.header h1 {
+	color: #eeeeee;
+	text-align: right;
+	font-weight: normal;
+	padding-top: 24px;
+	padding-right: 10px;
+}
+
+/* ui tabs styles to fix layout issue */
+.fix-ui-tabs {
+	height: 40px;
+}
+
+/* specific styles for the footer */
+.footer  {
+	color:#fff;
+	font-size: 90%;
+	margin-top: 10px;
+	padding-top: 13px;
+}
+
+.footer p {
+    text-align: center;
+    margin-top: 6px;
+}
+
+.footer a {
+	color: #fff;
+	text-decoration: none;
+}
+
+.footer a:visited {
+	/* same colour as f-188 */
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.footer a:hover {
+	color: #fff;
+	text-decoration: underline;
+}
+
+/* specific styles for the sidebar */
+.sidebar {
+	float: left;
+	padding-left: 10px;
+	padding-right: 10px
+	overflow: hidden;
+	/* width: 150px; */
+	/* temp width */
+	/* don't forget the peekaboo method */
+	width: 265px;
+	padding-bottom: 32767px;
+	margin-bottom: -32767px;
+}
+
+.sidebar ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+
+.sidebar li {
+	margin-bottom:0.25em;
+}
+
+.sidebar a {
+	/* same colour as f-188 */
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.sidebar a:visited {
+	/* same colour as f-188 */
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.sidebar a:hover {
+	color: #ffffff;
+	text-decoration: underline;
+}
+
+.peekaboo-big {
+	font-size: 150%;
+}
+
+.peekaboo-small {
+	float: right; 
+	padding-right: 1em;
+}
+
+/* style anchor tags */
+a {
+	/* same colour as f-189 */
+	text-decoration: none;
+	color: #001bcc;
+}
+
+a:visited {
+	/* same colour as f-189 */
+	text-decoration: none;
+	color: #001bcc;
+}
+
+a:hover {
+	/* same colour as f-189 */
+	text-decoration: underline;
+	color: #001bcc;
+}
+
+/* specific styles for the main content div */
+.main {
+	/* temp development margin */
+	/* margin-left: 160px; */
+	margin-left: 275px;
+	min-height: 100%;
+}
+
+.main-big {
+	margin-left: 25px;
+}
+
+/* specific styles for messages with the search box */
+.search-status-messages {
+	min-height: 30px; 
+	padding-top: 10px;
+	padding-right: .7em;
+}
+
+.status-icon {
+	float: left; 
+	margin-right: .3em;
+	margin-left:  .5em;
+}
+
+
+/* Styles for forms */
+table.formTable {
+	border-width: 0px;
+	border-spacing: 3px;
+	border-collapse: separate;
+}
+
+table.formTable th {
+	text-align: left;
+
+}
+
+table.formTable th label {
+	text-align: left;
+
+}
+
+/* Styles for tables */
+table.searchResults {
+	background-color: #fff;
+	text-align: left;
+	border: 1px solid #aaaaaa;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+table.searchResults th {
+	border: 1px solid #aaaaaa;
+	padding: 2px 5px 2px 5px;
+	color: #000;
+	white-space: nowrap;
+}
+
+table.searchResults td {
+	vertical-align: top;
+	padding: 2px 5px 2px 5px;
+}
+
+tr.odd {
+	background-color: #eeeeee;
+}
+
+table.searchResults tfoot {
+	border: 1px solid #aaaaaa;
+}
+
+td.nowrap {
+	white-space: nowrap;
+}
+
+td.alignRight {
+	text-align: right;
+}
+
+th.alignRight {
+	text-align: right;
+}
+
+td.numeric {
+	width: 120px;
+}
+
+th.numeric {
+	width: 120px;
+}
+
+/* style for things that are clickable */
+.clickable {
+	cursor: pointer;
+}
+
+.clickable-hover {
+	text-decoration: underline;
+}
+
+/* style for browse lists */
+.browseList {
+	list-style: none;
+	padding-left: 5px;
+}
+
+.browseHighlight {
+	width: 85%;
+	display: inline-block;
+}
+
+/* styles for the map iconography */
+
+.mapIcon {
+	border-width: 0px;
+	border-spacing: 0px;
+	border-collapse: collapse;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mapIconNum {
+	text-align: center;
+	font-size: 9px;
+}
+
+.mapIconImg {
+	width: 32px;
+	height: 32px;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mapIconImg img {
+	display: block;
+	padding: 0px;
+	margin: 0px;
+}
+
+.mapIconImg2 {
+	width: 33px;
+	height: 33px;
+	border: 2px solid #fff;
+}
+
+table.mapIconHelpTbl {
+	background-color: #fff;
+	text-align: left;
+	border: 1px solid #aaaaaa;
+	border-collapse: collapse;
+}
+
+table.mapIconHelpTbl th {
+	border: 1px solid #aaaaaa;
+	padding: 2px 5px 2px 5px;
+	color: #000;
+	white-space: nowrap;
+	width: 66px;
+	text-align: center;
+}
+
+table.mapIconHelpTbl td {
+	text-align: center;
+}
+
+/* Styles for infoWindows */
+
+.infoWindowContent {
+	margin-top: 10px;
+	min-height: 100px;
+}
+
+.infoWindowLinkContainer {
+	margin-left: 0px !important;
+	/*margin-left: 0px;*/
+}
+
+.infoWindowLinkContainer a {
+	cursor: pointer;
+	/* same colour as f-189 */
+	text-decoration: none;
+	color: #001bcc;
+	background: #fff;
+	border: 0px;
+}
+
+.infoWindowLinkContainer a:visited {
+	/* same colour as f-189 */
+	text-decoration: none;
+	color: #001bcc;
+	background: #fff;
+	border: 0px;
+}
+
+.infoWindowLinkContainer a:hover {
+	/* same colour as f-189 */
+	text-decoration: underline;
+	color: #001bcc;
+	border: 0px;
+}
+
+.infoWindowContentHeaderItems {
+	list-style: none;
+	padding-left: 5px;
+}
+
+.infoWindowContentHeader {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.infoWindowHeaderItem li:hover {
+	text-decoration: underline;
+}
+
+.infoWindowToTop span:hover {
+	text-decoration: underline;
+}
+
+.infoWindowEventList {
+	list-style: none;
+	padding-left: 0px;
+}
+
+.infoWindowListHeader {
+	min-height: 45px;
+	padding-left: 5px;
+	padding-bottom: 5px;
+	display: block;
+}
+
+.infoWindowListTitle a {
+	color: #fff;
+}
+
+/*
+.infoWindowListTitle {
+	float: left;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+*/
+
+.infoWindowListHeaderLayout {
+	border-collapse: collapse;
+	margin: 0px;
+	padding: 0px;
+}
+
+.infoWindowEventList {
+	padding-left: 5px;
+}
+
+.infoWindowListIcon {
+	/* update with height & width of actual*/
+	width: 32px;
+	height: 32px;
+	float: left;
+	margin: 5px 5px 5px 5px;
+}
+
+/* styles for the map legend */
+.mapControlsContainer {
+	overflow: auto;
+}
+
+.mapLegendContainer {
+	margin-top: 10px;
+	overflow: auto;
+}
+
+.mapLegendInnerContainer {
+	padding: 0px;
+	margin: 0px;
+}
+
+.mapLegendContainer a {
+	/* same colour as f-189 */
+	text-decoration: none;
+	color: #001bcc;
+}
+
+.mapLegendContainer a:visited {
+	/* same colour as f-189 */
+	text-decoration: none;
+	color: #001bcc;
+}
+
+.mapLegendContainer a:hover {
+	/* same colour as f-189 */
+	text-decoration: underline;
+	color: #001bcc;
+}
+
+table.mapLegendTable {
+	background-color: #fff;
+	text-align: left;
+	border-collapse: collapse;
+	width: 230px;
+    margin-left: -2em;
+	margin-right: 0px;
+	padding-right: 0px;
+	margin-top: -5px;
+}
+
+table.mapLegendTable th {
+	vertical-align: top;
+	color: #aaa;
+	font-weight: normal;
+}
+
+.mapLegendIcon {
+	width: 34px;
+	vertical-align: top;
+	padding: 0px;
+}
+
+.mapLegendIconImg {
+	margin: 0px;
+	padding: 0px;
+	height: 32px;
+	width: 32px;
+	display: block;
+}
+
+.mapLegendShowHide {
+	width: 15px;
+}
+
+.mapLegendDelete {
+	width: 15px;
+}
+
+.mapLegendIconImgClick {
+	cursor: pointer;
+}
+
+/* Styles for the Time Slider */
+.timeSliderContainer {
+	width: 100%;
+	height: 100px;
+}
+
+#timeSlider {
+	padding-top: 5px;
+}
+
+/* styles for the dialogs */
+
+.dialogs {
+	font-size: 90%;
+}
+
+.dialogs h3 {
+	margin-bottom: 1em;
+}
+
+.dialogs p {
+	margin-bottom: 1em;
+}
+
+.dialogs table {
+	margin-bottom: 1em;
+}
+	
+/* Styles for the help icons */
+.helpIcon {
+	/* based on jQueryUi icons */
+	width: 16px; 
+	height: 16px; 
+	display: inline-block; 
+	/* blue icons */
+	background-image: url(/assets/jquery-ui/images/ui-icons_2e83ff_256x240.png);
+	/* ui icon help */
+	background-position: -48px -144px;
+}
+
+/* prevent a FOUC */
+.js {display: none;}
+.hideMe {display: none;}
+

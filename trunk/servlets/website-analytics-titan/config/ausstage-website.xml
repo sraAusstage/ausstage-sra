@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<website-analytics>
+	<config table-id="ga:20306359" url-pattern="^/" title="Visits to the AusStage Website"/>
+	<description title="About These Analytics">
+		<![CDATA[
+			<p>These analytics show usage of the <a href="http://www.ausstage.edu.au" title="AusStage homepage">AusStage</a> website.</p>
+			<p><a href="/pages/analytics/?tab=analytics&section=ausstage-website" title="Persistent link to this tab">Persistent Link</a> to these analytics.</p>
+		]]>
+	</description>
+	<sections>
+		<section type="current-month"/>
+		<section type="previous-month"/>
+		<section type="current-year"/>
+		<section type="previous-year"/>
+	</sections>
+</website-analytics>

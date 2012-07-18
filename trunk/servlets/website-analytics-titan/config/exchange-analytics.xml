@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<website-analytics>
+	<config table-id="ga:25792128" url-pattern="/exchange/" title="Visits to the Data Exchange Service"/>
+	<description title="About These Analytics">
+		<![CDATA[
+			<p>These analytics show usage of the <a href="/pages/exchange/" title="Exchange Service homepage">Data Exchange Service</a>.</p>
+			<p><a href="/pages/analytics/?tab=analytics&section=exchange" title="Persistent link to this tab">Persistent Link</a> to these analytics.</p>
+		]]>
+	</description>
+	<sections>
+		<section type="current-month"/>
+		<section type="previous-month"/>
+		<section type="current-year"/>
+		<section type="previous-year"/>
+	</sections>
+</website-analytics>
