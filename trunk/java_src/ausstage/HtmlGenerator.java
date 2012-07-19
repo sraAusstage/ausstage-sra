@@ -430,7 +430,8 @@ public class HtmlGenerator {
 			int counter = 0;
 			// The select box width:390px;
 			ret = "    <div style=\"width:600px; height:316px; border-width:1px; border-style:solid; border-color:#d3d3d3; overflow:auto;\">\n"
-					+ "    <select style=\"overflow-y:hidden;\" name='" + p_list_name + "' id='" + p_list_name + "' size='" + p_max_results_displayed + "' FONT-SIZE: 10px;'";
+				  + "    <select style=\"overflow-y:hidden;\" name='" + p_list_name + "' id='" + p_list_name + "' size='" + 17 + "' FONT-SIZE: 10px;'";	
+				//+ "    <select style=\"overflow-y:hidden;\" name='" + p_list_name + "' id='" + p_list_name + "' size='" + p_max_results_displayed + "' FONT-SIZE: 10px;'";
 			if (p_multiple) ret += "multiple";
 			ret += ">\n";
 
