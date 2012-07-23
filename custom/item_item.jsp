@@ -190,7 +190,7 @@
 		if (!filter_contributor.equals("")) {
 			list_db_sql += " AND EXISTS (SELECT 'x' " + "               FROM ITEMCONLINK itcl, CONTRIBUTOR cont "
 					+ "              WHERE cont.contributorid = itcl.contributorid " + "                AND itcl.itemid = item.itemid "
-					+ "                AND LOWER(cont.last_name||' '||cont.first_name) LIKE '%" + db_ausstage.plSqlSafeString(filter_contributor).toLowerCase() + "%' "
+					+ "                AND LOWER(concat_ws(' ', cont.last_name, cont.first_name)) LIKE '%" + db_ausstage.plSqlSafeString(filter_contributor).toLowerCase() + "%' "
 					+ "                AND itcl.CREATOR_FLAG='Y' )";
 		}
 		if (!filter_organisation.equals("")) {

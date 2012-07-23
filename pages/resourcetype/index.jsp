@@ -93,22 +93,22 @@
 									<th class='record-label b-153'>Resources</th>
 									
 									<td class='record-value' colspan='2'>
-										<table border="0" cellpadding="0" cellspacing="0">
+										<ul>
 										<%
 										while(rset.next()) {
 										%>
-											<tr>
-												<td valign="top">
+											
+												<li>
 													<a href="/pages/resource/<%=rset.getString("itemid")%>">
 														<%=rset.getString("citation")%>
 													</a>
-												</td>
-											</tr>
+												</li>
+											
 											
 										<%
 										}
 										%>
-										</table>
+										</ul>
 									</td>
 								</tr>
 							<%

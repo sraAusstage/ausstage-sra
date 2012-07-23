@@ -787,7 +787,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                 }
         
         } else if(id == 'searchAddEvents') {
-        
+        console.log('adding events to map');
                 // clear away any existing error messages
                 $("#searchAddEventError").empty();
                 
@@ -799,6 +799,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                                 events.push($(this).val());
                         }
                 });
+                console.log(events);
                 
                 if(events.length == 0) {
                         $("#searchAddEventError").append(buildInfoMsgBox('No items selected, nothing added to the map'));
@@ -818,7 +819,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                 
                                 // build the url
                                 var url  = BASE_URL + 'markers?type=event&id=' + events[i];
-                        
+                        console.log(url);
                                 ajaxQueue.add({
                                         success: searchObj.processAjaxData,
                                         url: url
@@ -830,11 +831,17 @@ SearchClass.prototype.addResultsClick = function(event) {
 
 // function to process the results of the ajax marker data lookups
 SearchClass.prototype.processAjaxData = function(data) {
+console.log('---------------------------');
+	console.log('processAjaxData');
+	console.log(data);
+	console.log(searchObj.markerData.concat(data));
+	console.log('---------------------------');
         searchObj.markerData = searchObj.markerData.concat(data);
 }
 
 // function to add the data to the map
 SearchClass.prototype.addDataToMap = function() {
+console.log('add data to map');
 
         // scroll to the top of thw window
         $(window).scrollTop(0);

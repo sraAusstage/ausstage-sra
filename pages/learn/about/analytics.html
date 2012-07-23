@@ -3,8 +3,59 @@
 <pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.opencms.org/dtd/6.0/xmlpage.xsd">
   <page language="en">
     <element name="body">
-      <links/>
-      <content><![CDATA[<h1>Analytics</h1>]]></content>
+      <links>
+        <link name="link4" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[analytics-5]]></anchor>
+        </link>
+        <link name="link5" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[analytics-6]]></anchor>
+        </link>
+        <link name="link2" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[analytics-3]]></anchor>
+        </link>
+        <link name="link3" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[analytics-4]]></anchor>
+        </link>
+        <link name="link0" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[analytics-1]]></anchor>
+        </link>
+        <link name="link1" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[analytics-2]]></anchor>
+        </link>
+      </links>
+      <content><![CDATA[<cms:include property="template" element="head"></cms:include>
+<link rel="stylesheet" href="/pages/assets/main-style.css" />
+<link rel="stylesheet" href="/pages/ausstage/assets/jquery-ui/jquery-ui-1.8.6.custom.css" />   <script src="assets/javascript/libraries/jquery-1.6.min.js"></script>  <script src="assets/javascript/libraries/jquery-ui-1.8.12.custom.min.js"></script>  <script src="assets/javascript/libraries/jquery.ajaxmanager-3.0.9.js"></script>  <script src="assets/javascript/libraries/jquery.form-2.64.js"></script>  <script src="assets/javascript/index.js"></script>  <script src="assets/javascript/tab-selector.js"></script>
+<div class="main1 b-184 f-187"><!-- main content -->
+
+<div id="tabs" class="tab-container" style="border-width: 0px; margin: 13px 0px 60px 0px;">
+<div id="analytics-tabs" style="border-width: 0px;">
+<ul class="fix-ui-tabs" style="padding: 0px">
+    <li><a href="%(link0)">Mapping Service</a></li>
+    <li><a href="%(link1)">Networks Service</a></li>
+    <li><a href="%(link2)">Mobile Service</a></li>
+    <li><a href="%(link3)">AusStage Website</a></li>
+    <li><a href="%(link4)">AusStage Database</a></li>
+    <li><a href="%(link5)">Data Exchange Service</a></li>
+</ul>
+<div id="analytics-1">&nbsp;</div>
+<div id="analytics-2">&nbsp;</div>
+<div id="analytics-3">&nbsp;</div>
+<div id="analytics-4">&nbsp;</div>
+<div id="analytics-5">&nbsp;</div>
+<div id="analytics-6">&nbsp;</div>
+</div>
+</div>
+</div>
+<!-- always at the bottom of the content -->
+<div class="push">&nbsp;</div>
+<p><cms:include property="template" element="foot"></cms:include></p>]]></content>
     </element>
   </page>
 </pages>

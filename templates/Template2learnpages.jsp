@@ -119,7 +119,7 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 
 <li><a href="/pages/browse/">Browse</a></li>
 <li><a href="/pages/search/">Search</a></li>
-<li><a href="/pages/learn/browse/">Learn</a></li>
+<li><a href="/pages/learn/">Learn</a></li>
 </ul>
 </div>
 

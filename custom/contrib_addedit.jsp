@@ -108,7 +108,11 @@
   else if(action.equals("ForWork") )
     out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
                 "action='contrib_addedit_process.jsp?act=" + action +  "'' onsubmit='return checkFields();'>\n" +
-                "<input type=hidden name='isPreviewForWork' value='true'>");                
+                "<input type=hidden name='isPreviewForWork' value='true'>");    
+    else if(action.equals("AddForEvent") )
+    out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
+                "action='contrib_addedit_process.jsp?act=" + action +  "'' onsubmit='return checkFields();'>\n" +
+                "<input type=hidden name='act' value='"+action+"'>");                              
   else if ((action.equals("edit") || action.equals("add") || request.getParameter("isReturn") != null))
     out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
                 "action='contrib_addedit_process.jsp?act=" + action + "' onsubmit='return checkFields();'>\n"); 
@@ -540,7 +544,7 @@
   pageFormater.writeTwoColTableFooter(out);
   
   if (contributor.getEnteredByUser() != null && !contributor.getEnteredByUser().equals("")) {
-    pageFormater.writeTwoColTableHeader(out, "Created By User:");
+    pageFormater.writeTwoColTableHeader(out, "Created by User:");
     out.print(contributor.getEnteredByUser());
     pageFormater.writeTwoColTableFooter(out);
     
@@ -550,7 +554,7 @@
   }
   
   if (contributor.getUpdatedByUser() != null && !contributor.getUpdatedByUser().equals("")) {
-    pageFormater.writeTwoColTableHeader(out, "Updated By User:");
+    pageFormater.writeTwoColTableHeader(out, "Updated by User:");
     out.print(contributor.getUpdatedByUser());
     pageFormater.writeTwoColTableFooter(out);
     

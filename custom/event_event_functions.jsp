@@ -23,8 +23,8 @@
   String functionDesc = "";
   String notes        = "";
   LookupCode lookUps = new LookupCode(db_ausstage);
-  CachedRowSet rsetEventFuncLookUps = lookUps.getLookupCodes("ITEM_FUNCTION");
-  //CachedRowSet rsetEventFuncLookUps = lookUps.getLookupCodes("EVENT_FUNCTION");
+  //CachedRowSet rsetEventFuncLookUps = lookUps.getLookupCodes("ITEM_FUNCTION");
+  CachedRowSet rsetEventFuncLookUps = lookUps.getLookupCodes("EVENT_FUNCTION");
 
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);

@@ -152,14 +152,21 @@
             			<%
    						}
 						
+						//Notes
+						if (venue.getNotes() != null && !venue.getNotes().equals("")) {
+						%>
+							<tr >
+								<th class='record-label b-134' >Notes</td>
+								
+								<td class='record-value' colspan='2'><%=venue.getNotes()%></td>
+							</tr>
+						<%
+						}
+						
 						//Latitude
 						if (hasValue(venue.getLatitude()) && hasValue(venue.getLongitude())) {
 						%>
-							<tr>
-								<th class='record-label b-134' >Latitude | Longitude</th>
-								
-								<td class='record-value' colspan='2'><%=venue.getLatitude()%> | <%=venue.getLongitude()%></td>
-							</tr>
+							
 
 							<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 							<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
@@ -210,7 +217,14 @@
 									<div id="map_canvas" style="width:100%;height:300px;"></div>
 								</td>
 							</tr>
+							<tr>
+								<th class='record-label b-134' >Latitude | Longitude</th>
+								
+								<td class='record-value' colspan='2'><%=venue.getLatitude()%> | <%=venue.getLongitude()%></td>
+							</tr>
 						<%
+						
+						
 						}
 
 						//Radius
@@ -219,7 +233,7 @@
 							<tr >
 								<th class='record-label b-134' >Radius</th>
 								
-								<td class='record-value' colspan='2'><%=venue.getRadius()%></td>
+								<td class='record-value' colspan='2'><%=venue.getRadius()+" metres"%></td>
 							</tr>
 						<%
 						}
@@ -230,21 +244,12 @@
 							<tr >
 								<th class='record-label b-134' >Elevation</td>
 								
-								<td class='record-value' colspan='2'><%=venue.getElevation()%></td>
+								<td class='record-value' colspan='2'><%=venue.getElevation()+" metres"%></td>
 							</tr>
 						<%
 						}
 						   
-						//Notes
-						if (venue.getNotes() != null && !venue.getNotes().equals("")) {
-						%>
-							<tr >
-								<th class='record-label b-134' >Notes</td>
-								
-								<td class='record-value' colspan='2'><%=venue.getNotes()%></td>
-							</tr>
-						<%
-						}
+						
 						%>
 						<%
 						//get event data

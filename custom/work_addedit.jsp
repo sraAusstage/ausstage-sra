@@ -160,7 +160,7 @@
   out.println("<a name='work_contributors_link'></a>");
   pageFormater.writeHelper(out, "Contributor Association(s)", "helpers_no2.gif");
   hidden_fields.clear();
-  temp_display_info = work.generateDisplayInfo(m_work_conlinks, "contributor", stmt);
+  temp_display_info = work.generateBasicDisplayInfo(m_work_conlinks, "contributor", stmt);
   
   out.println (htmlGenerator.displayLinkedItem("",
                                                "2",

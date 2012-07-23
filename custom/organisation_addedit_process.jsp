@@ -62,6 +62,8 @@
   organisationObj.setYyyylastDate(request.getParameter("f_last_date_year"));
   organisationObj.setPlaceOfOrigin(request.getParameter("f_place_of_origin"));
   organisationObj.setPlaceOfDemise(request.getParameter("f_place_of_demise"));
+  organisationObj.setEnteredByUser((String)session.getAttribute("fullUserName"));
+  organisationObj.setUpdatedByUser((String)session.getAttribute("fullUserName"));
 
   
   // if editing
