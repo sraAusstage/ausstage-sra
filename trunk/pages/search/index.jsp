@@ -60,7 +60,7 @@
 	      </td>
 	      <td>
 		<select name="f_search_from" id='f_search_from' onchange='javascript:enableDisableSorts()'>
-		  <option value="all">All Records</option>
+		  <!--<option value="all">All Records</option>-->
 		  <option value="event"        <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("event")) { out.print(" selected ");}%>>Events</option>
 		  <option value="contributor"  <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("contributor")) { out.print(" selected 		");}%>>Contributors</option>
 		  <option value="organisation" <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("organisation")) { out.print(" selected 		");}%>>Organisations</option>

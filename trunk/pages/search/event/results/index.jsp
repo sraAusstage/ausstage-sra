@@ -136,9 +136,11 @@
   if(betweenfrom_dd == null){betweenfrom_dd = "";}
   if(betweenfrom_mm == null){betweenfrom_mm = "";}
   if(betweenfrom_yyyy == null){betweenfrom_yyyy = "";}
+  
   if(betweento_dd == null){betweento_dd = "";}
   if(betweento_mm == null){betweento_mm = "";}
   if(betweento_yyyy == null){betweento_yyyy = "";}
+  
 
   /******** call all the SET methods from AdvancedSearch.java **********/
   if(event_id != null && event_name != null && betweenfrom_dd != null && betweenfrom_mm !=null

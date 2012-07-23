@@ -6,6 +6,7 @@
 <%admin.AppConstants publicCommentsConst = new admin.AppConstants(request);%>
 <html>
 <head>
+  <!--<link rel="stylesheet" href="/css/default.css" type="text/css">-->
   <link rel="stylesheet" href="../../resources/style-frontend.css" type="text/css">
 </head>
 <!--<body bgcolor="#E7E7E6">-->

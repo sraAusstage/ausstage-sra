@@ -176,7 +176,7 @@ public void displayUpdateForm(String                p_id,
     
     p_out.println("</table>");
     
-    /*p_out.println("<DIV style=\"float:right; padding-top: 15px;\">");
+    /**p_out.println("<DIV style=\"float:right; padding-top: 15px;\">");
     p_out.println("<input type=\"button\" id=\"browse_add_btn\" value=\"Add To Map\"/>  ");
     p_out.println("<span id=\"show_browse_help\" class=\"helpIcon clickable\"></span>");
     p_out.println("</div>");*/
@@ -188,10 +188,10 @@ public void displayUpdateForm(String                p_id,
     p_out.println("     <table width='100%' border='0' cellpadding='2' cellspacing='0'>");
 
     if (p_type != null && p_type.equals("Resource")) {
-      p_type += "&nbsp;Title";
+     // p_type += "&nbsp;Title";
     }
     else {
-      p_type += "&nbsp;Name";
+     // p_type += "&nbsp;Name";
     }
     p_out.println("     <tr>");
     p_out.println("       <td  align='right'  class='general_heading_light' valign='top'>&nbsp;" + p_type + "</td>");
@@ -200,7 +200,7 @@ public void displayUpdateForm(String                p_id,
     p_out.println("     </tr>");
       
     p_out.println("     <tr>");
-    p_out.println("       <td width=\"25%\" align='right'  class='general_heading_light' valign='top'>&nbsp;" + p_type + "&nbsp;Identifier</td>");
+    p_out.println("       <td width=\"25%\" align='right'  class='general_heading_light nowrap' valign='top'>&nbsp;" + p_type + "&nbsp;Identifier</td>");
     p_out.println("       <td width=\"0%\">&nbsp;</td>");
     p_out.println("       <td width=\"75%\"  valign='top'>" + p_id + "<input type='hidden' name='f_object_id' id='f_object_id' value='" + p_id + "'><input type='hidden' name='f_object_type' id='f_object_type' value='" + p_type + "'></td>");
     p_out.println("     </tr>");
@@ -220,13 +220,13 @@ public void displayUpdateForm(String                p_id,
     p_out.println("     <tr>");
     p_out.println("       <td align='right' class='general_heading_light' valign='top'>&nbsp;Name</td>");
     p_out.println("       <td>&nbsp;</td>");
-    p_out.println("       <td  valign='top'><input type='text' name='f_public_users_name' id='f_public_users_name' class='line350' maxlength=30></td>");
+    p_out.println("       <td  valign='top'><input type='text' name='f_public_users_name' id='f_public_users_name' maxlength=30 size='50'></td>");
     p_out.println("     </tr>");
     
     p_out.println("     <tr>");
     p_out.println("       <td  align='right' class='general_heading_light' valign='top'>&nbsp;Email</td>");
     p_out.println("       <td>&nbsp;</td>");
-    p_out.println("       <td  valign='top'><input type='text' name='f_public_users_email' id='f_public_users_email' class='line350' maxlength=80></td>");
+    p_out.println("       <td  valign='top'><input type='text' name='f_public_users_email' id='f_public_users_email' maxlength=80 size='50'></td>");
     p_out.println("     </tr>");
     
     p_out.println("     <tr>");

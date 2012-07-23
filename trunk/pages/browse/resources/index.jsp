@@ -151,7 +151,7 @@
 	      int k= j+start;      	 
 	     String bold = ">"+(k+1);
 	      	  if (k == pageno) bold = "class='b-91 bold'>" + (k+1) + "";
-	      	  out.println("<a href='?order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'"+bold+"</a>");
+	      	  out.println("<a href='?&order="+ sortOrd +"&col="+ sortCol+"&pno="+ k +"'"+bold+"</a>");
 	    }
 	  }
 	  if (i == resultsPerPage && l_rs.next()) 

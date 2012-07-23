@@ -98,6 +98,16 @@ if (!currentPage.contains("network/index.jsp") &&
 </form>
 <script type="text/javascript">
 
+
+/*function updateHeader(){
+	$("#header-search-form #f_keyword").attr('value',$("#header-search-form #header-search-keywords").val());
+	 console.log($("#header-search-form #f_keyword"));
+	return true;
+}*/
+
+
+
+
 var selectmenu=document.getElementById("mymenu")
 selectmenu.onchange=function(){ //run some code when "onchange" event fires
  var chosenoption=this.options[this.selectedIndex] //this refers to "selectmenu"

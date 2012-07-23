@@ -145,14 +145,14 @@
 								out.print("<br>");
 							if (hasValue(organisation.getSuburb())) 
 								out.print(organisation.getSuburb() + " ");
-							if (hasValue(organisation.getStateName()) && !organisation.getStateName().equals("O/S")) 
+							if (hasValue(organisation.getStateName()) && !organisation.getStateName().equals("O/S") && !organisation.getStateName().equals("UNKNOWN")) 
 								out.print(organisation.getStateName() + " ");
 							if (hasValue(organisation.getPostcode()))
-								out.print(organisation.getPostcode());
+								out.print(organisation.getPostcode()+" <br>");
 							
-							if(hasValue(organisation.getCountry())){
+							if(hasValue(organisation.getCountry()) && (organisation.getStateName().equals("O/S") || organisation.getStateName().equals("UNKNOWN"))){
 								country.load(Integer.parseInt(organisation.getCountry()));
-								out.println("   <br>" +  country.getName() + "");
+								out.println("" +  country.getName() + "");
 							}
 							%>
 							</td>
@@ -508,21 +508,22 @@
 					 		<th class='record-label b-121'><a class='record-label'  href="#">Resources</a></th>
 							
 							<td class='record-value' colspan='2'>
-								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
+								<ul>
+								<!--<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">-->
 								<%
 								while(rset.next()) {
 								%>
-									<tr>
-										<td	valign="top"><%=rset.getString("description")%>:&nbsp;
+									<li>
+										<%=rset.getString("description")%>:&nbsp;
 											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>
-										</td>
-									</tr>
+									</li>
+									
 								<%
 								}
 								%>
-								</table>
+								</ul>
 							</td>
 						</tr>
 					<%

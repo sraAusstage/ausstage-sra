@@ -9,6 +9,7 @@
 <%@ include file="ausstage_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
+<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
 
 <%
   admin.ValidateLogin   login           = (admin.ValidateLogin) session.getAttribute("login");
@@ -90,14 +91,14 @@
   }
 
   if (action != null && action.equals("ForOrganisation") || isPreviewForOrgOrg.equals("true")){
-      out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp?action=" + action +  "' method='post' onsubmit='return checkMandatoryFields();'>\n");
+      out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp?action=" + action +  "' method='post' onsubmit='return checkFields();'>\n");
       out.println("<input type='hidden' name='isPreviewForOrgOrg' value='true'>");
       out.println("<input type='hidden' name='ForOrganisation' value='true'>");
       out.println("<input type='hidden' name='f_orgid' value='" + organisation_id + "'>");
    }
    else//adding a new organisation
    {
-     out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp' method='post' onsubmit='return checkMandatoryFields();'>");
+     out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp' method='post' onsubmit='return checkFields();'>");
    }
 
   pageFormater.writeHelper(out, "Enter the Organisation Details", "helpers_no1.gif");
@@ -316,7 +317,7 @@
   pageFormater.writeTwoColTableFooter(out);
  
   if (organisationObj.getEnteredByUser() != null && !organisationObj.getEnteredByUser().equals("")) {
-    pageFormater.writeTwoColTableHeader(out, "Created By User:");
+    pageFormater.writeTwoColTableHeader(out, "Created by User:");
     out.print(organisationObj.getEnteredByUser());
     pageFormater.writeTwoColTableFooter(out);
     
@@ -326,7 +327,7 @@
   }
   
   if (organisationObj.getUpdatedByUser() != null && !organisationObj.getUpdatedByUser().equals("")) {
-    pageFormater.writeTwoColTableHeader(out, "Updated By User:");
+    pageFormater.writeTwoColTableHeader(out, "Updated by User:");
     out.print(organisationObj.getUpdatedByUser());
     pageFormater.writeTwoColTableFooter(out);
     
@@ -353,10 +354,14 @@
 <script language="javascript">
   function checkFields(){
     var msg = "";
-    if(isBlank(document.org_form.f_orgname.value))
+   
+ 
+    if($( '[name|="f_organisation_name"]').val().length<1)
+    //if(isBlank(document.org_form.f_orgname.value))
       msg += "\t-Organisation Name \n";
  
-    if(isBlank(document.org_form.f_organisation_type.value))
+    if($( '[name|="f_organisation_type"]').val()=="") 
+    //if(isBlank(document.org_form.f_organisation_type.value))
       msg += "\t-Organisation Type\n"; 
       
       

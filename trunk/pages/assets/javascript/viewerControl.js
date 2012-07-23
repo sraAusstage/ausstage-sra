@@ -53,7 +53,7 @@ function ViewerControlClass (){
 }
 
 ViewerControlClass.prototype.init = function() {	
-	
+	console.log('init');
 	//hide the ruler div
 	$("#ruler").hide();
 
@@ -571,6 +571,7 @@ ViewerControlClass.prototype.displaySelectedContributors = function(){
 //											id   : either CONTRIBUTOR_ID[], EVENT_ID, or CONTRIBUTOR_ID
 //											reset: 0 to leave the sidebar, 1 to reset sidebar.
 ViewerControlClass.prototype.displayNetwork = function(type, id, reset, rad_sim){
+console.log('displatnetwork');
 		viewer.hideInteraction();
 		//closeLegends();
 		viewer.destroy(); 
@@ -583,6 +584,7 @@ ViewerControlClass.prototype.displayNetwork = function(type, id, reset, rad_sim)
 		resetLegend('#network_properties');
 		resetLegend('#viewer_options');				
 	}
+	console.log('start switch viewer control');
 	switch (type){
 		case 'CONTRIBUTOR':
 			viewer = new ContributorViewerClass(type);
@@ -591,6 +593,8 @@ ViewerControlClass.prototype.displayNetwork = function(type, id, reset, rad_sim)
 				url:BASE_URL_CONTRIBUTOR+id+END_URL,
 				error:function(){$('#viewerMsg').empty().append(buildErrorMsgBox(VIEWER_ERROR_MSG)).show();},
 				success:function(json){
+					console.log('success');
+					console.log(json.edges);
 					//if no nodes
 					if((typeof(json.edges) !== 'undefined') && json.edges.length ==0){
 						$('#viewerMsg').empty().append(buildInfoMsgBox(NO_COLLAB_DATA_MSG)).show();						
@@ -598,6 +602,8 @@ ViewerControlClass.prototype.displayNetwork = function(type, id, reset, rad_sim)
 
 					//else
 					else{
+					console.log(json);
+					console.log(BASE_URL_CONTRIBUTOR+id+END_URL);
 						$('#viewerMsg').empty().append(buildInfoMsgBox(VIEWER_LOADING_MSG)).show();					
 						viewer.renderGraph(json);
 						$('#viewerMsg').hide();
@@ -631,12 +637,14 @@ ViewerControlClass.prototype.displayNetwork = function(type, id, reset, rad_sim)
 				url:BASE_URL_EVENT+id+'&radius='+radius+'&simplify='+simplify+END_URL_EVENT,
 				error:function(){$('#viewerMsg').empty().append(buildErrorMsgBox(VIEWER_ERROR_MSG)).show();},
 				success:function(json){
+				console.log('event');
 					//if no contributors
 					if(json.edges.length ==0){
 						$('#viewerMsg').empty().append(buildInfoMsgBox(NO_EVENT_DATA_MSG)).show();						
 					}
 					//else
 					else{
+					console.log(json);
 						$('#viewerMsg').empty().append(buildInfoMsgBox(VIEWER_LOADING_MSG)).show();					
 						viewer.renderGraph(json);
 						$('#viewerMsg').hide();

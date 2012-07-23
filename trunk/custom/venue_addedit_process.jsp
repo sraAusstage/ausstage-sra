@@ -60,6 +60,34 @@
   venueObj.setEnteredByUser((String)session.getAttribute("fullUserName"));
   venueObj.setUpdatedByUser((String)session.getAttribute("fullUserName"));
   
+  //PAGE NAVIGATION STUFF
+  //Event eventObj = null;
+   boolean finishButton = false;
+  boolean placeOfBirthButton = false;
+  boolean placeOfDeathButton = false;
+  boolean placeOfOriginButton = false;
+  boolean placeOfDemiseButton = false;
+  
+  if (request.getParameter("place_of_birth") != null) {
+    placeOfBirthButton = true;
+  } else if (request.getParameter("place_of_death") != null) {
+    placeOfDeathButton = true;
+  } else if (request.getParameter("place_of_origin") != null) {
+    placeOfOriginButton = true;
+  } else if (request.getParameter("place_of_demise") != null) {
+    placeOfDemiseButton = true;    
+  }/** else if (request.getParameter("f_eventid") != null) {
+    eventObj = (Event)session.getAttribute("eventObj"); // Get the Event object.
+    if (eventObj == null)                               // Make sure it exists
+      eventObj = new Event(db_ausstage);
+    eventObj.setEventAttributes(request);               // Update it with the request data.
+    session.setAttribute("eventObj", eventObj);         // And put it back into the session.
+    finishButton = true;                                // Need a Finish Button for the user.
+  } else {
+    eventObj = (Event)session.getAttribute("eventObj"); // Do we need a Finish Button anyway?
+    if (eventObj != null)
+      finishButton = true;
+  }*/
   
 
   // if editing
@@ -81,6 +109,18 @@
     pageFormater.writePageTableFooter (out);
     if(action != null && (action.equals("PreviewForItem") || action.equals("AddForItem")))
       pageFormater.writeButtons(out, "", "", "", "", "item_venues.jsp", "tick.gif");
+    else if (placeOfBirthButton){
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_birth=1", "tick.gif");
+    }
+    else if (placeOfDeathButton){
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_death=1", "tick.gif");
+    }
+    else if (placeOfOriginButton){
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_origin=1", "tick.gif");
+    }
+    else if (placeOfDemiseButton){
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_demise=1", "tick.gif");
+    }
     else
       pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp", "tick.gif");
   }

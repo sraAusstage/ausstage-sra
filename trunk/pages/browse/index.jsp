@@ -6,6 +6,7 @@
 <%@ page import="java.sql.*, ausstage.Database, admin.AppConstants, sun.jdbc.rowset.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 
+<!--<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>-->
 
 <cms:include property="template" element="head" />
 
@@ -15,6 +16,7 @@
 Javascript to handle the dynamic content.
 Should probably put this in a seperate .js file 
 -->
+
 <script language="javascript">
 	//function that gets counts.  
 	function getCounts(){

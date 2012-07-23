@@ -486,7 +486,7 @@
        Event Association/s
   ****************************/
   pageFormater.writeHelper(out, "Event Association/s", "helpers_no9.gif");
-  out.println("<a name='item_events' />");
+  out.println("<a name='item_events' /></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_evlinks, "event", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -504,7 +504,7 @@
        Contributor Association/s
   ****************************/
   pageFormater.writeHelper(out, "Contributor Association/s", "helpers_no10.gif");
-  out.println("<a name='item_contributors_link' />");
+  out.println("<a name='item_contributors_link' /></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_conlinks, "contributor", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -521,7 +521,7 @@
        Organisation Association/s
   ****************************/
   pageFormater.writeHelper(out, "Organisation Association/s", "helpers_no11.gif");
-  out.println("<a name='item_organisations_link' />");
+  out.println("<a name='item_organisations_link' /></a>");
   hidden_fields.clear(); 
   temp_display_info = item.generateDisplayInfo(m_item_orglinks, "organisation", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -538,7 +538,7 @@
        Venue Association/s
   ****************************/
   pageFormater.writeHelper(out, "Venue Association/s", "helpers_no12.gif");
-  out.println("<a name='item_venues_link' />");
+  out.println("<a name='item_venues_link' /></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_venuelinks, "venue", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -555,7 +555,7 @@
        Work Association/s
   ****************************/
   pageFormater.writeHelper(out, "Work Association/s", "helpers_no13.gif");
-  out.println("<a name='item_work_link' />");
+  out.println("<a name='item_work_link' /></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_worklinks, "work", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -573,7 +573,7 @@
        Genre Association/s
   ****************************/
   pageFormater.writeHelper(out, "Genre Association/s", "helpers_no14.gif");
-  out.println("<a name='item_second_genre_link' />");
+  out.println("<a name='item_second_genre_link' /></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_secgenrelinks, "genre", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -590,7 +590,7 @@
        Content Indicator Association/s
   ****************************/
   pageFormater.writeHelper(out, "Subjects Association/s", "helpers_no15.gif");
-  out.println("<a name='item_content_indicator_link' />");
+  out.println("<a name='item_content_indicator_link' /></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_contentindlinks, "contentInd", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -608,7 +608,7 @@
        Resource Association/s
   ****************************/
   pageFormater.writeHelper(out, "Resource Association/s", "helpers_no16.gif");
-  out.println("<a name='item_item_link' />");
+  out.println("<a name='item_item_link' /></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_itemlinks, "item", stmt);
   

@@ -148,9 +148,10 @@ function parseDate(input) {
 
 //text measurement function to allow for solid backgrounds on labels.
 function measureText(pText) {
-
  $("#ruler").empty(); 
  $("#ruler").append(pText);
+ console.log(pText +' '+$("#ruler").width());
+
  return $("#ruler").width();
  
 }

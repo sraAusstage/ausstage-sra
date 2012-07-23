@@ -62,7 +62,8 @@
   if(contrib_mname == null)       {contrib_mname = "";}
   if(contrib_lname == null)       {contrib_lname = "";}
   if(contrib_suffix == null)      {contrib_suffix = "";}
-  if(contrib_display_name == null) {contrib_display_name = "";}
+  //if(contrib_display_name == null) {contrib_display_name = "";}
+  if(contrib_display_name == null || contrib_display_name.trim().equals("")) {contrib_display_name = contrib_prefix+" "+contrib_fname+" "+contrib_mname+" "+contrib_lname+" "+contrib_suffix;}
   if(place_of_birth == null) {place_of_birth = "";}
   if(place_of_death == null) {place_of_death = "";}
   if(contrib_other_names == null) {contrib_other_names = "";}

@@ -32,6 +32,37 @@
   Vector venue_name_vec		= new Vector();
   Vector<VenueVenueLink> venue_link_vec		= new Vector<VenueVenueLink>();
   
+  //PAGE NAVIGATION STUFF - dont necessarily agree with the approach, but following an existing convention....
+ // Event eventObj = null;
+    boolean finishButton = false;
+  boolean placeOfBirthButton = false;
+  boolean placeOfDeathButton = false;
+  boolean placeOfOriginButton = false;
+  boolean placeOfDemiseButton = false;
+  
+  if (request.getParameter("place_of_birth") != null) {
+    placeOfBirthButton = true;
+  } else if (request.getParameter("place_of_death") != null) {
+    placeOfDeathButton = true;
+  } else if (request.getParameter("place_of_origin") != null) {
+    placeOfOriginButton = true;
+  } else if (request.getParameter("place_of_demise") != null) {
+    placeOfDemiseButton = true;    
+  }/** else if (request.getParameter("f_eventid") != null) {
+    eventObj = (Event)session.getAttribute("eventObj"); // Get the Event object.
+    if (eventObj == null)                               // Make sure it exists
+      eventObj = new Event(db_ausstage);
+    eventObj.setEventAttributes(request);               // Update it with the request data.
+    session.setAttribute("eventObj", eventObj);         // And put it back into the session.
+    finishButton = true;                                // Need a Finish Button for the user.
+  } else {
+    eventObj = (Event)session.getAttribute("eventObj"); // Do we need a Finish Button anyway?
+    if (eventObj != null)
+      finishButton = true;
+  }*/
+  
+  
+  
   String isPreviewForVenueVenue  = request.getParameter("isPreviewForVenueVenue");
   
   pageFormater.writeHeader(out);
@@ -122,6 +153,18 @@ document.body.onload=function(){load();};
       out.println("<input type='hidden' name='isPreviewForVenueVenue' value='true'>");
       out.println("<input type='hidden' name='ForVenue' value='true'>");
   }
+  else if (placeOfBirthButton){
+  	out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?place_of_birth=1' method='post'>");
+  }
+  else if (placeOfDeathButton){
+  	out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?place_of_death=1' method='post'>");
+  }
+  else if (placeOfOriginButton){
+  	out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?place_of_origin=1' method='post'>");
+  }
+  else if (placeOfDemiseButton){
+  	out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?place_of_demise=1' method='post'>");
+  }      
   else{
       out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp' method='post'>");
   }
@@ -136,7 +179,7 @@ document.body.onload=function(){load();};
   if(venue_id != null && !venue_id.equals(""))
     out.println(venue_id);
   pageFormater.writeTwoColTableFooter(out);
-  pageFormater.writeTwoColTableHeader(out, "Venue Name");
+  pageFormater.writeTwoColTableHeader(out, "Venue Name *");
   out.println("<input type=\"text\" name=\"f_venue_name\" size=\"60\" class=\"line150\" maxlength=60 value=\"" + venueObj.getName() + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
@@ -303,7 +346,7 @@ document.body.onload=function(){load();};
   pageFormater.writeTwoColTableHeader(out, "VenueId:");
   out.print(venueObj.getVenueId());
   pageFormater.writeTwoColTableFooter(out);
-
+if (venueObj.getEnteredByUser() != null && !venueObj.getEnteredByUser().equals("")) {
   pageFormater.writeTwoColTableHeader(out, "Created By User:");
   out.print(venueObj.getEnteredByUser());
   pageFormater.writeTwoColTableFooter(out);
@@ -311,15 +354,17 @@ document.body.onload=function(){load();};
   pageFormater.writeTwoColTableHeader(out, "Date Created:");
   out.print(common.formatDate(venueObj.getEnteredDate(), AusstageCommon.DATE_FORMAT_STRING));
   pageFormater.writeTwoColTableFooter(out);
-
+}
+if (venueObj.getUpdatedByUser() != null && !venueObj.getUpdatedByUser().equals("")) {
   pageFormater.writeTwoColTableHeader(out, "Updated By User:");
   out.print(venueObj.getUpdatedByUser());
   pageFormater.writeTwoColTableFooter(out);
 
+
   pageFormater.writeTwoColTableHeader(out, "Date Updated:");
   out.print(common.formatDate(venueObj.getUpdatedDate(), AusstageCommon.DATE_FORMAT_STRING));
   pageFormater.writeTwoColTableFooter(out);
-
+}
   /**************************************************/
   
   

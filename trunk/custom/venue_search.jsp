@@ -120,25 +120,47 @@
   list_db_field_id_name  = "venueid";
   textarea_db_display_fields.addElement ("OUTPUT");
   
+
   buttons_names.addElement ("Add");
+  
   buttons_names.addElement ("Edit/View");
   buttons_names.addElement ("Delete");
   if (finishButton || placeOfOriginButton || placeOfDemiseButton  || placeOfBirthButton || placeOfDeathButton) buttons_names.addElement ("Finish"); // Have to go back to Event Maintenance
 
-  buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add'");
-  buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit';search_form.submit();");
-  buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
-  if (finishButton)
+  
+  
+  
+  if (finishButton){
+    buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add'");
+    buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit';search_form.submit();");  
+    buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
     buttons_actions.addElement ("Javascript:search_form.action='event_addedit.jsp';search_form.submit();");
-  if (placeOfBirthButton)
-    buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?place_of_birth=1';search_form.submit();");
-  else if (placeOfDeathButton)
-    buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?place_of_death=1';search_form.submit();");
-  if (placeOfOriginButton)
-    buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?place_of_origin=1';search_form.submit();");
-  else if (placeOfDemiseButton)
-    buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?place_of_demise=1';search_form.submit();");
-   
+  }
+  if (placeOfBirthButton){
+  	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_birth=1'");
+  	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_birth=1';search_form.submit();");
+  	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp&place_of_birth=1';search_form.submit();");
+    	buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?place_of_birth=1';search_form.submit();");
+  }
+  else if (placeOfDeathButton){
+	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_death=1'");
+  	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_death=1';search_form.submit();");
+	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp&place_of_death=1';search_form.submit();");  
+    	buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?place_of_death=1';search_form.submit();");
+  } 	
+  if (placeOfOriginButton){
+  	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_origin=1'");
+	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_origin=1';search_form.submit();");  
+  	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
+    	buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?place_of_origin=1';search_form.submit();");
+  }
+  else if (placeOfDemiseButton){
+  	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_demise=1'");
+	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_demise=1';search_form.submit();");  
+  	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
+    	buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?place_of_demise=1';search_form.submit();");
+	
+  }
   // if first time this form has been loaded
   if (filter_id == null)
   {
