@@ -93,6 +93,25 @@ public abstract class BaseData {
 	}
 	
 	/**
+	 * Constructor for this class for getting all events.
+	 *
+	 * @param database    the DbManager class used to connect to the database
+	 * @param outputType  the output type
+	 * @param recordLimit the record limit
+	 * @param sortOrder   the order that records must be sorted in
+	 *
+	 * @throws IllegalArgumentException if any of the parameters are empty or do not pass validation
+	 *
+	 */
+	public BaseData(DbManager database, String outputType, String recordLimit, String sortOrder) {
+		this.database = database;
+		this.outputType = outputType;
+		this.recordLimit = recordLimit;
+		this.sortOrder = sortOrder;
+	}
+	
+	
+	/**
 	 * Constructor for this class
 	 *
 	 * @param database    the DbManager class used to connect to the database
@@ -215,7 +234,9 @@ public abstract class BaseData {
 			if(InputUtils.isValid(country) == true) {
 				address += country;
 			} else {
-				address = address.substring(0, address.length() - 2);
+				if (address.length()>2){
+					address = address.substring(0, address.length() - 2);
+				}
 			}
 		}
 		

@@ -37,7 +37,7 @@ public class EventServlet extends HttpServlet {
 	
 	// declare public constants
 	public static final String[] VALID_OUTPUT_TYPES   = {"html", "json", "xml", "rss"};
-	public static final String[] VALID_REQUEST_TYPES  = {"contributor", "organisation", "venue", "secgenre", "contentindicator", "work"};
+	public static final String[] VALID_REQUEST_TYPES  = {"contributor", "organisation", "venue", "secgenre", "contentindicator", "work", "all"};
 	public static final String   DEFAULT_RESULT_LIMIT = "10";
 	public static final String[] VALID_SORT_TYPES     = {"firstdate", "createdate", "updatedate"};
 
@@ -81,28 +81,35 @@ public class EventServlet extends HttpServlet {
 			throw new ServletException("Missing output parameter. Expected one of: " + InputUtils.arrayToString(VALID_OUTPUT_TYPES));
 		}
 		
-		if(InputUtils.isValid(id) == false) {
-			// no valid id was found
-			throw new ServletException("Missing id parameter.");
+		String[] ids;
+		
+		if (id!=null){
+			ids = id.split(",");
+		}else {
+			ids = new String[1];
 		}
 		
-		// explode the ids into an array
-		String[] ids = id.split(",");
+		if(type.equals("all")==false){
 		
-		// ensure the ids are numeric
-		for(int i = 0; i < ids.length; i++) {
-			try {
-				Integer.parseInt(ids[i]);
-			} catch(Exception ex) {
-				throw new ServletException("The id parameter must contain numeric values");
+			if(InputUtils.isValid(id) == false) {
+				// no valid id was found
+				throw new ServletException("Missing id parameter.");
+			}
+
+			// ensure the ids are numeric
+			for(int i = 0; i < ids.length; i++) {
+				try {
+					Integer.parseInt(ids[i]);
+				} catch(Exception ex) {
+					throw new ServletException("The id parameter must contain numeric values");
+				}
+			}
+		
+			// impose sensible limit on id numbers
+			if(ids.length > 10) {
+				throw new ServletException("The id parameter must contain no more than 10 numbers");
 			}
 		}
-		
-		// impose sensible limit on id numbers
-		if(ids.length > 10) {
-			throw new ServletException("The id parameter must contain no more than 10 numbers");
-		}
-		
 		// check the limit parameter
 		if(InputUtils.isValid(limit) == false) {
 			limit = DEFAULT_RESULT_LIMIT;
@@ -146,10 +153,6 @@ public class EventServlet extends HttpServlet {
 			// get event data based on organisation ids
 			OrganisationData data = new OrganisationData(database, ids, output, limit, sort);
 			results = data.getEventData();
-		} else if(type.equals("all") == true) {
-			// get event data based on organisation ids
-			AllData data = new AllData(database, output, limit, sort);
-			results = data.getEventData();
 		} else if(type.equals("venue") == true) {
 			// get event data based on venue ids
 			VenueData data = new VenueData(database, ids, output, limit, sort);
@@ -165,6 +168,10 @@ public class EventServlet extends HttpServlet {
 		} else if(type.equals("work") == true) {
 			// get event data based on venue ids
 			WorkData data = new WorkData(database, ids, output, limit, sort);
+			results = data.getEventData();
+		} else if(type.equals("all") == true) {
+			// get event data based on organisation ids
+			AllData data = new AllData(database, output, limit, sort);
 			results = data.getEventData();
 		}
 		

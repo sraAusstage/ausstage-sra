@@ -43,11 +43,7 @@ public class AllData extends BaseData{
 	 *
 	 */
 	public AllData(DbManager database, String outputType, String recordLimit, String sortOrder) {
-		dummy_list String[];
-		dummy_list = new String[1];
-		dummy_list[0]="1";
-		
-		super(database,dummy_list, outputType, recordLimit, sortOrder);
+		super(database, outputType, recordLimit, sortOrder);
 	}
 	
 	@Override
@@ -68,11 +64,8 @@ public class AllData extends BaseData{
 			+ "FROM events e "
 			+ "INNER JOIN venue v ON e.venueid = v.venueid "
 			+ "LEFT join country c on v.countryid = c.countryid "
-			+ "LEFT JOIN states s ON v.state = s.stateid "
+			+ "LEFT JOIN states s ON v.state = s.stateid ";
 				
-			
-		
-		
 		// adjust the order by clause
 		String sort = getSortOrder();
 		if(sort.equals("firstdate") == true) {
@@ -84,7 +77,7 @@ public class AllData extends BaseData{
 		}
 		
 		// get the data
-		results = getDatabase().executePreparedStatement(sql);
+		results = getDatabase().executeStatement(sql);
 	
 		// check to see that data was returned
 		if(results == null) {
@@ -101,6 +94,7 @@ public class AllData extends BaseData{
 				venue = resultSet.getString(7) + ", " + venue;
 				
 				firstDate = DateUtils.buildDisplayDate(resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
+				
 				
 				// build a new event and add it to the list
 				event = new Event(resultSet.getString(1), resultSet.getString(2), venue, firstDate);
@@ -176,7 +170,7 @@ public class AllData extends BaseData{
 		}
 		
 		// get the data
-		results = getDatabase().executePreparedStatement(sql);
+		results = getDatabase().executeStatement(sql);
 	
 		// check to see that data was returned
 		if(results == null) {
