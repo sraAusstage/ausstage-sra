@@ -13,6 +13,7 @@
   ausstage.Venue      venueObj     = new ausstage.Venue (db_ausstage);
   String              venue_id;
   CachedRowSet        rset;
+  String action = request.getParameter("act");
 
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
   Statement stmt = db_ausstage.m_conn.createStatement ();
@@ -30,7 +31,7 @@
     venueObj.delete ();
     pageFormater.writeText (out, "You have deleted the venue named <b>" + venueObj.getName () + "</b>.");
     pageFormater.writePageTableFooter (out);
-    pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp", "tick.gif");
+    pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?act="+action, "tick.gif");
   }
   else
   {

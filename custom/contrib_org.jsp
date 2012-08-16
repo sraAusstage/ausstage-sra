@@ -16,6 +16,8 @@
   String isPreviewForItem  = request.getParameter("isPreviewForItem");
   String isPreviewForCreatorItem  = request.getParameter("isPreviewForCreatorItem");
   String isPreviewForWork  = request.getParameter("isPreviewForWork");
+  
+  String action       = request.getParameter("act");
 
   CachedRowSet  rset;
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
@@ -55,11 +57,13 @@
 
 
 %>
+ 
   <form action='contrib_org_link.jsp' name='content_form' id='content_form' method='post' onsubmit="finalise();">
     <input type="hidden" name="isPreviewForItem" value="<%=isPreviewForItem%>">
     <input type="hidden" name="isPreviewForCreatorItem" value="<%=isPreviewForCreatorItem%>">
     <input type="hidden" name="isPreviewForEvent" value="<%=isPreviewForEvent%>">
     <input type="hidden" name="isPreviewForWork" value="<%=isPreviewForWork%>">
+    <input type="hidden" name="act" value="<%=action%>"> 
     <input type="hidden" name="f_contrib_id" value="<%=request.getParameter("f_contrib_id")%>">
 <%
   rset = organisation.getOrganisations (stmt, AusstageCommon.EDUCATIONAL_INSTITUTION_ID);

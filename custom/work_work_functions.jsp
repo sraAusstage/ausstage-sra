@@ -24,10 +24,18 @@
   LookupCode lookUps = new LookupCode(db_ausstage);
   CachedRowSet rsetWorkFuncLookUps = lookUps.getLookupCodes("WORK_FUNCTION");
 
+  String isPreviewForEventWork = request.getParameter("isPreviewForEventWork");
+  if(isPreviewForEventWork == null){isPreviewForEventWork = "false"; }
+
+  String isPreviewForItemWork = request.getParameter("isPreviewForItemWork");
+  if(isPreviewForItemWork == null){isPreviewForItemWork = "false"; }
+  
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);
 %>
   <form action='work_work_functions_process.jsp' name='functions_form' id='functions_form' method='post' onsubmit='return (validateForm());'>
+  <input type='hidden' name='isPreviewForEventWork' id='isPreviewForEventWork' value='<%=isPreviewForEventWork%>'>
+  <input type='hidden' name='isPreviewForItemWork' id='isPreviewForItemWork' value='<%=isPreviewForItemWork%>'>
   <table cellspacing='0' cellpadding='0' border='0' width='560'> <%
   if (workWorkLinks.size()==0) {
      pageFormater.writeText (out,"No functions selected. Please press the tick button to continue");

@@ -192,13 +192,13 @@
   }
 
   buttons_names.addElement ("Select");
-  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true"))){
+  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true")|| isPreviewForEventWork.equals("true"))){
     buttons_names.addElement ("Edit/View");
     buttons_names.addElement ("Add");
   }
   buttons_names.addElement ("Finish");
   buttons_actions.addElement ("Javascript:search_form.action='work_contributors.jsp';search_form.submit();");
-  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true"))){
+  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true")|| isPreviewForEventWork.equals("true"))){
     buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?act=ForWork';search_form.submit();");
     buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?act=ForWork';search_form.submit();");
   }

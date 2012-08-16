@@ -20,6 +20,11 @@
 	String workId = workObj.getWorkId();
 	Vector <WorkWorkLink> workWorkLinks = workObj.getWorkWorkLinks();
 	Vector <WorkWorkLink> tempWorkWorkLinks = new Vector <WorkWorkLink>();
+	String isPreviewForEventWork = request.getParameter("isPreviewForEventWork");
+	if (isPreviewForEventWork == null){isPreviewForEventWork = "false";}
+	
+	String isPreviewForItemWork = request.getParameter("isPreviewForItemWork");
+	if (isPreviewForItemWork == null){isPreviewForItemWork = "false";}
 
 	String error_msg = "";
 	String functionId = "";
@@ -56,7 +61,15 @@
 	}
 
 	pageFormater.writePageTableFooter(out);
-	pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp#work_work_link", "next.gif");
+	if (isPreviewForItemWork.equals("true")){
+		pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp?action=isPreviewForItemWork#work_work_link", "next.gif");
+	}
+	else if (isPreviewForEventWork.equals("true")){
+		pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp?action=isPreviewForEventWork#work_work_link", "next.gif");
+	}
+	else {
+		pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp#work_work_link", "next.gif");
+	}
 	pageFormater.writeFooter(out);
 	db_ausstage.disconnectDatabase();
 %><cms:include property="template" element="foot" />

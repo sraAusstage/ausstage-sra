@@ -107,19 +107,22 @@
   {
     pageFormater.writeText (out, "The venue <b>" + venueObj.getName() + "</b> was successfully saved");
     pageFormater.writePageTableFooter (out);
-    if(action != null && (action.equals("PreviewForItem") || action.equals("AddForItem")))
+    if(action != null && (action.equals("PreviewForItem") || action.equals("AddForItem") || action.equals("EditForItem")))
       pageFormater.writeButtons(out, "", "", "", "", "item_venues.jsp", "tick.gif");
     else if (placeOfBirthButton){
-      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_birth=1", "tick.gif");
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?act="+action+"&mode=edit&place_of_birth=1", "tick.gif");
     }
     else if (placeOfDeathButton){
-      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_death=1", "tick.gif");
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?act="+action+"&mode=edit&place_of_death=1", "tick.gif");
     }
     else if (placeOfOriginButton){
-      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_origin=1", "tick.gif");
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?act="+action+"&mode=edit&place_of_origin=1", "tick.gif");
     }
     else if (placeOfDemiseButton){
-      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?mode=edit&place_of_demise=1", "tick.gif");
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?act="+action+"&mode=edit&place_of_demise=1", "tick.gif");
+    }
+    else if (action.contains("ForEvent")){
+      pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp?act="+action+"&mode=edit", "tick.gif");
     }
     else
       pageFormater.writeButtons(out, "", "", "", "", "venue_search.jsp", "tick.gif");

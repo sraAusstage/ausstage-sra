@@ -33,7 +33,7 @@
   //Only used on Insert NOT update
   eventObj.setEnteredByUser((String)session.getAttribute("fullUserName"));
   session.setAttribute("eventObj", eventObj);
-  
+
   eventObj.setDatabaseConnection(db_ausstage); // Refresh connection
 
   // if editing
@@ -57,7 +57,11 @@
                  "</b> was successfully saved");
   db_ausstage.disconnectDatabase();
   pageFormater.writePageTableFooter (out);
-  pageFormater.writeButtons(out, "", "", "", "", "event_search.jsp", "tick.gif");
+  if(error_occurred){
+    pageFormater.writeButtons(out, "back", "prev.gif", "", "", "", "");
+  }else {
+    pageFormater.writeButtons(out, "", "", "", "", "event_search.jsp", "tick.gif");
+  }
   pageFormater.writeFooter(out);
 %>
 </form>

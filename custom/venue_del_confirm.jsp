@@ -14,6 +14,8 @@
   String              venue_id;
   CachedRowSet        rset;
 
+  String action = request.getParameter("act");
+  
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
   Statement stmt = db_ausstage.m_conn.createStatement ();
   
@@ -23,7 +25,7 @@
   venue_id = request.getParameter ("f_selected_venue_id");
 
   %>
-  <form action='venue_del_process.jsp' method='post'>
+  <form action='venue_del_process.jsp?act=<%=action%>' method='post'>
   <%
   out.println("<input type=\"hidden\" name=\"f_id\" value=\"" + venue_id + "\">");
   

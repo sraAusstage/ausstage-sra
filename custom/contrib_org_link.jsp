@@ -21,6 +21,8 @@
   String isPreviewForCreatorItem  = request.getParameter("isPreviewForCreatorItem");
   String isPreviewForWork  = request.getParameter("isPreviewForWork");
   
+  String action  = request.getParameter("act");
+  
   
   if (isPreviewForEvent == null || isPreviewForEvent.equals("null")) {
     isPreviewForEvent = "";
@@ -40,6 +42,7 @@
   <input type="hidden" name="isPreviewForCreatorItem" value="<%=isPreviewForCreatorItem%>">
   <input type="hidden" name="isPreviewForWork" value="<%=isPreviewForWork%>">
   <input type="hidden" name="f_contrib_id" value="<%=request.getParameter("f_contrib_id")%>">
+  <input type="hidden" name="act" value="<%=action%>">
   <%
   // get the CONTRIBUTOR object from session
   ausstage.Contributor contributor = (ausstage.Contributor) session.getAttribute("contributor");

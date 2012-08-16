@@ -27,7 +27,8 @@
   String notes        		= "";
   String childVenueId  		= "";
   //System.out.println("Child Id:" + request.getParameter("f_child_venue_id_"));
-
+  String action = request.getParameter("act");
+  
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "", ausstage_main_page_link);
 
@@ -63,7 +64,7 @@
   }
 
   pageFormater.writePageTableFooter (out);
-  pageFormater.writeButtons (out, "", "", "", "", "venue_addedit.jsp#venue_venue_link", "next.gif");
+  pageFormater.writeButtons (out, "", "", "", "", "venue_addedit.jsp?act="+action+"#venue_venue_link", "next.gif");
   pageFormater.writeFooter(out);
   db_ausstage.disconnectDatabase();
 %><cms:include property="template" element="foot" />

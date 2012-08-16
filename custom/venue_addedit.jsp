@@ -25,13 +25,17 @@
   String              stateLeadingSubString = "", stateTrailingSubString = "";
   Vector                  temp_display_info;
   CachedRowSet        rset;
-  String              action       = request.getParameter("action");
+  String              action1       = request.getParameter("action");
+  if (action1 == null) action1 = "";
+  String action = request.getParameter("act");
+  if (action == null) action = action1;
   Common              common       = new Common();
   String                  currentUser_authId = session.getAttribute("authId").toString();
   Hashtable                    hidden_fields = new Hashtable();
   Vector venue_name_vec		= new Vector();
   Vector<VenueVenueLink> venue_link_vec		= new Vector<VenueVenueLink>();
   
+
   //PAGE NAVIGATION STUFF - dont necessarily agree with the approach, but following an existing convention....
  // Event eventObj = null;
     boolean finishButton = false;
@@ -70,12 +74,11 @@
   
   if(venue_id == null) venue_id = "";
   //use a new Venue object that is not from the session.
-  if(action != null && action.equals("add")){
+  if(action1 != null && (action1.equals("add") || action1.equals("AddForItem") )){
 		 //System.out.println("Insert");
-	    action = "add";
 	    venue_id = "";	    
   }
-  else if (action != null && action.equals("edit")){ //editing existing Venue
+  else if (action1 != null && action1.equals("edit")|| action1.equals("EditForItem")){ //editing existing Venue
     if (venue_id != null && !venue_id.equals("") && !venue_id.equals("null")) {  
       venueObj.load(Integer.parseInt(venue_id));
     }
@@ -87,8 +90,8 @@
 	
   if (isPreviewForVenueVenue == null || isPreviewForVenueVenue.equals("null")) 
 	  isPreviewForVenueVenue = "";
-  if(isPreviewForVenueVenue.equals("true") || (action != null && action.equals("ForVenueForVenue")))
-    action = "ForVenue";
+  if(isPreviewForVenueVenue.equals("true") || (action1 != null && action1.equals("ForVenueForVenue")))
+    action1 = "ForVenue";
   
   
   // get the initial state of the object(s) associated with this venue
@@ -148,8 +151,8 @@ document.body.onload=function(){load();};
   
   
   <%
-  if (action != null && action.equals("ForVenue") || isPreviewForVenueVenue.equals("true")){
-      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?action=" + action +  "' method='post'>\n");
+  if (action1 != null && action1.equals("ForVenue") || isPreviewForVenueVenue.equals("true")){
+      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?action=" + action1 +  "' method='post'>\n");
       out.println("<input type='hidden' name='isPreviewForVenueVenue' value='true'>");
       out.println("<input type='hidden' name='ForVenue' value='true'>");
   }
@@ -315,6 +318,7 @@ document.body.onload=function(){load();};
   ****************************/
   pageFormater.writeHelper(out, "Venue Association/s", "helpers_no2.gif");
   hidden_fields.clear();
+  hidden_fields.put("act", action);
 
   LookupCode lc = new LookupCode(db_ausstage);
   for(int i=0; i < venue_link_vec.size(); i++ ){
@@ -328,7 +332,6 @@ document.body.onload=function(){load();};
 		venue_name_vec.add(venueTemp.getName());
 	 }
    }
-	
 	out.println (htmlGenerator.displayLinkedItem("",
 	       "8",
 	       "venue_venues.jsp",

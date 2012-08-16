@@ -29,6 +29,7 @@
   String                  work_title           = "";
   String                  alter_work_title     = "0";
   String                  action               = request.getParameter("action");
+  if (action == null) action = "";
   int                     counter              = 0;
   ResultSet               rset;
   Common                  common               = new Common();
@@ -88,7 +89,7 @@
   
   if (isPreviewForEventWork == null || isPreviewForEventWork.equals("null")) 
     isPreviewForEventWork = "";
-  if(isPreviewForEventWork.equals("true") || (action != null && action.equals("ForEventForWork")))
+  if(isPreviewForEventWork.equals("true") || (action != null && action.equals("ForEventForWork")) || (action != null && action.equals("isPreviewForEventWork")))
     action = "ForEvent";
   
   if (isPreviewForWorkWork == null || isPreviewForWorkWork.equals("null")) 
@@ -118,10 +119,11 @@
 	  }
    }
  
-  if (action != null && action.equals("ForItem") || isPreviewForItemWork.equals("true")){
+  if (action != null && action.equals("ForItem") || isPreviewForItemWork.equals("true") || action.equals("isPreviewForItemWork")){
       out.println("<form name='work_addedit_form' id='work_addedit_form' action='work_addedit_process.jsp?action=" + action +  "' method='post' onsubmit='return checkMandatoryFields();'>\n");
       out.println("<input type='hidden' name='isPreviewForItemWork' value='true'>");
       out.println("<input type='hidden' name='ForItem' value='true'>");
+      out.println("<input type='hidden' name='act' value='"+action+"'>");
   }
   else if (action != null && action.equals("ForWork") || isPreviewForWorkWork.equals("true")){
       out.println("<form name='work_addedit_form' id='work_addedit_form' action='work_addedit_process.jsp?action=" + action +  "' method='post' onsubmit='return checkMandatoryFields();'>\n");

@@ -88,6 +88,7 @@
     eventObj = (Event)session.getAttribute("eventObj");
     eventid  = eventObj.getEventid ();
     eventObj.setEventName(common.ReplaceStrWithStr(eventObj.getEventName(),"\"","&quot;"));
+    
   }
   else {
     // first time to this page
@@ -104,7 +105,6 @@
       eventObj.load(eventidInt);
     }
   }
-
   // get the initial state of the object(s) associated with this event
   data_source_vec = eventObj.getDataSources ();
 
@@ -256,7 +256,7 @@
   {
     out.print("<option value='" + rset.getString ("statusid") + "'");
 
-    if (eventObj.getStatus().equals(rset.getString("statusid")))
+    if (rset.getString("statusid").equals(eventObj.getStatus()))
       out.print(" selected");
     out.print(">" + rset.getString ("status") + "</option>");
   }
@@ -278,7 +278,7 @@
     do{
       out.print("<option value='" + rset.getString ("descriptionsourceid") + "'");
 
-      if (eventObj.getDescriptionSource().equals(rset.getString("descriptionsourceid")))
+      if (rset.getString("descriptionsourceid").equals(eventObj.getDescriptionSource()))
         out.print(" selected");
       out.print(">" + rset.getString ("descriptionsource") + "</option>");
     }while (rset.next());
@@ -370,7 +370,7 @@
   out.println("<input type='hidden' name='f_venueid' value='" + eventObj.getVenueid() + "'>");
   out.println("<input type='text' name='f_venue_name' readonly size='50' class='line300' value=\"" + eventObj.getVenue().getName() + " - " + location + "\">");
   out.print("<td width=30><a style='cursor:hand' " +
-            "onclick=\"Javascript:event_addedit_form.action='venue_search.jsp?mode=" + mode + "';" +
+            "onclick=\"Javascript:event_addedit_form.action='venue_search.jsp?act=AddForEvent&mode=" + mode + "';" +
             "event_addedit_form.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
   pageFormater.writeTwoColTableFooter(out);
 

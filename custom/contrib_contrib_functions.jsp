@@ -19,6 +19,8 @@
   System.out.println("Contributor Id:"+contributorid);
   Vector<ContributorContributorLink> contributorContributorLinks = contributorObj.getContributorContributorLinks();
   
+  String action = request.getParameter("act");
+  
   String functionId   = "";
   String functionDesc = "";
   String notes        = "";
@@ -27,7 +29,7 @@
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);
 %>
-  <form action='contrib_contrib_functions_process.jsp' name='functions_form' id='functions_form' method='post' onsubmit='return (validateForm());'>
+  <form action='contrib_contrib_functions_process.jsp?act=<%=action%>' name='functions_form' id='functions_form' method='post' onsubmit='return (validateForm());'>
   <table cellspacing='0' cellpadding='0' border='0' width='560'> <%
   if (contributorContributorLinks.size()==0) {
     // There are no functions%>

@@ -17,7 +17,13 @@
   String                organisation_id;
   CachedRowSet          rset;
   boolean               error_occurred = false;
-  String action = request.getParameter("action");
+  String action = request.getParameter("act");
+  if (action==null)action="";
+  
+  String creator;
+  if (action.contains("Creator")){
+  	creator = "true";
+  } else creator = "false";
   
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
@@ -83,10 +89,16 @@
   {
 	    pageFormater.writeText (out, "The organisation <b>" + organisationObj.getName() + "</b> was successfully saved");
 	    pageFormater.writePageTableFooter (out);
-	    if(action != null && (action.equals("PreviewForItem") || action.equals("AddForItem")))
-	      pageFormater.writeButtons(out, "", "", "", "", "item_venues.jsp", "tick.gif");
+	    if(action != null && (action.equals("PreviewForItem")))
+	      pageFormater.writeButtons(out, "", "", "", "", "item_organisations.jsp", "tick.gif");
+	    else if (action != null && action.contains("ForEvent"))
+	      pageFormater.writeButtons(out, "", "", "", "", "event_organisations.jsp", "tick.gif");
+	    else if (action != null && action.contains("ForWork"))
+	      pageFormater.writeButtons(out, "", "", "", "", "work_organisations.jsp", "tick.gif");
+	    else if (action != null && (action.contains("ForCreatorItem")||action.contains("ForItem")))
+	      pageFormater.writeButtons(out, "", "", "", "", "item_organisations.jsp?act="+action+"&f_creator="+creator, "tick.gif");
 	    else
-	      pageFormater.writeButtons(out, "", "", "", "", "organisation_search.jsp", "tick.gif");
+	      pageFormater.writeButtons(out, "", "", "", "", "organisation_search.jsp?act="+action, "tick.gif");
 	 }
 
   db_ausstage.disconnectDatabase();

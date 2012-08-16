@@ -16,6 +16,8 @@
   CachedRowSet          rset;
   String                workid;
   String                action          = request.getParameter("action");
+  if (action == null) action = "";
+  
 
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
  
@@ -82,7 +84,7 @@
   pageFormater.writePageTableFooter (out);
   if (error_occurred)
     pageFormater.writeButtons (out, "BACK", "prev.gif", "", "", "", "");  
-  else if (action != null && action.equals("ForItem") )
+  else if (action != null && action.equals("ForItem")|| action.equals("isPreviewForItemWork") )
     pageFormater.writeButtons (out, "", "", "", "", "item_work.jsp", "tick.gif");
   else if (action != null && action.equals("ForEvent") )
     pageFormater.writeButtons (out, "", "", "", "", "event_work.jsp", "tick.gif");

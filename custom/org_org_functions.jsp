@@ -24,11 +24,16 @@
   LookupCode lookUps = new LookupCode(db_ausstage);
   //CachedRowSet rsetOrganisationFuncLookUps = lookUps.getLookupCodes("ITEM_FUNCTION");
   CachedRowSet rsetOrganisationFuncLookUps = lookUps.getLookupCodes("ORGANISATION_RELATION");
+  
+  String action = request.getParameter("act");
+  if (action == null){action = "";}
+  
 
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);
 %>
   <form action='org_org_functions_process.jsp' name='functions_form' id='functions_form' method='post' onsubmit='return (validateForm());'>
+  <input type='hidden' name='act' id='act' value='<%=action%>'>
   <table cellspacing='0' cellpadding='0' border='0' width='560'> <%
   if (organisationOrganisationLinks.size()==0) {
     // There are no functions%>

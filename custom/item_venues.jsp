@@ -169,8 +169,8 @@
   buttons_names.addElement ("Add");
   buttons_names.addElement ("Finish");
   buttons_actions.addElement ("Javascript:search_form.action='item_venues.jsp';search_form.submit();");
-  buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act=PreviewForItem';search_form.submit();");
-  buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act=AddForItem';search_form.submit();");
+  buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=EditForItem';search_form.submit();");
+  buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=AddForItem';search_form.submit();");
   buttons_actions.addElement ("Javascript:search_form.action='item_addedit.jsp#item_venues_link';search_form.submit();");
 
   selected_db_sql = "";

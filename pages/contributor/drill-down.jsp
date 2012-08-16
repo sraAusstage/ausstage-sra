@@ -573,7 +573,7 @@ Vector item_contentindlinks;
     int rowCount=0;
     rset = contributor.getAssociatedWorks(Integer.parseInt(contrib_id), stmt);
    // String description = "";
-    if(rset.next())
+    if(rset != null)
     {
     out.println("   <tr>");
       while(rset.next())
@@ -592,8 +592,8 @@ Vector item_contentindlinks;
       
     if(rowCount > 0) {
     out.println("</ul>");
-    }
     out.println("     </td>");
+    }
     out.println("   </tr>");
    }
    

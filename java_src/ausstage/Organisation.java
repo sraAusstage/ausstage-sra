@@ -926,6 +926,8 @@ public class Organisation {
 		if (m_other_names3 == null) m_other_names3 = "";
 		this.m_suburb = request.getParameter("f_suburb");
 		if (this.m_suburb == null) this.m_suburb = "";
+		this.m_state_id = request.getParameter("f_org_state_id");
+		if (this.m_state_id == null) this.m_state_id = "";
 		this.m_postcode = request.getParameter("f_postcode");
 		if (m_postcode == null) m_postcode = "";
 		this.m_state_id = request.getParameter("f_state_id");
