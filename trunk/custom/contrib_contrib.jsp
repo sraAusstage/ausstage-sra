@@ -56,6 +56,12 @@
 	boolean isPreviewForContrib = false;
 	boolean isPartOfThisContrib = false;
 
+	String action = request.getParameter("act");
+	
+	if ( action == null || action.isEmpty()){
+		action = "";
+	}
+	
 	if (request.getParameter("isPreviewForContrib") == null) {
 		isPreviewForContrib = true;
 		String contrib_id = request.getParameter("f_contribid");
@@ -88,6 +94,7 @@
 	int contribId = Integer.parseInt(f_contribid);
 	hidden_fields.put("f_contribid", f_contribid);
 	hidden_fields.put("f_contributor_id", f_contribid);
+	hidden_fields.put("act", action);
 
 	String f_select_this_contributor_id = request.getParameter("f_select_this_contributor_id");
 	String f_unselect_this_contributor_id = request.getParameter("f_unselect_this_contributor_id");
@@ -145,8 +152,8 @@
 
 	buttons_names.addElement("Select");
 	buttons_names.addElement("Finish");
-	buttons_actions.addElement("Javascript:search_form.action='contrib_contrib.jsp';search_form.submit();");
-	buttons_actions.addElement("Javascript:search_form.action='contrib_contrib_functions.jsp';search_form.submit();");
+	buttons_actions.addElement("Javascript:search_form.action='contrib_contrib.jsp?act="+action+"';search_form.submit();");
+	buttons_actions.addElement("Javascript:search_form.action='contrib_contrib_functions.jsp?act="+action+"';search_form.submit();");
 
 	selected_db_sql = "";
 	Vector<ContributorContributorLink> selectedContributors = new Vector<ContributorContributorLink>();

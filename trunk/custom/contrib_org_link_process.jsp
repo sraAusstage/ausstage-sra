@@ -20,7 +20,7 @@
   String isPreviewForItem  = request.getParameter("isPreviewForItem");
   String isPreviewForCreatorItem  = request.getParameter("isPreviewForCreatorItem");
   String isPreviewForWork  = request.getParameter("isPreviewForWork");
-  String action            = "";
+  String action            = request.getParameter("act");
   
   if (isPreviewForEvent != null && !isPreviewForEvent.equals("null") && !isPreviewForEvent.equals("")) {
     action = "PreviewForEvent";
@@ -73,7 +73,9 @@
   }else{
     pageFormater.writeText (out,error_msg);
   }
-  
+  if (action.equals("AddForEventContributor")){
+  	action = "AddForEvent";
+  }
   pageFormater.writePageTableFooter (out);
   pageFormater.writeButtons (out, "", "", "", "", "contrib_addedit.jsp?isReturn=true&act=" + action + "#contrib_org", "tick.gif");
   pageFormater.writeFooter(out);

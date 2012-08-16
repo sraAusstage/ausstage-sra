@@ -38,6 +38,9 @@
   String selected_list_db_field_id_name  = "";
   Vector selected_list_db_display_fields = new Vector ();
   String comeFromOrganisationAddeditPage         = request.getParameter("f_from_organisation_add_edit_page");
+  String action = request.getParameter("act");
+  if (action == null){action = "";}
+  
   String filter_id;
   String filter_name;
   String filter_state;
@@ -152,8 +155,8 @@
 
   buttons_names.addElement ("Select");
   buttons_names.addElement ("Finish");
-  buttons_actions.addElement ("Javascript:search_form.action='organisation_organisations.jsp';search_form.submit();");
-  buttons_actions.addElement ("Javascript:search_form.action='org_org_functions.jsp';search_form.submit();");
+  buttons_actions.addElement ("Javascript:search_form.action='organisation_organisations.jsp?act="+action+"';search_form.submit();");
+  buttons_actions.addElement ("Javascript:search_form.action='org_org_functions.jsp?act="+action+"';search_form.submit();");
  
   selected_db_sql = "";
   Vector<OrganisationOrganisationLink> selectedOrganisations = new Vector<OrganisationOrganisationLink>();
@@ -204,6 +207,8 @@
   // Need to do the following type of select of Oracle will not return the rows
   // in the correct order.
   list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
+
+  hidden_fields.put("act", action);
 
   out.println (htmlGenerator.displaySearchFilterAndSelector (
                   request, "Select Organisations",

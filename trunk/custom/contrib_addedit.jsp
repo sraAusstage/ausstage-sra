@@ -95,7 +95,8 @@
   if (action.equals("PreviewForEvent"))
     out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
                 "action='event_contributors.jsp' onsubmit='return checkFields();'>\n" +
-                "<input type=hidden name='isPreviewForEvent' value='true'>");  
+                "<input type=hidden name='act' value='PreviewForEvent'>"); 
+                //"<input type=hidden name='isPreviewForEvent' value='true'>");  
   
   else if(action.equals("ForItem"))
     out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
@@ -109,9 +110,9 @@
     out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
                 "action='contrib_addedit_process.jsp?act=" + action +  "'' onsubmit='return checkFields();'>\n" +
                 "<input type=hidden name='isPreviewForWork' value='true'>");    
-    else if(action.equals("AddForEvent") )
+  else if(action.equals("AddForEvent") )
     out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
-                "action='contrib_addedit_process.jsp?act=" + action +  "'' onsubmit='return checkFields();'>\n" +
+                "action='contrib_addedit_process.jsp?act=" + action +  "' onsubmit='return checkFields();'>\n" +
                 "<input type=hidden name='act' value='"+action+"'>");                              
   else if ((action.equals("edit") || action.equals("add") || request.getParameter("isReturn") != null))
     out.println("<form name='f_contributor_addedit' id='f_contributor_addedit' method='post' " +
@@ -128,6 +129,7 @@
   if (request.getParameter("isReturn") != null || action.equals("")) { //have returned from editing child records
     contributor = (Contributor)session.getAttribute("contributor");
     contrib_id = contributor.getId()+"";
+   
   }
 
   // Edit Contribitor
@@ -145,10 +147,10 @@
       }
     }
   }
-  else if (action.equals("PreviewForEvent")) {
+  //else if (action.equals("PreviewForEvent")) {
     // The user did not select the contributor
-    displayContribDetails = false;
-  }
+  //  displayContribDetails = false;
+  //}
   
   if (displayContribDetails) {
     if (!isPartOfThisEvent &&
@@ -161,7 +163,7 @@
     else if (request.getParameter("isReturn") != null || action.equals("")) {
     	//have returned from editing child records {
       contributor = (Contributor)session.getAttribute("contributor");
-      //System.out.println("get contributor = " + contributor);
+      //out.println("get contributor = " + contributor);
 
     }
     //System.out.println("set contributor = " + contributor);
@@ -337,7 +339,7 @@
     
     out.println("<input type='text' name='f_place_of_birth_venue_name' readonly size='50' class='line300' value=\"" + pob.getName() + "\">");
     out.print("<td width=30><a style='cursor:hand' " +
-              "onclick=\"document.f_contributor_addedit.action='venue_search.jsp?mode=" + action + "&place_of_birth=1';" +
+              "onclick=\"document.f_contributor_addedit.action='venue_search.jsp?act=" + action + "&place_of_birth=1';" +
               "document.f_contributor_addedit.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
     pageFormater.writeTwoColTableFooter(out);
     
@@ -357,7 +359,7 @@
     
     out.println("<input type='text' name='f_place_of_death_venue_name' readonly size='50' class='line300' value=\"" + pod.getName() + "\">");
     out.print("<td width=30><a style='cursor:hand' " +
-              "onclick=\"document.f_contributor_addedit.action='venue_search.jsp?mode=" + action + "&place_of_death=1';" +
+              "onclick=\"document.f_contributor_addedit.action='venue_search.jsp?act=" + action + "&place_of_death=1';" +
               "document.f_contributor_addedit.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
     
     pageFormater.writeTwoColTableFooter (out);
@@ -500,11 +502,12 @@
   %>
     <input type="hidden" name="delimited_contrib_funct_ids" value="<%=contrib_funct_ids%>">
   <%
-  
+   hidden_fields.put("act", action);
   //CODE ADDED FOR CONTRIBUTOR EDUCATIONAL INSTITUTION BY BTW 5-6-2006
   out.println("<a name='contrib_org'></a>");
   out.println (htmlGenerator.displayLinkedItem("",
                                                 "",
+                                                // "contrib_org.jsp?act=AddForEventContributor",
                                                 "contrib_org.jsp",
                                                 "f_contributor_addedit",
                                                 hidden_fields,
@@ -521,6 +524,8 @@
   out.println("<a name='contrib_contrib_link'></a>");
   pageFormater.writeHelper(out, "Contributor Association/s", "helpers_no2.gif");
   hidden_fields.clear();
+  hidden_fields.put("act", action);
+  
 	
   out.println (htmlGenerator.displayLinkedItem("",
 	        "8",

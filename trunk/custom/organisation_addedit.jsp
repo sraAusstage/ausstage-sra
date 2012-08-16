@@ -26,7 +26,10 @@
   Vector<OrganisationOrganisationLink> m_org_orglinks;
   Vector<OrganisationOrganisationLink> org_link_vec	= new Vector<OrganisationOrganisationLink>();
   Vector org_name_vec	= new Vector();
-  String action         = request.getParameter("action");
+  String isReturn	= request.getParameter("isReturn");
+  String action         = request.getParameter("act");
+  if(action == null) {action = request.getParameter("action");}
+  
   String stateLeadingSubString = "", stateTrailingSubString = "";
   String organisation_id = request.getParameter("f_organisation_id");
   //System.out.println("Organisation:"+ organisation_id );
@@ -41,15 +44,30 @@
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "", AusstageCommon.ausstage_main_page_link);
   
+   if(isReturn!=null){
+      organisationObj = (Organisation)session.getAttribute("organisationObj");
+      organisation_id  = Integer.toString(organisationObj.getId());
+   }
+  
   if(organisation_id == null) organisation_id = "";
   //use a new Organisation object that is not from the session.
-  if(action != null && action.equals("add")){
-    action = "add";
+  if(action != null && (action.equals("add") || action.equals("AddForWork") ||
+		  				action.equals("AddForEvent") || 
+		  				action.equals("AddForItem") ||
+		  				action.equals("AddForCreatorItem"))){
     organisation_id = "0";	    
   }
-  else if (action != null && action.equals("edit")){ //editing existing Orgs
-    if (organisation_id == null) {
-      organisation_id = "";
+  else if (action != null && (action.equals("edit") ||
+  							  action.equals("EditForWork") ||
+			  				  action.equals("EditForItem") ||
+				  			  action.equals("EditForEvent") ||
+							  action.equals("EditForCreatorItem"))){ //editing existing Orgs
+    if (organisation_id == null || organisation_id.equals("")) {
+    	if (request.getParameter("f_select_this_organisation_id") != null) {
+    		organisation_id = request.getParameter("f_select_this_organisation_id");
+    	} else {
+      		organisation_id = "";
+    	}
     }
     if (organisation_id != null && !organisation_id.equals("") && !organisation_id.equals("null")) {  
         organisationObj.load(Integer.parseInt(organisation_id));
@@ -90,8 +108,8 @@
         organisationObj.setPlaceOfDemise(f_selected_venue_id);
   }
 
-  if (action != null && action.equals("ForOrganisation") || isPreviewForOrgOrg.equals("true")){
-      out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp?action=" + action +  "' method='post' onsubmit='return checkFields();'>\n");
+  if (action != null && action.equals("ForOrganisation")||action.equals("EditForEvent")|| isPreviewForOrgOrg.equals("true")){
+      out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp?act=" + action +  "' method='post' onsubmit='return checkFields();'>\n");
       out.println("<input type='hidden' name='isPreviewForOrgOrg' value='true'>");
       out.println("<input type='hidden' name='ForOrganisation' value='true'>");
       out.println("<input type='hidden' name='f_orgid' value='" + organisation_id + "'>");
@@ -145,7 +163,7 @@
   pob.load(Integer.parseInt((organisationObj.getPlaceOfOrigin()!= null&&!organisationObj.getPlaceOfOrigin().equals(""))?organisationObj.getPlaceOfOrigin():"0"));
     
   out.println("<input type='text' name='f_place_of_origin_venue_name' readonly size='50' class ='line300' value=\"" + pob.getName() + "\">");
-  out.print("<td width=30><a style='cursor:hand' " + " onclick=\"Javascript:organisation_addedit_form.action='venue_search.jsp?mode=" + action + "&place_of_origin=1';" +
+  out.print("<td width=30><a style='cursor:hand' " + " onclick=\"Javascript:organisation_addedit_form.action='venue_search.jsp?act=" + action + "&place_of_origin=1';" +
               "organisation_addedit_form.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
   pageFormater.writeTwoColTableFooter(out);
 
@@ -163,7 +181,7 @@
   pod.load(Integer.parseInt((organisationObj.getPlaceOfDemise()!=null&&!organisationObj.getPlaceOfDemise().equals(""))?organisationObj.getPlaceOfDemise():"0"));
 
   out.println("<input type='text' name='f_place_of_demise_venue_name' readonly size='50' class ='line300' value=\"" + pod.getName() + "\">");
-  out.print("<td width=30><a style='cursor:hand' " + " onclick=\"Javascript:organisation_addedit_form.action='venue_search.jsp?mode=" + action + "&place_of_demise=1';" +
+  out.print("<td width=30><a style='cursor:hand' " + " onclick=\"Javascript:organisation_addedit_form.action='venue_search.jsp?act=" + action + "&place_of_demise=1';" +
       "organisation_addedit_form.submit();\"><img border='0' src='/custom/images/popup_button.gif'></a></td>");
   pageFormater.writeTwoColTableFooter(out);
   
@@ -182,6 +200,7 @@
 
   // Display all of the states
   while (rset.next()){
+
   String selected = "";
     if (organisationObj.getState().equals(rset.getString("stateid")))//editing existing state
         selected = "selected";
@@ -199,7 +218,7 @@
   out.println("</select>");
   pageFormater.writeTwoColTableFooter(out);
 
-  pageFormater.writeTwoColTableHeader(out, "Postcode *");
+  pageFormater.writeTwoColTableHeader(out, "Postcode");
   out.println("<input type=\"text\" name=\"f_postcode\" size=\"5\" class=\"line50\" maxlength=40 value=\"" + ((organisationObj.getPostcode() == null)?"":organisationObj.getPostcode()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
@@ -298,7 +317,7 @@
   out.println("<a name='organisation_organisation'></a>");
   pageFormater.writeHelper(out, "Organisation Association/s", "helpers_no2.gif");
   hidden_fields.clear();
-
+  hidden_fields.put("act", action);
   out.println (htmlGenerator.displayLinkedItem("",
                                       "6",
                                       "organisation_organisations.jsp",
@@ -340,7 +359,7 @@
 
   
   pageFormater.writePageTableFooter (out);
-  if (action != null && action.equals("Preview/EditForEvent"))
+  if (action != null && action.equals("EditForEvent"))
     pageFormater.writeButtons(out, "back", "prev.gif", "", "", "submit", "tick.gif");
   else
     pageFormater.writeButtons(out, "back", "prev.gif", "welcome.jsp", "cross.gif", "submit", "next.gif");

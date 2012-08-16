@@ -167,15 +167,15 @@
   selected_list_db_display_fields.addElement ("suburb");
 
   buttons_names.addElement ("Select");
-  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true"))){
+  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true") || isPreviewForEventWork.equals("true"))){
     buttons_names.addElement ("Edit/View");
     buttons_names.addElement ("Add");
   }
   buttons_names.addElement ("Finish");
   buttons_actions.addElement ("Javascript:search_form.action='work_organisations.jsp';search_form.submit();");
-  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true"))){
-    buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?act=ForWork';search_form.submit();");
-    buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?act=ForWork';search_form.submit();");
+  if(!(isPreviewForItemWork.equals("true") || isPreviewForItemWork.equals("true") || isPreviewForEventWork.equals("true"))){
+    buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?act=EditForWork';search_form.submit();");
+    buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?act=AddForWork';search_form.submit();");
   }
   buttons_actions.addElement ("Javascript:search_form.action='work_organ_functions.jsp';search_form.submit();");
   selected_db_sql = "";
@@ -213,7 +213,7 @@
 "CONCAT_WS(', ',name,if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date)))) as OUTPUT "+
 "FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) "+
 "LEFT JOIN events ON (orgevlink.eventid = events.eventid)  "+
-"GROUP BY organisation.organisationid ";
+"GROUP BY organisation.organisationid order by organisation.name ";
   }
   else
   {
@@ -236,7 +236,7 @@
    // if (!filter_suburb.equals (""))
     //  list_db_sql += "and LOWER(suburb) like '%" + db_ausstage.plSqlSafeString(filter_suburb.toLowerCase()) + "%' ";*/
       
-    list_db_sql += "Group by organisation.organisationid" ;
+    list_db_sql += "Group by organisation.organisationid order by organisation." + request.getParameter("f_order_by");
   }
 
   // Need to do the following type of select of Oracle will not return the rows

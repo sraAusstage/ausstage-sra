@@ -167,6 +167,8 @@
     pageFormater.writePageTableFooter (out);
     if (action.equals("AddForEvent"))
       pageFormater.writeButtons (out, "", "", "", "", "event_contributors.jsp", "tick.gif");
+    else if(action.equals("PreviewForEvent"))
+      pageFormater.writeButtons (out, "", "", "", "", "event_contributors.jsp?", "tick.gif");
     else if(action.equals("ForItem"))
       pageFormater.writeButtons (out, "", "", "", "", "item_contributors.jsp?Creator=FALSE", "tick.gif");
     else if(action.equals("ForCreatorItem"))

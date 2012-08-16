@@ -44,6 +44,8 @@
   String filter_suburb;
   String filter_box_selected;
   
+  String action = request.getParameter("act");
+  
   Hashtable hidden_fields = new Hashtable();
   Venue  venue   = (Venue)session.getAttribute("venueObj");
   if (venue == null) venue = new Venue(db_ausstage);
@@ -159,8 +161,8 @@
 
   buttons_names.addElement ("Select");
   buttons_names.addElement ("Finish");
-  buttons_actions.addElement ("Javascript:search_form.action='venue_venues.jsp';search_form.submit();");
-  buttons_actions.addElement ("Javascript:search_form.action='venue_venue_functions.jsp';search_form.submit();");
+  buttons_actions.addElement ("Javascript:search_form.action='venue_venues.jsp?act="+action+"';search_form.submit();");
+  buttons_actions.addElement ("Javascript:search_form.action='venue_venue_functions.jsp?act="+action+"';search_form.submit();");
 
   //because the vector that gets returned contains only linked
   //venue ids as strings we need to create a temp vector
@@ -207,6 +209,7 @@
   
     list_db_sql += "order by " + request.getParameter ("f_order_by");
   }
+	hidden_fields.put("act", action);
 
   out.println (htmlGenerator.displaySearchFilterAndSelector (
                   request, "Select Venues",

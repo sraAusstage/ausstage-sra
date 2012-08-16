@@ -23,11 +23,12 @@
   String notes        = "";
   LookupCode lookUps = new LookupCode(db_ausstage);
   CachedRowSet rsetVenueFuncLookUps = lookUps.getLookupCodes("VENUE_FUNCTION");
-
+  String action = request.getParameter("act");
+  
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "Define Resource Link Properties", AusstageCommon.ausstage_main_page_link);
 %>
-  <form action='venue_venue_functions_process.jsp' name='functions_form' id='functions_form' method='post' onsubmit='return (validateForm());'>
+  <form action='venue_venue_functions_process.jsp?act=<%=action%>' name='functions_form' id='functions_form' method='post' onsubmit='return (validateForm());'>
   <table cellspacing='0' cellpadding='0' border='0' width='560'> <%
   if (venueVenueLinks.size()==0) {
     // There are no functions%>

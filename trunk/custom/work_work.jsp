@@ -46,6 +46,11 @@
 	String filter_work_title;
 	String filter_box_selected;
 	Work w;
+	String isPreviewForEventWork = request.getParameter("isPreviewForEventWork");
+	if (isPreviewForEventWork == null){isPreviewForEventWork = "false";}
+	String isPreviewForItemWork = request.getParameter("isPreviewForItemWork");
+	if (isPreviewForItemWork == null){isPreviewForItemWork = "false";}
+	
 
 	Hashtable hidden_fields = new Hashtable();
 	Work work = (Work) session.getAttribute("work");
@@ -73,6 +78,7 @@
 	String f_workid = work.getId();
 	int workId = Integer.parseInt(f_workid);
 	hidden_fields.put("f_workid", f_workid);
+	hidden_fields.put("isPreviewForEventWork", isPreviewForEventWork);
 
 	String f_select_this_work_id = request.getParameter("f_select_this_work_id");
 	String f_unselect_this_work_id = request.getParameter("f_unselect_this_work_id");
@@ -182,7 +188,7 @@
 
 		list_db_sql += "group by work.workid order by LOWER(" + request.getParameter("f_order_by") + ")";
 	}
-
+	hidden_fields.put("isPreviewForItemWork", isPreviewForItemWork );
 	list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
 	out.println(htmlGenerator.displaySearchFilterAndSelector(request, "Select Work", "Selected Work", filter_display_names, filter_names, order_display_names, order_names,
 			list_name, list_db_sql, list_db_field_id_name, textarea_db_display_fields, selected_list_name, selectedWorks, selected_list_db_field_id_name, buttons_names,

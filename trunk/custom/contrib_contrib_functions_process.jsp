@@ -23,6 +23,8 @@
 	String functionId = "";
 	String notes = "";
 	String childContributorId = "";
+	
+	String action = request.getParameter("act");
 
 	pageFormater.writeHeader(out);
 	pageFormater.writePageTableHeader(out, "", ausstage_main_page_link);
@@ -54,7 +56,15 @@
 	}
 
 	pageFormater.writePageTableFooter(out);
-	pageFormater.writeButtons(out, "", "", "", "", "contrib_addedit.jsp#contributor_contributor_link", "next.gif");
+	if (action.equals("PreviewForEvent")){ 
+	  pageFormater.writeButtons(out, "", "", "", "", "contrib_addedit.jsp?act=" + action + "&isReturn=true#contributor_contributor_link", "next.gif");
+	}
+	else if (action.equals("AddForEvent")){ 
+	  pageFormater.writeButtons(out, "", "", "", "", "contrib_addedit.jsp?act=" + action + "&isReturn=true#contributor_contributor_link", "next.gif");
+	}
+	else{
+	  pageFormater.writeButtons(out, "", "", "", "", "contrib_addedit.jsp?act=" + action + "&isReturn=true#contributor_contributor_link", "next.gif");
+	}
 	pageFormater.writeFooter(out);
 	db_ausstage.disconnectDatabase();
 %>

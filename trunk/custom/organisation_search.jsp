@@ -66,8 +66,8 @@
   buttons_names.addElement ("Add");
   buttons_names.addElement ("Edit/View");
   buttons_names.addElement ("Delete");
-  buttons_actions.addElement ("Javascript:location.href='organisation_addedit.jsp?action=add'");
-  buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?action=edit';search_form.submit();");
+  buttons_actions.addElement ("Javascript:location.href='organisation_addedit.jsp?act=add'");
+  buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?act=edit';search_form.submit();");
   buttons_actions.addElement ("Javascript:search_form.action='organisation_del_confirm.jsp';search_form.submit();");
     
   // if first time this form has been loaded
@@ -77,8 +77,8 @@
      list_db_sql =   "SELECT organisation.organisationid, name, if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) dates, "+
 "CONCAT_WS(', ',name,if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date)))) as OUTPUT "+
 "FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) "+
-"LEFT JOIN events ON (orgevlink.eventid = events.eventid)  "+
-"GROUP BY organisation.organisationid ";
+"LEFT JOIN events ON (orgevlink.eventid = events.eventid) "+
+"GROUP BY organisation.organisationid order by organisation.name  ";
   }
   else
   {

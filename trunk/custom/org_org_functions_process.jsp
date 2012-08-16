@@ -26,6 +26,8 @@
   String functionId   = "";
   String notes        = "";
   String childOrganisationId  = "";
+  String action = request.getParameter("act");
+  if (action == null ) {action = "";}
 
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "", ausstage_main_page_link);
@@ -62,7 +64,7 @@
   }
 
   pageFormater.writePageTableFooter (out);
-  pageFormater.writeButtons (out, "", "", "", "", "organisation_addedit.jsp#organisation_organisation_link", "next.gif");
+  pageFormater.writeButtons (out, "", "", "", "", "organisation_addedit.jsp?act="+action+"&isReturn=true#organisation_organisation_link", "next.gif");
   pageFormater.writeFooter(out);
   db_ausstage.disconnectDatabase();
 %><cms:include property="template" element="foot" />

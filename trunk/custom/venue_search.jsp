@@ -41,6 +41,8 @@
   //System.out.println("Birth:" +birth_place );
   //System.out.println("Death:" +death_place );
 
+  String action = request.getParameter("act");
+  if (action == null) action = "";
   // Have we just come from event_addedit.jsp?
   Contributor contribObj = null;
   Organisation organisationObj = null;
@@ -59,19 +61,21 @@
     placeOfOriginButton = true;
   } else if (request.getParameter("place_of_demise") != null) {
     placeOfDemiseButton = true;    
-  } else if (request.getParameter("f_eventid") != null) {
+  } else if (request.getParameter("f_eventid") != null || action.contains("ForEvent")) {
     eventObj = (Event)session.getAttribute("eventObj"); // Get the Event object.
-    if (eventObj == null)                               // Make sure it exists
+    if (eventObj == null) {                              // Make sure it exists
       eventObj = new Event(db_ausstage);
-    eventObj.setEventAttributes(request);               // Update it with the request data.
+      }
+    if (request.getParameter("f_event_name") != null) {
+      eventObj.setEventAttributes(request);               // Update it with the request data if there's data in the request.
+    }
     session.setAttribute("eventObj", eventObj);         // And put it back into the session.
     finishButton = true;                                // Need a Finish Button for the user.
   } else {
     eventObj = (Event)session.getAttribute("eventObj"); // Do we need a Finish Button anyway?
-    if (eventObj != null)
-      finishButton = true;
+    //if (eventObj != null)
+    //  finishButton = true;
   }
-  
   String contributor_id = request.getParameter("f_contrib_id");
   //System.out.println("Contributor Id:"+contributor_id);
   if (request.getParameter("f_contrib_id") != null) {
@@ -120,46 +124,53 @@
   list_db_field_id_name  = "venueid";
   textarea_db_display_fields.addElement ("OUTPUT");
   
-
-  buttons_names.addElement ("Add");
+  if (!placeOfBirthButton&&!placeOfDeathButton&&!placeOfOriginButton&&!placeOfDemiseButton){	
+  	buttons_names.addElement ("Add");
+  	buttons_names.addElement ("Edit/View");
+  	buttons_names.addElement ("Delete");
+  }
   
-  buttons_names.addElement ("Edit/View");
-  buttons_names.addElement ("Delete");
+
+  
+
   if (finishButton || placeOfOriginButton || placeOfDemiseButton  || placeOfBirthButton || placeOfDeathButton) buttons_names.addElement ("Finish"); // Have to go back to Event Maintenance
 
   
-  
-  
+
   if (finishButton){
-    buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add'");
-    buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit';search_form.submit();");  
+    buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?act="+action+"&action=add'");
+    buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act="+action+"&action=edit';search_form.submit();");  
     buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
     buttons_actions.addElement ("Javascript:search_form.action='event_addedit.jsp';search_form.submit();");
   }
-  if (placeOfBirthButton){
-  	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_birth=1'");
-  	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_birth=1';search_form.submit();");
-  	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp&place_of_birth=1';search_form.submit();");
-    	buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?place_of_birth=1';search_form.submit();");
+  else if (placeOfBirthButton){
+  	//buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_birth=1'");
+  	//buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act="+action+"&action=edit&place_of_birth=1';search_form.submit();");
+  	//buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp&place_of_birth=1';search_form.submit();");
+    	buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?act="+action+"&place_of_birth=1&isReturn=true';search_form.submit();");
   }
   else if (placeOfDeathButton){
-	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_death=1'");
-  	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_death=1';search_form.submit();");
-	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp&place_of_death=1';search_form.submit();");  
-    	buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?place_of_death=1';search_form.submit();");
+	//buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_death=1'");
+  	//buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act="+action+"&action=edit&place_of_death=1';search_form.submit();");
+	//buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp&place_of_death=1';search_form.submit();");  
+    	buttons_actions.addElement ("Javascript:search_form.action='contrib_addedit.jsp?act="+action+"&place_of_death=1&isReturn=true';search_form.submit();");
   } 	
-  if (placeOfOriginButton){
-  	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_origin=1'");
-	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_origin=1';search_form.submit();");  
-  	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
-    	buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?place_of_origin=1';search_form.submit();");
+  else if (placeOfOriginButton){
+  	//buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_origin=1'");
+	//buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act="+action+"&action=edit&place_of_origin=1';search_form.submit();");  
+  	//buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
+    	buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?act="+action+"&place_of_origin=1&isReturn=true';search_form.submit();");
   }
   else if (placeOfDemiseButton){
-  	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_demise=1'");
-	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?action=edit&place_of_demise=1';search_form.submit();");  
-  	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
-    	buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?place_of_demise=1';search_form.submit();");
+  	//buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?action=add&place_of_demise=1'");
+	//buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act="+action+"&action=edit&place_of_demise=1';search_form.submit();");  
+  	//buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
+    	buttons_actions.addElement ("Javascript:search_form.action='organisation_addedit.jsp?act="+action+"&place_of_demise=1&isReturn=true';search_form.submit();");
 	
+  }else {
+  	buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?act="+action+"&action=add'");
+ 	buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act="+action+"&action=edit';search_form.submit();");  
+ 	buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp?act="+action+"';search_form.submit();");
   }
   // if first time this form has been loaded
   if (filter_id == null)
@@ -167,7 +178,7 @@
     list_db_sql = "select venueid, venue_name, street , suburb ,states.state as state,country.countryname, "+
     "CONCAT_WS(', ',venue.venue_name,venue.street,venue.suburb,IF(states.state='O/S', country.countryname, states.state)) AS OUTPUT "+ 
     "from venue LEFT Join states on (venue.state = states.stateid) "+
- 	" LEFT join country on (venue.countryid = country.countryid) order by venue_name";
+ 	" LEFT join country on (venue.countryid = country.countryid) order by venue_name ";
   }
   else
   {
@@ -188,7 +199,7 @@
     if (filter_suburb!= null && !filter_suburb.equals (""))
       list_db_sql += "and LOWER(suburb) like '%" + db_ausstage.plSqlSafeString(filter_suburb.toLowerCase()) + "%' ";
   
-    list_db_sql += "order by " + request.getParameter ("f_order_by");
+    list_db_sql += " order by " + request.getParameter ("f_order_by");
   }
   //pageFormater.writeHelper(out, "Venue Maintenance","helpers_no1.gif");
    list_db_sql = list_db_sql + " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
