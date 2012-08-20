@@ -4,11 +4,14 @@
   <page language="en">
     <element name="body">
       <links>
-        <link name="link4" internal="true" type="IMG">
-          <target><![CDATA[/custom/files/resourceicongrey.gif]]></target>
+        <link name="link6" internal="false" type="A">
+          <target><![CDATA[../../../search/resource/]]></target>
         </link>
-        <link name="link5" internal="true" type="IMG">
-          <target><![CDATA[/custom/files/resourceicongreen.gif]]></target>
+        <link name="link4" internal="false" type="A">
+          <target><![CDATA[../../../search/]]></target>
+        </link>
+        <link name="link5" internal="false" type="A">
+          <target><![CDATA[../../../search/event/]]></target>
         </link>
         <link name="link2" internal="true" type="A">
           <target><![CDATA[]]></target>
@@ -34,7 +37,7 @@
     <li><a href="%(link2)">Event Search</a> - find events using an advanced search</li>
     <li><a href="%(link3)">Resource Search</a> - find resources using advanced search</li>
 </ul>
-<h2><a name="Basic_Search">Basic Search</a></h2>
+<h2><a name="Basic_Search" href="%(link4)">Basic Search</a></h2>
 <h3>Enter your search words</h3>
 <p>Enter some words for your search. A good way to start is to&nbsp;enter some words from the name of:</p>
 <ul>
@@ -73,7 +76,7 @@
 </ul>
 <h3>Restrict by year</h3>
 <p>Enter a year (e.g. 1999) or&nbsp;year range (e.g. 2002 - 2012) for the event or events you want to find. You can only enter dates when searching for Events and All Records.</p>
-<h2><a name="Search_Tips">Search Tips</a></h2>
+<h2><a name="Search_Tips"></a>Search Tips</h2>
 <h3>Capitalisation</h3>
 <p>The word search is not case sensitive. Variations in capitalisation will not affect the search results.</p>
 <h3>Diacritics</h3>
@@ -92,17 +95,7 @@
     <li>Will%m will find william and willem;</li>
     <li>Shake% will find Shakepeare and Shakespearian.</li>
 </ul>
-<h3>Resources</h3>
-<p>A resource is&nbsp;a review, programme, photograph, video, book, article, collection etc. Resource icons indicate when related resources are recorded.</p>
-<ul dir="ltr">
-    <li>
-    <div style="margin-right: 0px"><img alt="Related Resource" src="%(link4)" /> A grey resource icon indicates that there are resource records relating to an event, contributor, organisation or venue.</div>
-    </li>
-    <li>
-    <div style="margin-right: 0px"><img alt="Related Resource" src="%(link5)" /> A green resource icon indicates that there are online resources relating to an event, contributor, organisation or venue.</div>
-    </li>
-</ul>
-<h2><a name="Event_Search">Event Search</a></h2>
+<h2><a name="Event_Search" href="%(link5)" target="_self">Event Search</a></h2>
 <p>An event is a discrete happening, defined by title, date and venue, typically a performance or&nbsp;run of performances at a venue. Multiple presentations of the same production at different venues (e.g. touring productions) are recorded as separate events.</p>
 <p>Use Event Search to search for specific events. Provide enough information to identify the event or set of events you wish to retrieve.</p>
 <ul>
@@ -134,7 +127,7 @@
     <li>Sort by: Select to sort the results by Title, Date, Venue or State.</li>
 </ul>
 <p>The search returns a list of Events matching the information you provide. The more information you provide, the narrower your search. If your search retrieves no results, try providing less information.</p>
-<h2><a name="Resource_Search">Resource Search</a></h2>
+<h2><a name="Resource_Search" href="%(link6)" target="_self">Resource Search</a></h2>
 <p style="margin-right: 0px">A resource is a review, programme, photograph, video, book, article, collection etc. Resources convey information about events, contributors, organisations and venues. Some resources exist as individual items stored in collections&nbsp;(e.g.&nbsp;programs, posters, photographs). Other resources exist as multiple copies in libraries (books, journals, articles and so on).</p>
 <p>Use&nbsp;Resource Search to search for specific resources. Provide enough information to identify the&nbsp;resource or set of resources you wish to retrieve.</p>
 <ul dir="ltr">

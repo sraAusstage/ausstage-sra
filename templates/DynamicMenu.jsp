@@ -56,17 +56,17 @@ public void buildSiteMap(CmsJspActionElement cms,
 
           if (currentFolder.indexOf(nav.getResourceName()) > -1)
           {
-            out.write("<a class='family_links_current current" + spacer + "' href='" + target + "'>" + navText + "</a>\n");
+            out.write("<li><a class='family_links_current current" + spacer + "' href='" + target + "'>" + navText + "</a></li>\n");
           } else {
-            out.write("<a class='family_links_current" + spacer + "' href='" + target + "'>" + navText + "</a>\n");
+            out.write("<li><a class='family_links_current" + spacer + "' href='" + target + "'>" + navText + "</a></li>\n");
           }
           if ( (currentFolder.indexOf(nav.getResourceName()) > -1 && onlyShowCurrent) || !onlyShowCurrent) buildSiteMap(cms, nav.getResourceName(), out, onlyShowCurrent, currentFolder, currentPage, indent);
         } else {
           if (nav.getResourceName().equals(currentPage))
           {
-            out.write("<a href='?' class='current family_links_current" + spacer + "'>" + navText + "</a>\n");
+            out.write("<li><a href='?' class='current family_links_current" + spacer + "'>" + navText + "</a></li>\n");
           } else {
-            out.write("<a class='family_links_current" + spacer + "' href='" + nav.getResourceName().substring("/system/modules/au.edu.flinders.ausstage".length()) + "' >" + navText + "</a>\n");
+            out.write("<li><a class='family_links_current" + spacer + "' href='" + nav.getResourceName().substring("/system/modules/au.edu.flinders.ausstage".length()) + "' >" + navText + "</a></li>\n");
           }
         }
       }

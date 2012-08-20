@@ -4,36 +4,61 @@
   <page language="en">
     <element name="body">
       <links>
-        <link name="link2" internal="true" type="A">
-          <target><![CDATA[/system/modules/au.edu.flinders.ausstage/pages/static/contact/privacy.html]]></target>
-          <uuid>693e07fa-4562-11e1-af73-b1f39cd7ff4f</uuid>
+        <link name="link4" internal="false" type="A">
+          <target><![CDATA[../contact/]]></target>
         </link>
-        <link name="link3" internal="true" type="A">
-          <target><![CDATA[/system/modules/au.edu.flinders.ausstage/pages/static/contact/index.html]]></target>
-          <uuid>6028c6b0-455f-11e1-af73-b1f39cd7ff4f</uuid>
+        <link name="link5" internal="false" type="A">
+          <target><![CDATA[../contact/privacy.html]]></target>
+        </link>
+        <link name="link2" internal="false" type="A">
+          <target><![CDATA[../contact/cultural-advice.html]]></target>
+        </link>
+        <link name="link3" internal="false" type="A">
+          <target><![CDATA[../contact/privacy.html]]></target>
         </link>
         <link name="link0" internal="false" type="A">
           <target><![CDATA[training.html]]></target>
         </link>
-        <link name="link1" internal="true" type="A">
-          <target><![CDATA[/system/modules/au.edu.flinders.ausstage/pages/static/contact/terms-of-use.html]]></target>
-          <uuid>e957fc31-4560-11e1-af73-b1f39cd7ff4f</uuid>
+        <link name="link1" internal="false" type="A">
+          <target><![CDATA[../contact/terms-of-use.html]]></target>
         </link>
       </links>
       <content><![CDATA[<h1>Register</h1>
 <p>Anyone who uses AusStage is welcome to register as a user.</p>
-<p>Registered users can log in to AusStage with a username and password, then post comments and attach tags to records. On completing a program of <a target="_self" href="%(link0)">training</a> in data entry protocols and procedures, registered users can add, edit and copy AusStage records.</p>
+<p>Registered users can log in to AusStage with a username and password, then post comments and attach tags to records. On completing a program of <a href="%(link0)" target="_self">training</a> in data entry protocols and procedures, registered users can add, edit and copy AusStage records.</p>
 <p>When you register with AusStage you will be asked to share your contributions under the Creative Commons licence: Attribution, Non-commercial, Share Alike. Under this licence, you grant AusStage permission to share your contributions with other users.</p>
-<p>Users are advised that all contributions to AusStage, including comments and tags,&nbsp;are subject to editorial review. Please read our <a target="_self" href="%(link1)">Terms of Use</a> and <a target="_self" href="%(link2)">Privacy Policy</a> for further information.</p>
-<h2>New user registration [form]</h2>
-<p>[Name]*</p>
-<p>[Email]*</p>
-<p>[Organisation]</p>
-<p>[Message]</p>
-<p>[Username]*</p>
-<p>[Password]*</p>
-<p>[Submit]</p>
-<p>Please <a target="_self" href="%(link3)">contact us</a> if you have a question.</p>]]></content>
+<p>Users are advised that all contributions to AusStage, including comments and tags,&nbsp;are subject to editorial review. Please read our <a href="%(link1)" target="_self">Terms of Use</a>, <a href="%(link2)" target="_self">Cultural Advice</a> and <a href="%(link3)" target="_self">Privacy Policy</a> for further information. Please <a href="%(link4)" target="_self">contact</a> the Project Manager if you have any questions.</p>
+<h2>New Users</h2>
+<form>
+    <table>
+        <tbody>
+            <tr>
+                <th valign="top" align="right">Name &nbsp;</th>
+                <td><input type="text" size="60" name="name" /></td>
+            </tr>
+            <tr>
+                <th valign="top" align="right">Organisation</th>
+                <td><input type="text" size="60" name="organisation" /></td>
+            </tr>
+            <tr>
+                <th valign="top" align="right" type="email">Email &nbsp;</th>
+                <td><input type="text" size="60" name="email" /></td>
+            </tr>
+            <tr>
+                <th valign="top" align="right">Message &nbsp;</th>
+                <td><textarea name="message" cols="60" rows="5"></textarea></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td><button type="submit">Submit</button></td>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <td>Thank you for your interest in AusStage. Please include your name and email address so that we can confirm your registration.&nbsp; We respect the <a target="_self" href="%(link5)">privacy</a> of personal information.</td>
+            </tr>
+        </tbody>
+    </table>
+</form>]]></content>
     </element>
   </page>
 </pages>
