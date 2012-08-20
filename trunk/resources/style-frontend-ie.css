@@ -79,8 +79,8 @@ div {
 /* S I D E B A R */
 #sidebar {
 	float: left;
-	width: 175px;
-	padding: 10px;
+	width: 218px;
+	padding: 5px;
 	margin: 10px;
 }
 
@@ -98,8 +98,8 @@ div {
 }
 
 .staticpage {
-	margin-left: 220px;
-	padding-bottom: 70px;
+	margin-left: 240px;
+	padding: 0px 10px 60px 10px;
 }
 
 /* T E X T */

@@ -123,13 +123,13 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 </ul>
 </div>
 
-<div id="sidebar" class="sidebar b-186">
-	<div class="peekaboo-tohide">
+<div id="sidebar" class="page-menu b-175">
+	<ul class="page-menu-list">
 		<% 
 		CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
 		%>
 		<%@ include file="DynamicMenu.jsp"%>
-	</div>
+	</ul>
 </div>
 <div class="staticpage">
 </cms:template>

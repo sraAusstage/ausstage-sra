@@ -1,0 +1,6 @@
+User-Agent: *
+Crawl-Delay: 60
+
+Disallow: ?id=
+Disallow: /pages/map/
+Disallow: /pages/network/

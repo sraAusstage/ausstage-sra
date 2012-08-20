@@ -5,18 +5,287 @@
     <element name="body">
       <links/>
       <content><![CDATA[<h1>Data Models</h1>
-<h2>Tables, fields and definitions</h2>
-<h3>Event</h3>
-<h3>Contributor</h3>
-<h3>Organisation</h3>
-<h3>Venue</h3>
-<h3>Resource</h3>
-<h3>Work</h3>
+<h2>Events</h2>
+<dl>
+    <dt>events</dt>
+    <dd>A distinct happening defined by title, date/s and venue; typically, a performance or series of performances at a venue. This is the core table of Ausstage. Multiple presentations of the same production at different venues (e.g. touring productions) are recorded as separate events.</dd>
+    <dd> <br />
+    </dd>
+    <dt>event_name</dt>
+    <dd>The title or name of an event. Free text. Using preceding capitals except for articles, prepositions and pronouns. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>umbrella</dt>
+    <dd>The festival or series in which an event is presented. Enter only if applicable. Free text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>venueid</dt>
+    <dd>The unique number identifying the venue at which the event occurred. Displayed as venue name, suburb, state (if Australia) or country (if overseas). Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>ddfirst_date</dt>
+    <dd>The day of the event's first public presentation even if a preview. Enter as numerals. Display as numerals.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmfirst_date</dt>
+    <dd>The month of the event's first public presentation, even if a preview.  Enter as numerals. Display as text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyyfirst_date</dt>
+    <dd>The year of the event's first public presentation even if a preview.  Enter as numerals. Displayed as numerals. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>sndfirst_date</dt>
+    <dd>The date of the event's first public showing, even if preview. Automatically generated.</dd>
+    <dd> <br />
+    </dd>
+    <dt>ddopening_night</dt>
+    <dd>The day of the event's opening public showing - not a preview. Enter as numerals. Displayed as numeric.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmopening_night</dt>
+    <dd>The month of the event's opening public showing - not a preview.  Enter as numerals. Display as text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyyopening_night</dt>
+    <dd>The year of the event's opening public showing - not a preview.  Enter as numerals. Displayed as numeric.</dd>
+    <dd> <br />
+    </dd>
+    <dt>sndopening_night</dt>
+    <dd>The date of the event's opening public showing - not a preview. Automatically generated.</dd>
+    <dd> <br />
+    </dd>
+    <dt>ddlast_date</dt>
+    <dd>The day of the event's last public presentation.  Enter as numerals. Displayed as numerals.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmlast_date</dt>
+    <dd>The month of the event's first public presentation.  Enter as numerals. Display as text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyylast_date</dt>
+    <dd>The year of the event's first public showing.  Enter as numerals. Displayed as numerals.</dd>
+    <dd> <br />
+    </dd>
+    <dt>sndlast_date</dt>
+    <dd>The date of the event's last public showing. Automatically generated.</dd>
+    <dd> <br />
+    </dd>
+    <dt>estimated_dates</dt>
+    <dd>Are the event's dates are estimated?. Binary selection: either yes or no.</dd>
+    <dd> <br />
+    </dd>
+    <dt>status</dt>
+    <dd>The socio-economic status of the production of an event. Encompasses a range from professional to amateur. Select from the controlled list. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>world_premier</dt>
+    <dd>Is the event a world premiere (being presented for the very first time)?. Binary selection: either yes or no.</dd>
+    <dd> <br />
+    </dd>
+    <dt>part_of_a_tour</dt>
+    <dd>Is the event is part of a touring production?. Binary selection: either yes or no.</dd>
+    <dd> <br />
+    </dd>
+    <dt>description</dt>
+    <dd>A short description of the content or significance of the event.  Free text. Preferably derived from an existing resource and referenced in Description Source. Add referenced resource to the Resource table.</dd>
+    <dd> <br />
+    </dd>
+    <dt>description_source</dt>
+    <dd>Denoting the source of the event description entered in the free text field above.  To be chosen from controlled list.</dd>
+    <dd> <br />
+    </dd>
+    <dt>primary_genre</dt>
+    <dd>A category indicating the kind of event, as defined by its main mode of performance. Select from the controlled list,  noting associations between primary and secondary genres. 'Other' is to be used only as a last resort. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>further_information</dt>
+    <dd>Any additional relevant information about the event not already covered by the available fields. Not to be confused with event description, which aims to summarise the content of the event. Free text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>review</dt>
+    <dd>Is the record reviewed?. Binary selection: either yes or no. If yes, displayed as user name of reviewer (from updated_by_user) and date.</dd>
+    <dd> <br />
+    </dd>
+    <dt>eventid</dt>
+    <dd>A unique number identifying an event.  Automatically generated. Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>entered_by_user</dt>
+    <dd>The user name of the user entering the data. Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_entered</dt>
+    <dd>The day of data entry.  Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_entered</dt>
+    <dd>The month of data entry. Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_entered</dt>
+    <dd>The year of data entry.  Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>snddate_entered</dt>
+    <dd>The date of data entry. Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>updated_by_user</dt>
+    <dd>The name of the user updating the data. Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_updated</dt>
+    <dd>The day of data update.  Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_updated</dt>
+    <dd>The month of data update.  Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_updated</dt>
+    <dd>The year of data update.  Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>snddate_updated</dt>
+    <dd>The date of data update. Automatically generated.</dd>
+</dl>
+<h2>Contributor</h2>
+<dl>
+    <dt>contributor</dt>
+    <dd>An individual who contributes in some capacity to the conception, production or presentation of an event. Contributors are distinguished by their name and date of birth. A new record is created when a contributor changes name; former and subsequent names are recorded in the Other_Names field. Multiple contributors with the same name should be distinguished by date of birth and function. Care should be taken to avoid unnecessary duplicates, with particular attention being paid to variations in spellings of the same contributor. Contributors must be an individual, and may be human or non-human (e.g. animal, machine).</dd>
+    <dd> <br />
+    </dd>
+    <dt>prefix</dt>
+    <dd>A contributor's title. Mr, Mrs, Prof, Dr etc.</dd>
+    <dd> <br />
+    </dd>
+    <dt>first_name</dt>
+    <dd>The contributor's first name or initial. Free text, with capitalised initial letter. Use a hyphen if there is no first name. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>middle_name</dt>
+    <dd>A contributor's middle name/s or initial/s. Free text, with capitaliased initial letter.</dd>
+    <dd> <br />
+    </dd>
+    <dt>last_name</dt>
+    <dd>The contributor's last name/s. Free text, with capitalised initial letter. Use a hyphen if there is no last name. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>suffix</dt>
+    <dd>A contributor's suffix. OAM, PhD, AM etc.</dd>
+    <dd> <br />
+    </dd>
+    <dt>display_name</dt>
+    <dd>The contributor's first name and last name. Auto-generated by concatenating the First Name and Last Name, but editable.</dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names</dt>
+    <dd>Other names by which the contributor is known. May include stage names, former or subsequent names, or alternative spellings of the First and Last Names. Free text, in natural order, with capitalised initial letter. Separate multiple names with ;.</dd>
+    <dd> <br />
+    </dd>
+    <dt>gender</dt>
+    <dd>The contributor's gender. Select either female or male.</dd>
+    <dd> <br />
+    </dd>
+    <dt>nationality</dt>
+    <dd>The contributor's nationality, whether by origin or adoption. Free text, with capitalised initial letter. Prefer self-identified nationality; consult contributor if possible; otherwise nationality of origin. Hyphenated nationalities are acceptable.</dd>
+    <dd> <br />
+    </dd>
+    <dt>place_of_birth</dt>
+    <dd>A contributor's place of birth. Select from venue table.</dd>
+    <dd> <br />
+    </dd>
+    <dt>place_of_death</dt>
+    <dd>A contributor's place of death. Select from venue table.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_of_birth</dt>
+    <dd>The day of the contributor's birth. Enter as numerals. Display as numeric. Not visible to users on the public side, unless date of death is complete.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_of_birth</dt>
+    <dd>The month of the contributor's birth. Enter as numerals. Display as text. Not visible to users on the public side, unless date of death is complete.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_of_birth</dt>
+    <dd>The year of the contributor's birth. Enter as numerals. Display as numerals. Not visible to users on the public side, unless date of death is complete.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_of_death</dt>
+    <dd>The day of the contributor's death . Enter as numerals. Display as numerals. Source from published obituaries or research publications.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_of_death</dt>
+    <dd>The month of the contributor's death. Enter as numerals. Display as text. Source from published obituaries or research publications.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_of_death</dt>
+    <dd>The year of the contributor's death. Enter as numerals. Display as numerals. Source from published obituaries or research publications.</dd>
+    <dd> <br />
+    </dd>
+    <dt>notes</dt>
+    <dd>Additional biographical information about the contributor. Recommended use is to draw biographical information from published sources (Australian Dictionary of Biography, Parson's Companion to Theatre in Australia, and so on) or invite contributor to provide information. Note source at end of field. Free text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>nla</dt>
+    <dd>The contributor's Persistent Identifier at the National Library of Australia. Source from the National Library of Australia.</dd>
+    <dd> <br />
+    </dd>
+    <dt>contributorid</dt>
+    <dd>A unique number identifying a contributor. Automatically generated. Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>entered_by_user</dt>
+    <dd>The user name of the user creating the record. Entered automatically on creation.</dd>
+    <dd> <br />
+    </dd>
+    <dt>entered_date</dt>
+    <dd>The date when the record is created. Entered automatically on creation.</dd>
+    <dd> <br />
+    </dd>
+    <dt>updated_by_user</dt>
+    <dd>The user name of the user updating the data. Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>updated_date</dt>
+    <dd>The date when the record is last updated. Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>address</dt>
+    <dd>The contributor's house and street address of residency. Free text. Use only when provided by contributor. Not visible to users on public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>suburb</dt>
+    <dd>The contributor's suburb address of residency. Free text. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>state</dt>
+    <dd>The contributor's state address of residency. Select from controlled list. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>email</dt>
+    <dd>The contributor's email address. Free text. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>postcode</dt>
+    <dd>The contributor's postcode of residency. Four digit numeral. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>countryid</dt>
+    <dd>A unique number identifying the contributor's country of residence. Select from Country table. Use only when provided by contributor. Unique.</dd>
+</dl>
+<h2>Organisation</h2>
+<h2>Venue</h2>
+<h2>Resource</h2>
+<h2>Work</h2>
 <h2>Controlled vocabularies</h2>
 <h3>Genres</h3>
 <h3>Functions</h3>
 <h3>Subjects</h3>
-<h3>Resource Types</h3>]]></content>
+<h3>Resource Types</h3>
+<p>&nbsp;</p>
+<p>&nbsp;</p>]]></content>
     </element>
   </page>
 </pages>
