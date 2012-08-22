@@ -141,16 +141,17 @@
 							
 							<td class='record-value' colspan='2'><%=hasValue(organisation.getAddress())?organisation.getAddress():""%>
 				    		<%
-							if (hasValue(organisation.getAddress()) && (hasValue(organisation.getSuburb()) || hasValue(organisation.getStateName()) || hasValue(organisation.getPostcode())))
+							if (hasValue(organisation.getAddress()) && (hasValue(organisation.getSuburb()) || hasValue(organisation.getState()) || hasValue(organisation.getPostcode())))
 								out.print("<br>");
 							if (hasValue(organisation.getSuburb())) 
 								out.print(organisation.getSuburb() + " ");
 							if (hasValue(organisation.getStateName()) && !organisation.getStateName().equals("O/S") && !organisation.getStateName().equals("UNKNOWN")) 
 								out.print(organisation.getStateName() + " ");
 							if (hasValue(organisation.getPostcode()))
-								out.print(organisation.getPostcode()+" <br>");
-							
-							if(hasValue(organisation.getCountry()) && (organisation.getStateName().equals("O/S") || organisation.getStateName().equals("UNKNOWN"))){
+								out.print(organisation.getPostcode()+"");
+							if (hasValue(organisation.getSuburb()) || hasValue(organisation.getPostcode()))
+								out.print("<br>");
+							if (hasValue(organisation.getCountry())){
 								country.load(Integer.parseInt(organisation.getCountry()));
 								out.println("" +  country.getName() + "");
 							}
@@ -276,7 +277,7 @@
 						
 						<td class='record-value' id="tabs" colspan=2>
 							<ul class='record-tabs label'>
-								<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Dates</a></li>
+								<li><a href="#" onclick="displayRow('events')" id='eventsbtn'>Date</a></li>
 								<li><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>   
 								<li><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li> 	
 								<li><a href="#" onclick="displayRow('venue')" id='venuebtn'>Venue</a></li>
@@ -304,7 +305,7 @@
 					            		<%=crsetEvt.getString("event_name")%></a><%
 										if(hasValue(crsetEvt.getString("venue_name"))) out.print(", " + crsetEvt.getString("venue_name"));
 										if(hasValue(crsetEvt.getString("suburb"))) out.print(", " + crsetEvt.getString("suburb")); 
-										if(hasValue(crsetEvt.getString("state"))) out.print(", " + crsetEvt.getString("state")); 
+										if(hasValue(crsetEvt.getString("state")) && (!crsetEvt.getString("state").equals("O/S"))) out.print(", " + crsetEvt.getString("state")); 
 										if (hasValue(formatDate(crsetEvt.getString("DDFIRST_DATE"),crsetEvt.getString("MMFIRST_DATE"),crsetEvt.getString("YYYYFIRST_DATE"))))
 											out.print(", " + formatDate(crsetEvt.getString("DDFIRST_DATE"),crsetEvt.getString("MMFIRST_DATE"),crsetEvt.getString("YYYYFIRST_DATE")));
 										%>
@@ -353,7 +354,7 @@
 								<%=crsetOrg.getString("event_name")%></a><%
 								if(hasValue(crsetOrg.getString("venue_name"))) out.print(", " + crsetOrg.getString("venue_name"));
 								if(hasValue(crsetOrg.getString("suburb"))) out.print(", " + crsetOrg.getString("suburb"));
-								if(hasValue(crsetOrg.getString("state"))) out.print(", " + crsetOrg.getString("state"));
+								if(hasValue(crsetOrg.getString("state")) && (!crsetOrg.getString("state").equals("O/S"))) out.print(", " + crsetOrg.getString("state"));
 								if (hasValue(formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE"))))
 									out.print(", " + formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE")));
 								%>
@@ -393,7 +394,7 @@
 									<%=crsetVen.getString("venue_name")%></a><%
 								if(hasValue(crsetVen.getString("suburb"))) 
 									out.print(", " + crsetVen.getString("suburb"));
-								if(hasValue(crsetVen.getString("state")))
+								if(hasValue(crsetVen.getString("state")) && (!crsetVen.getString("state").equals("O/S")))
 									out.print(", " + crsetVen.getString("state"));
 								%>
 								</h3>
@@ -453,8 +454,9 @@
 								<li>
 								<a href="/pages/event/<%=crsetCon.getString("eventid")%>">
 									<%=crsetCon.getString("event_name")%></a><%
+								if(hasValue(crsetCon.getString("venue_name"))) out.print(", " + crsetCon.getString("venue_name"));
 								if(hasValue(crsetCon.getString("suburb"))) out.print(", " + crsetCon.getString("suburb"));
-								if(hasValue(crsetCon.getString("state"))) out.print(", " + crsetCon.getString("state"));
+								if(hasValue(crsetCon.getString("state")) && (!crsetCon.getString("state").equals("O/S"))) out.print(", " + crsetCon.getString("state"));
 								if(hasValue(formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE"))))
 				            		out.print(", " + formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE")));
 								%>
@@ -505,7 +507,7 @@
 					if(rset != null && rset.isBeforeFirst()) {
 					%>
 						<tr>
-					 		<th class='record-label b-121'><a class='record-label'  href="#">Resources</a></th>
+					 		<th class='record-label b-121'>Resources</th>
 							
 							<td class='record-value' colspan='2'>
 								<ul>
@@ -514,7 +516,7 @@
 								while(rset.next()) {
 								%>
 									<li>
-										<%=rset.getString("description")%>:&nbsp;
+										<%=rset.getString("description")%>:
 											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>

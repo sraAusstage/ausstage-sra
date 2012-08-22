@@ -175,11 +175,11 @@
 						%>
 						<table class='record-table'>
 						<%
-						//Resource Sub Type (Label is Resouce Type)
+						//Resource Sub Type (Label is Resouce)
 						if (item_type != null) {
 						%>
 							<tr>
-								<th class='record-label b-153'><img src='../../../resources/images/icon-resource.png' class='box-icon'>Type</th>
+								<th class='record-label b-153'><img src='../../../resources/images/icon-resource.png' class='box-icon'>Resource</th>
 								
 								<td class='record-value'>
 									<%=item_type.getShortCode()%><%=(item_sub_type != null)?": " + item_sub_type.getShortCode():"" %>
@@ -206,7 +206,7 @@
 							<tr>
 								<th class='record-label b-153 bold' valign="top">Title</th>
 								
-								<td class='record-value bold'><%=item.getTitle()%></td>
+								<td class='record-value bold' colspan='2'><%=item.getTitle()%></td>
 							</tr>
 						<%
 						}
@@ -217,7 +217,7 @@
 							<tr>
 								<th class='record-label b-153 bold'>Alternative Title</th>
 								
-								<td class='record-value bold'><%=item.getTitleAlternative()%></td>
+								<td class='record-value bold' colspan='2'><%=item.getTitleAlternative()%></td>
 							</tr>  
 						<%
 						}
@@ -251,9 +251,7 @@
 										%>	
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
-												<a href="/pages/contributor/<%=contribId%>">
-													<%=name%>
-												</a><%=hasValue(lookups.getDescription())?", " +  lookups.getDescription():"" %>
+												<a href="/pages/contributor/<%=contribId%>"><%=name%></a><%=hasValue(lookups.getDescription())?", " +  lookups.getDescription():"" %>
 											</td>
 										</tr>
 										<%
@@ -458,10 +456,12 @@
 												<tr>
 													<td width="<%=secCol1Wdth%>" valign="top">
 														<a href="/pages/event/<%=rset.getString("eventid")%>">
-															<%=rset.getString("event_name")%>
-														</a><%
-														out.print(rset.getString("venue_name") + ", " + rset.getString("suburb") + ", " + rset.getString("state") + ", ");
-														out.print(formatDate(rset.getString("Ddfirst_date"),rset.getString("Mmfirst_date"),rset.getString("Yyyyfirst_date")));
+															<%=rset.getString("event_name")%></a><%if(hasValue(rset.getString("venue_name"))) out.print(", " + rset.getString("venue_name"));
+															if(hasValue(rset.getString("suburb"))) out.print(", " + rset.getString("suburb"));
+															if(hasValue(rset.getString("state")) && (!rset.getString("state").equals("O/S"))) out.print(", " + rset.getString("state"));
+															if (hasValue(formatDate(rset.getString("DDFIRST_DATE"),rset.getString("MMFIRST_DATE"),rset.getString("YYYYFIRST_DATE"))))
+											out.print(", " + formatDate(rset.getString("DDFIRST_DATE"),rset.getString("MMFIRST_DATE"),rset.getString("YYYYFIRST_DATE")));
+											
 														%>
 													</td>
 												</tr>

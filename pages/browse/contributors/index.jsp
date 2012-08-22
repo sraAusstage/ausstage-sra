@@ -134,7 +134,7 @@
            
       <th><a href="#" onClick="reSortData('name')">Name  (<%=l_rs.getString(1)%>)</a></th>
       <th><a href="#" onClick="reSortData('function')">Functions</a></th>
-      <th align="right"><a href="#" onClick="reSortNumbers('year')">Event Dates</a></th>
+      <th align="left"><a href="#" onClick="reSortNumbers('year')">Event Dates</a></th>
       <th align="right"><a href="#" onClick="reSortNumbers('num')">Events</a></th>
       <th align="right"><a href="#" onClick="reSortNumbers('total')">Resources</a></th>
     </tr>
@@ -156,7 +156,7 @@
     <tr class="<%=evenOdd[evenOddValue]%>">
       <td width="25%"><a href="/pages/contributor/<%=l_rs.getString(1)%>"><%=l_rs.getString(3)==null?"":l_rs.getString(3)%> <%=l_rs.getString(2)==null?"":l_rs.getString(2)%></a></td>
        <td width="40%" align="left"><%if (l_rs.getString(7) != null) out.write(l_rs.getString(7)); %></td>
-      <td width="15%" align="right"><%   	     
+      <td width="15%" align="left"><%   	     
         if(l_rs.getString(6).equals("1") || l_rs.getString(4) != null && l_rs.getString(4).equals(l_rs.getString(5)))
       	{
           if (l_rs.getString(4) != null) out.write(l_rs.getString(4)); 

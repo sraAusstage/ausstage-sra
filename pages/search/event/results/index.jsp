@@ -220,8 +220,8 @@
      out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
     		 +"<img src=\"../../../../resources/images/icon-event.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Events</span>"
-    		 +"<span class=\"search-index search-index-resource\">search results " + (event_name.equals("")?"":"for \'"+event_name+"\'. ")
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " result(s)."
+    		 +"<span class=\"search-index search-index-resource\">Search results " + (event_name.equals("")?"":"for \'"+event_name+"\'. ")
+    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " results."
     		 +"</span></div>");
       out.println("     <table class=\"search-table\">");
     
@@ -268,7 +268,7 @@
     </form>    
     <thead>
     <tr>
-      <th width="35%"><a href="#" onClick="reSortData('event_name')">Event Name</a></th>
+      <th width="35%"><a href="#" onClick="reSortData('event_name')">Name</a></th>
       <th width="35%" align="left"><a href="#" onClick="reSortData ('venue_name')">Venue</a></th>
       <th width="15%" align="right"><a href="#" onClick="reSortNumbers('first_date')">First Date</a></th>
       <th width="15%" align="right"><a href="#" onClick="reSortNumbers('total')">Resources</a></th>

@@ -116,9 +116,9 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			// Get venue location string
 			String venueLocation = "";
 			if (hasValue(event.getVenue().getSuburb())) venueLocation = ", " + event.getVenue().getSuburb();
-			if ((hasValue(event.getVenue().getState()))&& (!state.getName(Integer.parseInt(event.getVenue().getState())).equals("O/S"))) { 
+			if ((hasValue(event.getVenue().getState())) && (Integer.parseInt(event.getVenue().getState())<9)) {  // Display Venue State, but not O/S=9 [Unknown]=10
 				venueLocation += ", " + state.getName(Integer.parseInt(event.getVenue().getState()));
-			}else if (hasValue(event.getVenue().getCountry())){
+			}else if (hasValue(event.getVenue().getCountry())){  // If Venue State is O/S or [Unknown], display Country
 				country.load(Integer.parseInt(event.getVenue().getCountry()));
 			 	venueLocation += ", " + country.getName();
 			}
@@ -310,7 +310,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 							%>
 							<tr>
 								<td valign="top">
-									<a href="/pages/organisation/<%=organisation.getId()%>&f_event_id=<%=event_id%>"><%=organisation.getName()%></a><%
+									<a href="/pages/organisation/<%=organisation.getId()%>"><%=organisation.getName()%></a><%
 									if (hasValue(orgEvLink.getFunctionDesc())) {
 										out.print(", " + orgEvLink.getFunctionDesc());
 									} else {
@@ -340,27 +340,27 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<tr>
 					<th class='record-label b-90'>Contributors</th>
 					
-					<td class=''  colspan='2'>
-						<table border="0" cellpadding="0" cellspacing="0">
+					<td class='record-value'  colspan='2'>
+						<table class='record-value-table' cellspacing="0">
 							<tr>
-								<td  class='record-value light bold'>Name</td>
-								<td  class='record-value light bold'>Function</td>
-								<td  class='record-value light bold'>Notes</td>
+								<th  class='record-value-table light'>Name</th>
+								<th  class='record-value-table light'>Function</th>
+								<th  class='record-value-table light'>Notes</th>
 							</tr>
 						<%
 						for (ConEvLink conEvLink : (Vector<ConEvLink>) event.getConEvLinks()) {
 							contributor = conEvLink.getContributorBean();
 							%>
 							<tr>
-								<td  class='record-value'>
-									<a href="/pages/contributor/<%=contributor.getId()%>&f_event_id=<%=event_id%>">
+								<td  class='record-value-table'>
+									<a href="/pages/contributor/<%=contributor.getId()%>">
 										<%=contributor.getName() + " " + contributor.getLastName()%>
 									</a>
 								</td>
-								<td  class='record-value'>
+								<td  class='record-value-table'>
 									<%=(hasValue(conEvLink.getContributorId()) && conEvLink.getContributorId().equals(Integer.toString(contributor.getId())))?conEvLink.getFunctionDesc():"" %>
 								</td>
-								<td  class='record-value'>
+								<td  class='record-value-table'>
 									<%=hasValue(conEvLink.getNotes())?conEvLink.getNotes():"" %>
 								</td>
 							</tr>	
@@ -509,13 +509,13 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<th class='record-label b-90'>Data Source</td>
 					
 					<td class=''  colspan='2'>
-						<table  border="0" cellpadding="0" cellspacing="0">
+						<table  class='record-value' cellspacing="0">
 							<tr>
-								<td  class='record-value light bold nowrap'>Source</td>
+								<td  class='record-value-table light nowrap'>Source</td>
 								
-								<td  class='record-value light bold nowrap'>Data Source Description</td>
+								<td  class='record-value-table light nowrap'>Description</td>
 								
-								<!--<td  class='record-value light bold nowrap' >Part of Collection</td>-->
+								<!--<td  class='record-value-table light nowrap' >Part of Collection</td>-->
 							</tr>
 							<%
 
@@ -525,9 +525,9 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 								datasourceEvlink.loadLinkedProperties(Integer.parseInt("0" + datasource.getDatasoureEvlinkId()));
 								%>
 								<tr>
-									<td  class='record-value '><%=datasource.getName()%></td>
+									<td  class='record-value-table'><%=datasource.getName()%></td>
 									
-									<td  class='record-value '><%=datasourceEvlink.getDescription()%></td>
+									<td  class='record-value-table'><%=datasourceEvlink.getDescription()%></td>
 									
 									<!--<td  class='record-value '></td>-->
 								</tr>

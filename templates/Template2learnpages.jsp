@@ -92,7 +92,7 @@ if (!currentPage.contains("network/index.jsp") &&
         <form id="aform">
 <select id="mymenu" size="1">
 <option value="nothing" selected="selected">Login</option>
-<option value="/admin/shibboleth/validateLogin.jsp">AAF credentials</option>
+<option value="/admin/shibboleth/validateLogin.jsp">AAF Login</option>
 <option value="/admin/login.jsp">AusStage Login</option>
 </select>
 </form>
@@ -141,17 +141,16 @@ selectmenu.onchange=function(){ //run some code when "onchange" event fires
 <cms:template element="foot">	
 </div>
 <!--added class=footer for mapping-->
- <div id="footer" class="footer">
- 
- <div class="footer-left">
+<div id="footer" class="footer"> 
+
+<div class="footer-left">
 <span class="label"><a href="/pages/browse/">AusStage</a> &bull; Researching Australian live performance</span>
-<br><span class="label small"><a href="/pages/learn/about/">About</a> | <a href="/pages/learn/contact/">Contact</a> | <a href="/pages/learn/contact/accessibility.html">Accessibility</a> | <a href="/pages/learn/contact/cultural-advice.html">Cultural Advice</a> | <a href="/pages/learn/contact/privacy.html">Privacy</a> | <a href="/pages/learn/contact/terms-of-use.html">Terms of Use</a> | <a href="/pages/learn/contact/user-licence.html">User License</a></span>
+<br><span class="label small"><a href="/pages/learn/about/">About</a> | <a href="/pages/learn/contact/accessibility.html">Accessibility</a> | <a href="/pages/learn/contact/">Contact</a> | <a href="/pages/learn/contact/cultural-advice.html">Cultural Advice</a> | <a href="/pages/learn/help.html">Help</a> | <a href="/pages/learn/contact/privacy.html">Privacy</a> | <a href="/pages/learn/contact/terms-of-use.html">Terms of Use</a></span>
 </div>
 
 <div class="footer-right label small">
-Copyright &copy; AusStage and contributors, 2003-2012.<br>Licensed under Creative Commons <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/au/">CC BY-NC-SA 3.0 Aus</a>.
+Copyright &copy; AusStage and contributors, 2003<script type="text/javascript">var d=new Date();d=d.getFullYear();document.write("-"+d);</script>.<br>Licensed for use <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/au/">CC BY-NC-SA 3.0 Aus</a>.
 </div>
-
  
  </div>
  </div>

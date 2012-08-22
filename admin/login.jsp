@@ -72,18 +72,20 @@
 		if ((shib != null) && shib.equals("failed"))
 			out.println("Your account is not listed as an Ausstage administrator.");
 			%>
-			<h2>Account Login:</h2>
+			<h2>AusStage Login</h2>
 			<form method="post" action="?">
 				<input type="hidden" name="url" value="<%=url%>" />
-				<p>
-					username: <input name="user" />
-				</p>
-				<p>
-					password: <input name="password" type="password" />
-				</p>
-				<p>
-					<input type="submit" />
-				</p>
+				<table border="0" cellspacing="0" cellpadding="3">
+				<tr>
+					<td align="right">Username:</td><td><input name="user" /></td>
+				</tr>
+				<tr>
+					<td align="right">Password:</td><td><input name="password" type="password" /></td>
+				</tr>
+				<tr>
+					<td></td><td><input type="submit" value="Log in" /></td>
+				</tr>
+				</table>
 			</form>
 		</body>
 		</html>
