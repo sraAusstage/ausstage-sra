@@ -175,10 +175,12 @@ public class Search {
 				m_sql_string.append(" group by eventid order by venue_name asc, first_date desc");
 			else if (m_sort_by.equals("alphab_rvrs"))
 				m_sql_string.append(" group by eventid order by event_name desc, first_date asc");
+			else if (m_sort_by.equals("alphab_frwd"))
+				m_sql_string.append(" group by eventid order by event_name asc, first_date asc");
 			else if (!m_orderBy.equals(""))
 				m_sql_string.append(" group by eventid order by " + m_orderBy + " " + m_sort_Ord);
 			else
-				m_sql_string.append(" group by eventid order by event_name asc");
+				m_sql_string.append(" group by eventid order by event_name, first_date asc");
 			System.out.println("Order BY: " + m_orderBy);
 
 		} else if (m_search_for.equals("venue")) {
@@ -701,10 +703,9 @@ public class Search {
 
 	public CachedRowSet getEvents() {
 
-		String m_sql_items = "search_event.eventid, event_name, venue_name, suburb, venue_state, first_date,  resource_flag, count(distinct itemevlink.itemid) as total";
-		m_sql_string.append("select distinct " + m_sql_items + "  from search_event left join itemevlink on itemevlink.eventid = search_event.eventid where ");
+		String m_sql_items = "search_event.eventid, search_event.event_name, search_event.venue_name, search_event.suburb, search_event.venue_state, search_event.first_date, search_event.resource_flag, count(distinct itemevlink.itemid) as total, events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date";
+		m_sql_string.append("select distinct " + m_sql_items + "  from search_event inner join events on events.eventid = search_event.eventid left join itemevlink on itemevlink.eventid = search_event.eventid where ");
 		buildSqlSearchString();
-
 		try {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();

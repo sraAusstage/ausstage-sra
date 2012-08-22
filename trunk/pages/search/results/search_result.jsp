@@ -294,11 +294,8 @@
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.println("       <td " + bgcolour +  " valign=\"top\" align ='right' width=\"80\" >");
             formatted_date = "";
-            Event eventObj = new Event(db_ausstage_for_result);            
-            CachedRowSet event_crset = eventObj.getEventsById(crset.getString("eventid"));  
-            event_crset.next();
-          
-            out.println(formatDate(event_crset.getString("DDFIRST_DATE"), event_crset.getString("MMFIRST_DATE"),event_crset.getString("YYYYFIRST_DATE") ));
+            
+            out.println(formatDate(crset.getString("DDFIRST_DATE"), crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE") ));
             out.println("</td>");
 
             out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
