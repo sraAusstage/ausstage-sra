@@ -203,15 +203,16 @@
 				+ "Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) " + "Where 1=1 ";
 
 		// Add the filters to the SQL
-		if (!filter_id.equals("")) list_db_sql += "and contributor.contributorid=" + filter_id + " ";
+	    if (!filter_id.equals (""))
+	      list_db_sql += "and contributor.contributorid=" + filter_id + " ";
 
-		if (!filter_first_name.equals("")) {
-			list_db_sql += "and LOWER(first_name) = '" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "' ";
-		}
-
-		if (!filter_last_name.equals("")) {
-			list_db_sql += "and LOWER(last_name) = '" + db_ausstage.plSqlSafeString(filter_last_name.toLowerCase()) + "' ";
-		}
+	    if (!filter_first_name.equals ("")) {
+	      list_db_sql += "and LOWER(first_name) like '%" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "%' ";
+	    }
+	      
+	    if (!filter_last_name.equals ("")) {
+	      list_db_sql += "and lower(last_name) like '%" + db_ausstage.plSqlSafeString(filter_last_name.toLowerCase()) + "%' ";
+	    }
 
 		list_db_sql += "Group by contributor.contributorid order by " + request.getParameter("f_order_by");
 	}
