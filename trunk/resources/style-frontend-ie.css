@@ -634,7 +634,9 @@ th {
 	margin: 0em;
 }
 
-
+.record-value-table {
+	padding: 0px 10px 0px 0px;
+}
 
 .record-picture {
 	min-height: 100px;
@@ -647,6 +649,7 @@ th {
 	vertical-align: top;
 	z-index: 100;
 	position:relative;
+	padding: 5px 5px 5px 10px;
 }
 
 /* P A G E S */

@@ -122,17 +122,24 @@
 							<th class='record-label b-134' >Address</th>
 							
 							<td class='record-value' colspan='2'>
-							<%
+
+						 	<%
 								Vector locationVector = new Vector();
 								locationVector.addElement(venue.getStreet());
 								String addressLine2 = "";
-								addressLine2 = venue.getSuburb() + " " + state.getName(Integer.parseInt(venue.getState())) + " " + venue.getPostcode();
+								String addressState = "";
+								if (Integer.parseInt(venue.getState()) < 9 ) addressState = state.getName(Integer.parseInt(venue.getState())); // O/S=9 [Unknown]=10
+								addressLine2 = venue.getSuburb() + " " + addressState + " " + venue.getPostcode();
+								if (!addressLine2.trim().equals(""))
 								locationVector.addElement(addressLine2);
 								if (!venue.getCountry().equals("")) {
 								  locationVector.addElement(venueCountry.getName());
 								}
 								%>
-								<%=concatFields(locationVector, "<br> ")%>
+							<%=concatFields(locationVector, "<br> ")%> 
+							
+												
+								
 							</td>
 						</tr>
 						
@@ -200,7 +207,7 @@
 									position: myLatlng,
 									map: map,
 									title:  '<%=venue.getName().replaceAll("'","")%>',
-									icon: "/pages/assets/images/iconography/venue-arch-134.png"
+									icon: "/pages/assets/images/iconography/venue-arch-134-pointer.png"
 								});
 								
 								}
@@ -444,24 +451,24 @@
 						
   	  					if (rset != null && rset.isBeforeFirst()) {
   						%>
-					 		<th class='b-134 record-label' ><a class='record-label' href="#">Resources</a></td>
+					 		<th class='b-134 record-label' >Resources</td>
 							
 							<td class='record-value' colspan='2'>
-								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
+								<ul class='record-value' id='resources'>
 	  	  						<%
 	  	  						while (rset.next()) {
  	  							%>
-									<tr>
-										<td	valign="top"> <%=rset.getString("description")%>:&nbsp;
+									<li>
+										<%=rset.getString("description")%>:
 											<a href="/pages/resource/<%=rset.getString("itemid")%>">
 												<%=rset.getString("citation")%>
 											</a>
-										</td>
-									</tr>
+										
+									</li>
 								<%
 								}
 								%>
-								</table>
+								</ul>
 							</td>
 						<%
 						}

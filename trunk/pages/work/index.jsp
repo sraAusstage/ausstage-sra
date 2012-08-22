@@ -230,13 +230,13 @@
 						%>
 
 						<tr>
-							<th class='record-label b-153'></th>
+							<th class='record-label b-153'>Events</th>
 							
 							<td class='record-value' id="tabs" colspan=2>
 								<ul class='record-tabs label'>
-									<li <%=(rsetEvt != null && rsetEvt.isBeforeFirst())?"":"style='display: none'"%>><a href="#" onclick="displayRow('events')" id='eventsbtn'>Events</a></li>
-									<li <%=(crsetCon.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributors</a></li>
-									<li <%=(crsetOrg.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisations</a></li>
+									<li <%=(rsetEvt != null && rsetEvt.isBeforeFirst())?"":"style='display: none'"%>><a href="#" onclick="displayRow('events')" id='eventsbtn'>Date</a></li>
+									<li <%=(crsetCon.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>
+									<li <%=(crsetOrg.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li>
 								 </ul>
 							</td>
 						</tr>
@@ -388,24 +388,24 @@
 						
   	  					if (rset != null && rset.isBeforeFirst()) {
   						%>
-					 		<th class='record-label b-153'><a class='record-label' href="#">Resources</a></th>
+					 		<th class='record-label b-153'>Resources</th>
 							
 							<td class='record-value' colspan='2'>
-								<table id='resources' width="<%=secTableWdth%>" border="0" cellpadding="3" cellspacing="0">
+								<ul id='resources'>
 	  	  						<%
 	  	  						while (rset.next()) {
  	  							%>
-									<tr>
-										<td	valign="top"><%=rset.getString("description")%>:&nbsp;
-											<a href="/pages/resource/<%=rset.getString("itemid")%>">
-												<%=rset.getString("citation")%>
-											</a>
-										</td>
-									</tr>
+									<li>
+										<%=rset.getString("description")%>:
+										<a href="/pages/resource/<%=rset.getString("itemid")%>">
+											<%=rset.getString("citation")%>
+										</a>
+										
+									</li>
 								<%
 								}
 								%>
-								</table>
+								</ul>
 							</td>
 						<%
 						}
@@ -417,7 +417,7 @@
 						
 						
 						<%
-						//Event Identifier
+						//Work Identifier
 						if (hasValue(work.getId())) {
 						%>
 							<tr >

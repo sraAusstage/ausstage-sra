@@ -135,7 +135,7 @@
     <tr>
       <th width="30%"><a href="#" onClick="reSortData('name')">Name (<%=l_rs.getString(1)%>)</a></th>
       <th width="40%" align="left"><a href="#" onClick="reSortData('vname')">Venue</a></th>
-      <th width="15%" align="left"><a href="#" onClick="reSortNumbers('dat')">First Date</a></th>
+      <th width="15%" align="right"><a href="#" onClick="reSortNumbers('dat')">First Date</a></th>
       <th width="15%" align="right"><a href="#" onClick="reSortNumbers('total')">Resources</a></th>
     </tr>
     </thead>
@@ -190,7 +190,7 @@
     	    					}
     	    					if ((l_rs.getString("countryname") != null)&&(l_rs.getString("state").equals("O/S"))) out.write(", " + l_rs.getString("countryname")); %>
       </td>
-      <td width="15%" align="left"><%if(l_rs.getString(11) != null) out.write(l_rs.getString(11));%> 
+      <td width="15%" align="right"><%if(l_rs.getString(11) != null) out.write(l_rs.getString(11));%> 
       <td width="15%" align="right"><%if(l_rs.getString(13).equals("0")){
    	  out.write("");}else
    	  out.write(l_rs.getString(13)); %>

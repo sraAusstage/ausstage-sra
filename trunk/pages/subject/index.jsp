@@ -99,12 +99,12 @@
 								<th class='record-label b-90'>Events</th>
 								
 								<td class='record-value' colspan='2'>
-									<table border="0" cellpadding="0" cellspacing="0">
+									<ul>
 									<%
 									while (rset.next()) {
 									%>
-										<tr>
-											<td valign="top">
+										<li>
+											
 												<a href="/pages/event/<%=rset.getString("eventid")%>">
 													<%=rset.getString("event_name")%></a><%
 												if (hasValue(rset.getString("venue_name"))) out.print(", " +  rset.getString("venue_name"));
@@ -113,18 +113,18 @@
 												if (hasValue(formatDate(rset.getString("DDFIRST_DATE"),rset.getString("MMFIRST_DATE"),rset.getString("YYYYFIRST_DATE"))))
 													out.print(", " + formatDate(rset.getString("DDFIRST_DATE"),rset.getString("MMFIRST_DATE"),rset.getString("YYYYFIRST_DATE")));
 												%>
-											</td>
-										</tr>
+											
+										</li>
 									<%									
 									}
 									%>
-									</table>
+									</ul>
 								</td>
 							</tr>
 		      				<%
 		    				}
 							
-		    				//Items
+		    				//Items (label is Resources)
 							Item item = new Item(db_ausstage_for_drill);
 							rset = contentIndicator.getAssociatedItems(Integer.parseInt(contentindicatorid), stmt);
 
@@ -133,19 +133,19 @@
 							<tr>
 								<th class='record-label b-90'>Resources</th>
 								
-								<td class='record-value' colspan='2'>
-									<table border="0" cellpadding="0" cellspacing="0">
+								<td class='record-value'  colspan='2'>
+									<ul>
 									<%
 									while(rset.next()) {
-										out.println("<tr>");
-										out.println("  <td  valign=\"top\">"+rset.getString("description")+"&nbsp;<a href=\"/pages/resource/" +
+
+										out.println("  <li>"+rset.getString("description")+": <a href=\"/pages/resource/" +
 										rset.getString("itemid") + "\">" +
 										rset.getString("title") + "</a>");
-										out.print("</td>");
-										out.println("</tr>");
+
+										out.println("</li>");
 									}
 									%>
-									</table>
+									</ul>
 								</td>
 							</tr>
 							<%

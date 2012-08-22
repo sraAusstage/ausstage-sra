@@ -92,7 +92,7 @@ html, body {
 /* specific styles for the footer */
 .footer  {
         color:#fff;
-        font-size: 90%;
+/*        font-size: 90%; */
         margin-top: 10px;
         padding-top: 13px;
 }
