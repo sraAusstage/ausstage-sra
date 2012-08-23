@@ -320,7 +320,7 @@
   hidden_fields.put("act", action);
   out.println (htmlGenerator.displayLinkedItem("",
                                       "6",
-                                      "organisation_organisations.jsp",
+                                      "organisation_organisations.jsp?f_from_organisation_add_edit_page=true",
                                       "organisation_addedit_form",
                                       hidden_fields,
                                       "Associated with Organisation(s):",

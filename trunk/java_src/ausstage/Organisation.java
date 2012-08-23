@@ -931,7 +931,10 @@ public class Organisation {
 		this.m_postcode = request.getParameter("f_postcode");
 		if (m_postcode == null) m_postcode = "";
 		this.m_state_id = request.getParameter("f_state_id");
-		if (m_state_id == null) m_state_id = "";
+		if (m_state_id == null) {
+			this.m_state_id = request.getParameter("f_org_state_id");
+			if (m_state_id == null) m_state_id = "";
+		}
 		this.m_state_name = request.getParameter("f_state_name;");
 		if (m_state_name == null) m_state_name = "";
 		this.m_contact = request.getParameter("f_contact");
