@@ -975,8 +975,9 @@ public class Organisation {
 		if (m_yyyylast_date == null) m_yyyylast_date = "";
 		this.m_nla = request.getParameter("f_nla");
 		if (m_nla == null) m_nla = "";
-
-
+		this.m_organisation_type = request.getParameter("f_organisation_type");
+		if (m_organisation_type == null) m_organisation_type = "";
+		
 	}
 
 	/*
