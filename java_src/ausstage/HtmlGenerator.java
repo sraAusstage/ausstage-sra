@@ -453,17 +453,18 @@ public class HtmlGenerator {
 							ret += temp_display;
 						else if (!temp_display.equals("")) ret += "      , " + temp_display;
 					}
-
-					String contribFunctions = "";
+					
+					// this is insane, why is this even here in the first place
+					/*String contribFunctions = "";
 					if (p_request.getRequestURI().substring(p_request.getRequestURI().lastIndexOf("/") + 1).equals("event_contributors.jsp")) {
-						/**
+						*//**
 						 * SPECIAL CASE: when the user is adding & editing
 						 * contributor through addedit event facility, we need
 						 * to display all the functions of each contibutor, ie
 						 * name, lastname (function1, function2,...) within the
 						 * selection box
 						 */
-
+/*
 						if (rset.getString(p_list_db_field_id_name) != null && !rset.getString(p_list_db_field_id_name).equals("")) {
 							Contributor contributor = new Contributor(m_db);
 							contributor.load(Integer.parseInt(rset.getString(p_list_db_field_id_name)));
@@ -492,9 +493,9 @@ public class HtmlGenerator {
 					}
 					if (contribFunctions != null && !contribFunctions.equals(""))
 						ret += " (" + contribFunctions + ")</option>\n";
-					else
+					else*/
 						ret += "    </option>\n";
-				}
+				//}
 				rset.close();
 			}
 
