@@ -495,7 +495,7 @@ public class HtmlGenerator {
 						ret += " (" + contribFunctions + ")</option>\n";
 					else*/
 						ret += "    </option>\n";
-				//}
+				}
 				rset.close();
 			}
 
