@@ -207,7 +207,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			if (event.getPartOfATour()) {
 			%>
 			<tr>
-				<th class='record-label b-90'>Part Of A Tour</th>
+				<th class='record-label b-90'>Part of a Tour</th>
 				
 				<td class='record-value' colspan='2'>Yes</td>
 			</tr>

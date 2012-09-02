@@ -9,8 +9,8 @@
 <%
 String url = request.getServerName();
 %>
-	<link rel="stylesheet" href="/pages/exchange/assets/main-style.css"/>
-	<link rel="stylesheet" href="/pages/ausstage/assets/jquery-ui/jquery-ui-1.8.6.custom.css"/>
+	<!-- <link rel="stylesheet" href="/pages/exchange/assets/main-style.css"/> -->
+	<!-- <link rel="stylesheet" href="/pages/ausstage/assets/jquery-ui/jquery-ui-1.8.6.custom.css"/> -->
 	<!-- libraries -->
 	<script type="text/javascript" src="assets/javascript/libraries/jquery-1.6.min.js"></script>
 	<script type="text/javascript" src="assets/javascript/libraries/jquery-ui-1.8.12.custom.min.js"></script>
@@ -25,15 +25,15 @@ String url = request.getServerName();
 	<script type="text/javascript" src="assets/javascript/aus_exchange.js"></script>		
 	<script type="text/javascript" src="assets/javascript/tab-selector.js"></script>
 		<!-- main content -->
-	<div class="main1 b-172">
+	<div class="page b-172">
 
 		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; margin-top: 15px; margin-bottom: 60px; padding:0px; border-width:0px;">
 			<ul class="fix-ui-tabs" style="padding: 0px;">
-				<li><a href="#tabs-1">Exchange Overview</a></li>
+				<li><a href="#tabs-1">Data Exchange</a></li>
 				<li><a href="#tabs-2">Embed Code</a></li>
-				<li><a href="#tabs-3">Secondary Genres</a></li>
+				<li><a href="#tabs-3">Genres</a></li>
 				<li><a href="#tabs-4">Subjects</a></li>
-				<li><a href="#tabs-5">Resource Sub-Types</a></li>
+				<li><a href="#tabs-5">Resources</a></li>
 			</ul>
 			<div id="top">
 				<div id="tabs-1" class="tab-content">
@@ -51,9 +51,9 @@ String url = request.getServerName();
 						There are three different types of record that can be retrieved using this service. They are:
 					</p>
 					<ul>
-						<li><a href="#event">Event Records</a></li>
-						<li><a href="#resource">Resource Records</a></li>
-						<li><a href="#feedback">Performance Feedback</a></li>
+						<li><a href="#event-records">Event Records</a></li>
+						<li><a href="#resource-records">Resource Records</a></li>
+						<li><a href="#feedback-records">Performance Feedback</a></li>
 					</ul>
 					<p>
 						More information about retrieving records is outlined below.
@@ -61,7 +61,7 @@ String url = request.getServerName();
 					<p>
 						If you have any feedback, questions or queries about the Data Exchange service, please <a href="http://beta.ausstage.edu.au/?tab=contacts" title="Contact information">contact us</a>.
 					</p>						
-					<h3 id="event">Event Records</h3><a href="#top">Back to top</a>
+					<h2 id="event-records">Event Records</h2><a href="#top">Back to top</a>
 					<p>
 						Event records associated with contributors, organisations, venues, <a href="?tab=secgenre" title="secondary genre list">secondary genres</a>, <a href="?tab=subjects" title="subjects list">subjects</a> and works can be retrieved using this service. For example to retrieve event data about organisations it is necessary to know the unique Organisation Identifier for the organisation, or organisations, that are of interest. These numbers are displayed at the bottom of the record details page in the <a href="http://www.ausstage.edu.au" title="AusStage homepage">AusStage</a> website. 
 					</p>
@@ -77,10 +77,10 @@ String url = request.getServerName();
 					<p>
 						Event records are always sorted in reverse chronological order (most recent first) before any record limits are applied and the data is returned.
 					</p>
-					<table class="identifiers">
+					<table class="page-table" >
 						<thead>
-							<tr>
-								<th>Attribute Name</th>
+							<tr class="b-186">
+								<th>Attribute</th>
 								<th>Description</th>
 								<th>Value</th>
 								<th>Required</th>
@@ -217,7 +217,7 @@ String url = request.getServerName();
 					<p>
 						&nbsp;
 					</p>
-					<h3 id="resource">Resource Records</h3><a href="#top">Back to top</a>
+					<h2 id="resource-records">Resource Records</h2><a href="#top">Back to top</a>
 					<p>
 						Resource records associated with contributors, organisations, venues, <a href="?tab=secgenre" title="secondary genre list">secondary genres</a>, <a href="?tab=subjects" title="subjects list">subjects</a>, works and <a href="?tab=ressubtype" title="resource sub type list">resource sub-types</a> can be retrieved using this service. For example to retrieve resource data about organisations it is necessary to know the unique Organisation Identifier for the organisation, or organisations, that are of interest. These numbers are displayed at the bottom of the record details page in the <a href="http://www.ausstage.edu.au" title="AusStage homepage">AusStage</a> website. 
 					</p>
@@ -230,10 +230,10 @@ String url = request.getServerName();
 					<p>
 						The start of the URL is always the same and it is: http://<%=url%>/opencms/eresources?
 					</p>
-					<table class="identifiers">
+					<table class="page-table" >
 						<thead>
 							<tr>
-								<th>Attribute Name</th>
+								<th>Attribute</th>
 								<th>Description</th>
 								<th>Value</th>
 								<th>Required</th>
@@ -326,7 +326,7 @@ String url = request.getServerName();
 									No
 								</td>
 							</tr>
-							<tr  class="odd">
+							<tr  class="b-185">
 								<td>
 									callback
 								</td>
@@ -370,7 +370,7 @@ String url = request.getServerName();
 					<p>
 						&nbsp;
 					</p>
-					<h3 id="feedback">Feedback Records</h3><a href="#top">Back to top</a>
+					<h2 id="feedback-records">Feedback Records</h2><a href="#top">Back to top</a>
 					<p>
 						Feedback records are pieces of feedback collected by the <a href="http://beta.ausstage.edu.au/mobile/mobile-vis/" title="Researching Audiences homepage">Researching Audiences Service</a> and are associated with a performance record. A performance record is a record in the database that identifies a unique performance that has used the researching audiences service to collect feedback. 
 					</p>
@@ -380,10 +380,10 @@ String url = request.getServerName();
 					<p>
 						The start of the URL is always the same and it is: http://<%=url%>/opencms/efeedback?
 					</p>
-					<table class="identifiers">
+					<table class="page-table" >
 						<thead>
 							<tr>
-								<th>Attribute Name</th>
+								<th>Attribute</th>
 								<th>Description</th>
 								<th>Value</th>
 								<th>Required</th>
@@ -593,7 +593,7 @@ String url = request.getServerName();
 					<p>
 						Below is a list of secondary genre identifiers that can be used with the Data Exchange service. <a href="?tab=secgenre" title="Persistent link to this tab">Persistent Link</a> to this tab.
 					</p>
-					<table class="identifiers">
+					<table class="page-table" >
 						<thead>
 							<tr>
 								<th>Identifier</th>
@@ -627,7 +627,7 @@ String url = request.getServerName();
 					<p>
 						Below is a list of subject identifiers that can be used with the Data Exchange service. <a href="?tab=subjects" title="Persistent link to this tab">Persistent Link</a> to this tab.
 					</p>
-					<table class="identifiers">
+					<table class="page-table" >
 						<thead>
 							<tr>
 								<th>Identifier</th>
@@ -661,7 +661,7 @@ String url = request.getServerName();
 					<p>
 						Below is a list of resource sub type identifiers that can be used with the Data Exchange service. <a href="?tab=ressubtype" title="Persistent link to this tab">Persistent Link</a> to this tab.
 					</p>
-					<table class="identifiers">
+					<table class="page-table" >
 						<thead>
 							<tr>
 								<th>Identifier</th>
@@ -836,6 +836,6 @@ String url = request.getServerName();
 	<!-- always at the bottom of the content -->
 	<div class="push"></div>
 	
-	</div>
+	<cms:include property="template" element="foot" />
 
-<cms:include property="template" element="foot" />
+	</div> <!-- wrapper div -->

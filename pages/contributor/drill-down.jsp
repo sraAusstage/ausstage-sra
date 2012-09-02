@@ -454,7 +454,7 @@ Vector item_contentindlinks;
         	prevFunc = crsetFun.getString("preferredterm");
         }
  	        out.print("<li><a href=\"/pages/event/" +
- 	        		crsetFun.getString("eventid") + "\">"+crsetFun.getString("event_name")+"</a> ");
+ 	        		crsetFun.getString("eventid") + "\">"+crsetFun.getString("event_name")+"</a>, ");
           if(hasValue(crsetFun.getString("venue")))
           	out.print(" "+crsetFun.getString("venue"));
           
