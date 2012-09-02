@@ -222,6 +222,7 @@
 	list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
 
 	String cbxExactHTML = "<br><br>Exact First Name <input type='checkbox' name='exactFirstName' value='true'><br>Exact Last Name<input type='checkbox' name='exactLastName' value='true'>";
+	System.out.println("concon " + list_db_sql);
 
 	out.println(htmlGenerator.displaySearchFilterAndSelector(request, "Select Contributors", "Selected Contributors", filter_display_names, filter_names,
 			order_display_names, order_names, list_name, list_db_sql, list_db_field_id_name, textarea_db_display_fields, selected_list_name, selectedContributors,

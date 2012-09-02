@@ -220,7 +220,7 @@ public class Search {
 			else if (m_sort_by.equals("state"))
 				m_sql_string.append(" group by search_organisation.organisationid order by org_state asc, name asc");
 			else if (m_sort_by.equals("id"))
-				m_sql_string.append(" group by search_organisation.organisationidorder by organisationid asc");
+				m_sql_string.append(" group by search_organisation.organisationid order by organisationid asc");
 			else if (!m_orderBy.equals(""))
 				m_sql_string.append(" group by search_organisation.organisationid order by " + m_orderBy);
 			else

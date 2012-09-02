@@ -244,13 +244,12 @@
     
     String f_selected_venue_id = request.getParameter("f_selected_venue_id");
 
-    if (f_selected_venue_id != null)
-    {
-      if (request.getParameter("place_of_birth") != null)
+    if (f_selected_venue_id == null) f_selected_venue_id = "";
+
+    if (request.getParameter("place_of_birth") != null)
         contributor.setPlaceOfBirth(f_selected_venue_id);
-      if (request.getParameter("place_of_death") != null)
+    if (request.getParameter("place_of_death") != null)
         contributor.setPlaceOfDeath(f_selected_venue_id);
-    }
 
     pageFormater.writeHelper(out, "Contributor", "helpers_no1.gif");
     

@@ -20,6 +20,7 @@
   } else {
   // A different column was selected.
   document.form_searchSort_report.f_order_by.value = sortColumn;
+  document.form_searchSort_report.f_sort_by.value = "";
   document.form_searchSort_report.order.value = 'ASC';
   }
   // Submit the form.
@@ -37,6 +38,7 @@
   } else {
   // A different column was selected.
   document.form_searchSort_report.f_order_by.value = sortColumn;
+  document.form_searchSort_report.f_sort_by.value = "";
   document.form_searchSort_report.order.value = 'DESC';
   }
   // Submit the form.
