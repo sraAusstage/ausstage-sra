@@ -204,66 +204,33 @@ Statement stmt = db_ausstage.m_conn.createStatement();
   eventObj.setConEvLinks(conEvLinks);
   session.setAttribute("eventObj", eventObj);
 
-  // Get the form parameters that are used to create the SQL that determines what
-  // will be displayed in the list box (as this page posts to itself
-  // when a user performs a search)
-  filter_box_selected = request.getParameter ("f_box_selected");
-  filter_id           = request.getParameter ("f_id");
-  filter_first_name   = request.getParameter ("f_first_name");
-  filter_last_name    = request.getParameter ("f_last_name");
-  
-  if (request.getParameter ("exactFirstName") != null) {
-    exactFirstName = true;
-  }
-  if (request.getParameter ("exactLastName") != null) {
-    exactLastName = true;
-  }
+// Get the form parameters that are used to create the SQL that determines what
+// will be displayed in the list box (as this page posts to itself
+// when a user performs a search)
+filter_box_selected = request.getParameter("f_box_selected");
+filter_id = request.getParameter("f_id");
+filter_first_name = request.getParameter("f_first_name");
+filter_last_name = request.getParameter("f_last_name");
 
-  filter_display_names.addElement ("ID");
-  filter_display_names.addElement ("First Name");
-  filter_display_names.addElement ("Last Name");
-  filter_names.addElement ("f_id");
-  filter_names.addElement ("f_first_name");
-  filter_names.addElement ("f_last_name");
+filter_display_names.addElement("ID");
+filter_display_names.addElement("First Name");
+filter_display_names.addElement("Last Name");
+filter_names.addElement("f_id");
+filter_names.addElement("f_first_name");
+filter_names.addElement("f_last_name");
 
-  order_display_names.addElement ("First Name");
-  order_display_names.addElement ("Last Name");
-  order_names.addElement ("first_name");
-  order_names.addElement ("last_name");
+order_display_names.addElement("First Name");
+order_display_names.addElement("Last Name");
+order_names.addElement("first_name");
+order_names.addElement("last_name");
 
-  list_name             = "f_select_this_contributor_id";
-  list_db_field_id_name = "contributorId";
-  if (orderBy != null && orderBy.equals("last_name"))
-  {
-   // textarea_db_display_fields.addElement ("last_name");
-   // textarea_db_display_fields.addElement ("first_name");
-  //  textarea_db_display_fields.addElement ("name");
-   // textarea_db_display_fields.addElement ("dates");
-   // textarea_db_display_fields.addElement ("preferredterm");
-   textarea_db_display_fields.addElement ("output");
-  }
-  else
-  {
-   // textarea_db_display_fields.addElement ("first_name");
-   // textarea_db_display_fields.addElement ("last_name");
-  //  textarea_db_display_fields.addElement ("name");
-  //  textarea_db_display_fields.addElement ("dates");
-  //  textarea_db_display_fields.addElement ("preferredterm");
-  textarea_db_display_fields.addElement ("output");
-  }
-  
-  selected_list_name             = "f_unselect_this_contributor_id";
-  selected_list_db_field_id_name = "contributorId";
-  if (orderBy != null && orderBy.equals("last_name"))
-  {
-    selected_list_db_display_fields.addElement ("last_name");
-    selected_list_db_display_fields.addElement ("first_name");
-  }
-  else
-  {
-    selected_list_db_display_fields.addElement ("first_name");
-    selected_list_db_display_fields.addElement ("last_name");
-  }
+list_name = "f_select_this_contributor_id";
+list_db_field_id_name = "contributorId";
+textarea_db_display_fields.addElement("output");
+
+selected_list_name = "f_unselect_this_contributor_id";
+selected_list_db_field_id_name = "contributorId";
+
 
   buttons_names.addElement ("Select");
   buttons_names.addElement ("Edit/View");
@@ -342,7 +309,6 @@ Statement stmt = db_ausstage.m_conn.createStatement();
   list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
 
   String cbxExactHTML = "<br><br>Exact First Name <input type='checkbox' name='exactFirstName' value='true'><br>Exact Last Name<input type='checkbox' name='exactLastName' value='true'>";
-
   out.println (htmlGenerator.displaySearchFilterAndSelector (
                   request, "Select Contributors",
                   "Selected Contributors", filter_display_names,
