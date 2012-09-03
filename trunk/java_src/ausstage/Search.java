@@ -109,7 +109,7 @@ public class Search {
 			// FIRST DATE ON
 			// //////////////////////////
 			if (!m_ddfirst_date.equals("")) {
-				m_sql_string.append(" and first_date=STR_TO_DATE('" + m_yyyycopyright_date + "-" + m_mmcopyright_date + "-" + m_ddcopyright_date + "','%Y-%m-%d') ");
+				m_sql_string.append(" and search_event.first_date=STR_TO_DATE('" + m_yyyycopyright_date + "-" + m_mmcopyright_date + "-" + m_ddcopyright_date + "','%Y-%m-%d') ");
 
 			} else if (!m_mmcopyright_date.equals("") && !m_yyyycopyright_date.equals("")) {
 
@@ -118,22 +118,22 @@ public class Search {
 					// do some leap year testing
 					GregorianCalendar cal = new GregorianCalendar();
 					if (cal.isLeapYear(Integer.parseInt(m_yyyyfirst_date))) {
-						m_sql_string.append(" and (first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-02-01','%Y-%m-%d') and ");
+						m_sql_string.append(" and (search_event.first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-02-01','%Y-%m-%d') and ");
 						m_sql_string.append("STR_TO_DATE('" + m_yyyyfirst_date + "-02-29','%Y-%m-%d')) ");
 					} else {
-						m_sql_string.append(" and (first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-02-01','%Y-%m-%d') and ");
+						m_sql_string.append(" and (search_event.first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-02-01','%Y-%m-%d') and ");
 						m_sql_string.append("STR_TO_DATE('" + m_yyyyfirst_date + "-02-28','%Y-%m-%d')) ");
 					}
 				} else {
 					// lets get the last date of the given month & year
 					String num_of_days = Integer.toString(getNumberOfDays(m_mmfirst_date, Integer.parseInt(m_yyyyfirst_date)));
 
-					m_sql_string.append(" and (first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-" + m_mmfirst_date + "-01','%Y-%m-%d') and ");
+					m_sql_string.append(" and (search_event.first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-" + m_mmfirst_date + "-01','%Y-%m-%d') and ");
 					m_sql_string.append("STR_TO_DATE('" + m_yyyyfirst_date + "-" + m_mmfirst_date + "-" + num_of_days + "','%Y-%m-%d')) ");
 				}
 			} else { // only YEAR is specified
 
-				m_sql_string.append(" and (first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-01-01','%Y-%m-%d') and ");
+				m_sql_string.append(" and (search_event.first_date between STR_TO_DATE('" + m_yyyyfirst_date + "-01-01','%Y-%m-%d') and ");
 				m_sql_string.append("STR_TO_DATE('" + m_yyyyfirst_date + "-12-31','%Y-%m-%d')) ");
 			}
 		} else if ((m_yyyybetween_from_date != null && !m_yyyybetween_from_date.equals("")) && (m_yyyybetween_to_date != null && !m_yyyybetween_to_date.equals(""))) {
@@ -145,10 +145,10 @@ public class Search {
 				// System.out.println("Year is" + m_yyyyfirst_date);
 				// System.out.println("In here");
 				m_sql_string.append(" and ");
-				buildBetweenDateWhereClause(" first_date ");
+				buildBetweenDateWhereClause(" search_event.first_date ");
 			}
 		}
-
+		
 		// if search all check if resources are to be included in the results
 		// normal query does not limit on the resource flag, so only apply
 		// filter if hiding resources
