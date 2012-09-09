@@ -157,7 +157,7 @@ public void displayUpdateForm(String                p_id,
     p_out.println("  <tr align='left' ><td align='left' nowrap ><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='left' >Export</a> | <a style=\"cursor:pointer\" onclick=\"$('#UpdateFormDiv').dialog('open');\">Feedback</a> | ");
    
     if (p_type != null && (p_type.equals("Event"))){
-    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=&v=&e=" + p_request.getParameter("id") + "' align='left' >Map</a> | <a href='/pages/network/?task=event-centric&rs=2&id=" + p_request.getParameter("id") + "' align='left' >Network</a> | ");
+    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=&v=&e=" + p_request.getParameter("id") + "' align='left' >Map</a> | <a href='/pages/network/?task=event-centric&rs=3&id=" + p_request.getParameter("id") + "' align='left' >Network</a> | ");
     	
     }
     if (p_type != null && (p_type.equals("Contributor"))){
@@ -232,7 +232,7 @@ public void displayUpdateForm(String                p_id,
     p_out.println("     <tr>");
     p_out.println("       <td  align='right' class='general_heading_light' valign='top'></td>");
     p_out.println("       <td>&nbsp;</td>");
-    p_out.println("       <td align='right' valign='top'><table><tr><td align=\"left\">Please include your name and email address with your contribution. We will not provide your personal information to any other person or organisation.</td></tr></table></td>");
+    p_out.println("       <td align='right' valign='top'><table><tr><td align=\"left\">Please include your name and email address with your contribution. We will respect the <a href='../learn/contact/privacy.html'>privacy</a> of your information.</td></tr></table></td>");
     p_out.println("     </tr><br><tr>");
     p_out.println("       <td  align='right' class='general_heading_light' valign='top'></td>");
     p_out.println("       <td>&nbsp;</td>");

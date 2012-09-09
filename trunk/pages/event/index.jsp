@@ -262,8 +262,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						tempSecGenre.loadFromPrefId(Integer.parseInt(secGenreEvLink.getSecGenrePreferredId()));
 						%>
 						<a href="/pages/genre/<%=secGenreEvLink.getSecGenrePreferredId()%>">
-							<%=tempSecGenre.getName()%>
-						</a>
+							<%=tempSecGenre.getName()%></a>
 						<br>
 						<%
 					}
@@ -285,8 +284,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					for (PrimContentIndicatorEvLink primContentIndicatorEvLink : (Vector<PrimContentIndicatorEvLink>) event.getPrimContentIndicatorEvLinks()) {
 						%>
 						<a href="/pages/subject/<%=primContentIndicatorEvLink.getPrimaryContentInd().getId()%>">
-							<%=primContentIndicatorEvLink.getPrimaryContentInd().getName()%>
-						</a>
+							<%=primContentIndicatorEvLink.getPrimaryContentInd().getName()%></a>
 						<br>
 						<%
 					}
@@ -314,7 +312,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 									if (hasValue(orgEvLink.getFunctionDesc())) {
 										out.print(", " + orgEvLink.getFunctionDesc());
 									} else {
-										out.print(", No Function");
+										out.print("");
 									}
 									if (hasValue(orgEvLink.getArtisticFunctionDesc())) {
 										out.print(", " + orgEvLink.getArtisticFunctionDesc());
@@ -412,16 +410,15 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<tr>
 						<th class='record-label b-90'>Works</th>
 						
-						<td class=''>
+						<td class='record-value'  colspan='2'>
 							<table width="100%" border="0" cellpadding="0" cellspacing="0">
 							<%
 							while (rset.next()) {
 							%>
 								<tr>
-									<td colspan='3' width="100%"  class='record-value'>
-										<a href="/pages/work/<%=rset.getString("workid")%>">
-											<%=rset.getString("work_title")%>
-										</a>
+									
+									<td><a href="/pages/work/<%=rset.getString("workid")%>">
+											<%=rset.getString("work_title")%></a>
 									</td>
 								</tr>
 							<%
@@ -444,11 +441,12 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						<th class='record-label b-90'>Text Nationality</th>
 						
 						<td class='record-value'  colspan='2'><%=playOrigin.getName()%>
-				<%
+					<%
 						first = false;
 					}else{
 				%>
-						<%=", "+playOrigin.getName() %>
+				
+				<%="<br>"+playOrigin.getName() %>
 					<%
 					}
 					%>
@@ -477,7 +475,8 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						first = false;
 					}else{
 				%>
-						<%=", "+prodOrigin.getName() %>
+				
+				<%="<br>"+prodOrigin.getName() %>
 					<%
 					}
 					%>

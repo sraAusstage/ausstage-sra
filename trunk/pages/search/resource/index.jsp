@@ -44,7 +44,7 @@
 <table class='search-form-table'>
 
       <tr>
-        <th class='search-form-label b-153 bold'><img src='../../../resources/images/icon-resource.png' class='box-icon' >Title</th>
+        <th class='search-form-label b-153 bold'><img src='../../../resources/images/icon-resource.png' class='box-icon' >Resource Title</th>
         <td class='search-form-value'><input class='search-form-input-text' name = 'f_title' id ='f_title' type='text' size='60'       <%if(request.getParameter("f_title") != null) { out.print("value=\"" + request.getParameter("f_title") + "\"");}%> >&nbsp;</td>
       </tr>
       <tr>
