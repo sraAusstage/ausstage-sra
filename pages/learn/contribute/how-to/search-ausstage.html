@@ -4,22 +4,18 @@
   <page language="en">
     <element name="body">
       <links>
-        <link name="link6" internal="false" type="A">
-          <target><![CDATA[../../../search/resource/]]></target>
-        </link>
         <link name="link4" internal="false" type="A">
-          <target><![CDATA[../../../search/]]></target>
+          <target><![CDATA[../../../search/event/]]></target>
         </link>
         <link name="link5" internal="false" type="A">
-          <target><![CDATA[../../../search/event/]]></target>
+          <target><![CDATA[../../../search/resource/]]></target>
         </link>
         <link name="link2" internal="true" type="A">
           <target><![CDATA[]]></target>
-          <anchor><![CDATA[Event_Search]]></anchor>
-        </link>
-        <link name="link3" internal="true" type="A">
-          <target><![CDATA[]]></target>
           <anchor><![CDATA[Resource_Search]]></anchor>
+        </link>
+        <link name="link3" internal="false" type="A">
+          <target><![CDATA[../../../search/]]></target>
         </link>
         <link name="link0" internal="true" type="A">
           <target><![CDATA[]]></target>
@@ -27,17 +23,16 @@
         </link>
         <link name="link1" internal="true" type="A">
           <target><![CDATA[]]></target>
-          <anchor><![CDATA[Search_Tips]]></anchor>
+          <anchor><![CDATA[Event_Search]]></anchor>
         </link>
       </links>
       <content><![CDATA[<h1>Search AusStage</h1>
 <ul>
     <li><a href="%(link0)">Basic Search</a> - use a Basic Search to get started</li>
-    <li><a href="%(link1)">Search Tips</a> -&nbsp;advice on search strategies</li>
-    <li><a href="%(link2)">Event Search</a> - find events using an advanced search</li>
-    <li><a href="%(link3)">Resource Search</a> - find resources using advanced search</li>
+    <li><a href="%(link1)">Event Search</a> - find events using an advanced search</li>
+    <li><a href="%(link2)">Resource Search</a> - find resources using advanced search</li>
 </ul>
-<h2><a name="Basic_Search" href="%(link4)">Basic Search</a></h2>
+<h2><a href="%(link3)" name="Basic_Search">Basic Search</a></h2>
 <h3>Enter your search words</h3>
 <p>Enter some words for your search. A good way to start is to&nbsp;enter some words from the name of:</p>
 <ul>
@@ -52,12 +47,12 @@
 <h3>Search for</h3>
 <p>Select what you want to search for.</p>
 <ul>
-    <li><strong>All Records</strong> (default). This search retrieves a list of events matching your search words by searching across all events, and associated venues, contributors, organisations and resources.</li>
-    <li><strong>Events</strong>. An event is a discrete happening, defined by title, date and venue, typically a performance or&nbsp;run of performances at a venue. The search will retrieve a list of matching events.&nbsp;</li>
-    <li><strong>Contributors</strong>. A contributor is an individual involved in the conception, production and presentation of events. The search will retrieve a list of matching contributors.</li>
-    <li><strong>Organisations</strong>. An organisation is&nbsp;a group or company involved in the conception, production and presentation of events. The search will retrieve a list of matching organisations.</li>
+    <li><strong>Events </strong>(default). An event is a discrete happening, defined by title, date and venue, typically a performance or&nbsp;run of performances at a venue. The search will retrieve a list of&nbsp; events matching your search words.&nbsp;</li>
+    <li><strong>Contributors</strong>. A contributor is an individual who contributes to creating, performing or producing an event. The search will retrieve a list of matching contributors.</li>
+    <li><strong>Organisations</strong>. An organisation is&nbsp;a group or company involved in creating, performing or producing an event. The search will retrieve a list of matching organisations.</li>
     <li><strong>Venues</strong>. A venue is a place where an event happens. The search will retrieve a list of matching venues.</li>
     <li><strong>Resources</strong>.&nbsp;A resource is&nbsp;a review, programme, photograph, video, book, article, collection etc. Resources&nbsp;record information about events, contributors, organisations and venues. The search will retrieve a list of matching resources.</li>
+    <li><strong>Works</strong>. A work is the abstract conception of an event, typically a play script or score, distinguished by title and creator/s. The search will retrieve a list of matching works.</li>
 </ul>
 <h3>Search words using</h3>
 <p>Select how you would like the words to be used in&nbsp;your search.</p>
@@ -75,12 +70,11 @@
     <li>State: to sort events, organisations and venues&nbsp;in alphabetical order by state.</li>
 </ul>
 <h3>Restrict by year</h3>
-<p>Enter a year (e.g. 1999) or&nbsp;year range (e.g. 2002 - 2012) for the event or events you want to find. You can only enter dates when searching for Events and All Records.</p>
-<h2><a name="Search_Tips"></a>Search Tips</h2>
+<p>Enter a year (e.g. 1999) or&nbsp;year range (e.g. 2002 - 2012) for the events or resources you want to find.</p>
 <h3>Capitalisation</h3>
 <p>The word search is not case sensitive. Variations in capitalisation will not affect the search results.</p>
 <h3>Diacritics</h3>
-<p>AusStage does not use diacritics or letters which are not part of the basic Roman alphabet (A-Z, a-z).&nbsp;When searching for words&nbsp;in languages other than English,&nbsp;use English spelling and letters. For example,&nbsp;to search for 'Françoise'&nbsp;replace the 'ç' (with cedilla) with 'c' (without cedilla): 'Francoise'.</p>
+<p>The word search is flexible with diacritics. For example, searching for 'Francois' will find 'François' and vice versa.</p>
 <!-- <h3>Wildcard / Truncation&nbsp;(%)</h3>
 <p>Use a percentage sign (%)&nbsp;as a wildcard to substitute for one or more letters in a search word. Wildcards may be used within a word or at the start or end of a word. With wildcards, you can match:</p>
 <ul>
@@ -95,14 +89,13 @@
     <li>Will%m will find william and willem;</li>
     <li>Shake% will find Shakepeare and Shakespearian.</li>
 </ul> -->
-<h2><a name="Event_Search" href="%(link5)" target="_self">Event Search</a></h2>
+<h2><a target="_self" href="%(link4)" name="Event_Search">Event Search</a></h2>
 <p>An event is a discrete happening, defined by title, date and venue, typically a performance or&nbsp;run of performances at a venue. Multiple presentations of the same production at different venues (e.g. touring productions) are recorded as separate events.</p>
 <p>Use Event Search to search for specific events. Provide enough information to identify the event or set of events you wish to retrieve.</p>
 <ul>
     <li>Event Name: The title or name of an event.</li>
     <li>Event ID: A unique number identifying an event in AusStage.</li>
-    <li>First Date: The day, month and year of the event's first public presentation, including previews. Enter year or year and month if complete date is unknown.</li>
-    <li>Last Date: The day, month and year of the event's first public presentation, including previews. Enter year or year and month if complete date is unknown. <br />
+    <li>First Date: The day, month and year of the event's first public presentation, including previews. Enter year or year and month if complete date is unknown.<br />
     &nbsp;</li>
     <li>Venue Name: The name of the venue where an event happens.</li>
     <li>Venue ID: A unique number identifying the venue where an event happens.</li>
@@ -123,11 +116,10 @@
     <li>Contributor Function: The function of a contributor associated with an event,&nbsp;e.g. actor, designer, director, playwright.</li>
     <li>Contributor ID: A unique number identifying a contributor in AusStage. <br />
     &nbsp;</li>
-    <li>Display: Select to display All Events (default), or to restrict the results to Events with Resources or Events with Online Resources.</li>
     <li>Sort by: Select to sort the results by Title, Date, Venue or State.</li>
 </ul>
 <p>The search returns a list of Events matching the information you provide. The more information you provide, the narrower your search. If your search retrieves no results, try providing less information.</p>
-<h2><a name="Resource_Search" href="%(link6)" target="_self">Resource Search</a></h2>
+<h2><a target="_self" href="%(link5)" name="Resource_Search">Resource Search</a></h2>
 <p style="margin-right: 0px">A resource is a review, programme, photograph, video, book, article, collection etc. Resources convey information about events, contributors, organisations and venues. Some resources exist as individual items stored in collections&nbsp;(e.g.&nbsp;programs, posters, photographs). Other resources exist as multiple copies in libraries (books, journals, articles and so on).</p>
 <p>Use&nbsp;Resource Search to search for specific resources. Provide enough information to identify the&nbsp;resource or set of resources you wish to retrieve.</p>
 <ul dir="ltr">

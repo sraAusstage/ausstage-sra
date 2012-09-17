@@ -288,6 +288,9 @@ Should probably put this in a seperate .js file
 <span id="resource-count-load" class="box-count-load"><img src="../../resources/images/loader.gif"> </span>
 <span class="box-label">Resources </span> </a>
 
+
+
+
 </div>
 <!---------------------------------------------------------------->
 	<form name="search-form" id="search-form" method="post" action=""> 			

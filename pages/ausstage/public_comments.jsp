@@ -14,7 +14,7 @@
 <%
   ausstage.Database      db_ausstage  = new ausstage.Database ();
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
-  ausstage.Tag tagObj     = new ausstage.Tag (db_ausstage);
+ // ausstage.Tag tagObj     = new ausstage.Tag (db_ausstage);
   String              tag_id;
   
 
@@ -26,7 +26,7 @@
   String userComments = request.getParameter("f_public_users_comments");
   String tag	      = request.getParameter("f_tag");
   
-  tagObj.add(tag,objectType,objectId);
+ // tagObj.add(tag,objectType,objectId);
   
   SendMail mailer = new SendMail ();
   String body_text;
