@@ -27,7 +27,7 @@
    pageFormater.writeText(out, "The Item <b>" + itemObj.getCitation() +
                  "</b> was successfully copied.");
     pageFormater.writePageTableFooter (out);
-    //response.sendRedirect("/custom/ausstage/item_addedit.jsp?f_itemid=" + itemObj.getItemId());
+    response.sendRedirect("/custom/item_addedit.jsp?action=edit&f_itemid=" + itemObj.getItemId());
   }else{
     pageFormater.writeText(out,itemObj.getError());
     pageFormater.writePageTableFooter (out);

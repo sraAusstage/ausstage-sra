@@ -167,7 +167,7 @@
 								<th class='record-label b-121'>Website</th>
 								
 								<td class='record-value' colspan='2'>
-									<a href="<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>">
+									<a href="<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>"  target='_blank'>
 										<%=organisation.getWebLinks()%>
 									</a>
 								</td>
@@ -192,7 +192,7 @@
 							<tr >
 								<th class='record-label b-121'>NLA</th>
 								
-								<td class='record-value' colspan='2'><%=organisation.getNLA()%></td>
+								<td class='record-value' colspan='2'><a href='<%=organisation.getNLA()%>' target='_blank'><%=organisation.getNLA()%></a></td>
 							</tr>
 						<%
 						}

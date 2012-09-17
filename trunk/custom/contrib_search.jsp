@@ -120,9 +120,9 @@
   if (filter_id == null)
   {
     list_db_sql = "SELECT contributor.`contributorid`, concat_ws(' ', contributor.first_name, contributor.last_name) name, "+
-		"if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) dates, "+
+		"if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))) dates, "+
 		"group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') preferredterm, "+
-		"concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "+
+		"concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyyfirst_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "+
 		"FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "+
 		"LEFT JOIN events ON (conevlink.eventid = events.eventid) "+
 		"Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) "+
@@ -135,9 +135,9 @@
     // i.e the user performed a search
    		
 	list_db_sql = "SELECT contributor.`contributorid`,concat_ws(' ', contributor.first_name, contributor.last_name) name, "+
-"if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) dates, "+
+"if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))) dates, "+
 "group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') preferredterm, "+
-"concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "+
+"concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyyfirst_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "+
 "FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "+
 "LEFT JOIN events ON (conevlink.eventid = events.eventid) "+ 
 "Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) "+

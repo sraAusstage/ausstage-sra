@@ -28,7 +28,7 @@
     pageFormater.writeText (out,"The event <b>" + eventObj.getEventName() +
                  "</b> was successfully copied.");
     pageFormater.writePageTableFooter (out);
-    response.sendRedirect ( "/custom/ausstage/event_addedit.jsp?f_eventid=" + eventObj.getEventid());
+    response.sendRedirect ( "/custom/event_addedit.jsp?mode=edit&f_eventid=" + eventObj.getEventid());
   }else{
     pageFormater.writeText (out,eventObj.getError());
     pageFormater.writePageTableFooter (out);

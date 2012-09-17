@@ -70,7 +70,7 @@ if (!currentPage.contains("network/index.jsp") &&
 
 		<form name="header-search-form" id="header-search-form" method="post" action="/pages/browse/"><!-- onSubmit="return updateHeader();"> -->
 
-			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value=<% out.print("\""+keywords+"\""); %>>
+			<input id="header-search-keywords" type="text" class="" style="width: 140px;" value="<% out.print(keywords.replace("\"", "&quot;")); %>">
 			<input class="hidden_fields" type="hidden" name="h_keyword" id="h_keyword" value="" />
 		 	
 		 	<input id="header-search-button" type="button" onclick="headerSearch();" value="Search">

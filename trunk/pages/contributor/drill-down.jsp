@@ -255,7 +255,7 @@ Vector item_contentindlinks;
     if(contributor.getNLA() != null && !contributor.getNLA().equals("")) {
 	    out.println("   <tr>");
 	    out.println("     <th class='record-label b-105'>NLA</th>");
-	    out.println("     <td class='record value' colspan='2' valign='top'>" + contributor.getNLA() + "</td>");
+	    out.println("     <td class='record-value' colspan='2'><a href='" + contributor.getNLA() + "' target='_blank'>" + contributor.getNLA() +"</a></td>");
 	    out.println("   </tr>");
     }
 

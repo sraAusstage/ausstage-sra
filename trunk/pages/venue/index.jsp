@@ -151,7 +151,7 @@
 								<th class='record-label b-134' >Website</th>
 								
 								<td class='record-value' colspan='2'>
-									<a href="<%=(venue.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=venue.getWebLinks()%>">
+									<a href="<%=(venue.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=venue.getWebLinks()%>" target="_blank">
 										<%=venue.getWebLinks()%>
 									</a>
 								</td>

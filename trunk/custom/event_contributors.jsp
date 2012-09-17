@@ -260,9 +260,9 @@ selected_list_db_field_id_name = "contributorId";
 // if first time this form has been loaded
   if (filter_id == null) {
 		list_db_sql = "SELECT contributor.`contributorid`,concat_ws(', ',  first_name,last_name, "
-				+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) , "
+				+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))) , "
 				+ "group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) preferredterm, "
-				+ "concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "
+				+ "concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyyfirst_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "
 				+ "FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "
 				+ "LEFT JOIN events ON (conevlink.eventid = events.eventid) "
 				+ "Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) "
@@ -272,9 +272,9 @@ selected_list_db_field_id_name = "contributorId";
 		// i.e the user performed a search
 
 		list_db_sql = "SELECT contributor.`contributorid`,concat_ws(', ', first_name,last_name, "
-				+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) , "
+				+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))) , "
 				+ "group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) preferredterm, "
-				+ "concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "
+				+ "concat_ws(', ',concat_ws(' ',contributor.first_name,contributor.last_name),if(min(events.yyyyfirst_date) = max(events.yyyyfirst_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))),group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) as output "
 				+ "FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "
 				+ "LEFT JOIN events ON (conevlink.eventid = events.eventid) "
 				+ "Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) " + "Where 1=1 ";
@@ -307,7 +307,6 @@ selected_list_db_field_id_name = "contributorId";
   // Need to do the following type of select of Oracle will not return the rows
   // in the correct order.
   list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
-
   String cbxExactHTML = "<br><br>Exact First Name <input type='checkbox' name='exactFirstName' value='true'><br>Exact Last Name<input type='checkbox' name='exactLastName' value='true'>";
   out.println (htmlGenerator.displaySearchFilterAndSelector (
                   request, "Select Contributors",
