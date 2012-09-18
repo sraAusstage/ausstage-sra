@@ -102,10 +102,13 @@ public class ConEvLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT ConEvLink.*, ContributorFunctPreferred.*" + " FROM ConEvLink" + " INNER JOIN contributor ON (ConEvLink.CONTRIBUTORID = contributor.CONTRIBUTORID)"
-					+ " INNER JOIN contributorfunctpreferred ON (ConEvLink.`function` = contributorfunctpreferred.contributorfunctpreferredid)"
-					+ " WHERE contributor.contributorId = " + p_id + " " + " AND   ConEvLink.eventId       = " + e_id + " "
-					+ " ORDER BY ContributorFunctPreferred.PREFERREDTERM,contributor.LAST_NAME,contributor.FIRST_NAME";
+			sqlString = "SELECT ConEvLink.*, ContributorFunctPreferred.*" + 
+						" FROM ConEvLink" + 
+						" INNER JOIN contributor ON (ConEvLink.CONTRIBUTORID = contributor.CONTRIBUTORID)" +
+						" LEFT JOIN contributorfunctpreferred ON (ConEvLink.`function` = contributorfunctpreferred.contributorfunctpreferredid)" +
+						" WHERE contributor.contributorId = " + p_id + " " +
+						" AND   ConEvLink.eventId       = " + e_id + " " +
+						" ORDER BY ContributorFunctPreferred.PREFERREDTERM,contributor.LAST_NAME,contributor.FIRST_NAME";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -234,10 +237,13 @@ public class ConEvLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT ConEvLink.*, ContributorFunctPreferred.* " + " FROM ConEvLink, ContributorFunctPreferred, contributor " + " WHERE ConEvLink.eventId  = " + eventId
-					+ " AND ConEvLink.function = ContributorFunctPreferredId" + " AND ConEvLink.CONTRIBUTORID = contributor.CONTRIBUTORID"
-					+ " ORDER BY PREFERREDTERM, contributor.LAST_NAME, contributor.FIRST_NAME";
-
+			sqlString = "SELECT ConEvLink.*, ContributorFunctPreferred.* " + 
+						"FROM ConEvLink " +
+						"left join ContributorFunctPreferred on ConEvLink.function = ContributorFunctPreferredId " +
+						"inner join contributor on ConEvLink.CONTRIBUTORID = contributor.CONTRIBUTORID " +
+						"WHERE ConEvLink.eventId  = " + eventId + " " + 
+						"ORDER BY if(preferredterm is null,1,0), PREFERREDTERM, contributor.LAST_NAME, contributor.FIRST_NAME";
+			
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
