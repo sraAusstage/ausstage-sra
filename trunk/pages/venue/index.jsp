@@ -126,8 +126,8 @@
 								<th class='record-label b-134' >Other Names</td>
 								<td class='record-value' colspan='2'>
 								<%=venue.getOtherNames1()%>
-								<%=(hasValue(venue.getOtherNames2())?"<br>" + venue.getOtherNames2() %>
-								<%=(hasValue(venue.getOtherNames3())?"<br>" + venue.getOtherNames3() %>
+								<%=hasValue(venue.getOtherNames2())?"<br>" + venue.getOtherNames2():"" %>
+								<%=hasValue(venue.getOtherNames3())?"<br>" + venue.getOtherNames3():"" %>
 								</td>
 							</tr>
 						<%
