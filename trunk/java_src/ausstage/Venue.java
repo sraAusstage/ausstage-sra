@@ -63,6 +63,9 @@ public class Venue {
 	private String m_ddlast_date;
 	private String m_mmlast_date;
 	private String m_yyyylast_date;
+	private String m_other_names1;
+	private String m_other_names2;
+	private String m_other_names3;
 
 	private Vector<VenueVenueLink> m_venue_venuelinks;
 
@@ -120,6 +123,9 @@ public class Venue {
 		m_ddlast_date = "";
 		m_mmlast_date = "";
 		m_yyyylast_date = "";
+		m_other_names1 = "";
+		m_other_names2 = "";
+		m_other_names3 = "";
 	}
 
 	/*
@@ -174,6 +180,9 @@ public class Venue {
 				m_ddlast_date = l_rs.getString("ddlast_date");
 				m_mmlast_date = l_rs.getString("mmlast_date");
 				m_yyyylast_date = l_rs.getString("yyyylast_date");
+				m_other_names1 = l_rs.getString("other_names1");
+				m_other_names2 = l_rs.getString("other_names2");
+				m_other_names3 = l_rs.getString("other_names3");
 
 				if (m_venue_name == null) m_venue_name = "";
 				if (m_street == null) m_street = "";
@@ -202,6 +211,9 @@ public class Venue {
 				if (m_ddlast_date == null) m_ddlast_date = "";
 				if (m_mmlast_date == null) m_mmlast_date = "";
 				if (m_yyyylast_date == null) m_yyyylast_date = "";
+				if (m_other_names1 == null) m_other_names1 = "";
+				if (m_other_names2 == null) m_other_names2 = "";
+				if (m_other_names3 == null) m_other_names3 = "";
 				loadLinkedVenues();
 			}
 
@@ -610,6 +622,18 @@ public class Venue {
 
 	public String getName() {
 		return (m_venue_name);
+	}
+	
+	public String getOtherNames1() {
+		return (m_other_names1);
+	}
+	
+	public String getOtherNames2() {
+		return (m_other_names2);
+	}
+	
+	public String getOtherNames3() {
+		return (m_other_names3);
 	}
 
 	public String getStreet() {
