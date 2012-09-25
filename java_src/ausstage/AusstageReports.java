@@ -76,7 +76,7 @@ public class AusstageReports {
 				}
 				crs.close();
 			} else if (p_sqlString.toLowerCase().startsWith("insert") || p_sqlString.toLowerCase().startsWith("update") || p_sqlString.toLowerCase().startsWith("delete")) {
-				stmt.executeQuery(p_sqlString);
+				stmt.executeUpdate(p_sqlString);
 			}
 		} catch (SQLException se) {
 			se.printStackTrace();
