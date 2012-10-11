@@ -57,7 +57,7 @@
   
   
   String f_select_this_sec_genre_id    = request.getParameter("f_select_this_sec_genre_id");
-  String f_unselect_this_sect_genre_id = request.getParameter("f_unselect_this_sect_genre_id");
+  String f_unselect_this_sect_genre_id = request.getParameter("f_unselect_this_sec_genre_id");
 
   Vector secGenreItemLinks = item.getAssociatedSecGenres();
   
