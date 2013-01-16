@@ -163,11 +163,11 @@
   ****************************/
   pageFormater.writeHelper(out, "Designation", "helpers_no2.gif");
   pageFormater.writeTwoColTableHeader(out, "Title *");
-  out.println("<input type='text' name='f_title' size='60' class='line250' maxlength=300 value=\"" + item.getTitle() + "\"" + readOnly + ">");
+  out.println("<input type='text' name='f_title' size='60' class='line250' maxlength=300 value=\"" + item.getTitle().replaceAll("\"", "&quot;") + "\"" + readOnly + ">");
   pageFormater.writeTwoColTableFooter(out);
   
   pageFormater.writeTwoColTableHeader(out, "Title Alternative");
-  out.println("<input type='text' name='f_title_alternative' size='60' class='line250' maxlength=300 value=\"" + item.getTitleAlternative() + "\"" + readOnly + ">");
+  out.println("<input type='text' name='f_title_alternative' size='60' class='line250' maxlength=300 value=\"" + item.getTitleAlternative().replaceAll("\"", "&quot;") + "\"" + readOnly + ">");
   pageFormater.writeTwoColTableFooter(out);
 
   ///////////////////////////////////

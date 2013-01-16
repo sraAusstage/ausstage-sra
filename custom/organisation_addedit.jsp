@@ -101,12 +101,12 @@
 	
   String f_selected_venue_id = request.getParameter("f_selected_venue_id");
 
-  if (f_selected_venue_id != null){
-      if (request.getParameter("place_of_origin") != null)
-        organisationObj.setPlaceOfOrigin(f_selected_venue_id);
-      if (request.getParameter("place_of_demise") != null)
-        organisationObj.setPlaceOfDemise(f_selected_venue_id);
-  }
+  if (f_selected_venue_id == null) f_selected_venue_id = "";
+  if (request.getParameter("place_of_origin") != null)
+    organisationObj.setPlaceOfOrigin(f_selected_venue_id);
+  if (request.getParameter("place_of_demise") != null)
+    organisationObj.setPlaceOfDemise(f_selected_venue_id);
+  
 
   if (action != null && action.equals("ForOrganisation")||action.equals("EditForEvent")|| isPreviewForOrgOrg.equals("true")){
       out.println("<form name='organisation_addedit_form' id='organisation_addedit_form' action='organisation_addedit_process.jsp?act=" + action +  "' method='post' onsubmit='return checkFields();'>\n");

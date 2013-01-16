@@ -244,13 +244,13 @@
     
     String f_selected_venue_id = request.getParameter("f_selected_venue_id");
 
-    if (f_selected_venue_id != null)
-    {
-      if (request.getParameter("place_of_birth") != null)
-        contributor.setPlaceOfBirth(f_selected_venue_id);
-      if (request.getParameter("place_of_death") != null)
-        contributor.setPlaceOfDeath(f_selected_venue_id);
-    }
+    if (f_selected_venue_id == null) f_selected_venue_id = "";
+
+    if (request.getParameter("place_of_birth") != null)
+      contributor.setPlaceOfBirth(f_selected_venue_id);
+    if (request.getParameter("place_of_death") != null)
+      contributor.setPlaceOfDeath(f_selected_venue_id);
+    
 
     pageFormater.writeHelper(out, "Contributor", "helpers_no1.gif");
     
@@ -569,7 +569,7 @@
   }
   
     pageFormater.writePageTableFooter (out);
-    pageFormater.writeButtons(out, "back", "prev.gif", AppConstants.CONTEXT_ROOT + "/admin/content_main_menu.jsp", "cross.gif", "submit", "next.gif");
+    pageFormater.writeButtons(out, "back", "prev.gif", AppConstants.CONTEXT_ROOT + "/custom/welcome.jsp", "cross.gif", "submit", "next.gif");
   }
   else {
     // Dont display the contributor details for some reason, for example a contribId was not selected

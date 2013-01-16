@@ -93,12 +93,12 @@
 	      </td>
 	    </tr>
 	    <tr>
-
+<!--
 	      <td align="right" class="light">Restrict by year </td>
 	      <td class="light" colspan="2">
 		<input type="text" size="9" maxlength="9" name='f_year' id='f_year' <%if(request.getParameter("f_year") != null) { out.print("value=\"" + request.getParameter("f_year") + "\"");}%> > yyyy | yyyy-yyyy 
 	      </td>
-
+-->
 </tr>
 </table>
 </form>
