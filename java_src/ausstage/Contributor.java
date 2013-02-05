@@ -462,7 +462,7 @@ public class Contributor {
 			String sqlString;
 			// trim the notes first to db specified max chars (-1) before
 			// updating
-			if (m_notes.length() >= 600) m_notes = m_notes.substring(0, 599);
+			if (m_notes.length() >= 4000) m_notes = m_notes.substring(0, 3999);
 
 			if (m_country_id == null || m_country_id.equals("") || m_country_id.equals("0")) {
 				m_country_id = "null";
