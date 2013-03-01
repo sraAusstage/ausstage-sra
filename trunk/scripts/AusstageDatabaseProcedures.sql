@@ -350,10 +350,7 @@ BEGIN
 		work.ALTER_WORK_TITLE,
 		LOWER(left(CONCAT_WS(' ', 
 			work.WORK_TITLE, 
-			work.ALTER_WORK_TITLE, 
-			GROUP_CONCAT(distinct CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME, CONTRIBUTOR.LAST_NAME) separator ' '), 
-			GROUP_CONCAT(distinct ORGANISATION.name separator ' '),
-			GROUP_CONCAT(distinct events.EVENT_NAME SEPARATOR ' ')
+			work.ALTER_WORK_TITLE
 		) , 3999)) as COMBINED_ALL
 
 		from WORK
