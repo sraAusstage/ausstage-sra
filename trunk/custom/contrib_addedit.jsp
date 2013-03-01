@@ -9,6 +9,7 @@
 <%@ include file="ausstage_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
+<script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
 
 <%
   admin.ValidateLogin          login        = (admin.ValidateLogin) session.getAttribute("login");
@@ -695,6 +696,60 @@
       
       return true;
     }
+  }
+  
+  $(document).ready(function() {
+		$('input[name="f_prefix"],input[name="f_f_name"],input[name="f_m_name"],input[name="f_l_name"],input[name="f_suffix"]').live("keyup", function () {
+		 concatenateDisplayName();
+	  });
+  });
+  
+  contrib_addedit.jsp
+  
+  function concatenateDisplayName() {
+		var currentPrefix = $('input[name="f_prefix"]');
+		var currentFirstName = $('input[name="f_f_name"]');
+		var currentMiddleName = $('input[name="f_m_name"]');
+		var currentLastName = $('input[name="f_l_name"]');
+		var currentSuffix = $('input[name="f_suffix"]');
+		var updatedDisplayName = '';
+		var hasValueBeenSet = false;
+		if(currentPrefix && currentPrefix.val() != ''){
+			updatedDisplayName += currentPrefix.val();
+		  hasValueBeenSet = true;
+		}
+		if(currentFirstName.val && currentFirstName.val() != ''){
+			if(hasValueBeenSet){
+		    updatedDisplayName += ' ' + currentFirstName.val();
+			} else {
+				updatedDisplayName += currentFirstName.val();
+			}
+		  hasValueBeenSet = true;
+		}
+		if(currentMiddleName && currentMiddleName.val() != ''){
+			if(hasValueBeenSet){
+		    updatedDisplayName += ' ' + currentMiddleName.val();
+			} else {
+				updatedDisplayName += currentMiddleName.val();
+			}
+			hasValueBeenSet = true;
+		}
+		if(currentLastName && currentLastName.val() != ''){
+		  if(hasValueBeenSet){
+			  updatedDisplayName += ' ' + currentLastName.val();
+		  } else {
+			  updatedDisplayName += currentLastName.val();
+		  }
+		  hasValueBeenSet = true;
+		}
+		if(currentSuffix && currentSuffix.val() != ''){
+			if(hasValueBeenSet){
+				updatedDisplayName += ' ' + currentSuffix.val();
+			}	else {
+				updatedDisplayName += currentSuffix.val();
+			}
+		}
+		$('input[name="f_display_name"]').val(updatedDisplayName);	
   }
 //-->
 </script>
