@@ -1590,7 +1590,7 @@ public class Item {
               "',";
         if (m_item_condition_id != null && !m_item_condition_id.equals(""))
           l_sql += "ITEM_CONDITION_ID=" + m_item_condition_id + ",";
-        if (m_detail_comments != null && !m_detail_comments.equals(""))
+        if (m_detail_comments != null)
           l_sql += 
               "DETAIL_COMMENTS='" + m_db.plSqlSafeString(m_detail_comments) + 
               "',";
