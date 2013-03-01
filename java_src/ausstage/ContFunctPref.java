@@ -113,7 +113,7 @@ public class ContFunctPref {
 					+ "INNER JOIN contributorfunctpreferred ON (contfunctlink.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid) "
 					+ "INNER JOIN contributor ON (contfunctlink.contributorid = contributor.contributorid)  "
 					+ "WHERE contributorfunctpreferred.contributorfunctpreferredid="
-					+ p_id + " Order by name ";
+					+ p_id + " Order by contributor.last_name, contributor.first_name ";
 
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
