@@ -47,7 +47,6 @@
   -->
 </script>
 
-
 <%
   String picture_australia_search_string;
   String australia_dancing_search_string;
@@ -236,11 +235,11 @@
         out.println("      <thead>");          
         out.println("      <tr>");
         out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('event_name')\">Name</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+     //   out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Venue</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+     //   out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"80\" align='right' ><b><a href=\"#\" onClick=\"reSortData('first_date')\">First Date</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+      //  out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"80\" align='right' ><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></th>");
       //  out.println("       <td width=\"1\">&nbsp;</td>"); // For Resource Image
         out.println("      </thead>");
@@ -271,7 +270,7 @@
               bgcolour = "class='b-185'";
             out.println("      <tr>");                                               
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/event/" + crset.getString("eventid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("event_name")+  "</a></td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+        //    out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.print("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
 
             String venDisplay = "";
@@ -293,14 +292,14 @@
             }
             out.println(venDisplay + "</td>");
                         
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+        //    out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.println("       <td " + bgcolour +  " valign=\"top\" align ='right' width=\"80\" >");
             formatted_date = "";
             
             out.println(formatDate(crset.getString("DDFIRST_DATE"), crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE") ));
             out.println("</td>");
 
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+       //     out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             if(crset.getString("total").equals("0"))
             {
             	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" );   
@@ -568,13 +567,13 @@
         out.println("      <thead>");          
         out.println("      <tr>");
         out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Name</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('street')\">Address</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"80\"><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></th>");
         out.println("      </thead>");
         out.println("      </tr>");
@@ -602,7 +601,7 @@
               bgcolour = "class='b-185'";                    
             out.println("      <tr>");
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/venue/" + crset.getString("venueid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("venue_name") + "</a></td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+         //   out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
 
             if(crset.getString("street") != null)
@@ -624,11 +623,11 @@
               out.println(crset.getString("web_links") + "\">" + crset.getString("web_links") + "</a>");
             }
             */
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+        //    out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             out.println("       <td " + bgcolour +  " align=\"left\" valign=\"top\" >" + crset.getString("dates"));   
             
             out.println(      "</td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+      //      out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             
             if(crset.getString("num").equals("0"))
             {
@@ -637,7 +636,7 @@
             	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" + crset.getString("num"));   
             }
           
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+       //     out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             if(crset.getString("total").equals("0"))
             {
             	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" );   
@@ -877,15 +876,15 @@
         // DISPLAY HEADERS AND TITLES
         out.println("      <thead>");          
         out.println("      <tr>");
-        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('work_title')\">Name</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
-        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('contrib')\">Creators</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
-        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
-        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('events')\">Events</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
-        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('resources')\">Resources</a></b></th>");
+        out.println("       <th width=\"40%\"><b><a href=\"#\" onClick=\"reSortData('work_title')\">Name</a></b></th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"20%\"><b><a href=\"#\" onClick=\"reSortData('contrib')\">Creators</a></b></th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"10%\"><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"15%\" align=\"right\"><b><a href=\"#\" onClick=\"reSortData('events')\">Events</a></b></th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"15%\" align=\"right\"><b><a href=\"#\" onClick=\"reSortData('resources')\">Resources</a></b></th>");
         out.println("      </thead>");
         out.println("      </tr>");
         
@@ -915,26 +914,26 @@
               bgcolour = "class='b-185'";          
           
             out.println("      <tr>");
-            out.println("<td width=\"900\" " + bgcolour +  " valign=\"top\"><a href=\"/pages/work/" + crset.getString("workid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("work_title") + "</a></td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
-            out.println("<td width=\"500\" " + bgcolour +  " valign=\"top\">" + crset.getString("contrib") + "</td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
-            out.println("<td width=\"150\" " + bgcolour +  " valign=\"top\">" + crset.getString("dates") + "</td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+            out.println("<td width=\"40%\" " + bgcolour +  " valign=\"top\"><a href=\"/pages/work/" + crset.getString("workid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("work_title") + "</a></td>");
+       //     out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+            out.println("<td width=\"20%\" " + bgcolour +  " valign=\"top\">" + crset.getString("contrib") + "</td>");
+       //     out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+            out.println("<td width=\"10%\" " + bgcolour +  " valign=\"top\">" + crset.getString("dates") + "</td>");
+      //      out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             if(crset.getString("events").equals("0"))
             {
-            	 out.println("<td align=\"center\" width=\"80\" " + bgcolour +  " valign=\"top\"></td>");
+            	 out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\"></td>");
             }else
             {
-              out.println("<td align=\"center\" width=\"80\" " + bgcolour +  " valign=\"top\">" + crset.getString("events") + "</td>");
+              out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\">" + crset.getString("events") + "</td>");
             }
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+        //    out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             if(crset.getString("resources").equals("0"))
             {
-            	 out.println("<td align=\"center\" width=\"80\" " + bgcolour +  " valign=\"top\"></td>");
+            	 out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\"></td>");
             }else
             {
-            	out.println("<td align=\"center\" width=\"80\" " + bgcolour +  " valign=\"top\">" + crset.getString("resources") + "</td>");
+            	out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\">" + crset.getString("resources") + "</td>");
             }
             out.println("</tr>");
 
@@ -1168,13 +1167,13 @@
         out.println("      <thead>");          
         out.println("      <tr>");
         out.println("       <th width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('contrib_name')\">Name</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
-        out.println("       <th width=\"100\" ><b><a href=\"#\" onClick=\"reSortData('event_dates')\">Event Dates</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('function')\">Functions</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
+        out.println("       <th width=\"100\" ><b><a href=\"#\" onClick=\"reSortData('event_dates')\">Event Dates</a></b></th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></th>");
         out.println("      </thead>");
         out.println("      </tr>");
@@ -1205,22 +1204,23 @@
               bgcolour = "class='b-185'";
               
             out.println("      <tr>");
-            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"250\" ><a href=\"/pages/contributor/" + crset.getString("contributorid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("contrib_name") + "</a></td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"200\" ><a href=\"/pages/contributor/" + crset.getString("contributorid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("contrib_name") + "</a></td>");
+        //    out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
    
+            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"250\" >");
+            if(crset.getString("function") != null)
+              out.println(crset.getString("function"));
+            out.println("       </td>");
+            
+        //    out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+        
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\"100\" >");
             if(crset.getString("event_dates") != null)
               out.println(crset.getString("event_dates"));
             out.println("       </td>");
             
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+      //      out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             
-            out.println("       <td " + bgcolour +  " valign=\"top\" width=\"100\" >");
-            if(crset.getString("function") != null)
-              out.println(crset.getString("function"));
-            out.println("       </td>");
-            
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             
             if(crset.getString("num").equals("0"))
             {
@@ -1228,7 +1228,7 @@
             }else{
             	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" + crset.getString("num"));   
             }
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+       //     out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             
             if(crset.getString("total").equals("0"))
             {
@@ -1463,11 +1463,11 @@
         out.println("      <thead>");          
         out.println("      <tr>");
         out.println("       <th width=\"250\" ><b><a href=\"#\" onClick=\"reSortData('name')\">Name</a></b></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+    //    out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"200\" ><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</b></a></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+   //     out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</b></a></th>");
-        out.println("       <th width=\"1\">&nbsp;</th>");
+   //     out.println("       <th width=\"1\">&nbsp;</th>");
         out.println("       <th width=\"50\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</b></a></th>");
          out.println("      </thead>");
         out.println("      </tr>");
@@ -1499,7 +1499,7 @@
               
             out.println("      <tr>");
             out.println("       <td " + bgcolour +  " valign=\"top\" width=\215\" ><a href=\"/pages/organisation/" + crset.getString("organisationid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("name")+"</a></td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+     //       out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
            /* out.println("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
 
             String orgDisplay = "";
@@ -1534,7 +1534,7 @@
             out.println("       <td " + bgcolour +  " align=\"left\" valign=\"top\" >" + crset.getString("dates"));   
             out.print("         </td>");
          
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+       //     out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             
             if(crset.getString("num").equals("0"))
             {
@@ -1544,7 +1544,7 @@
             }
             
             out.print("         </td>");
-            out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
+      //      out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>");
             
             if(crset.getString("total").equals("0"))
             {

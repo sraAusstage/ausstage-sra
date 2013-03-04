@@ -426,14 +426,18 @@ public class HtmlGenerator {
 	private String searchFilterSelectBox(HttpServletRequest p_request, String p_list_name, boolean p_multiple, String sqlString, int p_max_results_displayed,
 			String p_list_db_field_id_name, Vector p_list_db_display_fields, Vector p_buttons_names, Vector p_buttons_actions, Statement stmt, Database m_db) {
 		String ret = "";
+		String ret2 = "";
+		// default the results displayed to the max allowed
+		int resultsDisplayed = p_max_results_displayed;
 		try {
 			int counter = 0;
 			// The select box width:390px;
 			ret = "   <div style=\"width:600px; height:316px; border-width:1px; border-style:solid; border-color:#d3d3d3; overflow:auto;\">\n"
 				  //+ "    <select style=\"overflow-y:hidden; overflow-x:hidden;\" name='" + p_list_name + "' id='" + p_list_name + "' size='" + 17 + "' FONT-SIZE: 10px;'";	
-				+ "    <select style=\"overflow-y:hidden;\" name='" + p_list_name + "' id='" + p_list_name + "' size='" + p_max_results_displayed + "' FONT-SIZE: 10px;'";
-			if (p_multiple) ret += "multiple";
-			ret += ">\n";
+				+ "    <select style=\"overflow-y:hidden;\" name='" + p_list_name + "' id='" + p_list_name + "' size='";
+			ret2 = "' FONT-SIZE: 10px;'";
+			if (p_multiple) ret2 += "multiple";
+			ret2 += ">\n";
 
 			// Run the query only if it is not empty
 			if (!sqlString.equals("")) {
@@ -442,7 +446,7 @@ public class HtmlGenerator {
 					if (counter >= p_max_results_displayed) break;
 
 					counter++;
-					ret += "      <option value='" + rset.getString(p_list_db_field_id_name) + "'>\n";
+					ret2 += "      <option value='" + rset.getString(p_list_db_field_id_name) + "'>\n";
 					for (int i = 0; i < p_list_db_display_fields.size(); i++) {
 						String temp_display = rset.getString(p_list_db_display_fields.elementAt(i).toString());
 
@@ -450,8 +454,8 @@ public class HtmlGenerator {
 
 						// The first one does not have a comma in front of it
 						if (i == 0)
-							ret += temp_display;
-						else if (!temp_display.equals("")) ret += "      , " + temp_display;
+							ret2 += temp_display;
+						else if (!temp_display.equals("")) ret2 += "      , " + temp_display;
 					}
 					
 					// this is insane, why is this even here in the first place
@@ -494,14 +498,14 @@ public class HtmlGenerator {
 					if (contribFunctions != null && !contribFunctions.equals(""))
 						ret += " (" + contribFunctions + ")</option>\n";
 					else*/
-						ret += "    </option>\n";
+					ret2 += "    </option>\n";
 				}
 				rset.close();
 			}
 
-			ret += "    </select>";
-			ret += "    </div>";
-			ret += "    <br>\n";
+			ret2 += "    </select>";
+			ret2 += "    </div>";
+			ret2 += "    <br>\n";
 
 			// Submit Buttons
 			for (int i = 0; i < p_buttons_names.size(); i++) {
@@ -516,7 +520,7 @@ public class HtmlGenerator {
 																												// the
 																												// Add
 																												// button
-						ret += "    <input type='button' name='submit_type' value='" + p_buttons_names.elementAt(i) + "' onclick=\"" + p_buttons_actions.elementAt(i)
+						ret2 += "    <input type='button' name='submit_type' value='" + p_buttons_names.elementAt(i) + "' onclick=\"" + p_buttons_actions.elementAt(i)
 								+ "\">&nbsp;\n";
 				} else if ((p_buttons_names.elementAt(i).toString().toLowerCase().indexOf("edit") >= 0)
 						|| (p_buttons_names.elementAt(i).toString().toLowerCase().indexOf("view") >= 0)) {
@@ -534,14 +538,20 @@ public class HtmlGenerator {
 					buttonAction = "if (document.getElementById('" + p_list_name + "').selectedIndex>=0) { " + buttonAction
 							+ " } else { alert('Please select an item to edit/view'); } ";
 					buttonAction = "javascript:" + buttonAction;
-					ret += "    <input type='button' name='submit_type' value='" + p_buttons_names.elementAt(i) + "' onclick=\"" + buttonAction + "\">&nbsp;\n";
+					ret2 += "    <input type='button' name='submit_type' value='" + p_buttons_names.elementAt(i) + "' onclick=\"" + buttonAction + "\">&nbsp;\n";
 				} else {
-					ret += "    <input type='button' name='submit_type' value='" + p_buttons_names.elementAt(i) + "' onclick=\"" + p_buttons_actions.elementAt(i) + "\">&nbsp;\n";
+					ret2 += "    <input type='button' name='submit_type' value='" + p_buttons_names.elementAt(i) + "' onclick=\"" + p_buttons_actions.elementAt(i) + "\">&nbsp;\n";
 				}
 			}
-			ret += "<br>";
-			if (counter >= p_max_results_displayed)
-				ret += "<font color='FF0000'>Warning. The above list is not a complete listing, as more results were found than could be displayed. Please refine your search.</font>";
+			ret2 += "<br>";
+			if (counter >= p_max_results_displayed) {
+				ret2 += "<font color='FF0000'>Warning. The above list is not a complete listing, as more results were found than could be displayed. Please refine your search.</font>";
+			}
+			// if the amount of select options is less than the maximum results that will be displayed restrict the select size to the amount select options
+			// so we don't get heaps of white space
+			if (counter < p_max_results_displayed) {
+				resultsDisplayed = counter;
+			}
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 			System.out.println("We have an exception in searchFilterSelectBox()!!!");
@@ -549,7 +559,7 @@ public class HtmlGenerator {
 			System.out.println("MESSAGE: " + e.getMessage());
 			return ("");
 		}
-		return ret;
+		return ret + resultsDisplayed + ret2;
 	}
 
 	/*
