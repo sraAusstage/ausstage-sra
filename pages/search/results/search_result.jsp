@@ -200,7 +200,11 @@
 
 	if (recset_count.equals("1")){resultPlaceholder = ONE_RESULT;}
 	else resultPlaceholder = PLURAL_RESULT;
-              
+        int totalResultsCount = Integer.parseInt(recset_count);
+        int resultsPerPageValue = Integer.parseInt(resultsPerPage);
+        int pageNumber = Integer.parseInt(page_num);
+	      int startPagedResultsCount = ((pageNumber -1)*resultsPerPageValue + 1);
+	      int endPagedResultsCount = ((pageNumber-1)*resultsPerPageValue + resultsPerPageValue) > totalResultsCount ? totalResultsCount : (pageNumber-1)*resultsPerPageValue + resultsPerPageValue;
         // DISPLAY NUMBER OF RESULTS
         // SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
         //if(search_within_search_for_result.equals(""))
@@ -210,7 +214,8 @@
     		 +"<img src=\"../../../resources/images/icon-event.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Events</span>"
     		 +"<span class=\"search-index search-index-event\">Search results for \'"+keyword+"\'. "
-    		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " " + resultPlaceholder
+    		 + SearchCount.formatSearchCountWithCommas(startPagedResultsCount) + " to " + SearchCount.formatSearchCountWithCommas(endPagedResultsCount) + " of "
+    		 + SearchCount.formatSearchCountWithCommas(totalResultsCount) + " " + resultPlaceholder
     		 +"</span></div>");
         
         

@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
-<%@ page import="java.sql.*, ausstage.Database, sun.jdbc.rowset.*" %>
+<%@ page import="java.sql.*, ausstage.*, sun.jdbc.rowset.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" /><%@ include file="../../../public/common.jsp"%>
 <script language="JavaScript" type="text/JavaScript">
@@ -136,7 +136,7 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
     <input type="hidden" name="pageno" value="<%=pno%>">
     <thead>
     <tr>
-      <th width="40%"><b> <a href="#" onClick="reSortData('contentindicator')">Name   (<%=l_rs.getString(1)%>)</a> </b></th>
+      <th width="40%"><b> <a href="#" onClick="reSortData('contentindicator')">Name   (<%=SearchCount.formatSearchCountWithCommas(l_rs.getString(1))%>)</a> </b></th>
       <th width="20%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a><b></th>
       <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('count(distinct events.eventid)')">Events</a><b></th>
       <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('count(distinct itemcontentindlink.itemid)')">Resources</a><b></th>

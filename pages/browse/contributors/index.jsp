@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import = "java.util.Vector, java.text.SimpleDateFormat"%>
 <%@ page import="org.opencms.main.OpenCms" %>
-<%@ page import="java.sql.*, ausstage.Database, admin.AppConstants, sun.jdbc.rowset.*" %>
+<%@ page import="java.sql.*, ausstage.*, admin.AppConstants, sun.jdbc.rowset.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" /><%@ include file="../../../public/common.jsp"%>
 <script language="JavaScript" type="text/JavaScript">
@@ -132,7 +132,7 @@
 <thead>
     <tr>
            
-      <th><a href="#" onClick="reSortData('name')">Name  (<%=l_rs.getString(1)%>)</a></th>
+      <th><a href="#" onClick="reSortData('name')">Name  (<%=SearchCount.formatSearchCountWithCommas(l_rs.getString(1))%>)</a></th>
       <th><a href="#" onClick="reSortData('function')">Functions</a></th>
       <th align="left"><a href="#" onClick="reSortNumbers('year')">Event Dates</a></th>
       <th align="right"><a href="#" onClick="reSortNumbers('num')">Events</a></th>

@@ -15,8 +15,11 @@ package ausstage;
 import admin.Common;
 import ausstage.Database;
 import java.sql.*;
+import java.text.NumberFormat;
+
 import sun.jdbc.rowset.*;
 import java.lang.Character;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.GregorianCalendar;
 
@@ -308,6 +311,17 @@ import java.util.GregorianCalendar;
   		m_key_word = m_key_word.replaceAll(" ","% %");
   		m_key_word = "%"+m_key_word.toLowerCase()+"%";
   		System.out.println("search term is "+m_key_word);
+  	}
+  	
+  	// return a formatted search count with commas
+  	public static String formatSearchCountWithCommas(int searchCount){
+  		return NumberFormat.getIntegerInstance().format(searchCount);
+  	}
+  	
+  	// return a formatted search count with commas
+  	public static String formatSearchCountWithCommas(String searchCount){
+  		int searchCountValue = Integer.parseInt(searchCount);
+  		return NumberFormat.getIntegerInstance().format(searchCountValue);
   	}
   }
 

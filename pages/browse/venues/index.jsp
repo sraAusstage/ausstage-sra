@@ -3,7 +3,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
-<%@ page import="java.sql.*, ausstage.Database, sun.jdbc.rowset.*" %>
+<%@ page import="java.sql.*, ausstage.*, sun.jdbc.rowset.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" /><%@ include file="../../../public/common.jsp"%>
 
@@ -136,7 +136,7 @@
     <input type="hidden" name="pageno" value="<%=pno%>">
     <thead>
     <tr>
-      <th width="25%"><b><a href="#" onClick="reSortData('name')">Name  (<%=recordCount%>)</a> </b></th>
+      <th width="25%"><b><a href="#" onClick="reSortData('name')">Name  (<%=SearchCount.formatSearchCountWithCommas(recordCount)%>)</a> </b></th>
       <th width="35%" align="left"><b><a href="#" onClick="reSortData('address')">Address</a><b></th>
       <th width="10%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a><b></th>
       <th width="15%" align="right"><b><a href="#" onClick="reSortNumbers('num')">Events</a><b></th>
