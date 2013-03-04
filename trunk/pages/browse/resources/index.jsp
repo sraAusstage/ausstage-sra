@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
-<%@ page import="java.sql.*, ausstage.Database, sun.jdbc.rowset.*" %>
+<%@ page import="java.sql.*, ausstage.*, sun.jdbc.rowset.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" /><%@ include file="../../../public/common.jsp"%>
 <!--Script to enable sorting columns  -->
@@ -100,7 +100,7 @@
     <input type="hidden" name="pageno" value="<%=pno%>">
     <thead>
     <tr>
-      <th width="70%"><b> <a href="#" onClick="reSortData('name')"> Name  (<%=l_rs.getString(1)%>)</a></b></th>
+      <th width="70%"><b> <a href="#" onClick="reSortData('name')"> Name  (<%=SearchCount.formatSearchCountWithCommas(l_rs.getString(1))%>)</a></b></th>
       <th width="30%" align="right"><b><a href="#" onClick="reSortNumbers('counter')">Resources</a></b></th>
     </tr>
     </thead>
