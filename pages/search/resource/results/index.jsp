@@ -206,7 +206,7 @@
       out.print("<div class=\"search\"><div class=\"search-bar b-153\">"
     		 +"<img src=\"../../../../resources/images/icon-resource.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Resources</span>"
-    		 +"<span class=\"search-index search-index-resource\">search results " + (keyword.equals("")?"":"for \'"+keyword+"\'. ")
+    		 +"<span class=\"search-index search-index-resource\">Search results " + (keyword.equals("")?"":"for \'"+keyword+"\'. ")
     		 +((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder
     		 +"</span></div>");
       out.println("     <table class=\"search-table\">");
