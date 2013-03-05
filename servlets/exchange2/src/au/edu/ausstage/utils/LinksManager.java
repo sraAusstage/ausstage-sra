@@ -26,27 +26,27 @@ public class LinksManager {
 	// declare class level variables
 	
 	// event URLs
-	private static final String EVENT_TEMPLATE = "/pages/event/[event-id]";
+	private static final String EVENT_TEMPLATE = "http://www.ausstage.edu.au/pages/event/[event-id]";
 	private static final String EVENT_TOKEN    = "[event-id]";
 	
 	// venue URLs
-	private static final String VENUE_TEMPLATE = "/pages/venue/[venue-id]";
+	private static final String VENUE_TEMPLATE = "http://www.ausstage.edu.au/pages/venue/[venue-id]";
 	private static final String VENUE_TOKEN    = "[venue-id]";
 	
 	// contributor URLs
-	private static final String CONTRIBUTOR_TEMPLATE = "/pages/contributor/[contrib-id]";
+	private static final String CONTRIBUTOR_TEMPLATE = "http://www.ausstage.edu.au/pages/contributor/[contrib-id]";
 	private static final String CONTRIBUTOR_TOKEN    = "[contrib-id]";
 	
 	// organisation URLs
-	private static final String ORGANISATION_TEMPLATE = "/pages/organisation/[org-id]";
+	private static final String ORGANISATION_TEMPLATE = "http://www.ausstage.edu.au/pages/organisation/[org-id]";
 	private static final String ORGANISATION_TOKEN    = "[org-id]";
 	
 	// resource / item URLs
-	private static final String RESOURCE_TEMPLATE = "/pages/resource/[item-id]";
+	private static final String RESOURCE_TEMPLATE = "http://www.ausstage.edu.au/pages/resource/[item-id]";
 	private static final String RESOURCE_TOKEN    = "[item-id]";
 	
 	// performance feedback URLs
-	private static final String PERFORMANCE_TEMPLATE = "/pages/mobile/view/list.jsp?performance=[performance-id]";
+	private static final String PERFORMANCE_TEMPLATE = "http://www.ausstage.edu.au/pages/mobile/view/list.jsp?performance=[performance-id]";
 	private static final String PERFORMANCE_TOKEN    = "[performance-id]";
 	
 	/**
