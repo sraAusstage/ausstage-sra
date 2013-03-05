@@ -167,7 +167,7 @@
 								<th class='record-label b-121'>Website</th>
 								
 								<td class='record-value' colspan='2'>
-									<a href="<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>"  target='_blank'>
+									<a href="<%=(organisation.getWebLinks().indexOf("http://") < 0)?"http://":""%><%=organisation.getWebLinks()%>">
 										<%=organisation.getWebLinks()%>
 									</a>
 								</td>
@@ -192,7 +192,7 @@
 							<tr >
 								<th class='record-label b-121'>NLA</th>
 								
-								<td class='record-value' colspan='2'><a href='<%=organisation.getNLA()%>' target='_blank'><%=organisation.getNLA()%></a></td>
+								<td class='record-value' colspan='2'><%=organisation.getNLA()%></td>
 							</tr>
 						<%
 						}
@@ -254,11 +254,20 @@
 						//contributors
 						sqlString	= "SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
 						"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
-						"venue.venue_name,venue.suburb,states.state,evcount.num " +
+						"venue.venue_name,venue.suburb,states.state,evcount.num, functs.funct " +
 						"FROM events,venue,states,orgevlink,conevlink,contributor " +
 						"inner join (SELECT conevlink.contributorid, count(distinct conevlink.eventid) num " +
 						"FROM conevlink, orgevlink where orgevlink.eventid=conevlink.eventid and orgevlink.organisationid=" + org_id + " " +
 						"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
+						"inner join ( " + 
+						"select e.contributorid, count(cf.preferredterm) functcount, group_concat(distinct cf.preferredterm separator ', ') funct " +
+						"from conevlink e " +
+						"inner join orgevlink o on (e.eventid = o.eventid) " +
+						"inner join contributorfunctpreferred cf on (e.function = cf.contributorfunctpreferredid) " +
+						"where o.organisationid = " + org_id + " " +
+						"group by e.contributorid " +
+						"order by count(e.function) desc " +
+						") functs on (functs.contributorid = contributor.contributorid) " +
 						"WHERE orgevlink.organisationid = " + org_id + " AND " +
 						"orgevlink.eventid = events.eventid AND " +
 						"events.venueid = venue.venueid AND " +
@@ -443,7 +452,7 @@
 							<h3>
 								<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
 									<%=crsetCon.getString("contributor_name")%>
-								</a>
+								</a> - <%=crsetCon.getString("funct")%>
 							</h3>
 							<ul>
 								<%
