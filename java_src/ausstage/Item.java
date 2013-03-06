@@ -2219,8 +2219,10 @@ public class Item {
       Statement stmt = m_db.m_conn.createStatement();
 
       l_sql = 
-          "SELECT SECGENREPREFERREDID genreid " + "FROM ITEMSECGENRELINK " + 
-          "WHERE itemid=" + m_itemid;
+          " SELECT isl.secgenrepreferredid genreid FROM itemsecgenrelink isl, secgenrepreferred sgp " + 
+          " WHERE isl.itemid = " + m_itemid + 
+          " AND isl.secgenrepreferredid = sgp.secgenrepreferredid " +
+          " ORDER BY sgp.preferredterm ";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_secgenrelinks.removeAllElements();
@@ -2263,7 +2265,8 @@ public class Item {
       Statement stmt = m_db.m_conn.createStatement();
 
       l_sql = 
-          "SELECT workid  " + "FROM ITEMWORKLINK " + "WHERE itemid=" + m_itemid;
+          "SELECT iwl.workid  FROM itemworklink iwl, work w WHERE itemid = " + m_itemid +
+          " AND iwl.workid = w.workid ORDER BY w.work_title; ";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_workslinks.removeAllElements();
