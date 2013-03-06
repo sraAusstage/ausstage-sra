@@ -201,7 +201,14 @@
 									var myOptions = {
 									zoom: 14,
 									center: myLatlng,
-									mapTypeId: 'ausstage'
+                  mapTypeControl: true,
+                  mapTypeControlOptions: {
+                   mapTypeIds: [google.maps.MapTypeId.ROADMAP, 
+                                        google.maps.MapTypeId.SATELLITE, 
+                                        google.maps.MapTypeId.HYBRID, 
+                                        google.maps.MapTypeId.TERRAIN, 
+                                        'ausstage']
+                  }
 								}
 								
 								var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
