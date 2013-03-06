@@ -298,18 +298,27 @@
 						crsetOrg = m_db.runSQL(sqlString, stmt);
 						
 						//get contributor data
-						sqlString = "SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
-						"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
-						"venue.venue_name,venue.suburb,states.state,evcount.num " +
+						sqlString = 
+						"SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
+						  "events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
+						  "venue.venue_name,venue.suburb,states.state,evcount.num, functs.funct " +
 						"FROM events,venue,states,conevlink,contributor " +
 						"inner join (SELECT conevlink.contributorid, count(distinct conevlink.eventid) num " +
-						"FROM conevlink, events where events.eventid=conevlink.eventid and events.venueid=" + venue_id + " " +
-						"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
+											  "FROM conevlink, events where events.eventid=conevlink.eventid and events.venueid=" + venue_id + " " +
+											  "GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
+						"inner join (  " +
+									      "select conel.contributorid, count(cf.preferredterm) functcount, group_concat(distinct cf.preferredterm separator ', ') funct  " +
+									      "from conevlink conel  " +
+									      "inner join events e on (e.eventid=conel.eventid) " +
+									      "inner join contributorfunctpreferred cf on (conel.function = cf.contributorfunctpreferredid)  " +
+									      "where e.venueid = " + venue_id + 
+									      " group by conel.contributorid  " +
+									      " order by count(conel.function) desc) functs on (functs.contributorid = contributor.contributorid) " +											  
 						"WHERE events.venueid = " + venue_id + " AND " +
-						"events.venueid = venue.venueid AND " +
-						"venue.state = states.stateid AND " +
-						"events.eventid=conevlink.eventid AND " +
-						"conevlink.contributorid = contributor.contributorid " +
+							"events.venueid = venue.venueid AND " +
+							"venue.state = states.stateid AND " +
+							"events.eventid=conevlink.eventid AND " +
+							"conevlink.contributorid = contributor.contributorid " +
 						"ORDER BY evcount.num desc,contributor.last_name,contributor.first_name,events.first_date DESC";
 						crsetCon = m_db.runSQL(sqlString, stmt);
 						
@@ -434,7 +443,7 @@
 								<h3>
 									<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
 										<%=crsetCon.getString("contributor_name")%>
-									</a>
+									</a> - <%=crsetCon.getString("funct")%>
 								</h3>
 								<ul>
 									<%
