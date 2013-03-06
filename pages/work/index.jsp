@@ -207,12 +207,20 @@
 						//contributors
 							sqlString = 
 							"SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
-							"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
-							"venue.venue_name,venue.suburb,states.state,evcount.num " +
+							   "events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
+							   "venue.venue_name,venue.suburb,states.state,evcount.num , functs.funct " +
 							"FROM events,venue,states,eventworklink,conevlink,contributor " +
 							"inner join (SELECT conevlink.contributorid, count(distinct conevlink.eventid) num " +
-							"FROM conevlink, eventworklink where conevlink.eventid=eventworklink.eventid and eventworklink.workid=" + work_id + " " +
-							"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
+												  "FROM conevlink, eventworklink where conevlink.eventid=eventworklink.eventid and eventworklink.workid=" + work_id + " " +
+													"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
+							"inner join (  " +
+										      "select conel.contributorid, count(cf.preferredterm) functcount, group_concat(distinct cf.preferredterm separator ', ') funct  " +
+										      "from conevlink conel  " +
+										      "inner join eventworklink ewl on (ewl.eventid=conel.eventid)  " +
+										      "inner join contributorfunctpreferred cf on (conel.function = cf.contributorfunctpreferredid)  " +
+										      "where ewl.workid=" + work_id + "  " +
+										      "group by conel.contributorid  " +
+										      "order by count(conel.function) desc) functs on (functs.contributorid = contributor.contributorid) " +
 							"WHERE eventworklink.workid = " + work_id + " AND " +
 							"eventworklink.eventid = events.eventid AND " +
 							"events.venueid = venue.venueid AND " +
@@ -353,7 +361,7 @@
 								<h3>
 									<a href="/pages/contributor/<%=crsetCon.getString("contributorid")%>">
 										<%=crsetCon.getString("contributor_name")%>
-									</a>
+									</a> - <%=crsetCon.getString("funct")%>
 								</h3>
 								<ul>
 									<%
