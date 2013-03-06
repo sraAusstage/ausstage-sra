@@ -856,7 +856,7 @@ MappingClass.prototype.resizeMap = function() {
                 //var mapDiv = $(mappingObj.map.getDiv());
                 var mapDiv = $('#map_container_div');
                 mapDiv.height(mappingObj.computeMapHeight());
-                mapDiv.width(mappingObj.computeMapWidth());
+            //    mapDiv.width(mappingObj.computeMapWidth());
         
                 google.maps.event.trigger(mappingObj.map, 'resize');
                 

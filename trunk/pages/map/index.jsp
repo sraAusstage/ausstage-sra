@@ -216,7 +216,7 @@
 		</div>
       	</div>
 				
-      	<div id="tabs-3" style="width: 600px">
+      	<div id="tabs-3" style="width: 100%; padding: 1em 0;">
 		<!--widths were both 100 -->
 		<div id="map_container_div" style="width: 100%">
 	  		<div id="map_div" style="height: 100%; width: 100%">
