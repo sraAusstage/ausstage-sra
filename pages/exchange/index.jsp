@@ -30,7 +30,7 @@ String url = request.getServerName();
 		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; margin-top: 15px; margin-bottom: 60px; padding:0px; border-width:0px;">
 			<ul class="fix-ui-tabs" style="padding: 0px;">
 				<li><a href="#tabs-1">Data Exchange</a></li>
-				<li><a href="#tabs-2">Embed Code</a></li>
+				<li><a href="#tabs-2">Generate Code</a></li>
 				<li><a href="#tabs-3">Genres</a></li>
 				<li><a href="#tabs-4">Subjects</a></li>
 				<li><a href="#tabs-5">Resources</a></li>
@@ -72,7 +72,7 @@ String url = request.getServerName();
 						The event records are retrieved by constructing a URL with two required attributes and four optional attributes. These are outlined in the table below. If an optional attribute is missing the default value will be used. 
 					</p>
 					<p>
-						The start of the URL is always the same and it is: http://<%=url%>/opencms/eevents?
+						The start of the URL is always the same and it is: http://<%=url%>/exchange/events?
 					</p>
 					<p>
 						Event records are always sorted in reverse chronological order (most recent first) before any record limits are applied and the data is returned.
@@ -199,19 +199,19 @@ String url = request.getServerName();
 					<ul>
 						<li>
 							Retrieve a list of 10 event records for the organisation with identifier 102, leaving all other attributes at their defaults.<br/>
-							<a href="/opencms/eevents?type=organisation&id=102" rel="nofollow">http://<%=url%>/opencms/eevents?type=organisation&amp;id=102</a>
+							<a href="/exchange/events?type=organisation&id=102" rel="nofollow">http://<%=url%>/exchange/events?type=organisation&amp;id=102</a>
 						</li>
 						<li>
 							Retrieve the same list of event records as before, except using the XML output type<br/>
-							<a href="/opencms/eevents?type=organisation&id=102&output=xml" rel="nofollow">http://<%=url%>/opencms/eevents?type=organisation&amp;id=102&amp;output=xml</a>
+							<a href="/exchange/events?type=organisation&id=102&output=xml" rel="nofollow">http://<%=url%>/exchange/events?type=organisation&amp;id=102&amp;output=xml</a>
 						</li>
 						<li>
 							Retrieve a list of event records for the organisations with id 102 and 11898 in the default format and with a limit of 20 records.<br/>
-							<a href="/opencms/eevents?type=organisation&id=102,11898&limit=20" rel="nofollow">http://<%=url%>/opencms/eevents?type=organisation&amp;id=102,11898&amp;limit=20</a>
+							<a href="/exchange/events?type=organisation&id=102,11898&limit=20" rel="nofollow">http://<%=url%>/exchange/events?type=organisation&amp;id=102,11898&amp;limit=20</a>
 						</li>
 						<li>
 							Retrieve a list of events records for the contributor 6139 in the rss format<br/>
-							<a href="/opencms/eevents?type=contributor&id=6139&output=rss" rel="nofollow">http://<%=url%>/opencms/eevents?type=contributor&amp;id=6139&amp;output=rss</a>
+							<a href="/exchange/events?type=contributor&id=6139&output=rss" rel="nofollow">http://<%=url%>/exchange/events?type=contributor&amp;id=6139&amp;output=rss</a>
 						</li>
 					</ul>
 					<p>
@@ -228,7 +228,7 @@ String url = request.getServerName();
 						The resource records are retrieved by constructing a URL with two required attributes and three optional attributes. These are outlined in the table below. If an optional attribute is missing the default value will be used. 
 					</p>
 					<p>
-						The start of the URL is always the same and it is: http://<%=url%>/opencms/eresources?
+						The start of the URL is always the same and it is: http://<%=url%>/exchange/resources?
 					</p>
 					<table class="page-table" >
 						<thead>
@@ -352,19 +352,19 @@ String url = request.getServerName();
 					<ul>
 						<li>
 							Retrieve a list of 10 resource records for the organisation with identifier 102, leaving all other attributes at their defaults.<br/>
-							<a href="/opencms/eresources?type=organisation&id=102" rel="nofollow">http://<%=url%>/opencms/eresources?type=organisation&amp;id=102</a>
+							<a href="/exchange/resources?type=organisation&id=102" rel="nofollow">http://<%=url%>/exchange/resources?type=organisation&amp;id=102</a>
 						</li>
 						<li>
 							Retrieve the same list of resource records as before, except using the XML output type<br/>
-							<a href="/opencms/eresources?type=organisation&id=102&output=xml" rel="nofollow">http://<%=url%>/opencms/eresources?type=organisation&amp;id=102&amp;output=xml</a>
+							<a href="/exchange/resources?type=organisation&id=102&output=xml" rel="nofollow">http://<%=url%>/exchange/resources?type=organisation&amp;id=102&amp;output=xml</a>
 						</li>
 						<li>
 							Retrieve a list of resource records for the organisations with id 102 and 11898 in the default format and with a limit of 20 records.<br/>
-							<a href="/opencms/eresources?type=organisation&id=102,11898&limit=20" rel="nofollow">http://<%=url%>/opencms/eresources?type=organisation&amp;id=102,11898&amp;limit=20</a>
+							<a href="/exchange/resources?type=organisation&id=102,11898&limit=20" rel="nofollow">http://<%=url%>/exchange/resources?type=organisation&amp;id=102,11898&amp;limit=20</a>
 						</li>
 						<li>
 							Retrieve a list of resource records for the contributor 6139 in the rss format<br/>
-							<a href="/opencms/eresources?type=contributor&id=6139&output=rss" rel="nofollow">http://<%=url%>/opencms/eresources?type=contributor&amp;id=6139&amp;output=rss</a>
+							<a href="/exchange/resources?type=contributor&id=6139&output=rss" rel="nofollow">http://<%=url%>/exchange/resources?type=contributor&amp;id=6139&amp;output=rss</a>
 						</li>
 					</ul>
 					<p>
@@ -378,7 +378,7 @@ String url = request.getServerName();
 						The feedback records are retrieved by constructing a URL with two required attributes and four optional attributes. These are outlined in the table below. If an optional attribute is missing the default value will be used. 
 					</p>
 					<p>
-						The start of the URL is always the same and it is: http://<%=url%>/opencms/efeedback?
+						The start of the URL is always the same and it is: http://<%=url%>/exchange/feedback?
 					</p>
 					<table class="page-table" >
 						<thead>
@@ -495,7 +495,7 @@ String url = request.getServerName();
 					<ul>
 						<li>
 							Retrieve a list of the 10 most recent items of feedback for the performance with identifier 90, leaving all other attributes at their defaults.<br/>
-							<a href="/opencms/efeedback?type=performance&id=90" rel="nofollow">http://<%=url%>/opencms/efeedback?type=performance&amp;id=90</a>
+							<a href="/exchange/feedback?type=performance&id=90" rel="nofollow">http://<%=url%>/exchange/feedback?type=performance&amp;id=90</a>
 						</li>
 					</ul>
 				</div>
