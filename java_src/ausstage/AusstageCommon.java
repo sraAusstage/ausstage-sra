@@ -75,4 +75,12 @@ public class AusstageCommon {
 		return strDate.replaceAll(" ", "&nbsp;");
 
 	}
+	
+	public static boolean hasValue(String str) {
+	  if (str != null && !str.equals("")) {
+	    return true;
+	  } else {
+	    return false;
+	  }
+	}
 }

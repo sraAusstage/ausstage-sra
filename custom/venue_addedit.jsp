@@ -141,9 +141,52 @@ function showAddress() {
 			var point = results[0].geometry.location;
 			document.venue_addedit_form.f_latitude.value = Math.round(point.lat()*1000000)/1000000;
 			document.venue_addedit_form.f_longitude.value = Math.round(point.lng()*1000000)/1000000;
+			initializeMap();
 		}
 	});
 	return false;
+}
+
+function initializeMap(){
+  var pointLatlng = new google.maps.LatLng(document.venue_addedit_form.f_latitude.value,document.venue_addedit_form.f_longitude.value);
+  var myOptions = {
+          zoom: 14,
+          center: pointLatlng,
+          mapTypeControl: true,
+          mapTypeControlOptions: {
+           mapTypeIds: [google.maps.MapTypeId.ROADMAP, 
+                                google.maps.MapTypeId.SATELLITE, 
+                                google.maps.MapTypeId.HYBRID, 
+                                google.maps.MapTypeId.TERRAIN, 
+                                'ausstage']
+          }
+  }
+  var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  
+  var mapStyle = [ { featureType: "all", elementType: "all", stylers: [ { visibility: "off" } ]},
+    { featureType: "water", elementType: "geometry", stylers: [ { visibility: "on" }, { lightness: 40 }, { saturation: 0 } ] },
+    { featureType: "landscape", elementType: "geometry", stylers: [ { visibility: "on" }, { saturation: -100 } ]},
+    { featureType: "road", elementType: "geometry", stylers: [ { visibility: "on" }, { saturation: -100 }, { lightness: 40 } ] },
+    { featureType: "transit", elementType: "geometry", stylers: [ { saturation: -100 }, { lightness: 40 } ] } 
+    ];
+  
+  var styledMapOptions = {map: map, name: "AusStage", alt: 'Show AusStage styled map' };
+  var ausstageStyle    = new google.maps.StyledMapType(mapStyle, styledMapOptions);
+  
+  map.mapTypes.set('ausstage', ausstageStyle);
+  map.setMapTypeId('ausstage');
+  
+  var address = document.venue_addedit_form.f_street.value + " " + document.venue_addedit_form.f_suburb.value + " " + 
+  document.venue_addedit_form.f_postcode.value + " " + document.venue_addedit_form.f_state_id.options[document.venue_addedit_form.f_state_id.selectedIndex].text + " " + 
+  document.venue_addedit_form.f_country.options[document.venue_addedit_form.f_country.selectedIndex].text;
+  
+  var marker = new google.maps.Marker({
+    position: pointLatlng,
+    map: map,
+    title:  address,
+    icon: "/pages/assets/images/iconography/venue-arch-134-pointer.png"
+  });
+  document.getElementById("map_container").style.display = "block";
 }
 
 document.body.onload=function(){load();};
@@ -298,7 +341,18 @@ document.body.onload=function(){load();};
   pageFormater.writeTwoColTableHeader(out, "Latitude");
   out.println("<input type=\"text\" name=\"f_latitude\" size=\"15\" class=\"line150\" maxlength=15 value=\"" + venueObj.getLatitude() + "\">");
   pageFormater.writeTwoColTableFooter(out);
-
+  %>
+  <div id="map_container" style="clear:both; padding: 2.5%;  display:none;">
+    <div id="map_canvas" style="width:100%;height:300px;"></div>
+  </div>
+  <%
+    if (AusstageCommon.hasValue(venueObj.getLatitude()) && AusstageCommon.hasValue(venueObj.getLongitude())) {
+  %>
+    <script type="text/javascript">
+      initializeMap();
+    </script>
+  <%
+    }
   // Radius
   pageFormater.writeTwoColTableHeader(out, "Radius");
   out.println("<input type=\"text\" name=\"f_radius\" size=\"15\" class=\"line150\" maxlength=15 value=\"" + venueObj.getRadius() + "\">");
