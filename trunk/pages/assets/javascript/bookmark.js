@@ -295,6 +295,6 @@ BookmarkClass.prototype.addDataToMap = function() {
         // keep the user informed
         $("#map_bookmark_loading_div").dialog('close');
         
-        // switch to the map tab including an update
-        $('#tabs').tabs('select', 2);
+        // update map display with data
+        mappingObj.updateMap();
 }
