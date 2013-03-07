@@ -47,7 +47,7 @@ $(document).ready(function() {
 			tabs.tabs('select', 1)
 		} else if(tab == 'secgenre') {
 			tabs.tabs('select', 2);
-		} else if(tab == 'contentindicator') {
+		} else if(tab == 'subjects') {
 			tabs.tabs('select', 3); 
 		} else if(tab == 'ressubtype') {
 			tabs.tabs('select', 4);

@@ -24,31 +24,49 @@ String url = request.getServerName();
 	<script type="text/javascript" src="assets/javascript/code_generator.js"></script>
 	<script type="text/javascript" src="assets/javascript/aus_exchange.js"></script>		
 	<script type="text/javascript" src="assets/javascript/tab-selector.js"></script>
+	<!-- vertical tab styles -->
+	<style>
+  .ui-tabs-vertical { width: 100%; }
+  .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
+  .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+  .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+  .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+  .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: left; margin-left: 12em; }
+  .tabs-vertical-spacer { clear:left; background-color: white; padding-top:10px !important; }
+  #footer { position: fixed !important; }
+  </style>
 		<!-- main content -->
 	<div class="page b-172">
 
 		<div id="tabs" class="tab-container" style="height:auto !important; margin:0px; margin-top: 15px; margin-bottom: 60px; padding:0px; border-width:0px;">
-			<ul class="fix-ui-tabs" style="padding: 0px;">
-				<li><a href="#tabs-1">Data Exchange</a></li>
-				<li><a href="#tabs-2">Generate Code</a></li>
-				<li><a href="#tabs-3">Genres</a></li>
-				<li><a href="#tabs-4">Subjects</a></li>
-				<li><a href="#tabs-5">Resources</a></li>
-			</ul>
-			<div id="top">
+		  <div style="float:left; width:12em; ">
+				<ul class="fix-ui-tabs" style="padding: 0px;">
+					<li><a href="#tabs-1">Data Exchange</a></li>
+					<li class="tabs-vertical-spacer"></li>
+					<li><a href="#tabs-2">Generate Code</a></li>
+					<li class="tabs-vertical-spacer"></li>
+					<li><a href="#tabs-3">Genres</a></li>
+					<li class="tabs-vertical-spacer"></li>
+					<li><a href="#tabs-4">Subjects</a></li>
+					<li class="tabs-vertical-spacer"></li>
+					<li><a href="#tabs-5">Resources</a></li>
+				</ul>
+			</div>
+			<div id="top" style="float:left; margin-left: -12em; width:100%;">
 				<div id="tabs-1" class="tab-content">
 					<h2>Access AusStage data for your website</h2>
-					<p>
-						The AusStage Data Exchange service is a way for members of the AusStage user community to include AusStage data in their websites using specially crafted URLs.
-					</p>
-					<p> 
-					You can use the <a href='/pages/exchange/?tab=embed'>Code Generator</a> to create code that can be pasted into any web page.
+					<p>					
+					You can use the Data Exchange service to embed AusStage data in a website using specially created URLs. 
+					Artists, companies and researchers can record information about their work in AusStage and then display that information in their own web pages.
 					</p>
 					<p>
-						AusStage data can be included in a website dynamically by using <a href="http://en.wikipedia.org/wiki/JavaScript" title="Wikipedia article on this topic">JavaScript</a>, importing the <a href="http://en.wikipedia.org/wiki/RSS" title="Wikipedia article on this topic">RSS feed</a> into your content management system, or in the case of performance feedback collected using the <a href="http://beta.ausstage.edu.au/mobile/mobile-vis/" title="Researching Audiences service homepage">Researching Audiences</a> service an iFrame.
+					AusStage data can be embedded in a website dynamically by using <a href="http://en.wikipedia.org/wiki/JavaScript" title="Wikipedia article on this topic">JavaScript</a>, 
+					by importing the <a href="http://en.wikipedia.org/wiki/RSS" title="Wikipedia article on this topic">RSS feed</a> into your content management system, 
+					or in the case of performance feedback collected by using the <a href="http://beta.ausstage.edu.au/mobile/mobile-vis/" title="Researching Audiences service homepage">Researching Audiences</a> service and iFrame.
 					</p>
 					<p>
-						There are three different types of record that can be retrieved using this service. They are:
+					Use the <a href='/pages/exchange/?tab=embed'>Code Generator</a> to create code that can be embedded into a web page. Up-to-date data is drawn live from the database each time the web page is viewed. 
+					You can choose which records you want displayed. Three types of record can be retrieved using this service:
 					</p>
 					<ul>
 						<li><a href="#event-records">Event Records</a></li>
