@@ -132,7 +132,9 @@ BookmarkClass.prototype.buildUriSegment = function(ident, ids) {
 
 // build a complex map from the link
 BookmarkClass.prototype.doComplexMapFromLink = function (c, o, v, e) {
-
+		// set tab to Map tab by default
+		var tabs = $('#tabs');
+		tabs.tabs('select', 2);
         // keep the user informed
         $("#map_bookmark_loading_div").dialog('open');
 
