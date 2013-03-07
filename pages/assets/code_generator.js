@@ -249,7 +249,7 @@ function initSearch(){
 
         $('#addEntity').click(function(){
                 if($('#task').val()=='secgenre'){$('#secgenre_select_div').dialog('open');}
-                else if($('#task').val()=='contentindicator'){$('#contentindicator_select_div').dialog('open');}
+                else if($('#task').val()=='subjects'){$('#contentindicator_select_div').dialog('open');}
                 else if($('#task').val()=='ressubtype'){$('#ressubtype_select_div').dialog('open');}
                 else $('#search_div').dialog('open');
         });

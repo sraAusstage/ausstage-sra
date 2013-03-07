@@ -312,7 +312,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 									if (hasValue(orgEvLink.getFunctionDesc())) {
 										out.print(", " + orgEvLink.getFunctionDesc());
 									} else {
-										out.print("");
+										out.print(", No Function");
 									}
 									if (hasValue(orgEvLink.getArtisticFunctionDesc())) {
 										out.print(", " + orgEvLink.getArtisticFunctionDesc());
