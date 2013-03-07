@@ -1819,7 +1819,7 @@
         out.println("      <thead>");          
         out.println("      <tr>");
         out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('item_sub_type')\">Type</a></b></th>");
-        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('citation')\">Citation</a></b></th>");
+        out.println("       <th ><b><a href=\"#\" onClick=\"reSortData('title')\">Citation</a></b></th>");
         out.println("      </thead>");
         out.println("      </tr>");
        
