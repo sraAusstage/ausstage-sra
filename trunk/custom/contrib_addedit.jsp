@@ -704,8 +704,6 @@
 	  });
   });
   
-  contrib_addedit.jsp
-  
   function concatenateDisplayName() {
 		var currentPrefix = $('input[name="f_prefix"]');
 		var currentFirstName = $('input[name="f_f_name"]');
