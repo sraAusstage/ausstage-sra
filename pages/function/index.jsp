@@ -75,27 +75,59 @@
 			rset = function.getAssociatedContributors(Integer.parseInt(contfunction_id), stmt);
 			if(rset != null && rset.isBeforeFirst()) {
 			%>
+
 				<tr>
-					<th class='record-label b-105 '>Contributors</th>
-					
-					<td class='record-value' colspan='2'>
-						<table border="0" cellpadding="0" cellspacing="0">
-						<%	
-						while(rset.next()) {
-						%>
-							<tr>
-								<td valign="top">
-									<a href="/pages/contributor/<%=rset.getString("contributorid") %>">
-										<%=rset.getString("name")%>
-									</a>
-								</td>
-							</tr>
-						<%
-						}
-						%>
-						</table>
-					</td>
-				</tr>
+          <th class='record-label b-105'>Contributors</th>
+          
+          <td class='record-value'  colspan='2'>
+            <table class='record-value-table' cellspacing="0">
+              <tr>
+                <th  class='record-value-table light'>Name</th>
+                <th  class='record-value-table light'>Event Dates</th>
+              </tr>
+            <%
+              while(rset.next()) {
+              %>
+              <tr>
+                <td  class='record-value-table'>
+                  <a href="/pages/contributor/<%=rset.getString("contributorid") %>">
+                    <%=rset.getString("name")%>
+                  </a>
+                </td>
+                <td  class='record-value-table'>
+                <%
+                String firstStartDateYear = rset.getString("min_first_date");
+                String lastStartDateYear = rset.getString("max_first_date");
+                String lastEndDateYear = rset.getString("max_last_date");
+                
+                String eventDates = firstStartDateYear;
+                int firstEventStartYear = Integer.valueOf(firstStartDateYear);
+                int lastEventStartYear = Integer.valueOf(lastStartDateYear);
+                
+                if(hasValue(lastEndDateYear)){
+                	int lastEventEndYear = Integer.valueOf(lastEndDateYear);
+                	// if the last event end date is greater than the last event start date and not equal to first event start date then we use it as the end of the event dates
+                	if(lastEventEndYear > lastEventStartYear && lastEventEndYear != firstEventStartYear) {
+                		eventDates += " - " + lastEndDateYear;
+                	// there may be cases when the last event end date may be null so the last event start date would be larger so we use that as the end of the event dates
+                	// if it isn't equal to the first event start date
+                	} else if (lastEventStartYear != firstEventStartYear) {
+                		eventDates += " - " + lastEventStartYear;
+                	}
+                // if last event end date doesn't have a value then make sure that last event start date isn't equal to the first event start date
+                } else if (lastEventStartYear != firstEventStartYear) {
+                  eventDates += " - " + lastEventStartYear;
+                }
+                %>
+                <%= eventDates %>
+                </td>
+              </tr> 
+              <%
+              }
+            %>
+            </table>
+          </td>
+        </tr>
 			<%
 			}
 			
