@@ -30,6 +30,8 @@
 		document.getElementById("contributorbtn").style.backgroundColor = '#aaaaaa';
 		document.getElementById("events").style.display = 'none';
 		document.getElementById("eventsbtn").style.backgroundColor = '#aaaaaa';
+		document.getElementById("venue").style.display = 'none';
+		document.getElementById("venuebtn").style.backgroundColor = '#aaaaaa';
 	
 		document.getElementById(name).style.display = '';
 		document.getElementById(name+"btn").style.backgroundColor = '#666666';
@@ -56,6 +58,7 @@
 					ResultSet rsetEvt = null;
 					CachedRowSet crsetCon = null;
 					CachedRowSet crsetOrg = null;
+					CachedRowSet crsetVen = null;
 					ResultSet rset;
 					Statement stmt = db_ausstage_for_drill.m_conn.createStatement();
 					String formatted_date = "";
@@ -231,9 +234,27 @@
 							"ORDER BY evcount.num desc,contributor.last_name,contributor.first_name,events.first_date DESC";
 							crsetCon = m_db.runSQL(sqlString, stmt);
 							
+							//venues
+							sqlString = "SELECT DISTINCT venue.venueid, venue.venue_name, venue.suburb,states.state, " + 
+								"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date,evcount.num " + 
+								"FROM events,venue,states,eventworklink,orgevlink,organisation, " + 
+								"(SELECT events.venueid, count(distinct eventworklink.eventid) num " + 
+								"FROM events, eventworklink where events.eventid=eventworklink.eventid and eventworklink.workid=" + work_id + " " + 
+								"GROUP BY events.venueid) evcount " + 
+								"WHERE eventworklink.workid = " + work_id + " AND " + 
+								"evcount.venueid = venue.venueid AND  " + 
+								"eventworklink.eventid = events.eventid AND  " + 
+								"events.venueid = venue.venueid AND  " + 
+								"venue.state = states.stateid AND  " + 
+								"events.eventid = eventworklink.eventid AND  " + 
+								"eventworklink.eventid=orgevlink.eventid AND  " + 
+								"orgevlink.organisationid = organisation.organisationid  " + 
+								"ORDER BY evcount.num desc,organisation.name,events.first_date DESC";
+							crsetVen = m_db.runSQL(sqlString, stmt);
+							
 							rsetEvt = work.getAssociatedEv(Integer.parseInt(work_id), stmt);
 							
-							if (crsetOrg.size() > 0 || crsetCon.size() > 0 || (rsetEvt != null && rsetEvt.isBeforeFirst())){
+							if (crsetOrg.size() > 0 || crsetCon.size() > 0 || crsetVen.size() > 0 || (rsetEvt != null && rsetEvt.isBeforeFirst())){
 							
 						%>
 
@@ -245,6 +266,7 @@
 									<li <%=(rsetEvt != null && rsetEvt.isBeforeFirst())?"":"style='display: none'"%>><a href="#" onclick="displayRow('events')" id='eventsbtn'>Date</a></li>
 									<li <%=(crsetCon.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('contributor')" id='contributorbtn'>Contributor</a></li>
 									<li <%=(crsetOrg.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('organisation')" id='organisationbtn'>Organisation</a></li>
+									<li <%=(crsetVen.size() > 0)?"":"style='display: none'"%>><a href="#" onclick="displayRow('venue')" id='venuebtn'>Venue</a></li>
 								 </ul>
 							</td>
 						</tr>
@@ -389,7 +411,58 @@
 						%>
 						</tr>
 						
-						<tr>
+						<tr id='venue'>
+						<%
+
+						//Events by venue
+						String prevVen = "";
+						if (crsetVen.size() > 0) {
+							%>
+							<th class='record-label b-153'></td>
+					 		
+					 		<td class='record-value' colspan='2'>
+							
+							<%
+							while (crsetVen.next()) {
+							// If we're starting a new venue, check if we have to finish the previous one
+							if (!prevVen.equals(crsetVen.getString("venueid"))) {
+								if (hasValue(prevVen)) out.print("</ul>");
+								
+								// Now start the new one
+								%>
+								<h3>
+								<a href="/pages/venue/<%=crsetVen.getString("venueid")%>">
+									<%=crsetVen.getString("venue_name")%></a><%
+								if(hasValue(crsetVen.getString("suburb"))) 
+									out.print(", " + crsetVen.getString("suburb"));
+								if(hasValue(crsetVen.getString("state")) && (!crsetVen.getString("state").equals("O/S")))
+									out.print(", " + crsetVen.getString("state"));
+								%>
+								</h3>
+								<ul>
+									<%
+									prevVen = crsetVen.getString("venueid");
+								}
+								
+								%>
+									<li>
+									<a href="/pages/event/<%=crsetVen.getString("eventid")%>">
+										<%=crsetVen.getString("event_name")%></a><%
+									if (hasValue(formatDate(crsetVen.getString("DDFIRST_DATE"),crsetVen.getString("MMFIRST_DATE"),crsetVen.getString("YYYYFIRST_DATE"))))
+										out.print(", " + formatDate(crsetVen.getString("DDFIRST_DATE"),crsetVen.getString("MMFIRST_DATE"),crsetVen.getString("YYYYFIRST_DATE")));
+									%>
+									</li>
+								<%
+								}
+							%>
+								</ul>
+							</td>
+						<%
+						}
+						
+						out.flush();
+					 	%>
+						</tr>
 						<%
 						//Resources
 						rset = work.getAssociatedItems(Integer.parseInt(work_id), stmt);
