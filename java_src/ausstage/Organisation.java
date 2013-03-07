@@ -393,8 +393,8 @@ public class Organisation {
 				if (m_place_of_demise == null || m_place_of_demise.equals("") || m_place_of_demise.equals("0")) {
 					m_place_of_demise = "null";
 				}
-				sqlString = "UPDATE organisation set name='" + m_db.plSqlSafeString(m_organisation_name) + "', " + " updated_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user)
-						+ "'" + ", updated_DATE =  now(),  " + "other_names1='" + m_db.plSqlSafeString(m_other_names1) + "', " + "other_names2='"
+				sqlString = "UPDATE organisation set name='" + m_db.plSqlSafeString(m_organisation_name) + "', " + (m_updated_by_user!=null && !m_updated_by_user.equals("")? " updated_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user)
+						+ "'" + ", updated_DATE =  now(),  ":"") + "other_names1='" + m_db.plSqlSafeString(m_other_names1) + "', " + "other_names2='"
 						+ m_db.plSqlSafeString(m_other_names2) + "', " + "other_names3='" + m_db.plSqlSafeString(m_other_names3) + "', " + "address='"
 						+ m_db.plSqlSafeString(m_address) + "', " + "SUBURB='" + m_db.plSqlSafeString(m_suburb) + "', " + "state=" + m_state_id + ", " + "contact='"
 						+ m_db.plSqlSafeString(m_contact) + "', " + "postcode=" + m_db.plSqlSafeString(m_postcode.equals("") ? "null" : m_postcode) + ", " + "phone1='"

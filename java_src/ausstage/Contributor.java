@@ -508,8 +508,7 @@ public class Contributor {
 					+ "DDDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_d) + "'," 
 					+ "MMDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_m) + "'," 
 					+ "YYYYDATE_OF_DEATH= '" + m_db.plSqlSafeString(m_dod_y) + "'," 
-					+ "UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) + "'," 
-					+ "UPDATED_DATE = now(), " 
+					+ (m_updated_by_user!=null && !m_updated_by_user.equals("")? "UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) + "', UPDATED_DATE = now(), ":"") 
 					+ "COUNTRYID= " + m_country_id + " " 
 					+ "WHERE CONTRIBUTORID = " + m_id;
 
