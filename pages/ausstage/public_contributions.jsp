@@ -76,8 +76,7 @@
   
   if (valid) {
 	  SendMail mailer = new SendMail ();
-	  //mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Contribution from User " + userName, bodyText, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
-	  mailer.sendEmail("brett.eterovic-soric@sra.com.au", ("register".equals(type)?"Registration Request from ":"Public Contribution from User ") + userName, bodyText, "brett.eterovic-soric@sra.com.au");
+	  mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, ("register".equals(type)?"Registration Request from ":"Public Contribution from User ") + userName, bodyText, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
   }
  
 %>
