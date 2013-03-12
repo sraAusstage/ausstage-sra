@@ -6,7 +6,7 @@
 <%@ page import = "ausstage.State"%>
 <%@ page import = "admin.Common"%>
 <%@ page import = "ausstage.Event, ausstage.DescriptionSource"%>
-<%@ page import = "ausstage.Datasource, ausstage.Venue, ausstage.ItemItemLink"%>
+<%@ page import = "ausstage.Datasource, ausstage.Venue, ausstage.WorkWorkLink"%>
 <%@ page import = "ausstage.PrimaryGenre, ausstage.SecGenreEvLink"%>
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
@@ -83,6 +83,12 @@
 
 					work = new Work(db_ausstage_for_drill);
 					work.load(Integer.parseInt(work_id));
+					
+					
+				    Work assocWork = null;
+				    Vector work_worklinks = work.getWorkWorkLinks();
+					if(work_worklinks.size() > 0){assocWork = new Work(db_ausstage_for_drill);}
+					
 					
 					//rset = work.getAssociatedEvents(Integer.parseInt(work_id), stmt);
 					
@@ -180,6 +186,43 @@
 							</tr>
 						<%
 						}
+						
+						
+
+						// Related Works
+						if (assocWork != null && work_worklinks.size() > 0) {
+							%>
+							<tr>
+								<th class='record-label b-153'>Related Works</th>
+								
+								<td class='record-value' colspan='2'>
+									<table border="0" cellpadding="0" cellspacing="0">
+									<%
+									for (WorkWorkLink workWorkLink : (Vector <WorkWorkLink>) work_worklinks) {
+										assocWork.load(new Integer(workWorkLink.getChildId()).intValue());
+										
+										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
+										if (workWorkLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(workWorkLink.getFunctionId()));
+										%>
+										<tr>
+											<td valign="top">
+												<%=lookUpCode.getDescription() %>
+												<a href="/pages/work/<%=assocWork.getId()%>">
+													<%=assocWork.getName()%>
+												</a>
+											</td>
+										</tr>
+										<%
+									}
+									%>
+									</table>
+								</td>
+							</tr>
+							<%
+						}
+						
+						
+						
 						
 						//get associated objects
 							ausstage.Database m_db = new ausstage.Database ();

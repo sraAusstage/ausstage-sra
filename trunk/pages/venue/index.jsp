@@ -6,7 +6,7 @@
 <%@ page import = "ausstage.State"%>
 <%@ page import = "admin.Common"%>
 <%@ page import = "ausstage.Event, ausstage.DescriptionSource"%>
-<%@ page import = "ausstage.Datasource, ausstage.Venue, ausstage.ItemItemLink"%>
+<%@ page import = "ausstage.Datasource, ausstage.Venue, ausstage.VenueVenueLink, ausstage.ItemItemLink"%>
 <%@ page import = "ausstage.PrimaryGenre, ausstage.SecGenreEvLink"%>
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
@@ -97,6 +97,12 @@
 						venueCountry.load(Integer.parseInt(venue.getCountry()));
 					}
 		
+
+					Venue assocVenue = null;
+					Vector venue_venuelinks = venue.getVenueVenueLinks();
+					if(venue_venuelinks.size() > 0){assocVenue = new Venue(db_ausstage_for_drill);}
+					
+					
 					//Venue
 					%>
 					<table class='record-table'>
@@ -185,6 +191,40 @@
 							</tr>
 						<%
 						}
+						
+						
+						// Related Venues
+						if (assocVenue != null && venue_venuelinks.size() > 0) {
+							%>
+							<tr>
+								<th class='record-label b-134'>Related Venues</th>
+								
+								<td class='record-value' colspan='2'>
+									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
+									<%
+									for (VenueVenueLink venueVenueLink : (Vector <VenueVenueLink>) venue_venuelinks) {
+										assocVenue.load(new Integer(venueVenueLink.getChildId()).intValue());
+										
+										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
+										if (venueVenueLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(venueVenueLink.getFunctionId()));
+										%>
+										<tr>
+											<td valign="top">
+												<%=lookUpCode.getDescription() %>
+												<a href="/pages/venue/<%=assocVenue.getVenueId()%>">
+													<%=assocVenue.getName()%>
+												</a>
+											</td>
+										</tr>
+										<%
+									}
+									%>
+									</table>
+								</td>
+							</tr>
+							<%
+						}
+						
 						
 						//Latitude
 						if (hasValue(venue.getLatitude()) && hasValue(venue.getLongitude())) {
@@ -278,10 +318,7 @@
 							</tr>
 						<%
 						}
-						   
 						
-						%>
-						<%
 						//get event data
 						ausstage.Database m_db = new ausstage.Database ();
 						m_db.connDatabase(AppConstants.DB_ADMIN_USER_NAME, AppConstants.DB_ADMIN_USER_PASSWORD);

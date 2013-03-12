@@ -9,7 +9,7 @@
 <%@ page import = "ausstage.Datasource, ausstage.Venue, ausstage.ItemItemLink"%>
 <%@ page import = "ausstage.PrimaryGenre, ausstage.SecGenreEvLink"%>
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
-<%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
+<%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.OrganisationOrganisationLink"%>
 <%@ page import = "ausstage.ConEvLink, ausstage.Contributor"%>
 <%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.ContentIndicator"%>
 <%@ page import = "ausstage.ItemContribLink, ausstage.ItemOrganLink"%>
@@ -96,6 +96,11 @@
 						organisation.load(Integer.parseInt(org_id));
 						country = new Country(db_ausstage_for_drill);
 
+					    Organisation assocOrganisation = null;
+					    Vector org_orglinks = organisation.getOrganisationOrganisationLinks();
+						if(org_orglinks.size() > 0){assocOrganisation = new Organisation(db_ausstage_for_drill);}
+						
+						
 						//Name
 						%>
 						<table class='record-table'>
@@ -207,6 +212,42 @@
 							</tr>
 						<%
 						}
+						
+						
+
+						 // Related Organisations
+						if (assocOrganisation != null && org_orglinks.size() > 0) {
+							%>
+							<tr>
+								<th class='record-label b-121'>Related Organisations</th>
+								
+								<td class='record-value' colspan='2'>
+									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
+									<%
+									for (OrganisationOrganisationLink orgOrgLink : (Vector <OrganisationOrganisationLink>) org_orglinks) {
+										assocOrganisation.load(new Integer(orgOrgLink.getChildId()).intValue());
+										
+										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
+										if (orgOrgLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(orgOrgLink.getFunctionId()));
+										%>
+										<tr>
+											<td valign="top">
+												<%=lookUpCode.getDescription() %>
+												<a href="/pages/organisation/<%=assocOrganisation.getId()%>">
+													<%=assocOrganisation.getName()%>
+												</a>
+											</td>
+										</tr>
+										<%
+									}
+									%>
+									</table>
+								</td>
+							</tr>
+							<%
+						}
+						
+						
 						//get associated objects
 						
 						//events
