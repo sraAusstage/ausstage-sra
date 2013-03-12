@@ -7,7 +7,7 @@
 <%@ page import="ausstage.State"%>
 <%@ page import="admin.Common"%>
 <%@ page import="ausstage.Event,ausstage.DescriptionSource"%>
-<%@ page import="ausstage.Datasource,ausstage.Venue,ausstage.ItemItemLink"%>
+<%@ page import="ausstage.Datasource,ausstage.Venue,ausstage.EventEventLink"%>
 <%@ page import="ausstage.PrimaryGenre,ausstage.SecGenreEvLink"%>
 <%@ page import="ausstage.Country,ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import="ausstage.OrgEvLink,ausstage.Organisation,ausstage.Organisation"%>
@@ -87,6 +87,10 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			descriptionSource = new DescriptionSource(db_ausstage_for_drill);
 
 
+		    Event assocEvent = null;
+		    Vector event_eventlinks = event.getEventEventLinks();
+			if(event_eventlinks.size() > 0){assocEvent = new Event(db_ausstage_for_drill);}
+			
 	
 			//Event Name
 			%>
@@ -294,6 +298,38 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				<%
 			}
 
+			// Related Events
+			if (assocEvent != null && event_eventlinks.size() > 0) {
+				%>
+				<tr>
+					<th class='record-label b-90'>Related Events</th>
+					
+					<td class='record-value' colspan='2'>
+						<table border="0" cellpadding="0" cellspacing="0">
+						<%
+						for (EventEventLink eventEventLink : (Vector <EventEventLink>) event_eventlinks) {
+							assocEvent.load(new Integer(eventEventLink.getChildId()).intValue());
+							
+							LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
+							if (eventEventLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(eventEventLink.getFunctionId()));
+							%>
+							<tr>
+								<td valign="top">
+									<%=lookUpCode.getDescription() %>
+									<a href="/pages/event/<%=assocEvent.getEventid()%>">
+										<%=assocEvent.getEventName()%>
+									</a>
+								</td>
+							</tr>
+							<%
+						}
+						%>
+						</table>
+					</td>
+				</tr>
+				<%
+			}
+			
 			//  ORGANISATIONS  or Companies//
 			if (!event.getOrgEvLinks().isEmpty()) {
 			%>

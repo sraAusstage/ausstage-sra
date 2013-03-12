@@ -9,7 +9,7 @@
 <%@ page import = "ausstage.PrimaryGenre, ausstage.SecGenreEvLink"%>
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
-<%@ page import = "ausstage.ConEvLink, ausstage.Contributor"%>
+<%@ page import = "ausstage.ConEvLink, ausstage.Contributor, ausstage.ContributorContributorLink"%>
 <%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.ContentIndicator"%>
 <%@ page import = "ausstage.ItemContribLink, ausstage.ItemOrganLink"%>
 <%@ page import = "ausstage.SecondaryGenre, ausstage.Work"%>
@@ -108,7 +108,11 @@ Vector item_contentindlinks;
 
     contributor = new Contributor(db_ausstage_for_drill);
     contributor.load(Integer.parseInt(contrib_id));
-   
+	
+    Contributor assocContrib = null;
+    Vector contrib_contriblinks = contributor.getContributorContributorLinks();
+	if(contrib_contriblinks.size() > 0){assocContrib = new Contributor(db_ausstage_for_drill);}
+	
 	out.println("   <table class='record-table'");	
    
     //Name
@@ -259,10 +263,41 @@ Vector item_contentindlinks;
 	    out.println("   </tr>");
     }
 
-   out.flush();
-   
-   %>
-   
+ // Contributors
+	if (assocContrib != null && contrib_contriblinks.size() > 0) {
+		%>
+		<tr>
+			<th class='record-label b-105'>Related Contributors</th>
+			
+			<td class='record-value' colspan='2'>
+				<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
+				<%
+				for (ContributorContributorLink contribContribLink : (Vector <ContributorContributorLink>) contrib_contriblinks) {
+					assocContrib.load(new Integer(contribContribLink.getChildId()).intValue());
+					
+					LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
+					if (contribContribLink.getFunctionId() != null) lookUpCode.load(Integer.parseInt(contribContribLink.getFunctionId()));
+					%>
+					<tr>
+						<td valign="top">
+							<%=lookUpCode.getDescription() %>
+							<a href="/pages/contributor/<%=assocContrib.getId()%>">
+								<%=assocContrib.getDisplayName()%>
+							</a>
+						</td>
+					</tr>
+					<%
+				}
+				%>
+				</table>
+			</td>
+		</tr>
+		<%
+	}
+    out.flush();
+    
+    %>
+    
     <script type="text/javascript">
     function displayRow(name){
     	document.getElementById("function").style.display = 'none';
