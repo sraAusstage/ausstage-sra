@@ -550,7 +550,7 @@ public class HtmlGenerator {
 			// if the amount of select options is less than the maximum results that will be displayed restrict the select size to the amount select options
 			// so we don't get heaps of white space
 			if (counter < p_max_results_displayed) {
-				resultsDisplayed = counter;
+				resultsDisplayed = counter + 1;
 			}
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
