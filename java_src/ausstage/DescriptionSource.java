@@ -87,7 +87,7 @@ public class DescriptionSource {
 		String l_ret;
 
 		try {
-			sqlString = "SELECT * FROM DESCRIPTIONSRC";
+			sqlString = "SELECT * FROM DESCRIPTIONSRC ORDER BY DESCRIPTIONSOURCE";
 			l_rs = m_db.runSQL(sqlString, p_stmt);
 			return (l_rs);
 		} catch (Exception e) {

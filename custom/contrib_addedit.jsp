@@ -394,7 +394,7 @@
         if (contrib_state.equals(rset.getString("STATEID")))//therefore editing existing state
           selected = "selected";
      
-        if(!rset.getString("state").toLowerCase().equals("unknown")){
+        if(!rset.getString("state").toLowerCase().equals("unknown") && !rset.getString("state").toLowerCase().equals("[unknown]")){
           stateTrailingSubString += "<option " + selected + " value='" + rset.getString ("stateid") + "'" +
                                     ">" + rset.getString ("state") + "</option>\n";
         }else{

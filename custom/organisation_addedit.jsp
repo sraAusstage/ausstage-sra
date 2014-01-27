@@ -205,7 +205,7 @@
     if (organisationObj.getState().equals(rset.getString("stateid")))//editing existing state
         selected = "selected";
      
-    if(!rset.getString("state").toLowerCase().equals("unknown")){
+    if(!rset.getString("state").toLowerCase().equals("unknown") && !rset.getString("state").toLowerCase().equals("[unknown]")){
       stateTrailingSubString += "<option " + selected + " value='" + rset.getString ("stateid") + "'" +
                                     ">" + rset.getString ("state") + "</option>\n";
     }else{
@@ -272,7 +272,7 @@
   }
   rset.close ();
   out.print(countryLeadingSubString + countryTrailingSubString);
-  
+  out.println("</select>");
 
   pageFormater.writeTwoColTableFooter(out);
 
@@ -280,6 +280,7 @@
   pageFormater.writeTwoColTableHeader(out, "Organisation Type *");
   out.println("<select name=\"f_organisation_type\" size=\"1\" class=\"line150\">");
   l_rs = organisationObj.getOrgTypes(stmt);
+  String orgTypeId = organisationObj.getOrganisationType();
 
   while (l_rs.next())
   {  
@@ -287,20 +288,21 @@
     String l_org_type_id = l_rs.getString ("organisation_type_id");
     String l_org_type    = l_rs.getString ("type");
     
-    if(counter == 0)
-      out.print("<option value=''>--- Select Type ---</option>");
-    if (organisationObj.getOrganisationType() != null && !organisationObj.getOrganisationType().equals("") && organisationObj.getOrganisationType().equals(l_org_type_id))
+//    if(counter == 0)
+//      out.print("<option value=''>--- Select Type ---</option>");
+    if (orgTypeId != null && !orgTypeId.equals("") && orgTypeId.equals(l_org_type_id))
       selected = "selected";
     //if we are adding default to Other Organisation
-    if(action != null && action.equals("add") && l_org_type.equals("Other Organisation"))
+    //if(action != null && action.equals("add") && l_org_type.equals("Other Organisation"))
+    if ((orgTypeId == null || orgTypeId.equals("")) && l_org_type.equals("Other Organisation"))
       selected = "selected";
 
-    out.println("<option " + selected + " value='" + l_org_type_id + "'" +
+    out.print("<option " + selected + " value='" + l_org_type_id + "'" +
                                   ">" + l_org_type + "</option>\n");
     counter ++;
   }
   l_rs.close ();
-  
+  out.println("</select>");
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Notes");

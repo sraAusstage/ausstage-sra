@@ -34,7 +34,7 @@
 
 	ausstage_main_page_link += "</td></tr></table>";
 %>
-<script language="Javascript">
+<script type="text/javascript">
 	var ajaxChildSelect;
 	var ajaxLoadingImageCell;
 	var req;

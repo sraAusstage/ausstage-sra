@@ -18,6 +18,12 @@ Should probably put this in a seperate .js file
 -->
 
 <script language="javascript">
+	function numberWithCommas(x) {
+    		var parts = x.toString().split(".");
+		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    		return parts.join(".");
+	}
+
 	//function that gets counts.  
 	function getCounts(){
 	
@@ -135,9 +141,9 @@ Should probably put this in a seperate .js file
     	
     	//function to replace the loading symbol with the number,
     	function updateCount(field, value){
-    		
+    		value = numberWithCommas(value);
     		$('#'+field+"-count").empty().append(value).show();
-    		$('#'+field+"-count-load").hide();	
+    		$('#'+field+"-count-load").hide();
     		//if (value == "0"){$('#'+field+"-count").hide();}
     	}
     	

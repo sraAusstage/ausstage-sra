@@ -452,6 +452,42 @@ public class Work {
 		}
 	}
 
+	public String getLinkedOrganisationNames() {
+		String orgNames = "";
+		ResultSet l_rs = null;
+		String l_sql = "";
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			l_sql = (new StringBuilder("SELECT DISTINCT organisation.organisationid, organisation.name"
+					+ " FROM organisation, workorglink WHERE "
+					+ " workorglink.organisationid = organisation.organisationid AND workorglink.workid=")).append(m_workid).append(" ").append("ORDER BY organisation.name ")
+					.toString();
+			l_rs = m_db.runSQLResultSet(l_sql, stmt);
+			
+			WorkOrganLink workOrganLink;
+			while (l_rs.next()) {
+				if(orgNames.equals("")){
+					orgNames += l_rs.getString("name");
+				} else {
+					orgNames += ", " + l_rs.getString("name");
+				}
+			}
+
+			l_rs.close();
+			stmt.close();
+			return orgNames;
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getLinkedOrganisationNames().");
+			System.out.println((new StringBuilder("MESSAGE: ")).append(e.getMessage()).toString());
+			System.out.println((new StringBuilder("LOCALIZED MESSAGE: ")).append(e.getLocalizedMessage()).toString());
+			System.out.println((new StringBuilder("CLASS.TOSTRING: ")).append(e.toString()).toString());
+			System.out.println((new StringBuilder("sqlString: ")).append(l_sql).toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return "";
+		}
+	}
+
 	public ResultSet getAssociatedEvents(int p_id, Statement p_stmt) {
 		String l_sql = "";
 		ResultSet l_rs = null;
@@ -759,8 +795,10 @@ public class Work {
 		ResultSet l_rs = null;
 		try {
 			sqlString = (new StringBuilder("SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_na"
-					+ "me, contributor.last_name) separator ', ') contribname FROM work  LEFT JOIN work"
-					+ "conlink ON work.workid = workconlink.workid LEFT JOIN contributor ON workconlink" + ".contributorid = contributor.contributorid WHERE work.workid =  "))
+					+ "me, contributor.last_name) separator ', ') contribname"
+					+ " FROM work  LEFT JOIN workconlink ON work.workid = workconlink.workid"
+					+ " LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid"
+					+ " WHERE work.workid =  "))
 					.append(p_work_id).toString();
 			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);
 			if (l_rs.next()) {
@@ -769,6 +807,11 @@ public class Work {
 			if (l_rs.getString("contribname") != null && !l_rs.getString("contribname").equals("")) {
 				retStr = (new StringBuilder(String.valueOf(retStr))).append(", ").toString();
 				retStr = (new StringBuilder(String.valueOf(retStr))).append(l_rs.getString("contribname")).toString();
+			}
+			if(l_rs.getString("workid") != null && !l_rs.getString("workid").equals("")){
+				Work work = new Work(m_db);
+			    work.load(Integer.parseInt(l_rs.getString("workid")+""));
+			    retStr = (new StringBuilder(String.valueOf(retStr))).append(" (" + work.getLinkedOrganisationNames() + ")").toString();
 			}
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");

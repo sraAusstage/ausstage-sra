@@ -5,7 +5,6 @@ import="java.io.*"
 import="java.util.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:include property="template" element="head" />
-
 <br>
 <br>
 Welcome, <b><%
