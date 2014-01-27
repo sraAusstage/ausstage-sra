@@ -8,7 +8,7 @@
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
-<link rel="stylesheet" type="text/css" href="resources/backend.css" />
+<link rel="stylesheet" type="text/css" href="resources/backend.css" >
 
 <%
 	admin.ValidateLogin login     = (admin.ValidateLogin) session.getAttribute("login");
@@ -57,9 +57,10 @@
   }
 
   pageFormater.writeHeader(out);
-  pageFormater.writePageTableHeader (out, "Define Contributor Link Properties", AusstageCommon.ausstage_main_page_link);
+  //pageFormater.writePageTableHeader (out, "Define Contributor Link Properties", AusstageCommon.ausstage_main_page_link);
 %>
   <form action='event_contributor_functions_process.jsp' name='functions_form' id='functions_form' method='post'>
+  <input type='hidden' name='f_anchor_vame'>
     <table cellspacing='0' cellpadding='0' border='0' >
       <tr>
         <th class="bodytext"> Selected Contributor</th>
@@ -70,22 +71,27 @@
       </tr>
 <%
   ContributorFunction contFunctRset = new ContributorFunction(db_ausstage); // Needed as it has a valid db connection
-  out.println("<input type='hidden' name='f_anchor_vame'>");
+  //out.println("<input type='hidden' name='f_anchor_vame'>");
  // Contributors
   for(int i=0; i < conEvLinks.size(); i++)
   {
     conEvLink   = (ConEvLink)conEvLinks.get(i);
     contributor = conEvLink.getContributorBean();
     contFunct   = conEvLink.getContFunctBean();
-%>
-      <tr>
-        <td class="bodytext" width="190"><%=contributor.getName() + " " + contributor.getLastName()%></td>
-<%
-	  // Display all of the Functions
+
     String anchor_name = contributor.getName() + " " + contributor.getLastName();
     anchor_name = common.ReplaceStrWithStr(anchor_name, "'", "");
     anchor_name = common.ReplaceStrWithStr(anchor_name, " ", "");
-    out.println("<a name=\""+ anchor_name + "\">");
+%>
+      <tr>
+        <td class="bodytext" width="190">
+          <a name="<%=anchor_name%>">
+            <%=contributor.getName() + " " + contributor.getLastName()%>
+          </a>
+        </td>
+<%
+	  // Display all of the Functions
+    //out.println("<a name=\""+ anchor_name + "\">");
     out.println("<td width='5'>&nbsp;</td>");
     out.println("<td>");
 	  out.println("<select name='f_non_pref_function_id_" + i + "' size='1' class='line150' " +
@@ -116,8 +122,10 @@
 
 %>
       <td width='5'>&nbsp;</td>
-      <td><input type='text' name='f_preferred_term_<%=i%>' size='25' class='line150' readonly value='<%=conEvLink.getFunctionDesc()%>'></td>
-          <input type="hidden" name="f_function_id_<%=i%>" value="<%=conEvLink.getFunction()%>">
+      <td><input type='text' name='f_preferred_term_<%=i%>' size='25' class='line150' readonly value='<%=conEvLink.getFunctionDesc()%>'>
+        <input type="hidden" name="f_function_id_<%=i%>" value="<%=conEvLink.getFunction()%>">
+      </td>
+          
 <%
     if(request.getParameter("f_preferred_term_" + i) != null 
      && request.getParameter("f_non_pref_function_id_" + i).equals("0")){
@@ -134,19 +142,19 @@
       </tr><tr>
         <td width='5'>&nbsp;</td>
         <td width='5'>&nbsp;</td>
-        <td colspan='3' class='bodytext' width='340'><textarea name='f_notes_<%=i%>' row='5' cols='40'><%=conEvLink.getNotes()%></textarea></td>
+        <td colspan='3' class='bodytext' width='340'><textarea name='f_notes_<%=i%>' rows='5' cols='40'><%=conEvLink.getNotes()%></textarea></td>
       </tr>
       <tr><td><br></td></tr>
 <%
   }
   out.println("</table>");
   db_ausstage.disconnectDatabase();
-  pageFormater.writePageTableFooter (out);
+  //pageFormater.writePageTableFooter (out);
   pageFormater.writeButtons (out, "", "", "", "", "SUBMIT" , "tick.gif");
   pageFormater.writeFooter(out);
 %>
   </form>
-<script language="javascript">
+<script type="text/javascript">
 <!--
   function updatePreferredTerm(p_anchor_name)
   {

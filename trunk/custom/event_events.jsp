@@ -247,7 +247,11 @@
       list_db_sql += "and events.yyyyfirst_date like '%" +
                       db_ausstage.plSqlSafeString(filter_year) + "%' ";
   
-    list_db_sql += "order by " + request.getParameter ("f_order_by");
+    if(request.getParameter("f_order_by").equals("venue_name")) {
+    	list_db_sql += "order by venue." + request.getParameter ("f_order_by");
+    } else {
+       	list_db_sql += "order by events." + request.getParameter ("f_order_by");
+    }
   }
   
 //Need to do the following type of select of Oracle will not return the rows

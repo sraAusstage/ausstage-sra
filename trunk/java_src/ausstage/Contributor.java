@@ -1136,7 +1136,7 @@ public class Contributor {
 			sqlString = "SELECT contributor.`contributorid`,concat_ws(' ', last_name, first_name) as name, "
 					+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) dates, "
 					+ "group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') preferredterm, "
-					+ "concat_ws(', ', concat_ws(' ', contributor.last_name, contributor.first_name), if(min(events.yyyyfirst_date) = max(events.yyyylast_date), min(events.yyyyfirst_date), concat(min(events.yyyyfirst_date), ' - ', max(events.yyyylast_date))) , group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) AS output "
+					+ "concat_ws(', ', concat_ws(' ', contributor.first_name, contributor.last_name), if(min(events.yyyyfirst_date) = max(events.yyyylast_date), min(events.yyyyfirst_date), concat(min(events.yyyyfirst_date), ' - ', max(events.yyyylast_date))) , group_concat(distinct contributorfunctpreferred.preferredterm separator ', ')) AS output "
 					+ "FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "
 					+ "LEFT JOIN events ON (conevlink.eventid = events.eventid) "
 					+ "Left JOIN contributorfunctpreferred ON (conevlink.`function` = contributorfunctpreferred.contributorfunctpreferredid) " + "WHERE contributor.contributorid="

@@ -33,7 +33,7 @@ public class FormatPage {
 
 	public void writePageTableHeader(JspWriter p_out, String p_tableTitle, String p_addition_html) {
 		try {
-			p_out.println("<table border='0' style='border-collapse: collapse' bordercolor='#111111' width=" + "'778' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table style='border:0; border-collapse: collapse; border-color: #111111;' width=" + "'778' cellspacing='0' cellpadding='0'>");
 			p_out.println("  <tr>");
 
 		} catch (Exception e) {
@@ -53,14 +53,14 @@ public class FormatPage {
 
 	public void writeTwoColTableHeader(JspWriter p_out, String p_text) {
 		try {
-			p_out.println("<table border='0' width='500' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table style='border:0;' width='500' cellspacing='0' cellpadding='0'>");
 			p_out.println("<tr>");
-			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' border='0'></td>");
-			p_out.println("  <td valign='top' align='left' width='125' class='heading'><img src='/custom/ima" + "ges/spacer.gif' width='125' height='1' border='0'></td>");
-			p_out.println("  <td valign='top' align='left' width='285' class='bodytext'><img src='/custom/im" + "ages/spacer.gif' width='285' height='1' border='0'></td>");
+			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' style='border: 0;'></td>");
+			p_out.println("  <td valign='top' align='left' width='125' class='heading'><img src='/custom/ima" + "ges/spacer.gif' width='125' height='1' style='border: 0;'></td>");
+			p_out.println("  <td valign='top' align='left' width='285' class='bodytext'><img src='/custom/im" + "ages/spacer.gif' width='285' height='1' style='border: 0;'></td>");
 			p_out.println("</tr>");
 			p_out.println("<tr>");
-			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' border='0'></td>");
+			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' style='border: 0;'></td>");
 			p_out.println("  <td valign='top' align='left' width='125' class='bodytext'>" + p_text + "</td>");
 			p_out.println("  <td valign='top' align='left' width='285' class='bodytext'>");
 		} catch (Exception e) {
@@ -73,7 +73,7 @@ public class FormatPage {
 			p_out.println("</td>");
 			p_out.println("</tr>");
 			p_out.println("<tr>");
-			p_out.println("  <td valign='top' align='left' colspan='3' width='500'><img src='/custom/images/" + "spacer.gif' width='500' height='10' border='0'></td>");
+			p_out.println("  <td valign='top' align='left' colspan='3' width='500'><img src='/custom/images/" + "spacer.gif' width='500' height='10' style='border: 0;'></td>");
 			p_out.println("</tr>");
 			p_out.println("</table>");
 		} catch (Exception e) {
@@ -83,9 +83,9 @@ public class FormatPage {
 
 	public void writeHTMLHeader(JspWriter p_out) {
 		try {
-			p_out.println("<table border='0' width='480' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table style='border:0;' width='480' cellspacing='0' cellpadding='0'>");
 			p_out.println("<tr>");
-			p_out.println("  <td valign='top' align='left' width='83'><img src='/custom/images/spacer.gif' w" + "idth='83' height='1' border='0'></td>");
+			p_out.println("  <td valign='top' align='left' width='83'><img src='/custom/images/spacer.gif' w" + "idth='83' height='1' style='border: 0;'></td>");
 			p_out.println("  <td valign='top' align='left' width='397' class='heading'>");
 		} catch (Exception e) {
 			System.out.println("An exception occurred when trying to access the JspWriter object");
@@ -110,25 +110,25 @@ public class FormatPage {
 		try {
 			p_out.println("<html><head><link rel='stylesheet' type='text/css' href='/admin/admin.css'><titl" + "e></title></head>");
 			p_out.println("<body marginwidth='0' marginheight='0' leftmargin='0' topmargin='0'>");
-			p_out.println("<table border='0' style='border-collapse: collapse' bordercolor='#111111' width=" + "'100%' cellspacing='0' cellpadding='0' height='50'>");
+			p_out.println("<table style='border: 0;' style='border-collapse: collapse' bordercolor='#111111' width=" + "'100%' cellspacing='0' cellpadding='0' height='50'>");
 			p_out.println("<tr>");
 			p_out.println("  <td bgcolor='#EDEDED' width='25' align='left'>");
-			p_out.println("    <img border='0' src='/custom/images/spacer.gif' width='25' height='25'></td>");
+			p_out.println("    <img style='border: 0;' src='/custom/images/spacer.gif' width='25' height='25'></td>");
 			p_out.println("  <td bgcolor='#EDEDED' width='100%' align='left'>");
 			p_out.println("    <font face='Arial' style='font-size: 16pt' color='#949494'>" + p_tableTitle + "</font></td>");
 			p_out.println("  <td bgcolor='#EDEDED' width='25' align='left'>");
-			p_out.println("    <img border='0' src='/custom/images/spacer.gif' width='25' height='25'></td>");
+			p_out.println("    <img style='border: 0;' src='/custom/images/spacer.gif' width='25' height='25'></td>");
 			p_out.println("</tr>");
 			p_out.println("</table>");
-			p_out.println("<table border='0' width='530' cellspacing='0' cellpadding='0' bgcolor='#FFFFFF'>");
+			p_out.println("<table style='border: 0;' width='530' cellspacing='0' cellpadding='0' bgcolor='#FFFFFF'>");
 			p_out.println("<tr>");
-			p_out.println("<td width='15' align='left' valign='top'><img border='0' src='/custom/images/spac" + "er.gif' width=15 height=1></td>");
+			p_out.println("<td width='15' align='left' valign='top'><img style='border: 0;' src='/custom/images/spac" + "er.gif' width=15 height=1></td>");
 			p_out.println("<td bgcolor='#FFFFFF' class='bodyhead'></td>");
-			p_out.println("<td class='bodytext' width=15><img border='0' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
+			p_out.println("<td class='bodytext' width=15><img style='border: 0;' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
 			p_out.println("</tr>");
 			p_out.println("<tr>");
 			p_out.println("<tr>");
-			p_out.println("<td class='bodytext' width=15><img border='0' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
+			p_out.println("<td class='bodytext' width=15><img style='border: 0;' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
 			p_out.println("<td class='bodytext' width=500>");
 		} catch (Exception e) {
 			System.out.println("An exception occurred when trying to access the JspWriter object");
@@ -139,22 +139,22 @@ public class FormatPage {
 		try {
 			p_out.println("<html><head><link rel='stylesheet' type='text/css' href='/admin/admin.css'><titl" + "e>" + p_title + "</title></head>");
 			p_out.println("<body marginwidth='0' marginheight='0' leftmargin='0' topmargin='0' " + p_bodyProperty + ">");
-			p_out.println("<table border='0' width='100%' cellspacing='0' cellpadding='0' bgcolor='#E3E3E3'" + ">");
+			p_out.println("<table style='border:0;' width='100%' cellspacing='0' cellpadding='0' bgcolor='#E3E3E3'" + ">");
 			p_out.println("<tr>");
-			p_out.println("<td width='30' align='left' valign='top'><img border='0' src='/custom/images/cm_b" + "ox.gif'></td>");
-			p_out.println("<td width='100%' align='right' valign='middle'><img border='0' src='/custom/image" + "s/spacer.gif' height='1' width='100%'></td>");
-			p_out.println("<td width='30' align='left' valign='middle'><img border='0' src='/custom/images/c" + "m_title.gif'></td>");
+			p_out.println("<td width='30' align='left' valign='top'><img style='border:0;' src='/custom/images/cm_b" + "ox.gif'></td>");
+			p_out.println("<td width='100%' align='right' valign='middle'><img style='border:0;' src='/custom/image" + "s/spacer.gif' height='1' width='100%'></td>");
+			p_out.println("<td width='30' align='left' valign='middle'><img style='border:0;' src='/custom/images/c" + "m_title.gif'></td>");
 			p_out.println("</tr>");
 			p_out.println("</table>");
-			p_out.println("<table border='0' width='530' cellspacing='0' cellpadding='0' bgcolor='#FFFFFF'>");
+			p_out.println("<table style='border:0;' width='530' cellspacing='0' cellpadding='0' bgcolor='#FFFFFF'>");
 			p_out.println("<tr>");
-			p_out.println("<td width='15' align='left' valign='top'><img border='0' src='/custom/images/spac" + "er.gif' width=15 height=1></td>");
+			p_out.println("<td width='15' align='left' valign='top'><img style='border:0;' src='/custom/images/spac" + "er.gif' width=15 height=1></td>");
 			p_out.println("<td bgcolor='#FFFFFF' class='bodyhead'>");
 			p_out.println("<br>" + p_tableTitle + "</td>");
-			p_out.println("<td class='bodytext' width=15><img border='0' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
+			p_out.println("<td class='bodytext' width=15><img style='border:0;' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
 			p_out.println("</tr>");
 			p_out.println("<tr>");
-			p_out.println("<td class='bodytext' width=15><img border='0' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
+			p_out.println("<td class='bodytext' width=15><img style='border:0;' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
 			p_out.println("<td class='bodytext' width=500>");
 		} catch (Exception e) {
 			System.out.println("An exception occurred when trying to access the JspWriter object");
@@ -166,15 +166,15 @@ public class FormatPage {
 			if (p_btn1_js.equals("") || p_btn1_js.equals("BACK")) {
 				p_btn1_js = "history.back();";
 			}
-			p_out.println("<table border='0' width='500' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table style='border:0;' width='500' cellspacing='0' cellpadding='0'>");
 			p_out.println("<tr>");
-			p_out.println("<td align='left' valign='middle' width='250'><img border='0' src='/custom/images/" + "spacer.gif' width='250' height='1'></td>");
-			p_out.println("<td align='right' valign='middle' width='250'><img border='0' src='/custom/images" + "/spacer.gif' width='250' height='1'></td>");
+			p_out.println("<td align='left' valign='middle' width='250'><img style='border:0;' src='/custom/images/" + "spacer.gif' width='250' height='1'></td>");
+			p_out.println("<td align='right' valign='middle' width='250'><img style='border:0;' src='/custom/images" + "/spacer.gif' width='250' height='1'></td>");
 			p_out.println("</tr>");
 			p_out.println("<tr>");
 			p_out.println("<td align='left' valign='middle' width='250'>");
 			if (!p_btn1_img.equals("")) {
-				p_out.println("<a href='JavaScript:" + p_btn1_js + "'><img border='0' src='" + "/custom/images" + "/" + p_btn1_img + "'></a>");
+				p_out.println("<a href='JavaScript:" + p_btn1_js + "'><img style='border:0;' src='" + "/custom/images" + "/" + p_btn1_img + "'></a>");
 			}
 			p_out.println("</td>");
 			p_out.println("<td align='right' valign='middle' width='250'>");
@@ -196,7 +196,7 @@ public class FormatPage {
 	public void writeSmallWindowPageFooter(JspWriter p_out) {
 		try {
 			p_out.println("</td>");
-			p_out.println("<td class='bodytext' width=15><img border='0' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
+			p_out.println("<td class='bodytext' width=15><img style='border:0;' src='/custom/images/spacer.gif' WID" + "TH='15' HEIGHT='1'></td>");
 			p_out.println("</tr></table></body></html>");
 		} catch (Exception e) {
 			System.out.println("An exception occurred when trying to access the JspWriter object");
@@ -205,10 +205,10 @@ public class FormatPage {
 
 	public void writeHelper(JspWriter p_out, String p_text, String p_helper_image) {
 		try {
-			p_out.println("<table border='0' width='500' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table style='border:0;' width='500' cellspacing='0' cellpadding='0'>");
 			p_out.println("\t<tr>");
-			p_out.println("\t\t<td width='70'><img border='0' src='/custom/images/" + p_helper_image + "' WIDTH='70' HEIGHT='31'></td>");
-			p_out.println("\t\t<td width='17' bgcolor='#FFFFFF'><img border='0' src='/custom/images/helper_t" + "ab.gif' width='16' height='31'></td>");
+			p_out.println("\t\t<td width='70'><img style='border:0;' src='/custom/images/" + p_helper_image + "' WIDTH='70' HEIGHT='31'></td>");
+			p_out.println("\t\t<td width='17' bgcolor='#FFFFFF'><img style='border:0;' src='/custom/images/helper_t" + "ab.gif' width='16' height='31'></td>");
 			p_out.print("\t\t<td width='5' class='bodyhead' bgcolor='#FFFFFF'>");
 			writeImageSpacer(p_out, "3", "1");
 			p_out.println("\t\t</td>");
@@ -250,41 +250,41 @@ public class FormatPage {
 			if (p_img_btn3.equals("")) {
 				p_img_btn3 = "spacer.gif";
 			}
-			p_out.println("<table border='0' style='border-collapse: collapse' bordercolor='#111111' width=" + "'100%' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table style='border:0; border-collapse: collapse; border-color:#111111;' width=" + "'100%' cellspacing='0' cellpadding='0'>");
 			p_out.println("  <tr>");
 			p_out.println("    <td width='100%'>");
-			p_out.println("<table border='0' style='border-collapse: collapse' bordercolor='#111111' width=" + "'550' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table style='border:0; border-collapse: collapse; border-color:#111111;' width=" + "'550' cellspacing='0' cellpadding='0'>");
 			p_out.println("  <tr>");
 			p_out.println("    <td align='left' width='10' valign='top' bgcolor='#FFFFFF'></td>");
 			if (p_url_btn1.equals("")) {
-				p_out.println("<td width='26' bgcolor='#FFFFFF' align='left'><img src='/custom/images/spacer.gif" + "' width='26' height='27' border='0'></td>");
+				p_out.println("<td width='26' bgcolor='#FFFFFF' align='left'><img alt='' src='/custom/images/spacer.gif" + "' width='26' height='27' style='border:0;'></td>");
 			} else if (p_url_btn1.toUpperCase().equals("SUBMIT")) {
-				p_out.println("<td width='26' bgcolor='#FFFFFF'><input type='image' name='go' id='go' src='/custom" + "/images/" + p_img_btn1 + "' border='0'></td>");
+				p_out.println("<td width='26' bgcolor='#FFFFFF'><input type='image' name='go' id='go' src='/custom" + "/images/" + p_img_btn1 + "' style='border:0;'></td>");
 			} else {
-				p_out.println("<td bgcolor='#FFFFFF'><a href='" + p_url_btn1 + "'><img src='" + "/custom/images" + "/" + p_img_btn1 + "' border='0'></a></td>");
+				p_out.println("<td bgcolor='#FFFFFF'><a href='" + p_url_btn1 + "'><img alt='' src='" + "/custom/images" + "/" + p_img_btn1 + "' style='border:0;'></a></td>");
 			}
-			p_out.println("\t<td width='25' bgcolor='#FFFFFF'><img src='/custom/images/spacer.gif' width='25" + "' height='20' border='0'></td>");
+			p_out.println("\t<td width='25' bgcolor='#FFFFFF'><img alt='' src='/custom/images/spacer.gif' width='25" + "' height='20' style='border:0;'></td>");
 			if (p_url_btn2.equals("")) {
-				p_out.println("<td width='26' bgcolor='#FFFFFF'><img src='/custom/images/spacer.gif' width='26' " + "height='27' border='0'></td>");
+				p_out.println("<td width='26' bgcolor='#FFFFFF'><img alt='' src='/custom/images/spacer.gif' width='26' " + "height='27' style='border:0;'></td>");
 			} else if (p_url_btn2.toUpperCase().equals("SUBMIT")) {
-				p_out.println("<td bgcolor='#FFFFFF'><input type='image' name='go' id='go' src='/custom" + "/images/" + p_img_btn2 + "' border='0'></td>");
+				p_out.println("<td bgcolor='#FFFFFF'><input type='image' name='go' id='go' src='/custom" + "/images/" + p_img_btn2 + "' style='border:0;'></td>");
 			} else {
-				p_out.println("<td bgcolor='#FFFFFF'><a href='" + p_url_btn2 + "'><img src='" + "/custom/images" + "/" + p_img_btn2 + "' border='0'></a></td>");
+				p_out.println("<td bgcolor='#FFFFFF'><a href='" + p_url_btn2 + "'><img alt='' src='" + "/custom/images" + "/" + p_img_btn2 + "' style='border:0;'></a></td>");
 			}
-			p_out.println("\t<td bgcolor='#FFFFFF' width='465'><img src='/custom/images/spacer.gif' width='4" + "65' height='27' border='0'></td>");
+			p_out.println("\t<td bgcolor='#FFFFFF' width='465'><img alt='' src='/custom/images/spacer.gif' width='4" + "65' height='27' style='border:0;'></td>");
 			if (p_url_btn3.equals("")) {
-				p_out.println("<td width='26' bgcolor='#FFFFFF'><img src='/custom/images/spacer.gif' width='26' " + "height='27' border='0'></td>");
+				p_out.println("<td width='26' bgcolor='#FFFFFF'><img alt='' src='/custom/images/spacer.gif' width='26' " + "height='27' style='border:0;'></td>");
 			} else if (p_url_btn3.toUpperCase().equals("SUBMIT")) {
 				if (p_validateFunction_btn3.equals("")) {
-					p_out.println("<td bgcolor='#FFFFFF'><input type='image' name='go' id='go' src='/custom" + "/images/" + p_img_btn3 + "' border='0'></td>");
+					p_out.println("<td bgcolor='#FFFFFF'><input type='image' name='go' id='go' src='/custom" + "/images/" + p_img_btn3 + "' style='border:0;'></td>");
 				} else {
-					p_out.println("<td bgcolor='#FFFFFF'><img name='go' id='go' src='/custom/images/" + p_img_btn3 + "' onclick='" + p_validateFunction_btn3
-							+ "' style='cursor:hand' border='0'></td>");
+					p_out.println("<td bgcolor='#FFFFFF'><img alt='' name='go' id='go' src='/custom/images/" + p_img_btn3 + "' onclick='" + p_validateFunction_btn3
+							+ "' style='cursor:hand; border:0;'></td>");
 				}
 			} else {
-				p_out.println("<td bgcolor='#FFFFFF'><a href='" + p_url_btn3 + "'><img src='" + "/custom/images" + "/" + p_img_btn3 + "' border='0'></a></td>");
+				p_out.println("<td bgcolor='#FFFFFF'><a href='" + p_url_btn3 + "'><img alt='' src='" + "/custom/images" + "/" + p_img_btn3 + "' style='border:0;'></a></td>");
 			}
-			p_out.println("\t<td bgcolor='#FFFFFF' width='10'><img src='/custom/images/spacer.gif' width='10" + "' height='27' border='0'></td>");
+			p_out.println("\t<td bgcolor='#FFFFFF' width='10'><img alt='' src='/custom/images/spacer.gif' width='10" + "' height='27' style='border:0;'></td>");
 			p_out.println("</tr>");
 			p_out.println("</table>");
 			p_out.println("</td></tr></table>");
@@ -319,9 +319,9 @@ public class FormatPage {
 
 	public void writeText(JspWriter p_out, String p_text) {
 		try {
-			p_out.println("<table class='message' border='0' width='500' cellspacing='0' cellpadding='0'>");
+			p_out.println("<table class='message' style='border:0;' width='500' cellspacing='0' cellpadding='0'>");
 			p_out.println("<tr>");
-			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' border='0'></td>");
+			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' style='border:0;'></td>");
 			p_out.println("  <td valign='top' align='left' width='410' class='bodytext'>" + p_text + "</td>");
 			p_out.println("</tr>");
 			p_out.println("</table>");
@@ -334,9 +334,9 @@ public class FormatPage {
 		try {
 			String xurl = "";
 			if (p_url.toUpperCase().equals("SUBMIT")) {
-				xurl = "<input type='image' src='/custom/images/" + p_image + "' border='0'>";
+				xurl = "<input type='image' src='/custom/images/" + p_image + "' style='border:0;'>";
 			} else if (p_url.toUpperCase().equals("BACK")) {
-				xurl = "<a href=\"Javascript:history.back();\"><img src='/custom/images/" + p_image + "' border='0'></a>";
+				xurl = "<a href=\"Javascript:history.back();\"><img src='/custom/images/" + p_image + "' style='border:0;'></a>";
 			} else {
 				String p_type = "";
 				String p_tmp = "";
@@ -346,22 +346,22 @@ public class FormatPage {
 				} else {
 					p_type = "href";
 				}
-				xurl = "<a " + p_type + "=\"" + p_url + "\"><img src='" + "/custom/images" + "/" + p_image + "' border='0'></a>";
+				xurl = "<a " + p_type + "=\"" + p_url + "\"><img src='" + "/custom/images" + "/" + p_image + "' style='border:0;'></a>";
 			}
-			p_out.println("<table border='0' cellspacing='0' cellpadding='0' width='500'>");
+			p_out.println("<table style='border:0;' cellspacing='0' cellpadding='0' width='500'>");
 			p_out.println("<tr>");
-			p_out.println("<td valign='top' align='left' width='90'><img src='./images/spacer.gif' width='9" + "0' height='17' border='0'></td>");
+			p_out.println("<td valign='top' align='left' width='90'><img src='./images/spacer.gif' width='9" + "0' height='17' style='border:0;'></td>");
 			p_out.println("<td valign='top' align='left' width='410' class='bodytext'>");
-			p_out.println("<table border='0' cellspacing='0' cellpadding='0' width='410'>");
+			p_out.println("<table style='border:0;' cellspacing='0' cellpadding='0' width='410'>");
 			p_out.println("<tr>");
 			p_out.println("  <td width='170' class='bodytext'>" + p_text + "</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>&nbsp;</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>" + xurl + "</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>&nbsp;</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>&nbsp;</td>");
 			p_out.println("</tr>");
 			p_out.println("</table>");
@@ -399,20 +399,20 @@ public class FormatPage {
 
 	public void writeListWithButtonsHeader(JspWriter p_out, String p_headerText1, String p_headerText2, String p_headerText3, String p_headerText4) {
 		try {
-			p_out.println("<table border='0' cellspacing='0' cellpadding='0' width='500'>");
+			p_out.println("<table style='border:0;' cellspacing='0' cellpadding='0' width='500'>");
 			p_out.println("<tr>");
-			p_out.println("<td valign='top' align='left' width='90'><img src='./images/spacer.gif' width='9" + "0' height='17' border='0'></td>");
+			p_out.println("<td valign='top' align='left' width='90'><img src='./images/spacer.gif' width='9" + "0' height='17' style='border:0;'></td>");
 			p_out.println("<td valign='top' align='left' width='410' class='bodytext'>");
-			p_out.println("<table border='0' cellspacing='0' cellpadding='0' width='410'>");
+			p_out.println("<table style='border:0;' cellspacing='0' cellpadding='0' width='410'>");
 			p_out.println("<tr>");
 			p_out.println("  <td width='170' class='bodytext'>&nbsp;</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>" + p_headerText1 + "</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>" + p_headerText2 + "</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>" + p_headerText3 + "</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			p_out.println("  <td width='55' class='bodytext'>" + p_headerText4 + "</td>");
 			p_out.println("</tr>");
 			p_out.println("</table>");
@@ -462,36 +462,36 @@ public class FormatPage {
 			} else {
 				p_type4 = "href";
 			}
-			p_out.println("<table border='0' cellspacing='0' cellpadding='0' width='500'>");
+			p_out.println("<table style='border:0;' cellspacing='0' cellpadding='0' width='500'>");
 			p_out.println("<tr>");
-			p_out.println("<td valign='top' align='left' width='90'><img src='./images/spacer.gif' width='9" + "0' height='17' border='0'></td>");
+			p_out.println("<td valign='top' align='left' width='90'><img src='./images/spacer.gif' width='9" + "0' height='17' style='border:0;'></td>");
 			p_out.println("<td valign='top' align='left' width='410' class='bodytext'>");
-			p_out.println("<table border='0' cellspacing='0' cellpadding='0' width='410'>");
+			p_out.println("<table style='border:0;' cellspacing='0' cellpadding='0' width='410'>");
 			p_out.println("<tr>");
 			p_out.println("  <td width='170' class='bodytext'>" + p_text + "</td>");
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			if (p_url1.equals("") || p_image1.equals("")) {
-				p_out.println("  <td width='55'><img border='0' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
+				p_out.println("  <td width='55'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
 			} else {
-				p_out.println("  <td width='55'><a " + p_type1 + "=\"" + p_url1 + "\"><img src='" + "/custom/images" + "/" + p_image1 + "' border='0'></a></td>");
+				p_out.println("  <td width='55'><a " + p_type1 + "=\"" + p_url1 + "\"><img src='" + "/custom/images" + "/" + p_image1 + "' style='border:0;'></a></td>");
 			}
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			if (p_url2.equals("") || p_image2.equals("")) {
-				p_out.println("  <td width='55'><img border='0' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
+				p_out.println("  <td width='55'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
 			} else {
-				p_out.println("  <td width='55'><a " + p_type2 + "=\"" + p_url2 + "\"><img src='" + "/custom/images" + "/" + p_image2 + "' border='0'></a></td>");
+				p_out.println("  <td width='55'><a " + p_type2 + "=\"" + p_url2 + "\"><img src='" + "/custom/images" + "/" + p_image2 + "' style='border:0;'></a></td>");
 			}
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			if (p_url3.equals("") || p_image3.equals("")) {
-				p_out.println("  <td width='55'><img border='0' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
+				p_out.println("  <td width='55'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
 			} else {
-				p_out.println("  <td width='55'><a " + p_type3 + "=\"" + p_url3 + "\"><img src='" + "/custom/images" + "/" + p_image3 + "' border='0'></a></td>");
+				p_out.println("  <td width='55'><a " + p_type3 + "=\"" + p_url3 + "\"><img src='" + "/custom/images" + "/" + p_image3 + "' style='border:0;'></a></td>");
 			}
-			p_out.println("  <td width='5'><img border='0' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
+			p_out.println("  <td width='5'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='5' HEIGHT=" + "'1'></td>");
 			if (p_url4.equals("") || p_image4.equals("")) {
-				p_out.println("  <td width='55'><img border='0' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
+				p_out.println("  <td width='55'><img style='border:0;' src='/custom/images/spacer.gif' WIDTH='55' HEIGH" + "T='1'></td>");
 			} else {
-				p_out.println("  <td width='55'><a " + p_type4 + "=\"" + p_url4 + "\"><img src='" + "/custom/images" + "/" + p_image4 + "' border='0'></a></td>");
+				p_out.println("  <td width='55'><a " + p_type4 + "=\"" + p_url4 + "\"><img src='" + "/custom/images" + "/" + p_image4 + "'style='border:0;'></a></td>");
 			}
 			p_out.println("</tr>");
 			p_out.println("</table>");
@@ -507,7 +507,7 @@ public class FormatPage {
 		try {
 			String addButtonName = "AddButton" + leftBoxName;
 			String removeButtonName = "RemoveButton" + leftBoxName;
-			p_out.println("<table border='0' cellpadding='0' cellspacing='0' width='470' class='bodytext'>");
+			p_out.println("<table style='border:0;' cellpadding='0' cellspacing='0' width='470' class='bodytext'>");
 			p_out.println("  <tr>");
 			p_out.println("  <td class='bodytext' width='215'>Available<br>");
 			p_out.println("    <select multiple size='2' name='" + leftBoxName + "' style='width:215; height:150'>");
@@ -519,9 +519,9 @@ public class FormatPage {
 			p_out.println("  </td>");
 			p_out.println("  <td width='40' align='center' class='bodytext'>");
 			p_out.println("    <a href='Javascript:moveLeftToRight (document.forms[0]." + leftBoxName + ", document.forms[0]." + rightBoxName + ")'>");
-			p_out.println("      <img border='0' src='/custom/images/next.gif' alt='add'></a><br>");
+			p_out.println("      <img style='border:0;' src='/custom/images/next.gif' alt='add'></a><br>");
 			p_out.println("    <a href='Javascript:moveRightToLeft (document.forms[0]." + leftBoxName + ", document.forms[0]." + rightBoxName + ")'>");
-			p_out.println("    <img border='0' src='/custom/images/prev.gif' alt='remove'></a>");
+			p_out.println("    <img style='border:0;' src='/custom/images/prev.gif' alt='remove'></a>");
 			p_out.println("  </td>");
 			p_out.println("  <td class='bodytext' width='215'>Currently Selected<br>");
 			p_out.println("    <select multiple name='" + rightBoxName + "' style='width:215; height:150'>");

@@ -174,7 +174,7 @@ function initializeMap(){
   var ausstageStyle    = new google.maps.StyledMapType(mapStyle, styledMapOptions);
   
   map.mapTypes.set('ausstage', ausstageStyle);
-  map.setMapTypeId('ausstage');
+  //map.setMapTypeId('ausstage');
   
   var address = document.venue_addedit_form.f_street.value + " " + document.venue_addedit_form.f_suburb.value + " " + 
   document.venue_addedit_form.f_postcode.value + " " + document.venue_addedit_form.f_state_id.options[document.venue_addedit_form.f_state_id.selectedIndex].text + " " + 
@@ -334,7 +334,7 @@ document.body.onload=function(){load();};
   // Longitude
   pageFormater.writeTwoColTableHeader(out, "Longitude");
   out.println("<input type=\"text\" name=\"f_longitude\" size=\"15\" class=\"line150\" maxlength=15 value=\"" + venueObj.getLongitude() + "\">");
-  %><input value="Look up co-ordinates" type="submit" onclick="showAddress(); return false"><%
+  %><input value="Look up co-ordinates" type="button" onclick="showAddress(); return false"><%
   pageFormater.writeTwoColTableFooter(out);
 
   // Latitude

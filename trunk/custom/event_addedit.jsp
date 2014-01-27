@@ -11,6 +11,7 @@
 <%@ page import = "ausstage.Country"%>
 <%@ page import = "ausstage.LookupCode"%>
 <%@ page import = "ausstage.Work"%>
+<%@ page import = "ausstage.WorkOrganLink"%>
 <%@ page import = "ausstage.PrimContentIndicatorEvLink, ausstage.SecContentIndicatorEvLink"%>
 <%@ page import = "ausstage.Venue, ausstage.ConEvLink,ausstage.EventEventLink, ausstage.Contributor, ausstage.WorkWorkLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Item"%>
@@ -135,8 +136,8 @@
   work_link_vec = eventObj.getWorks();
   for (int i=0; i < work_link_vec.size(); i++) {
     Work work = new Work(db_ausstage);
-    work.load(Integer.parseInt(work_link_vec .get(i)+""));
-    work_name_vec.add(work.getWorkTitle());
+    work.load(Integer.parseInt(work_link_vec.get(i)+""));
+    work_name_vec.add(work.getWorkTitle() + " (" + work.getLinkedOrganisationNames() + ")");
      // To display Contributor Last Name First Name, Notes on Contributor Link and The Contributor Preferred Description
    // work_name_vec.add(work.getWorkTitle());
   }
@@ -169,7 +170,7 @@
     conEvLink = (ConEvLink)contributor_link_vec.get(i);
     contributor = conEvLink.getContributorBean();
     // To display Contributor Last Name First Name, Notes on Contributor Link and The Contributor Preferred Description
-    String tempString = contributor.getLastName() + " " + contributor.getName();
+    String tempString = contributor.getName() + " " + contributor.getLastName();
     if (conEvLink.getNotes() != null && !conEvLink.getNotes().equals("")) {
       tempString += ", " + conEvLink.getNotes();
     }
@@ -188,13 +189,15 @@
   {
     orgEvLink   = (ausstage.OrgEvLink)organisation_link_vec.get(i);
     organisation = orgEvLink.getOrganisationBean();
-    if(!orgEvLink.getFunctionDesc().toString().equals("") || !orgEvLink.getArtisticFunctionDesc().toString().equals("")){
-      if(!orgEvLink.getFunctionDesc().toString().equals("")) {
+    //if(!orgEvLink.getFunctionDesc().toString().equals("") || !orgEvLink.getArtisticFunctionDesc().toString().equals("")){
+      if(!orgEvLink.getFunctionDesc().toString().equals("") && !orgEvLink.getArtisticFunctionDesc().toString().equals("")){
+      	organisation_name_vec.add(organisation.getName() + ", " + orgEvLink.getFunctionDesc() + ", " + orgEvLink.getArtisticFunctionDesc());
+      } else if(!orgEvLink.getFunctionDesc().toString().equals("")) {
         organisation_name_vec.add(organisation.getName() + ", " + orgEvLink.getFunctionDesc() + ", No Artistic Function");
       } else if(!orgEvLink.getArtisticFunctionDesc().toString().equals("")) {
-      organisation_name_vec.add(organisation.getName() + ", No Function, " + orgEvLink.getArtisticFunctionDesc());
+      	organisation_name_vec.add(organisation.getName() + ", No Function, " + orgEvLink.getArtisticFunctionDesc());
       }
-    }
+    //}
     else { // Should not be possible to get this message
       organisation_name_vec.add(organisation.getName() + ", No Function, No Artistic Function");
     }
