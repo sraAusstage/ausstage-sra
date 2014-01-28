@@ -11,7 +11,6 @@
 <%@ page import = "ausstage.Country"%>
 <%@ page import = "ausstage.LookupCode"%>
 <%@ page import = "ausstage.Work"%>
-<%@ page import = "ausstage.WorkOrganLink"%>
 <%@ page import = "ausstage.PrimContentIndicatorEvLink, ausstage.SecContentIndicatorEvLink"%>
 <%@ page import = "ausstage.Venue, ausstage.ConEvLink,ausstage.EventEventLink, ausstage.Contributor, ausstage.WorkWorkLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Item"%>
@@ -136,7 +135,7 @@
   work_link_vec = eventObj.getWorks();
   for (int i=0; i < work_link_vec.size(); i++) {
     Work work = new Work(db_ausstage);
-    work.load(Integer.parseInt(work_link_vec.get(i)+""));
+    work.load(Integer.parseInt(work_link_vec .get(i)+""));
     work_name_vec.add(work.getWorkTitle() + " (" + work.getLinkedOrganisationNames() + ")");
      // To display Contributor Last Name First Name, Notes on Contributor Link and The Contributor Preferred Description
    // work_name_vec.add(work.getWorkTitle());
