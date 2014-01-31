@@ -1,3 +1,8 @@
+<%
+response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+response.setDateHeader("Expires", 0); // Proxies.
+%>
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
@@ -7,6 +12,9 @@
 <cms:template element="head">
   <html>
     <head>
+    	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    	<META HTTP-EQUIV="EXPIRES" CONTENT="-1">
       <title>AusStage</title> 
 	<link rel='stylesheet' href='/resources/style-admin.css'/>
 	<link rel='stylesheet' href='/pages/assets/ausstage-colours.css'/>
@@ -128,6 +136,8 @@ if (groupNames.contains("Administrators") || groupNames.contains("OpenCMS Editor
 %><li><a class="family_links_current" target="_blank" href="/system/login">OpenCMS Login</a></li><%
 }
 %>
+
+<li><a class="family_links_current" href="/admin/logout.jsp">Logout</a></li>
 
 </ul>
 
