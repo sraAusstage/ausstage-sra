@@ -172,7 +172,7 @@ public class ConEvLink {
 			for (int i = 0; conEvLinks != null && i < conEvLinks.size(); i++) {
 				conEvLink = (ConEvLink) conEvLinks.get(i);
 				sqlString = "INSERT INTO ConEvLink " + "(eventId, contributorId, function, notes) " + "VALUES (" + eventId + ", " + conEvLink.getContributorId() + ", "
-						+ conEvLink.getFunction() + ", '" + conEvLink.getNotes() + "')";
+						+ m_db.plSqlSafeString(conEvLink.getFunction()) + ", '" + m_db.plSqlSafeString(conEvLink.getNotes()) + "')";
 				m_db.runSQL(sqlString, stmt);
 
 				Contributor contrib = conEvLink.getContributorBean();

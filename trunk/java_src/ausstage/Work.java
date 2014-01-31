@@ -811,7 +811,9 @@ public class Work {
 			if(l_rs.getString("workid") != null && !l_rs.getString("workid").equals("")){
 				Work work = new Work(m_db);
 			    work.load(Integer.parseInt(l_rs.getString("workid")+""));
-			    retStr = (new StringBuilder(String.valueOf(retStr))).append(" (" + work.getLinkedOrganisationNames() + ")").toString();
+			    if(work.getLinkedOrganisationNames() != null && !work.getLinkedOrganisationNames().equals("")){
+			    	retStr = (new StringBuilder(String.valueOf(retStr))).append(" (" + work.getLinkedOrganisationNames() + ")").toString();
+			    }
 			}
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");

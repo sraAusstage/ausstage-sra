@@ -12,9 +12,9 @@ response.setDateHeader("Expires", 0); // Proxies.
 <cms:template element="head">
   <html>
     <head>
-    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
-    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-    <META HTTP-EQUIV="EXPIRES" CONTENT="-1">
+    	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+    	<META HTTP-EQUIV="EXPIRES" CONTENT="-1">
       <meta name="IDENTIFIER" content="http://www.ausstage.edu.au/default.jsp?xcid=27">
       <meta name="TITLE" content="Search">
       <meta name="DC.Title" content="AusStage: Gateway to the Australian Performing Arts">
@@ -106,9 +106,6 @@ if (groupNames.contains("Administrators") || groupNames.contains("OpenCMS Editor
 
 %>
 <a class="family_links_current" href="/admin/logout.jsp">Logout</a>
-<%
-
-%>
 
     </div>
   </div>
