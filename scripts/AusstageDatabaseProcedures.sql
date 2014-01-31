@@ -75,13 +75,13 @@ BEGIN
  truncate table search_venue;
  insert into search_venue(
  select distinct venueid, venue_name,
- '' as venue_other_name1,
- '' as venue_other_name2,
- '' as venue_other_name3,
+ other_names1 as venue_other_name1,
+ other_names2 as venue_other_name2,
+ other_names3 as venue_other_name3,
  street, suburb,
  venue.state, web_links,
  if(states.state='O/S', country.countryname, states.state) as venue_state,
- lcase(concat_ws(' ', venueid, venue_name, suburb, if(states.state='O/S', country.countryname, states.state))) as combined_all,
+ lcase(concat(venueid,' ',venue_name,' ', ifnull(other_names1,''),' ',ifnull(other_names2,''),' ', ifnull(other_names3,''),' ',ifnull(suburb,''),' ',ifnull(states.state,''))) as combined_all,
  fn_Venue_Has_Item(venueid) as resource_flag
  from venue
  left join states on states.stateid=venue.state
@@ -162,11 +162,11 @@ BEGIN
  truncate table search_organisation;
  insert into search_organisation(
 select distinct organisationid, name, address, suburb, web_links,
-'' as org_other_name1,
-'' as org_other_name2,
-'' as org_other_name3,
+other_names1 as org_other_name1,
+other_names2 as org_other_name2,
+other_names3 as org_other_name3,
 states.state as org_state,
-lcase(concat_ws(' ', organisationid, name)) as combined_all
+lcase(concat(organisationid,' ',name,' ', ifnull(other_names1,''),' ',ifnull(other_names2,''),' ',ifnull(other_names3,''))) as combined_all
 ,fn_Organisation_Has_Item(organisationid) as resource_flag
 from organisation, states
 where
