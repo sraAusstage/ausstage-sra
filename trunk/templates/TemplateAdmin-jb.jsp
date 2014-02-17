@@ -1,8 +1,3 @@
-<%
-response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-response.setDateHeader("Expires", 0); // Proxies.
-%>
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
@@ -12,9 +7,6 @@ response.setDateHeader("Expires", 0); // Proxies.
 <cms:template element="head">
   <html>
     <head>
-    	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
-    	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
-    	<META HTTP-EQUIV="EXPIRES" CONTENT="-1">
       <title>AusStage</title> 
 	<link rel='stylesheet' href='/resources/style-admin.css'/>
 	<link rel='stylesheet' href='/pages/assets/ausstage-colours.css'/>

@@ -17,7 +17,7 @@ Javascript to handle the dynamic content.
 Should probably put this in a seperate .js file 
 -->
 
-<script language="javascript">
+<script type="text/javascript">
 	function numberWithCommas(x) {
     		var parts = x.toString().split(".");
 		parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
