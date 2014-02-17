@@ -30,6 +30,13 @@
 	String functionDesc = "";
 	String notes        = "";
 
+  String f_anchor_vame = request.getParameter("f_anchor_vame");
+  if(f_anchor_vame == null) {
+	  f_anchor_vame = "";
+  } else {
+	  f_anchor_vame = f_anchor_vame.substring(1);
+  }
+	
 // If we have returned here from this form then get the request details.
 
   for(int i=0; i < conEvLinks.size(); i++)
@@ -82,12 +89,16 @@
     String anchor_name = contributor.getName() + " " + contributor.getLastName();
     anchor_name = common.ReplaceStrWithStr(anchor_name, "'", "");
     anchor_name = common.ReplaceStrWithStr(anchor_name, " ", "");
+
+	if(f_anchor_vame.equals(anchor_name)) {
 %>
+	  <tr class="b-196">
+<% } else  { %>
       <tr>
+<% } %>
         <td class="bodytext" width="190">
-          <a name="<%=anchor_name%>">
-            <%=contributor.getName() + " " + contributor.getLastName()%>
-          </a>
+          <a name="<%=anchor_name%>"></a>
+          <%=contributor.getName() + " " + contributor.getLastName()%>
         </td>
 <%
 	  // Display all of the Functions
@@ -139,12 +150,26 @@
 <%
     }
 %>
-      </tr><tr>
+      </tr>
+<%      
+	if(f_anchor_vame.equals(anchor_name)) {
+%>
+	  <tr class="b-196">
+<% } else  { %>
+      <tr>
+<% } %>
         <td width='5'>&nbsp;</td>
         <td width='5'>&nbsp;</td>
         <td colspan='3' class='bodytext' width='340'><textarea name='f_notes_<%=i%>' rows='5' cols='40'><%=conEvLink.getNotes()%></textarea></td>
       </tr>
-      <tr><td><br></td></tr>
+<%      
+	if(f_anchor_vame.equals(anchor_name)) {
+%>
+	  <tr class="b-196">
+<% } else  { %>
+      <tr>
+<% } %>
+		<td colspan="5"><br></td></tr>
 <%
   }
   out.println("</table>");
