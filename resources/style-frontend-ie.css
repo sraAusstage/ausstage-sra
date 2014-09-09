@@ -727,3 +727,9 @@ float: left; clear: right;
 	padding: 0.3em;
 	vertical-align: top;
 }
+
+.text-veri {
+	display: none;
+	position: absolute;
+	top: -5000px;
+}

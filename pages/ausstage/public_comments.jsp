@@ -25,6 +25,7 @@
   String userEmail    = request.getParameter("f_public_users_email");
   String userComments = request.getParameter("f_public_users_comments");
   String tag	      = request.getParameter("f_tag");
+  String textVeri	  = request.getParameter("f_text_veri");
   
  // tagObj.add(tag,objectType,objectId);
   
@@ -38,7 +39,9 @@
               "User Email:    " + userEmail + "\n\n" +
               "Comments:\n" + userComments + "\n";
 
-  mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Comment from User " + userName, body_text, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
+  if(textVeri == null || textVeri.equals("")){
+  	mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Comment from User " + userName, body_text, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
+  }
   //mailer.sendEmail("jbrown@sra.com.au", "Public Comment from User " + userName, body_text, "mark@sra.com.au");
 
  
