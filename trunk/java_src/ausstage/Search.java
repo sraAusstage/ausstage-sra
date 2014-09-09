@@ -1001,11 +1001,13 @@ public class Search {
 
 	public CachedRowSet getOrganisations() {
 
-		String m_sql_items = "search_organisation.organisationid, name, address, suburb, org_state, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) as total, CONCAT_WS('- ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
+		String m_sql_items = "search_organisation.organisationid, name, address, suburb, org_state, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total, CONCAT_WS('- ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
 		m_sql_string
 				.append("select distinct " + m_sql_items + "  from search_organisation  LEFT JOIN orgevlink ON (orgevlink.organisationid = search_organisation.organisationid) "
 						+ "LEFT JOIN events ON (orgevlink.eventid = events.eventid) "
-						+ "LEFT JOIN itemorglink ON (search_organisation.organisationid = itemorglink.organisationid) where ");
+						+ "LEFT JOIN itemorglink ON (search_organisation.organisationid = itemorglink.organisationid) "
+						+ "LEFT JOIN item on (search_organisation.organisationid = item.institutionid) "
+						+ "where ");
 		buildSqlSearchString();
 
 		try {

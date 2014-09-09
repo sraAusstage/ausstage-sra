@@ -229,6 +229,12 @@ public void displayUpdateForm(String                p_id,
     p_out.println("       <td  valign='top'><input type='text' name='f_public_users_email' id='f_public_users_email' maxlength=80 size='50'></td>");
     p_out.println("     </tr>");
     
+	p_out.println("     <tr class='text-veri'>");
+	p_out.println("       <td  align='right'  class='general_heading_light' valign='top'><label for='f_text_veri'>Leave this field blank</lable></td>");
+	p_out.println("       <td width='0%'>&nbsp;</td>");
+	p_out.println("       <td  align='left' valign='top'><input type='text' name='f_text_veri' id='f_text_veri' /></td>");
+	p_out.println("     </tr>");
+	    
     p_out.println("     <tr>");
     p_out.println("       <td  align='right' class='general_heading_light' valign='top'></td>");
     p_out.println("       <td>&nbsp;</td>");

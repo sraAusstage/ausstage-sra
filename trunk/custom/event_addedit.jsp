@@ -136,7 +136,10 @@
   for (int i=0; i < work_link_vec.size(); i++) {
     Work work = new Work(db_ausstage);
     work.load(Integer.parseInt(work_link_vec .get(i)+""));
-    work_name_vec.add(work.getWorkTitle() + ((work.getLinkedOrganisationNames() == null || work.getLinkedOrganisationNames().equals("")) ? "" : (" (" + work.getLinkedOrganisationNames() + ")")));
+    String contributorsToAdd = work.getLinkedContributorNames();
+    String orgsToAdd = work.getLinkedOrganisationNames();
+    String workToAdd = (contributorsToAdd == null || contributorsToAdd.equals("") ? "" : ", " + contributorsToAdd) + (orgsToAdd == null || orgsToAdd.equals("") ? "" : " (" + orgsToAdd + ")");
+    work_name_vec.add(work.getWorkTitle() + workToAdd);
      // To display Contributor Last Name First Name, Notes on Contributor Link and The Contributor Preferred Description
    // work_name_vec.add(work.getWorkTitle());
   }

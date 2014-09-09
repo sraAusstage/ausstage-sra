@@ -464,7 +464,6 @@ public class Work {
 					.toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			
-			WorkOrganLink workOrganLink;
 			while (l_rs.next()) {
 				if(orgNames.equals("")){
 					orgNames += l_rs.getString("name");
@@ -634,6 +633,41 @@ public class Work {
 			System.out.println((new StringBuilder("CLASS.TOSTRING: ")).append(e.toString()).toString());
 			System.out.println((new StringBuilder("sqlString: ")).append(l_sql).toString());
 			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+	}
+
+	public String getLinkedContributorNames() {
+		String contribNames = "";
+		ResultSet l_rs = null;
+		String l_sql = "";
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			l_sql = (new StringBuilder("SELECT DISTINCT contributor.contributorid, contributor.first_name, contributor.last_name"
+					+ " FROM contributor, workconlink WHERE "
+					+ " workconlink.contributorid = contributor.contributorid AND workconlink.workid=")).append(m_workid).append(" ").append("ORDER BY contributor.last_name ")
+					.toString();
+			l_rs = m_db.runSQLResultSet(l_sql, stmt);
+			
+			while (l_rs.next()) {
+				if(contribNames.equals("")){
+					contribNames += l_rs.getString("first_name") + " " + l_rs.getString("last_name");
+				} else {
+					contribNames += ", " + l_rs.getString("first_name") + " " + l_rs.getString("last_name");
+				}
+			}
+
+			l_rs.close();
+			stmt.close();
+			return contribNames;
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getLinkedContributorNames().");
+			System.out.println((new StringBuilder("MESSAGE: ")).append(e.getMessage()).toString());
+			System.out.println((new StringBuilder("LOCALIZED MESSAGE: ")).append(e.getLocalizedMessage()).toString());
+			System.out.println((new StringBuilder("CLASS.TOSTRING: ")).append(e.toString()).toString());
+			System.out.println((new StringBuilder("sqlString: ")).append(l_sql).toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return "";
 		}
 	}
 

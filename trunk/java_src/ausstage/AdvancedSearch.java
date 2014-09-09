@@ -660,10 +660,10 @@ public class AdvancedSearch {
 		if (m_countryTableUsed == true) { // link tables for "origins of text"
 											// and "origins of production"
 			if (m_playEvLinkTableUsed == true) {
-				m_sqlFromString += "inner join playevlink on events.eventid = playevlink.eventid inner join country on playevlink.countryid = country.countryid ";
+				m_sqlFromString += "inner join playevlink on events.eventid = playevlink.eventid inner join country c1 on playevlink.countryid = c1.countryid ";
 			}
 			if (m_productionEvLinkTableUsed == true) {
-				m_sqlFromString += "inner join productionevlink on events.eventid = productionevlink.eventid inner join country on productionevlink.countryid = country.countryid ";
+				m_sqlFromString += "inner join productionevlink on events.eventid = productionevlink.eventid inner join country c2 on productionevlink.countryid = c2.countryid ";
 			}
 		}
 		if (m_orgContFunctTableUsed == true) { // for search for organisation
