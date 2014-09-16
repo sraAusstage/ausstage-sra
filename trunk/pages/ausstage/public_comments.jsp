@@ -40,7 +40,9 @@
               "Comments:\n" + userComments + "\n";
 
   if(textVeri == null || textVeri.equals("")){
-  	mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Comment from User " + userName, body_text, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
+	  if(objectId != null){
+		  mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Comment from User " + userName, body_text, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
+	  }
   }
   //mailer.sendEmail("jbrown@sra.com.au", "Public Comment from User " + userName, body_text, "mark@sra.com.au");
 
