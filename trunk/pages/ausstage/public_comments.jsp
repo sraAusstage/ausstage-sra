@@ -40,7 +40,7 @@
               "Comments:\n" + userComments + "\n";
 
   if(textVeri == null || textVeri.equals("")){
-	  if(objectId != null){
+	  if(objectId != null && !objectId.equals("")){
 		  mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Comment from User " + userName, body_text, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
 	  }
   }
