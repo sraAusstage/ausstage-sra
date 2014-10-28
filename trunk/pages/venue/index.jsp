@@ -231,8 +231,8 @@
 						%>
 							
 
-							<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-							<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+							<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+							<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 							<script type="text/javascript" language="javascript">
 								$(document).ready(function() {
 								
