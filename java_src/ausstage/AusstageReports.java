@@ -13,12 +13,18 @@ Purpose: Provide the bean class that
  **************************************************/
 package ausstage;
 
-import sun.jdbc.rowset.CachedRowSet;
-import javax.servlet.jsp.*;
-import javax.servlet.http.*;
-import java.sql.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspWriter;
+
+import sun.jdbc.rowset.CachedRowSet;
 import admin.AppConstants;
 import admin.FileTools;
 
@@ -27,7 +33,7 @@ public class AusstageReports {
 	private Statement stmt;
 	private ResultSet rs;
 	private int columncount;
-	private static final int max_limit_for_sqlInterface_output = 150; // used to set the number rows returned to sql interface (for select query only).
+	private static final int max_limit_for_sqlInterface_output = 1000; // used to set the number rows returned to sql interface (for select query only).
 	private ausstage.Database m_db;
 	private StringBuffer m_commaDelimStrBuff = null;
 	private HttpServletRequest m_request = null;
