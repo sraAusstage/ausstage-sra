@@ -185,6 +185,7 @@ public void displayUpdateForm(String                p_id,
    // p_out.println("   <table align=\"center\" cellpadding=\"0\" cellspacing=\"0\">");
    // p_out.println("   <tr>");
    // p_out.println("   <td>");
+    p_out.println("<input type='text' id='' style='position: absolute;top: -500px;' />");
     p_out.println("     <table width='100%' border='0' cellpadding='2' cellspacing='0'>");
 
     if (p_type != null && p_type.equals("Resource")) {

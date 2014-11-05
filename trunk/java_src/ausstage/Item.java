@@ -30,11 +30,19 @@ import java.util.Vector;
 
 import java.sql.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.GregorianCalendar;
 
 import sun.jdbc.rowset.CachedRowSet;
+
+import java.net.URL;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 public class Item {
   private ausstage.Database m_db;
@@ -3541,8 +3549,63 @@ public class Item {
     }
     return (citation);
   }
+
   
- 
+  public boolean isImageUrl (String url) {
+	  boolean isImage = false;
+	  if (url.toLowerCase().endsWith(".gif") ||
+			  url.toLowerCase().endsWith(".jpeg") ||
+			  url.toLowerCase().endsWith(".jpg") ||
+			  url.toLowerCase().endsWith(".png") ||
+			  url.toLowerCase().endsWith(".bmp")) {
+		  isImage = true;
+	  }
+	  return isImage; 
+  }
+  
+  public String getThumbnail (String path) {
+	  Image img = null;
+	  ImageType imageType = null;
+	  try {
+		  if (isImageUrl(path) && path.toLowerCase().startsWith("http")) {
+			  //read the image from a URL
+			  URL url = new URL(path);
+			  int idx = (url.getPath() == null ? -1 : url.getPath().lastIndexOf("."));
+			  if (idx != -1) {
+				  imageType = ImageType.getType(url.getPath().substring(idx + 1));
+			  } else {
+				  //imageType = ImageType.UNKNOWN;
+				  return null;
+			  }
+			  img = new Image(url.openStream(), imageType);
+			  //small thumbs
+	          return squareIt(img, 50, 0.1, 0.95f, 0.08f);
+		  } else {
+			  System.out.println("Not a url");
+		  }
+	  } catch (IOException ioe) {
+		  ioe.printStackTrace();
+	  }
+	  return null;
+  }
+
+  private String squareIt(Image img, int width, double cropEdges, float quality, float soften) throws IOException {
+	  //String dir = "C:\\temp\\";
+      Image square = img.getResizedToSquare(width, cropEdges).soften(soften);
+      //square.writeToJPG(new File(dir + "squareit.jpg"), quality);
+
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      ImageIO.write(square.img, square.getSourceType().toString(), baos);
+      baos.flush();
+      byte[] imageInByteArray = baos.toByteArray();
+      baos.close();
+      img.dispose();
+      String b64 = javax.xml.bind.DatatypeConverter.printBase64Binary(imageInByteArray);
+      square.dispose();
+
+      return b64;
+      
+  }   
 }
 
 

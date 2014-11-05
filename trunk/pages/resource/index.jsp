@@ -590,6 +590,7 @@
 						
 						//added extra table row for item url 21-02-06.
 						if (hasValue(item.getItemUrl())) {
+							String b64 =  item.getThumbnail(item.getItemUrl());
 						%>
 							<tr >
 								<th class='record-label b-153'>Item URL</th>
@@ -599,8 +600,12 @@
 										<tr>
 											<td valign="top">
 												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
+													<img src="data:image/jpg;base64, <%=b64%>" alt="Image not found" />
+												</a><br>
+												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
 													<%=item.getItemUrl()%>
 												</a>
+												
 											</td>
 										</tr>
 									</table>
