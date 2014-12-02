@@ -12,7 +12,7 @@ public String concatFields(Vector fields, String token) {
         }
         ret += fields.elementAt(i);
     }
-  }
+  } 
   return (ret);
 }
 
@@ -145,7 +145,8 @@ public void displayUpdateForm(String                p_id,
 
 	  p_out.println("  if (ret) {");
 	  p_out.println("    window.open(\"about:blank\", \"public_comments\", \"status=false,toolbar=false,location=false,menubar=false,height=120px,width=320px\");");
-	  p_out.println("    $('#UpdateFormDiv').dialog('close');");	  
+	  p_out.println("    $('#UpdateFormDiv').dialog('close');");	
+	  p_out.println("    document.getElementById('f_text_c').value='xg1VF38_';");  
 	  p_out.println("    document.UpdateForm.submit();");
 	  p_out.println("  }");
 	  p_out.println("}");
@@ -231,9 +232,9 @@ public void displayUpdateForm(String                p_id,
     p_out.println("     </tr>");
     
 	p_out.println("     <tr class='text-veri'>");
-	p_out.println("       <td  align='right'  class='general_heading_light' valign='top'><label for='f_text_veri'>Leave this field blank</lable></td>");
+	p_out.println("       <td  align='right'  class='general_heading_light' valign='top'><label>Leave this field blank</lable></td>");
 	p_out.println("       <td width='0%'>&nbsp;</td>");
-	p_out.println("       <td  align='left' valign='top'><input type='text' name='f_text_veri' id='f_text_veri' /></td>");
+	p_out.println("       <td  align='left' valign='top'><input type='text' name='f_text_veri' id='f_text_veri' /><input type='hidden' name='f_text_c' id='f_text_c' /></td>");
 	p_out.println("     </tr>");
 	    
     p_out.println("     <tr>");

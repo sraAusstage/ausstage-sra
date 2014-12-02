@@ -26,6 +26,7 @@
   String userComments = request.getParameter("f_public_users_comments");
   String tag	      = request.getParameter("f_tag");
   String textVeri	  = request.getParameter("f_text_veri");
+  String textC        = request.getParameter("f_text_c");
   
  // tagObj.add(tag,objectType,objectId);
   
@@ -39,7 +40,7 @@
               "User Email:    " + userEmail + "\n\n" +
               "Comments:\n" + userComments + "\n";
 
-  if(textVeri == null || textVeri.equals("")){
+  if((textVeri == null || textVeri.equals("")) && (userComments != null && !userComments.equals("")) && (textC != null && textC.equals("xg1VF38_"))){
 	  if(objectId != null && !objectId.equals("")){
 		  mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Comment from User " + userName, body_text, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
 	  }
