@@ -8,7 +8,7 @@
 <script language="JavaScript" type="text/JavaScript">
   <!--
   /**
-  * Make modifications to the sort column and sort order.
+  * Make modifications to the sort column and sort order. BRAD WAS HERE
   */
   function reSortData( sortColumn ) {
   if ( sortColumn == document.form_searchSort_report.col.value ) {
@@ -141,14 +141,27 @@
     </thead>
     <%
     
+    //Brad Williams EDIT -- fix sort order bugs 
     sqlString = "SELECT events.`eventid`,events.event_name name,venue.suburb, states.state,venue.street, "+
+      			"events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date,count(distinct events.eventid),venue.venue_name vname, " +
+      			"CONCAT_ws('&nbsp;', TRIM(leading '0' from events.ddfirst_date), fn_get_month_as_string(events.mmfirst_date), events.yyyyfirst_date) as evDate,  "+
+      			"STR_TO_DATE(CONCAT(IF(events.ddfirst_date = '', '01', if(events.ddfirst_date IS NULL, '01',events.ddfirst_date)),"+
+      			"' ',IF(events.mmfirst_date = '', '01', if(events.mmfirst_date IS NULL, '01',events.mmfirst_date)),"+
+      			"' ',IFNULL(events.yyyyfirst_date, '1800')), '%d %m %Y')"+
+      			" as dat,count(distinct itemevlink.itemid) as total, country.countryname "+
+			"FROM events INNER JOIN venue ON (events.venueid = venue.venueid)   INNER JOIN states ON (venue.state = states.stateid) Left JOIN itemevlink on (events.eventid = itemevlink.`eventid`) " +
+			"INNER JOIN country ON (venue.countryid = country.countryid)"+
+			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME)))) LIKE '" + letter + "%' group by events.eventid Order by " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME))))":(sortCol.equals("vname")?"vname " + sortOrd + ", suburb " + sortOrd + ", state":sortCol)) + " " + sortOrd + " limit " + ((pageno)*100) + ",101";
+
+    
+    /*sqlString = "SELECT events.`eventid`,events.event_name name,venue.suburb, states.state,venue.street, "+
       			"events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date,count(distinct events.eventid),venue.venue_name vname, " +
       			"CONCAT_ws('&nbsp;', TRIM(leading '0' from events.ddfirst_date), fn_get_month_as_string(events.mmfirst_date), events.yyyyfirst_date) as evDate,  "+
       			"STR_TO_DATE(CONCAT(IFNULL(events.ddfirst_date, '01'),' ',IFNULL(events.mmfirst_date,'01'),' ',IFNULL(events.yyyyfirst_date, '1800')), '%d %m %Y') as dat,count(distinct itemevlink.itemid) as total, country.countryname "+
 			"FROM events INNER JOIN venue ON (events.venueid = venue.venueid)   INNER JOIN states ON (venue.state = states.stateid) Left JOIN itemevlink on (events.eventid = itemevlink.`eventid`) " +
 			"INNER JOIN country ON (venue.countryid = country.countryid)"+
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME)))) LIKE '" + letter + "%' group by events.eventid Order by " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME))))":(sortCol.equals("vname")?"vname " + sortOrd + ", suburb " + sortOrd + ", state":sortCol)) + " " + sortOrd + " limit " + ((pageno)*100) + ",101";
-  			 
+  	*/	 
     l_rs = m_db.runSQL (sqlString, stmt);
     System.out.println(sqlString);
     int i = 0;  
