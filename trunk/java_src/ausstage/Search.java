@@ -476,10 +476,10 @@ public class Search {
 			m_sql_string.append(" and itemid in (SELECT itemid " + "                  FROM ITEMSECGENRELINK IW" + "                 WHERE SECGENREPREFERREDID  IN (" + secGenre
 					+ " ))");
 		}
-
+// Edit by Brad Williams 8/12/2014 fix search online resources bug.
 		if (!m_showResources.equals("")) {
 			if (m_showResources.equals("ONLINE")) {
-				m_sql_string.append(" and if(ITEM_URL is null,' ','ONLINE') = '" + m_showResources + "' ");
+				m_sql_string.append(" and if((item_url IS NULL || item_url = '' || item_url = ' '),' ','ONLINE') = '" + m_showResources + "' ");
 			}
 		}
 
