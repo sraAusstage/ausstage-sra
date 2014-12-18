@@ -44,8 +44,10 @@ public class KmlDataBuilder {
 	/**
 	 * define the base URL for icon images
 	 */
-	public static final String ICON_BASE_URL = "http://beta.ausstage.edu.au/mapping2/assets/images/kml-icons/";
-	public static final String ALT_ICON_BASE_URL = "http://beta.ausstage.edu.au/mapping2/assets/images/iconography/";
+	//public static final String ICON_BASE_URL = "http://beta.ausstage.edu.au/mapping2/assets/images/kml-icons/";
+	//public static final String ALT_ICON_BASE_URL = "http://beta.ausstage.edu.au/mapping2/assets/images/iconography/";
+	public static final String ICON_BASE_URL = "http://www.ausstage.edu.au/pages/assets/images/kml-icons/";
+	public static final String ALT_ICON_BASE_URL = "http://www.ausstage.edu.au/pages/assets/images/iconography/";
 	
 	/**
 	 * icon colour codes for contributors

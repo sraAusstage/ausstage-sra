@@ -148,7 +148,7 @@ public class SearchServlet extends HttpServlet {
 		}
 		
 		if(database.connect() == false) {
-			throw new ServletException("Unable to connect to the database");
+			throw new ServletException("Unable to connect to the database"); 
 		}
 		
 		// declare helper variables
