@@ -148,9 +148,9 @@ public class SearchServlet extends HttpServlet {
 				// output the javascript mime type
 				response.setContentType("application/javascript; charset=UTF-8");
 			}
-		}
+		} 
 		
-		// output the results of the search
+		// Output the results of the search
 		PrintWriter out = response.getWriter();
 		if(formatType.equals("json") == true && InputUtils.isValid(request.getParameter("callback")) == true) {
 			out.print(JSONPManager.wrapJSON(results, request.getParameter("callback")));

@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
 // general java
 import java.util.*;
 
-// import AusStage related packages
+// import AusStage related packages.
 import au.edu.ausstage.vocabularies.*;
 import au.edu.ausstage.utils.*;
 import au.edu.ausstage.networks.types.*;
