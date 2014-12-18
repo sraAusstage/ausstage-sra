@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * This file is part of the AusStage Mapping Service
+ *
+ * The AusStage Mapping Service is free software: you can redistribute
+ * it and/or modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * The AusStage Mapping Service is distributed in the hope that it will 
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the AusStage Mapping Service.  
+ * If not, see <http://www.gnu.org/licenses/>.
+-->
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
+    <display-name>Aus-e-Stage Mapping Service</display-name>
+    <description>
+        Search the AusStage database and put the results on a map
+    </description>
+     <!-- Servlets -->
+    <servlet>
+        <servlet-name>MarkerServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.MarkerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.SearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LookupServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.LookupServlet</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>EventLookupServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.EventLookupServlet</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>KmlDownloadServlet</servlet-name>
+    	<servlet-class>au.edu.ausstage.mapping.KmlDownloadServlet</servlet-class>
+    </servlet>
+    <!-- Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>MarkerServlet</servlet-name>
+        <url-pattern>/markers/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LookupServlet</servlet-name>
+        <url-pattern>/lookup/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EventLookupServlet</servlet-name>
+        <url-pattern>/events/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>KmlDownloadServlet</servlet-name>
+    	<url-pattern>/kml/*</url-pattern>
+    </servlet-mapping>    
+    <!-- Context Params to Share Common Information-->
+    <context-param>
+        <param-name>databaseConnectionString</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>colourXMLFilePath</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>systemName</param-name>
+        <param-value>AusStage Mapping System</param-value>
+    </context-param>    
+    <context-param>
+       	<param-name>systemVersion</param-name>
+       	<param-value>1.0 (Beta)</param-value>
+    </context-param>
+    <context-param>
+        <param-name>buildVersion</param-name>
+        <param-value>1</param-value>
+    </context-param>
+    <context-param>
+        <param-name>moreInfo</param-name>
+        <param-value>http://www.ausstage.edu.au</param-value>
+    </context-param>
+    <context-param>
+        <param-name>systemUrl</param-name>
+        <!-- Include trailing slash -->
+        <param-value>http://beta.ausstage.edu.au/mapping3/</param-value>
+    </context-param>
+</web-app>
