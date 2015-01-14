@@ -313,7 +313,7 @@ public class ConEvLink {
 	public String getConDispInfo(Statement stmt) {
 		try {
 			String sqlString = "SELECT contributor.`contributorid`,concat_ws(' ',contributor.last_name ,contributor.first_name) name, "
-					+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyylast_date))) dates, "
+					+ "if(min(events.yyyyfirst_date) = max(events.yyyylast_date),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', max(events.yyyyfirst_date))) dates, "
 					+ "group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') preferredterm "
 					+ "FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "
 					+ "LEFT JOIN events ON (conevlink.eventid = events.eventid) "

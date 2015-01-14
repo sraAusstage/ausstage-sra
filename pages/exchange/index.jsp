@@ -9,7 +9,7 @@
 <%
 String url = request.getServerName();
 %>
-	<!-- <link rel="stylesheet" href="/pages/exchange/assets/main-style.css"/> -->
+	 <link rel="stylesheet" href="/pages/exchange/assets/main-style.css"/> 
 	<!-- <link rel="stylesheet" href="/pages/ausstage/assets/jquery-ui/jquery-ui-1.8.6.custom.css"/> -->
 	<!-- libraries -->
 	<script type="text/javascript" src="assets/javascript/libraries/jquery-1.6.min.js"></script>
@@ -527,7 +527,7 @@ String url = request.getServerName();
 					<table class="formTable">
 						<tbody>
 							<tr>
-								<th scope="row">
+								<th class="alignRight" scope="row">
 									<label id="task_label" for="task">Records: </label>
 								</th>
 								<td>
@@ -537,7 +537,7 @@ String url = request.getServerName();
 							</tr>
 						
 							<tr>
-								<th scope="row">
+								<th class="alignRight" scope="row">
 									<label id="task_label" for="task">Associated with: </label>
 								</th>
 								<td>
@@ -546,7 +546,7 @@ String url = request.getServerName();
 								</td>
 							</tr>
 							<tr>
-								<th scope="row">
+								<th class="alignRight" scope="row">
 									<label id="id_label" for="id">ID: </label>
 								</th>
 								<td>
@@ -557,7 +557,7 @@ String url = request.getServerName();
 								<td id="idError" class="error"></td>
 							</tr>
 							<tr>
-								<th scope="row">
+								<th class="alignRight" scope="row">
 									<label id="limit_label" for="limit">Record Limit: </label>
 								</th>
 								<td>
@@ -571,7 +571,7 @@ String url = request.getServerName();
 								<td id="limitError" class="error"></td>
 							</tr>	
 							<tr>
-								<th scope="row">
+								<th class="alignRight" scope="row">
 									<label id="sort_by_label" for="sortBy">Sort By: </label>
 								</th>
 								<td>
@@ -736,10 +736,10 @@ String url = request.getServerName();
 		<table id="search_results" class="searchResults">
 			<thead>
 				<tr>
+					<th>&nbsp;</th>
 					<th>Contributor Name</th>
 					<th>Event Dates</th>
 					<th>Functions</th>
-					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody id="search_results_body">
@@ -748,9 +748,9 @@ String url = request.getServerName();
 		<table id="search_results_org" class="searchResults">
 			<thead>
 				<tr>
+					<th>&nbsp;</th>
 					<th>Organisation Name</th>
 					<th>Address</th>
-					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody id="search_results_body_org">
@@ -759,9 +759,9 @@ String url = request.getServerName();
 		<table id="search_results_venue" class="searchResults">
 			<thead>
 				<tr>
+					<th>&nbsp;</th>
 					<th>Venue Name</th>
 					<th>Address</th>
-					<th>&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody id="search_results_body_venue">
@@ -778,7 +778,8 @@ String url = request.getServerName();
 		<div id="error_message">
 		</div>
 		<p>
-		 <strong>Note: </strong>Search results are limited to 5 records. If you do not see the results that you expected, please refine your search.
+		 <strong>Note: </strong>Search results are limited to 25 records. If you do not see the results that you expected, please refine your search.
+		 
 		</p>
 	</div>
 	
@@ -786,9 +787,9 @@ String url = request.getServerName();
 		<table>
 			<thead>
 				<tr>
+					<th class="alignRight"></th>
 					<th>Description</th>
 					<th class="alignRight">Event Count</th>
-					<th class="alignRight"></th>
 				</tr>
 			</thead>		
 			<tbody id="secgenre-select-table">
@@ -809,9 +810,9 @@ String url = request.getServerName();
 		<table>
 			<thead>
 				<tr>
+					<th class="alignRight"></th>
 					<th>Description</th>
 					<th class="alignRight">Event Count</th>
-					<th class="alignRight"></th>
 				</tr>
 			</thead>		
 			<tbody id="contentindicator-select-table">
@@ -832,9 +833,9 @@ String url = request.getServerName();
 		<table>
 			<thead>
 				<tr>
+					<th class="alignRight"></th>
 					<th>Description</th>
 					<th class="alignRight">Event Count</th>
-					<th class="alignRight"></th>
 				</tr>
 			</thead>		
 			<tbody id="ressubtype-select-table">
