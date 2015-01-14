@@ -31,6 +31,7 @@ var style = true;
 var loadingMessage = '<p> Retrieving AusStage records...</p>';
 var serverError = '<p> An error occurred retrieving AusStage Records</p>';
 
+var recordLimit= '25';
 // initialise the page
 $(document).ready(function() {
 
@@ -296,7 +297,7 @@ function initSearch(){
 			}
 		},
 		submitHandler: function(form) {
-			var url = "http://titan.csem.flinders.edu.au/opencms/search?task="+$('#task').val()+"&type=name&format=json&query="+encodeURIComponent($('#query').val());
+			var url = "http://titan.csem.flinders.edu.au/opencms/search?task="+$('#task').val()+"&type=name&format=json&limit="+recordLimit+"&query="+encodeURIComponent($('#query').val());
 			$("#search_waiting").show(); clearSearchResults();
 			
 			$.jsonp({
@@ -355,16 +356,25 @@ function showSearchResults(responseText)  {
 	clearSearchResults();
 
 	var html = "";
-	
+	var rowClass = "";
+
 	switch ($('#task').val()){
 		case 'contributor':
 			var contributor;
 			var functions;
 			// loop through the search results
 			for(i = 0; i < responseText.length; i++){
+				if(i % 2 == 1) {
+                        		rowClass ='class="odd"'; 
+                		} else {
+                        		rowClass = ''; 
+                		}
+
 				contributor = responseText[i];
 				// add the name and link
-				html += '<tr><td><a href="' + contributor.url + '" target="ausstage" title="View the record for ' + 
+				html += '<tr '+rowClass+'>'+
+				'<td><span id="choose_' + contributor.id + '_'+contributor.firstName+' '+contributor.lastName+'"" class="choose_button contributorAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this record"></span></td>'
+				+'<td><a href="' + contributor.url + '" target="ausstage" title="View the record for ' + 
 				contributor.firstName +' ' +contributor.lastName/*contributor.name*/ + ' in AusStage">' + contributor.firstName +' ' 
 				+contributor.lastName + '</a></td>';
 				// add the event dates
@@ -379,7 +389,7 @@ function showSearchResults(responseText)  {
 				}
 				html += '</td>';
 				// add the button
-				html += '<td><button id="choose_' + contributor.id + '_'+contributor.firstName+' '+contributor.lastName+'" class="choose_button">Choose</button></td>';
+				//html += '<td><button id="choose_' + contributor.id + '_'+contributor.firstName+' '+contributor.lastName+'" class="choose_button">Choose</button></td>';
 				// finish the row
 				html += '</tr>';
 			}
@@ -388,9 +398,16 @@ function showSearchResults(responseText)  {
 			var org;
 			// loop through the search results
 			for(i = 0; i < responseText.length; i++){
+				if(i % 2 == 1) {
+                        		rowClass ='class="odd"'; 
+                		} else {
+                        		rowClass = ''; 
+                		}
 				org = responseText[i];
 				// add the name and link
-				html += '<tr><td><a href="' + org.url + '" target="ausstage" title="View the record for ' + 
+				html += '<tr '+rowClass+'>'+
+				'<td><span id="choose_' + org.id + '_'+org.name+'" class="choose_button contributorAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this record"></span></td>'
+				+'<td><a href="' + org.url + '" target="ausstage" title="View the record for ' + 
 				org.name + ' in AusStage">' + org.name + '</a></td>';
 				// add the venue info
 				html += '<td>' + org.address;
@@ -404,7 +421,7 @@ function showSearchResults(responseText)  {
 				}
 				html += '</td>';
 				// add the button
-				html += '<td><button id="choose_' + org.id + '_'+org.name+'" class="choose_button">Choose</button></td>';	
+				//html += '<td><button id="choose_' + org.id + '_'+org.name+'" class="choose_button">Choose</button></td>';	
 				// finish the row
 				html += '</tr>';
 			}
@@ -414,9 +431,16 @@ function showSearchResults(responseText)  {
 			var venue;
 			// loop through the search results
 			for(i = 0; i < responseText.length; i++){
+				if(i % 2 == 1) {
+                        		rowClass ='class="odd"'; 
+                		} else {
+                        		rowClass = ''; 
+                		}
 				venue = responseText[i];
 				// add the name and link
-				html += '<tr><td><a href="' + venue.url + '" target="ausstage" title="View the record for ' + 
+				html += '<tr '+rowClass+'>'+
+				'<td><span id="choose_' + venue.id + '_'+venue.name+'" class="choose_button contributorAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this record"></span></td>'
+				+'<td><a href="' + venue.url + '" target="ausstage" title="View the record for ' + 
 				venue.name + ' in AusStage">' + venue.name + '</a></td>';
 				// add the venue info
 				html += '<td>' + venue.address;
@@ -430,7 +454,7 @@ function showSearchResults(responseText)  {
 				}
 				html += '</td>';
 				// add the button
-				html += '<td><button id="choose_' + venue.id + '_'+venue.name+'" class="choose_button">Choose</button></td>';	
+				//html += '<td><button id="choose_' + venue.id + '_'+venue.name+'" class="choose_button">Choose</button></td>';	
 				// finish the row
 				html += '</tr>';
 			}
@@ -547,9 +571,14 @@ function addSecGenreDialog(data) {
 		} else {
 			list += '<tr>'; 
 		}
+		//<span id="choose_' + venue.id + '_'+venue.name+'" class="choose_button contributorAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this record"></span>
 		
-		list += '<td>' + data[i].term + '</td><td class="alignRight">' + data[i].events + '</td><td class="alignRight">'
-		+'<button id="choose_' + data[i].id + '_'+data[i].term+'" class="choose_button">Choose</button></td></tr>';
+		list += '<td><span id="choose_' + data[i].id +'_'+data[i].term+'" class="choose_button secGenreAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this record">'
+		+'</span></td>'
+		+'<td>' + data[i].term + '</td><td class="alignRight">' + data[i].events + '</td></tr>';
+		
+		//list += '<td>' + data[i].term + '</td><td class="alignRight">' + data[i].events + '</td><td class="alignRight">'
+		//+'<button id="choose_' + data[i].id + '_'+data[i].term+'" class="choose_button">Choose</button></td></tr>';
 	}
 	
 	$('#secgenre-select-table').empty().append(list);
@@ -588,8 +617,12 @@ function addContentIndicatorDialog(data) {
 			list += '<tr>'; 
 		}
 		
-		list += '<td>' + data[i].term + '</td><td class="alignRight">' + data[i].events + '</td><td class="alignRight">'
-		+'<button id="choose_' + data[i].id + '_'+data[i].term+'" class="choose_button">Choose</button></td></tr>';
+		list += '<td><span id="choose_' + data[i].id +'_'+data[i].term+'" class="choose_button secGenreAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this record">'
+		+'</td></span>' 
+		+'<td>' + data[i].term + '</td><td class="alignRight">' + data[i].events + '</td>';
+		
+		//list += '<td>' + data[i].term + '</td><td class="alignRight">' + data[i].events + '</td><td class="alignRight">'
+		//+'<button id="choose_' + data[i].id + '_'+data[i].term+'" class="choose_button">Choose</button></td></tr>';
 	}
 	
 	$('#contentindicator-select-table').empty().append(list);
@@ -628,8 +661,11 @@ function addResSubTypeDialog(data) {
 			list += '<tr>'; 
 		}
 		
-		list += '<td>' + data[i].description + '</td><td class="alignRight">' + data[i].items + '</td><td class="alignRight">'
-		+'<button id="choose_' + data[i].id + '_'+data[i].description+'" class="choose_button">Choose</button></td></tr>';
+		list += '<td><span id="choose_' + data[i].id +'_'+data[i].description+'" class="choose_button secGenreAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this record">'
+		+'</td></span>' 
+		+'<td>' + data[i].description+ '</td><td class="alignRight">' + data[i].items+ '</td>';
+		//list += '<td>' + data[i].description + '</td><td class="alignRight">' + data[i].items + '</td><td class="alignRight">'
+		//+'<button id="choose_' + data[i].id + '_'+data[i].description+'" class="choose_button">Choose</button></td></tr>';
 	}
 	
 	$('#ressubtype-select-table').empty().append(list);
