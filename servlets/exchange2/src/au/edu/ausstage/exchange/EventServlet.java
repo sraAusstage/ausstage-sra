@@ -138,7 +138,7 @@ public class EventServlet extends HttpServlet {
 		}
 		
 		if(database.connect() == false) {
-			throw new ServletException("Unable to connect to the database");
+			throw new ServletException("Unable to connect to the databasee");
 		}
 		
 		// declare helper variables

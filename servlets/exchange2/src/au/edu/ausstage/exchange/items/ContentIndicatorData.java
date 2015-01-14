@@ -67,7 +67,7 @@ public class ContentIndicatorData extends BaseData{
 			sql = "SELECT e.eventid, e.event_name, e.yyyyfirst_date, e.mmfirst_date, e.ddfirst_date, "
 				+ "       v.venueid, v.venue_name, v.street, v.suburb, s.state, v.postcode, "
 				+ "       c.countryname "
-				+ "FROM events e"
+				+ "FROM events e "
 				+ "INNER JOIN venue v ON e.venueid = v.venueid "
 				+ "inner join country c on v.countryid = c.countryid "
 				+ "INNER JOIN states s ON v.state = s.stateid "
@@ -78,7 +78,7 @@ public class ContentIndicatorData extends BaseData{
 			sql = "SELECT e.eventid, e.event_name, e.yyyyfirst_date, e.mmfirst_date, e.ddfirst_date, "
 				+ "       v.venueid, v.venue_name, v.street, v.suburb, s.state, v.postcode, "
 				+ "       c.countryname "
-				+ "FROM events e"
+				+ "FROM events e "
 				+ "INNER JOIN venue v ON e.venueid = v.venueid "
 				+ "inner join country c on v.countryid = c.countryid "
 				+ "INNER JOIN states s ON v.state = s.stateid "
@@ -108,7 +108,7 @@ public class ContentIndicatorData extends BaseData{
 		
 		// get the data
 		results = getDatabase().executePreparedStatement(sql, ids);
-	
+
 		// check to see that data was returned
 		if(results == null) {
 			throw new RuntimeException("unable to lookup event data");
