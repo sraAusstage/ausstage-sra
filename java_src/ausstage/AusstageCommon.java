@@ -19,8 +19,8 @@ import java.text.*;
 
 public class AusstageCommon {
 
-	public static final String AUSSTAGE_DB_USER_NAME = "root";
-	public static final String AUSSTAGE_DB_PASSWORD = "srasra";
+	public static final String AUSSTAGE_DB_USER_NAME = "ausstage";
+	public static final String AUSSTAGE_DB_PASSWORD = "arkaroo";
 	
 	public static final String event_index_search_result_page = "indexsearchresults.jsp";
 	public static final String search_tables_result_page = "searchtableresult.jsp";
