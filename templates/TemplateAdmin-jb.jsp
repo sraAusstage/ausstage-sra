@@ -162,5 +162,3 @@ Copyright &copy; AusStage and contributors, 2003<script type="text/javascript">v
 </body>
 
 </html>
-
-</cms:template>
