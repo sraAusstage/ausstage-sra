@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.opencms.org/dtd/6.0/xmlpage.xsd">
+  <page language="en">
+    <element name="body">
+      <links>
+        <link name="link8" internal="false" type="A">
+          <target><![CDATA[../contribute/]]></target>
+        </link>
+        <link name="link9" internal="false" type="A">
+          <target><![CDATA[../contact/]]></target>
+        </link>
+        <link name="link6" internal="false" type="A">
+          <target><![CDATA[http://www.ausstage.edu.au/pages/learn/research/collections.html]]></target>
+        </link>
+        <link name="link7" internal="false" type="A">
+          <target><![CDATA[http://www.ausstage.edu.au/pages/learn/research/industry.html]]></target>
+        </link>
+        <link name="link4" internal="false" type="A">
+          <target><![CDATA[http://www.ausstage.edu.au/pages/browse/venues/]]></target>
+        </link>
+        <link name="link5" internal="false" type="A">
+          <target><![CDATA[sustainability.html]]></target>
+        </link>
+        <link name="link2" internal="false" type="A">
+          <target><![CDATA[http://www.ausstage.edu.au/pages/browse/contributors/]]></target>
+        </link>
+        <link name="link3" internal="false" type="A">
+          <target><![CDATA[http://www.ausstage.edu.au/pages/browse/organisations/]]></target>
+        </link>
+        <link name="link0" internal="false" type="A">
+          <target><![CDATA[data-models.html]]></target>
+        </link>
+        <link name="link1" internal="false" type="A">
+          <target><![CDATA[http://www.ausstage.edu.au/pages/browse/events/]]></target>
+        </link>
+        <link name="link13" internal="false" type="A">
+          <target><![CDATA[../contact/]]></target>
+        </link>
+        <link name="link10" internal="false" type="A">
+          <target><![CDATA[../contribute/training.html]]></target>
+        </link>
+        <link name="link11" internal="false" type="A">
+          <target><![CDATA[http://www.ausstage.edu.au/pages/browse/resources/]]></target>
+        </link>
+        <link name="link12" internal="false" type="A">
+          <target><![CDATA[../contribute/]]></target>
+        </link>
+      </links>
+      <content><![CDATA[<h1>Database Design</h1>
+<p>AusStage solves a fundamental problem for research on live performance. Any one who’s interested in theatre, dance, opera or musicals probably has a collection of programs, flyers, advertising, and ticket stubs, perhaps newspaper clippings of articles, photographs, reviews and the like. In themselves, these ephemera are not especially valuable. For the most part, these collections remain hidden, under the bed, stuck in a drawer, tucked away in a shoe box. But taken together, as a collection, they attest to the experience of what happened in the theatre. They are tokens of our participation in the culture of live performance. </p>
+
+<p>AusStage began by asking what if all those programs, flyers, ticket stubs, newspaper clippings and so on were combined into a collection that everyone could share? What kind of knowledge about performance could we then accumulate and create? That’s the basic idea – a national repository of performing arts information – a collaboratively constructed, freely accessible, relational database – a network of performance researchers from universities, collections, industry organisations and government agencies sharing their knowledge, pooling their experience and expertise. </p>
+
+<h2>The Event Index</h2>
+
+<p>At the heart of AusStage is a relational database of live events, built using <a href="%(link0)">data models</a> designed for recording information about the performing arts. </a></p>
+
+<p>The <strong><a href="%(link1)">Event</a></strong> table in AusStage records distinct happenings, defined by title, date and venue; typically, a performance or series of performances at a venue. This is AusStage’s core table and the main focus for data entry activity.  The basic information required to create an event record is the name of the event, the venue, the date, the primary genre, and the status of the event. Other information may also be recorded, such as contributors and organisations associated with the even, and further details on content, genre, information sources and related resources. </p>
+
+<p>Three other tables record vital information relating to events:</p>
+<ul>
+<li>The <strong><a href="%(link2)">Contributor</a></strong> table records information on individuals (human and non-human) who contribute in some capacity to the conception, production or presentation of an event. Contributions to events are characterised by function: actor, director, designer, technician and so on. </li>
+<li>The <strong><a href="%(link3)">Organisation</a></strong> table records information on groups, companies or organisations involved in the conception, production or presentation of an event. An organisation’s involvement in an event is characterised as production, presenting, touring, investing, and so on.</li>
+<li>The <strong><a href="%(link4)">Venue</a></strong> table records information on the place where an event happens, distinguished by its name and location. By definition, an event in AusStage can only occur at one venue; geographic coordinates for longitude and latitude may be recorded in decimal degrees for venues without conventional street addresses.</li>
+</ul>
+<p>There are two categories of data entry: prospective entry of data on current events and retrospective entry of data on past events. This distinction is important because the data-collection techniques vary. Prospective data on current events have been collected since 1 January 2001 from a variety of publications by personnel working various locations around Australia. Our strategy for <a href="%(link5)">sustaining</a> prospective data entry places an emphasis on professional production and government-funded organisations. </p>
+
+<p>Retrospective data collection on past events uses other sources and will take many years to complete. The sources for retrospective data are dispersed in a variety of locations. We approach retrospective data entry by identifying blocks of data that can be mined for information. A block of data is a collection of programs or reviews or articles in one location. Thus each library, museum or company can provide us with many blocks of data. The three blocks we began with were:</p>
+<ul>
+<li>The Australian & New Zealand Theatre Record (ANZTR) which collected and reproduced all reviews of all professional productions from 1986 to 1996. </li>
+<li>The Wolanski Program Collection-this collection of theatre programs, originally owned by the Wolanski Performing Arts Collection at the Sydney Opera House, is now housed in the Library of the University of New South Wales and contains many thousands of programs from the early 1900s onward. </li>
+<li>The National Library Collection (PROMPT) - this well housed, well archived collection is very comprehensive, with many tens of thousands of programs.</li></ul>
+<p>AusStage continues to work with many <a href="%(link6)">collections</a> and <a href="%(link7)">organisations</a> to add data on past events to AusStage. We encourage <a href="%(link8)" target="_self">contributions</a> from users. <a href="%(link9)" target="_self">Contact us</a> if you would like to add data to AusStage. We provide <a href="%(link10)" target="_self">training</a> and support to enable artists, researchers and organisations to enter data.</p>
+<h2>Resource Directory</h2>
+<p><em>How do people research the performing arts in Australia? With so many significant collections, both large and small, how do they find what they're looking for?</em></p>
+<p>AusStage can help users find items in collections. Whether searching for people, venues, organisations or productions, AusStage can direct users to digital resources and material objects in libraries, archives and museums.</p>
+
+<p>The <strong><a href="%(link11)">Resource Directory</a></strong> is a data set of information on collections, items and resources related to Australia's performing arts heritage. Its core records are bibliographic citations of newspaper articles and theatre reviews. But we have expanded it to accommodate descriptions of a wide range of resource types: text, pictures, sound recordings, moving images, physical objects, digital resources and so on that relate to an event, or to contributors, organisations, venues and so on. The resource table also integrates records describing whole collections of performing arts material in publicly accessible archives, libraries and museums.</p>
+
+<p>The Resource Directory is used by researchers in universities and collections, government agencies and industry organisations. Its aim is to provide information on where research resources are located. It allows a search of relevant source material without the immediate need for extensive travel. Such an extensive listing of these resources has not previously been attempted or made available online. In this way, AusStage assists researchers in discovering and accessing the rich history and heritage of the performing arts in Australia, improving opportunities for research and education, and increasing the visibility and accessibility of performing arts collections.</p>
+
+<p>The Resource Directory supports discovery and access to items in collections in various ways by:</p>
+<ul>
+    <li><strong>associating</strong> collection and item descriptions with AusStage records on people, venues, organisations and productions</li>
+    <li><strong>directing</strong> users to item records, collection descriptions and finding aids in online catalogues and collection websites</li>
+    <li><strong>linking</strong> users directly to digitised resources (text, pictures, sound, moving image) in digital archives and online repositories</li>
+    <li><strong>hosting</strong> item-level cataloguing for smaller collections seeking to integrate their resources within a national database</li>
+</ul>
+<p>The Resource Directory is built upon the Dublin Core Metadata Element Set. It supports an extensible array of resource types and description styles, including collection-level, item-level, and bibliographic descriptions. Resource records are integrated into AusStage through associations with records in the Event, Contributor, Organisation, Venue, Content Indicator, Secondary Genre and Resource tables. Resource records may also link externally to online resources using persistent URLs. AusStage exports and imports in XML and other text formats so that metadata can be shared with digital repositories and catalogues.</p>
+<p>We encourage <a href="%(link12)" target="_self">contributions</a> from users. <a href="%(link13)" target="_self">Contact us</a> if you would like to add resources to AusStage.&nbsp;</p></ul></ul></ul>]]></content>
+    </element>
+  </page>
+</pages>
