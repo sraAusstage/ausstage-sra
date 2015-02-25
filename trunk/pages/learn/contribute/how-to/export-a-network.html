@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.opencms.org/dtd/6.0/xmlpage.xsd">
+  <page language="en">
+    <element name="body">
+      <links>
+        <link name="link8" internal="false" type="A">
+          <target><![CDATA[http://beta.ausstage.edu.au/networks/export.jsp]]></target>
+        </link>
+        <link name="link9" internal="false" type="A">
+          <target><![CDATA[http://gephi.org/users/]]></target>
+        </link>
+        <link name="link6" internal="false" type="A">
+          <target><![CDATA[http://beta.ausstage.edu.au/networks/export.jsp]]></target>
+        </link>
+        <link name="link7" internal="false" type="A">
+          <target><![CDATA[http://gephi.org/users/download/]]></target>
+        </link>
+        <link name="link4" internal="false" type="A">
+          <target><![CDATA[http://visone.info/doku.php]]></target>
+          <query><![CDATA[id=index]]></query>
+        </link>
+        <link name="link5" internal="false" type="A">
+          <target><![CDATA[http://visone.info/jaws/visone.jnlp]]></target>
+        </link>
+        <link name="link2" internal="false" type="A">
+          <target><![CDATA[http://gephi.org/]]></target>
+        </link>
+        <link name="link3" internal="false" type="A">
+          <target><![CDATA[http://gephi.org/users/download/]]></target>
+        </link>
+        <link name="link0" internal="false" type="A">
+          <target><![CDATA[http://beta.ausstage.edu.au/networks/export.jsp]]></target>
+        </link>
+        <link name="link1" internal="false" type="A">
+          <target><![CDATA[http://graphml.graphdrawing.org/]]></target>
+        </link>
+        <link name="link10" internal="false" type="A">
+          <target><![CDATA[http://visone.info/jaws/visone.jnlp]]></target>
+        </link>
+        <link name="link11" internal="false" type="A">
+          <target><![CDATA[http://beta.ausstage.edu.au/networks/export.jsp]]></target>
+        </link>
+        <link name="link12" internal="false" type="A">
+          <target><![CDATA[http://visone.info/doku.php]]></target>
+          <query><![CDATA[id=docs:firststeps:index]]></query>
+        </link>
+      </links>
+      <content><![CDATA[<h1>Export a Network</h1>
+<p>This guide explains how to use the <a rel="nofollow" href="%(link0)">Export Graph Data</a> page to export networks from AusStage in <a href="%(link1)">GraphML</a> format for use with network visualisation software.</p>
+<h2><a name="Getting_Started"></a>Getting Started</h2>
+<p>Before you can view any of the exported data, you will need to download and install one of the following graph visualisation programs.</p>
+<ul>
+    <li><a rel="nofollow" href="%(link2)">Gephi</a>: Open-source network visualization software. Download <a rel="nofollow" href="%(link3)">here</a></li>
+    <li><a rel="nofollow" href="%(link4)">Visone</a>: Java based network visualization software. Download the Visone web starter <a rel="nofollow" href="%(link5)">here</a>. The Visone web starter is the recommended way to run Visone. Each time you run the web starter, it will check for updates and install them before running Visone.</li>
+</ul>
+<h2><a name="Exporting_the_Graph_Data"></a>Exporting the Graph Data</h2>
+<p>Using the <a rel="nofollow" href="%(link6)">the Export Graph Data page</a> is relatively simple.</p>
+<p><strong>If you know the contributor id</strong></p>
+<ol>
+    <li>If you know the id of the contributor whose network you wish to graph, enter the id in the <i>Contributor Id</i> field.</li>
+    <li>Then, click the <i>Lookup</i> button situated to the right of the <i>Contributor Name</i> field. This checks that the contributor id relates to a contributor and you should see the contributor's name appear in the <i>Contributor Name</i> field.</li>
+</ol>
+<p><strong>If you don't know the contributor id</strong></p>
+<ol>
+    <li>If you don't know the id of the contributor whose network you would like to graph, click on the <i>Lookup</i> button situated to the right of the <i>Contributor Name</i> field.</li>
+    <li>A popup window should appear with a single field for Contributor Name.</li>
+    <li>Enter the name of the contributor you wish to graph and click the <i>Search</i> button.</li>
+    <li>After a few moments the window will show matching results.</li>
+    <li>If the contributor you wish to graph is returned, click the <i>Choose</i> button relating to that contributor.</li>
+    <li>The popup window will disappear, and both the <i>Contributor Id</i> and <i>Contributor Name</i> fields will be populated.</li>
+</ol>
+<p><strong>After selecting your contributor</strong>&nbsp;</p>
+<ol>
+    <li>You then need to select the desired data format from the drop down list. The data format you choose should depend on the software you are using to visualize the graph. Currently the only option is graphml which is compatible with both Gephi and Visone.</li>
+    <li>Finally, you need to choose the desired radius of your graph. This relates to how many edges are between the central node (<i>the contributor</i>) and the outlying nodes of the network. For instance, a radius of 2 will give you a network of all the people your selected contributor has worked with, and all the people they have worked with.</li>
+    <li>Then click the <i>Export</i> button and in a few moments the file will be downloaded to your computer.</li>
+    <li>The file should appear as <strong>ausstage-graph-<i>contributorId</i>-degrees-<i>numOfDegrees</i>.graphml</strong> where <i>contributorId</i> is the contributor id you selected and <i>numOfDegrees</i> is the radius you selected.</li>
+</ol>
+<p>Mac Users please note: if you are using Chrome or Safari on a Mac computer to download the Network Data you will need to remove the .xml extension that is automatically added to the file by the browser. The best way to do this is to right-click on the file, and select <i>Get Info</i> from the popup menu. In the info window, scroll down to Name &amp; Extension. Remove the .xml extension from the file name.</p>
+<h2><a name="Using_the_Graph_Data"></a>Using the Graph Data</h2>
+<h3><a name="Gephi"></a>Gephi</h3>
+<p>The following guide assumes you have completed the following:</p>
+<ol>
+    <li>Downloaded and Installed <a rel="nofollow" href="%(link7)">Gephi</a></li>
+    <li>Used the <a rel="nofollow" href="%(link8)">the Export Graph Data page</a> to download a set of network data in .graphml format.</li>
+    <li>If you are not already familiar with Gephi, it is advised you work through some of the tutorials available <a rel="nofollow" href="%(link9)">here</a> in order to get the most out of visualizing your network data.</li>
+</ol>
+<p>The following steps will guide you through loading your network data into Gephi.</p>
+<ol>
+    <li>Locate and run Gephi on you computer.</li>
+    <li>A dialogue box will appear offering you the following options
+    <ul>
+        <li>Open Recent</li>
+        <li>New Project</li>
+        <li>Samples</li>
+    </ul>
+    </li>
+    <li>Select <i>Open Graph File</i> under the <i>New Project</i> heading</li>
+    <li>Another dialogue box will appear titled <i>Open</i>. Change the File Format to <i>GraphML Files (<tt>*</tt>.graphml)</i>.</li>
+    <li>Using the <i>Open</i> dialogue box, locate and select the .graphml file you wish to visualize. Then click the <i>Open</i> button.</li>
+    <li>Another dialogue box will appear titled <i>Import report</i>. Click the <i>OK</i> button</li>
+    <li>Your network data should now be displayed within Gephi as a visualisation.</li>
+</ol>
+<p><strong>Adding two networks to the same visualisation</strong></p>
+<p>Once you have imported one set of data into the visualisation you may wish to add another. This can be done very simply using the following steps:</p>
+<ol>
+    <li>With your current project in Gephi displayed, go to the File Menu and select <i>Open</i></li>
+    <li>Locate the other .graphml file you wish to model.</li>
+    <li>Click <i>Open</i>.</li>
+    <li>The <i>Import report</i> dialogue box will appear.</li>
+    <li>In the bottom right hand corner of this box will be two options
+    <ul>
+        <li>Add full graph</li>
+        <li>Append graph</li>
+    </ul>
+    </li>
+    <li>Ensure <i>Append graph</i> is selected.</li>
+    <li>Click <i>OK</i></li>
+    <li>The additional data should now be displayed in the visualisation.</li>
+</ol>
+<h3><a name="Visone"></a>Visone</h3>
+<p>The following guide assumes you have completed the following:</p>
+<ol>
+    <li>Downloaded and run the <a rel="nofollow" href="%(link10)">Visone Java Web Starter</a></li>
+    <li>Used the <a rel="nofollow" href="%(link11)">the Export Graph Data page</a> to download a set of network data in .graphml format.</li>
+    <li>If you are not already familiar with Visone, it is advised you read through the documentation available <a rel="nofollow" href="%(link12)">here</a> in order to get the most out of visualizing your network data.</li>
+</ol>
+<p>The following steps will guide you through loading your network data into Visone:</p>
+<ol>
+    <li>Locate and run visone.jnlp on your computer.
+    <ul>
+        <li>Depending on your operating system, you may get a message similar to the following <blockquote><i>The application &quot;Visone&quot; from &quot;visone.info&quot; is requesting access to your computer. </i></blockquote></li>
+    </ul>
+    <blockquote>If this occurs, check the box that will allow this in future and click the <i>Allow</i> button </blockquote></li>
+    <li>Once Visone has loaded, go to the <i>File</i> menu and select <i>Open</i>.</li>
+    <li>The <i>Open</i> dialogue box will appear. Use this to locate and select the .graphml file you wish to visualize.</li>
+    <li>Click the <i>OK</i> button in the <i>Open</i> dialogue box.</li>
+    <li>Your network data will then be loaded into Visone as a visualisation.</li>
+</ol>
+<p>Please Note: Visone initially loads this data very simply, so you may on first load see just one coloured box. Using the visualization and layout parameters within Visone will alter the visualisation.</p>
+<p><strong>Adding two networks to the same visualisation</strong></p>
+<p>Once you have imported one set of data into the visualisation you may wish to add another data set to the visualisation. This can be done very simply using the following steps:</p>
+<ol>
+    <li>With your current project in Visone displayed, go to the File Menu and select <i>Open</i></li>
+    <li>Locate the other .graphml file you wish to model.</li>
+    <li>Click <i>Open</i>.</li>
+    <li>You will see Visone has created a separate visualization.</li>
+    <li>Go to the <i>Edit</i> menu and select <i>Select All</i></li>
+    <li>Also in the <i>Edit</i> menu select <i>Copy</i></li>
+    <li>Return to your original visualization by clicking its title listed above the visualization window.</li>
+    <li>Go to the <i>Edit</i> menu and select <i>Paste</i>.</li>
+    <li>Both networks are now in the same visualization space for manipulation.</li>
+</ol>
+<p>&nbsp;</p>]]></content>
+    </element>
+  </page>
+</pages>
