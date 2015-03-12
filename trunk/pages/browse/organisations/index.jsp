@@ -11,6 +11,7 @@
   * Make modifications to the sort column and sort order.
   */
   function reSortData( sortColumn ) {
+
   if ( sortColumn == document.form_searchSort_report.col.value ) {
   // The same column was selected. Toggle the sort order.
   if ( document.form_searchSort_report.order.value == 'ASC' ) {
@@ -109,7 +110,7 @@
   String	  sqlString1;
   
   String sortCol = request.getParameter("col");
-  String validSql = "name year num total ASC DESC";
+  String validSql = "name address year num total ASC DESC";
   if (sortCol == null || !validSql.contains(sortCol)) sortCol = "name";
   String sortOrd = request.getParameter("order");
   if (sortOrd == null) sortOrd = "ASC";
@@ -134,22 +135,34 @@
     <input type="hidden" name="pageno" value="<%=pno%>">
     <thead>
     <tr>
-      <th width="40%"><b><a href="#" onClick="reSortData('name')">Name  (<%=SearchCount.formatSearchCountWithCommas(l_rs.getString(1))%>)</a> </b></th>
-      <th width="20%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a></b></th>
-      <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('num')">Events</a></b></th>
-      <th width="20%" align="right"><b><a href="#" onClick="reSortNumbers('total')">Resources</a></b></th>
+      <th width="30%"><b><a href="#" onClick="reSortData('name')">Name  (<%=SearchCount.formatSearchCountWithCommas(l_rs.getString(1))%>)</a> </b></th>
+      <th width="40%" align="left"><b><a href="#" onClick="reSortData('address')">Address</a></b></th>
+      <th width="10%" align="left"><b><a href="#" onClick="reSortNumbers('year')">Event Dates</a></b></th>
+      <th width="10%" align="right"><b><a href="#" onClick="reSortNumbers('num')">Events</a></b></th>
+      <th width="10%" align="right"><b><a href="#" onClick="reSortNumbers('total')">Resources</a></b></th>
     </tr>
     </thead>
     <%
-    sqlString = 	"SELECT organisation.organisationid, organisation.name NAME , events.event_name, min(events.yyyyfirst_date) year, if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))), count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total " +
+   // sqlString = 	"SELECT organisation.organisationid, organisation.name NAME , events.event_name, min(events.yyyyfirst_date) year, if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))), count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total " +
+//			"FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) LEFT JOIN events ON (orgevlink.eventid = events.eventid) " +
+//			"LEFT JOIN itemorglink ON (organisation.organisationid = itemorglink.organisationid) "+
+//			" LEFT JOIN item on (item.institutionid = organisation.organisationid) " +
+//			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) LIKE '" + letter + "%' group by organisation.organisationid " +
+//  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":sortCol)+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+ sqlString = 	"SELECT organisation.organisationid, organisation.name NAME , events.event_name, min(events.yyyyfirst_date) year, if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))), count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total " +
+ 			", organisation.suburb, states.state, country.countryname, concat_ws(', ',country.countryname, states.state, organisation.suburb) as address "+
 			"FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) LEFT JOIN events ON (orgevlink.eventid = events.eventid) " +
 			"LEFT JOIN itemorglink ON (organisation.organisationid = itemorglink.organisationid) "+
+			"LEFT JOIN states ON (organisation.state = states.stateid) "+
+			"LEFT JOIN country ON (organisation.countryid = country.countryid) "+
 			" LEFT JOIN item on (item.institutionid = organisation.organisationid) " +
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) LIKE '" + letter + "%' group by organisation.organisationid " +
-  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":sortCol)+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":
+  			((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state, organisation.suburb ":sortCol))+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+  			
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
-    while (l_rs.next())
+        while (l_rs.next())
     {
       rowCounter++;
       // set evenOddValue to 0 or 1 based on rowCounter
@@ -157,19 +170,39 @@
       if (rowCounter % 2 == 0) evenOddValue = 0;
     %>
     <tr class="<%=evenOdd[evenOddValue]%>">
-      <td width="40%"><a href="/pages/organisation/<%=l_rs.getString(1)%>"><%=l_rs.getString(2)%></a></td>
-      <td width="20%" align="left"> <% if(l_rs.getString(6).equals("1") || l_rs.getString(5) != null  && l_rs.getString(4).equals(l_rs.getString(5)))
+      <td width="30%"><a href="/pages/organisation/<%=l_rs.getString(1)%>"><%=l_rs.getString(2)%></a></td>
+      <td width="40%"><%
+      String address = "";
+      	if (l_rs.getString("suburb") != null){ 
+      		address += l_rs.getString("suburb") ;
+      	}
+      		
+      	if ((l_rs.getString("state") != null)&&(!l_rs.getString("state").equals("O/S")) &&(!l_rs.getString("state").equals("[Unknown]"))){
+    	    	if (!address.equals("")){
+    	    		address += ", ";
+    	    	}
+    	    	address += l_rs.getString("state");
+    	}
+    	if ((l_rs.getString("countryname") != null)){
+    		if (!address.equals("")){
+    	    		address += ", ";
+    	    	}
+    	    	address += l_rs.getString("countryname");
+    	}
+        out.write(address);
+      %></td>
+      <td width="10%" align="left"> <% if(l_rs.getString(6).equals("1") || l_rs.getString(5) != null  && l_rs.getString(4).equals(l_rs.getString(5)))
         {if (l_rs.getString(4) != null) out.write(l_rs.getString(4)); }
     	else{
     	  if (l_rs.getString(4) != null) out.write(l_rs.getString(4)); 
     	  if (l_rs.getString(4) != null && l_rs.getString(5) != null) out.write(" - ") ;
     	  if (l_rs.getString(5) != null) out.write(l_rs.getString(5));}%>
       </td>
-      <td width="20%" align="right"><%if(l_rs.getString(6).equals("0")){
+      <td width="10%" align="right"><%if(l_rs.getString(6).equals("0")){
    	  out.write("");}else
    	  out.write(l_rs.getString(6)); %>
       </td>
-      <td width="20%" align="right"><%if(l_rs.getString(7).equals("0")){
+      <td width="10%" align="right"><%if(l_rs.getString(7).equals("0")){
    	  out.write("");}else
    	  out.write(l_rs.getString(7)); %>
       </td>
