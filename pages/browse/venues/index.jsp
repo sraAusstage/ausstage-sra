@@ -144,15 +144,19 @@
     </tr>
     </thead>
     <%
-    
+    //BW added order by clause for sorting address, based on country, then state, then suburb.
     sqlString = 	"SELECT venue.venueid,venue.venue_name name,min(events.yyyyfirst_date) year,max(events.yyyylast_date),count(distinct events.eventid) num,venue.longitude,venue.latitude, " +
-			"concat_ws(', ',venue.street, venue.suburb, states.state, country.countryname) as address,count(distinct itemvenuelink.itemid) as total, venue.street, venue.suburb, states.state, country.countryname "+
+			"concat_ws(', ',country.countryname, states.state, venue.suburb) as address,count(distinct itemvenuelink.itemid) as total, venue.street, venue.suburb, states.state, country.countryname "+
 			"FROM venue LEFT JOIN events ON (venue.venueid = events.venueid) " +
 			"LEFT JOIN states ON (venue.state = states.stateid) "+
 			"LEFT JOIN country ON (venue.countryid = country.countryid) "+
 			"LEFT JOIN itemvenuelink ON (venue.venueid = itemvenuelink.venueid) "+
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) LIKE '" + letter + "%' group by venue.venueid " +
-  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME))))":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + " limit " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+  			"ORDER BY  " 
+  			+ ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME))))":
+  			 ((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state, venue.suburb":sortCol)) 
+  			+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") 
+  			+ " limit " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
     while (l_rs.next())
