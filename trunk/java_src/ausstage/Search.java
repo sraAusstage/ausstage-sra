@@ -352,7 +352,8 @@ public class Search {
 					m_sql_string.append(" and " + m_search_within_result_str);
 
 			} else { // single keyword
-				m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word.toLowerCase()) + "') ");
+				//m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word.toLowerCase()) + "') ");
+				m_sql_string.append("soundex_match('" + m_key_word + "', combined_all, ' ')");
 
 				// /////////////////////////////////////////////////////////
 				// DEAL WITH NEW & OLD WHERE CLAUSE (search within result)

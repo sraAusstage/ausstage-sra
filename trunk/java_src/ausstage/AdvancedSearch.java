@@ -242,6 +242,32 @@ public class AdvancedSearch {
 			buildWhereClause(m_statesKeyAndVal, column_types);
 		}
 	}
+	
+	public void setVenueInfo(String p_venueId, String p_venueName, String p_venueState, String p_venueCountry) {
+
+		Vector column_types = new Vector();
+
+		if (!p_venueId.equals("") || !p_venueName.equals("")) {
+			m_venueKeyAndVal = "venue.venueid|" + p_venueId;
+			column_types.addElement("int");
+			m_venueKeyAndVal += ",venue_name|" + p_venueName;
+			column_types.addElement("string");
+			buildWhereClause(m_venueKeyAndVal, column_types);
+			column_types.clear(); // clear it for the next if statement
+		}
+		if (!p_venueState.equals("")) {
+			m_statesKeyAndVal = "states.state|" + p_venueState;
+			m_statesTableUsed = true;
+			column_types.addElement("string");
+			buildWhereClause(m_statesKeyAndVal, column_types);
+		}
+		if (!p_venueCountry.equals("")) {
+			m_countryKeyAndVal = "country.countryid|" + p_venueCountry;
+			m_countryTableUsed = true;
+			column_types.addElement("int");
+			buildWhereClause(m_countryKeyAndVal, column_types);
+		}
+	}
 
 	public void setOriginsInfo(String p_origin_of_text, String p_origin_of_production) {
 
