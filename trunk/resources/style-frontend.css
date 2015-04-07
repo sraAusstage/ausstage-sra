@@ -381,6 +381,12 @@ th {
 	text-decoration: none;
 	}	
 
+.browse-index-international a:hover, .browse-index-function a:hover {
+	background-color:#6091df ; /* b-89 un blue*/
+	text-decoration: none;
+	}
+
+/*Browse table*/
 .browse-table {
 	position: relative;
 	width:100%;
@@ -414,6 +420,115 @@ th {
 	padding: 0.3em;
 
 }
+/*CUSTOM BROWSE for individually colored th cells - see international browse page*/
+.cust-browse-table {
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.cust-browse-table thead {
+	background-color: #aaaaaa;
+	text-align: left;
+}
+
+.cust-browse-table th {
+	padding: 0.3em;
+}
+
+.cust-browse-table th a {
+	color:#ffffff;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+/*.cust-browse-table th:hover{
+	background-color:#666666;
+	text-decoration: none;
+	}
+*/
+.browse-table td {
+	padding: 0.3em;
+}
+
+.browse-th-organisation a, .browse-th-venue a, .browse-th-work a  {
+	color:#ffffff;
+	text-decoration: none;	
+}
+.browse-th-organisation {
+	background-color:#f34648; /*b-121*/
+	text-decoration: none;	
+}
+.browse-th-organisation:hover{
+	background-color:#e13a3b; /*b-122*/
+	text-decoration: none;	
+} 
+.browse-th-venue{
+	background-color:#ffc11f; /*b-134*/
+	text-decoration: none;	
+}
+.browse-th-venue:hover{
+	background-color:#ffb620; /*b-135*/
+	text-decoration: none;
+		
+} .browse-th-work{
+	background-color:#8c4eb8; /*b-153*/
+	text-decoration: none;	
+}
+.browse-th-work:hover{
+	background-color:#7234a4; /*b-154*/
+	text-decoration: none;	
+} 
+
+.browse-th-grey{
+	background-color:#aaaaaa; 
+	text-decoration: none;	
+}
+
+.browse-th-grey:hover{
+	background-color:#666666; 
+	text-decoration: none;	
+} 
+
+/*for international drill down - horizontal browse style tables*/
+.sub-browse-table {
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.sub-browse-table th {
+ 	color: #ffffff;
+	height: 2em;
+	padding: 3px 3px 3px 3px;}
+	
+.sub-browse-heading a {
+	color:#ffffff;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+.sub-browse-table th:hover{
+	text-decoration: none;
+	}
+
+.sub-browse-table td {
+	padding: 0.3em;
+
+}
+
+.sub-browse-heading{
+	padding: 33px;
+	text-decoration: none;	 	
+}
+
+
 
 /* S E A R C H   R E S U L T S */
 
