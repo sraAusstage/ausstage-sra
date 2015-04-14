@@ -104,62 +104,7 @@
       <input type='text' size='4' value='' name="f_betweenfrom_yyyy" id="f_betweenfrom_yyyy">&nbsp;(yyyy)
     </td>
   </tr>
- <!-- <tr>
-    <th class='search-form-label b-90'>Last Date</th>
-    <td class='search-form-value'>
-      <select name='f_betweento_dd' id='f_betweento_dd'>
-	<option value=''>Day</option>
-	<option value='1'>1</option>
-	<option value='2'>2</option>
-	<option value='3'>3</option>
-	<option value='4'>4</option>
-	<option value='5'>5</option>
-	<option value='6'>6</option>
-	<option value='7'>7</option>
-	<option value='8'>8</option>
-	<option value='9'>9</option>
-	<option value='10'>10</option>
-	<option value='11'>11</option>
-	<option value='12'>12</option>
-	<option value='13'>13</option>
-	<option value='14'>14</option>
-	<option value='15'>15</option>
-	<option value='16'>16</option>
-	<option value='17'>17</option>
-	<option value='18'>18</option>
-	<option value='19'>19</option>
-	<option value='20'>20</option>
-	<option value='21'>21</option>
-	<option value='22'>22</option>
-	<option value='23'>23</option>
-	<option value='24'>24</option>
-	<option value='25'>25</option>
-	<option value='26'>26</option>
-	<option value='27'>27</option>
-	<option value='28'>28</option>
-	<option value='29'>29</option>
-	<option value='30'>30</option>
-	<option value='31'>31</option>
-      </select>
-      <select name='f_betweento_mm' id='f_betweento_mm'>
-	<option value=''>Month</option>
-	<option value='1'>January</option>
-	<option value='2'>February</option>
-	<option value='3'>March</option>
-	<option value='4'>April</option>
-	<option value='5'>May</option>
-	<option value='6'>June</option>
-	<option value='7'>July</option>
-	<option value='8'>August</option>
-	<option value='9'>September</option>
-	<option value='10'>October</option>
-	<option value='11'>November</option>
-	<option value='12'>December</option>
-      </select>
-      Year
-      <input type='text' size='4' value='' name='f_betweento_yyyy' id='f_betweento_yyyy'>&nbsp;(yyyy)
-    </td>
-  </tr>-->
+ 
   <tr>
    
   </tr>
@@ -193,6 +138,26 @@
       </select>
     </td>
    
+  </tr>
+  <tr>
+    <th class='search-form-label b-90'>Country</th>
+    	<td class='search-form-value'>
+    		<select name="f_countries">
+    		<%
+	  	  crset = country.getCountries(stmt);
+ 	  	if(crset != null && crset.next()) 
+	 	  {
+    		    out.println("<option value=\"\">Country</option>");
+	    	    do
+	    	    {
+	      	      out.println("<option value='" + crset.getString("countryid") + "'>" + crset.getString("countryname") + "</option>");
+	    	    }while(crset.next());
+	  	  }
+	  	  else
+	    	  out.println("<option>No Countries</option>");
+		%>
+	        </select>
+	</td>
   </tr>
   <tr>
     <th class='search-form-label b-90'>Umbrella</th>
@@ -395,9 +360,10 @@ function checkFields(){
   //all fields are empty
   if(form.f_event_id.value == "" && form.f_event_name.value == "" && form.f_betweenfrom_dd.value == ""
       && form.f_betweenfrom_mm.value == "" && form.f_betweenfrom_yyyy.value == "" 
-      && form.f_betweento_dd.value == "" && form.f_betweento_mm.value == "" && form.f_betweento_yyyy.value == ""
       && form.f_venue_id.value == "" && form.f_venue_name.value == "" 
-      && form.f_states.options[form.f_states.selectedIndex].value == "" && form.f_umbrella.value == ""
+      && form.f_states.options[form.f_states.selectedIndex].value == "" 
+      && form.f_countries.options[form.f_countries.selectedIndex].value == "" 
+      && form.f_umbrella.value == ""
       && form.f_primary_genre.options[form.f_primary_genre.selectedIndex].value == ""
       && form.f_status.options[form.f_status.selectedIndex].value == ""
       && form.f_secondary_genre.selectedIndex ==-1
@@ -429,17 +395,6 @@ function checkFields(){
        msg += "- First Date on - YYYY is required as well\n";
   }
 
-  // TO DATE
-  if(document.advancedSearchForm.f_betweento_dd.value != ""){
-    // must have mm & yyyy as well
-    if(document.advancedSearchForm.f_betweento_mm.value == "" || document.advancedSearchForm.f_betweento_yyyy.value == "")
-      msg += "- First Date on - MM and YYYY are required as well\n";
-  }
-  else if(document.advancedSearchForm.f_betweento_mm.value != ""){
-     // must have yyyy as well
-     if(document.advancedSearchForm.f_betweento_yyyy.value == "")
-       msg += "- First Date on - YYYY is required as well\n";
-  }
 
   // Check for Integers
   if (!isBlank(form.f_event_id.value) && !isInteger(form.f_event_id.value)) {
@@ -449,10 +404,7 @@ function checkFields(){
      (!isBlank(form.f_betweenfrom_yyyy.value) && form.f_betweenfrom_yyyy.value.length != 4) ){
     msg += "- First date year must be a valid\n";
   }
-  if ((!isBlank(form.f_betweento_yyyy.value) && !isInteger(form.f_betweento_yyyy.value)) ||
-     (!isBlank(form.f_betweento_yyyy.value) && form.f_betweento_yyyy.value.length != 4) ){
-    msg += "- Last data year must be valid\n";
-  }
+
   if (!isBlank(form.f_venue_id.value) && !isInteger(form.f_venue_id.value)) {
     msg += "- Venue Id must be a number\n";
   }
@@ -531,12 +483,10 @@ function ajaxFunction(){
 				+ "&f_betweenfrom_dd=" + document.advancedSearchForm.f_betweenfrom_dd.value
 				+ "&f_betweenfrom_mm=" + document.advancedSearchForm.f_betweenfrom_mm.value
 				+ "&f_betweenfrom_yyyy=" + document.advancedSearchForm.f_betweenfrom_yyyy.value
-				+ "&f_betweento_dd=" + document.advancedSearchForm.f_betweento_dd.value
-				+ "&f_betweento_mm=" + document.advancedSearchForm.f_betweento_mm.value
-				+ "&f_betweento_yyyy=" + document.advancedSearchForm.f_betweento_yyyy.value
 				+ "&f_venue_name=" + document.advancedSearchForm.f_venue_name.value
 				+ "&f_venue_id=" + document.advancedSearchForm.f_venue_id.value
 				+ "&f_states=" + document.advancedSearchForm.f_states.value
+				+ "&f_countries=" + document.advancedSearchForm.f_countries.value
 				+ "&f_umbrella=" + document.advancedSearchForm.f_umbrella.value
 				+ "&f_status=" + document.advancedSearchForm.f_status.value
 				+ "&f_primary_genre=" + document.advancedSearchForm.f_primary_genre.value

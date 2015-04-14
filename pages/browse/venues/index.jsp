@@ -154,11 +154,12 @@
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) LIKE '" + letter + "%' group by venue.venueid " +
   			"ORDER BY  " 
   			+ ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME))))":
-  			 ((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state, venue.suburb":sortCol)) 
+  			 ((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state "+sortOrd +", venue.suburb":sortCol)) 
   			+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") 
-  			+ " limit " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+    			+ " limit " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
+
     while (l_rs.next())
     {
       rowCounter++;

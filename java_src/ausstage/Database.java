@@ -28,11 +28,13 @@ public class Database {
 	}
 
 	public String connDatabase(String p_user, String p_password) {
+		
 		try {
 			if (m_conn != null) {
 				for (; !m_conn.isClosed(); m_conn.close()) {
 				}
 			}
+			
 			m_conn = DriverManager.getConnection(AppConstants.DB_CONNECTION_STRING, p_user, p_password);
 		} catch (Exception e) {
 			System.out.println("Trying to open DB - We have an exception!!!");

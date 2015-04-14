@@ -16,6 +16,7 @@
   String         venue_id                        = request.getParameter("f_venue_id");
   String         venue_name                      = request.getParameter("f_venue_name");
   String         state                           = request.getParameter("f_states");
+  String         country                         = request.getParameter("f_countries");
   String         umbrella                        = request.getParameter("f_umbrella");
   String         status                          = request.getParameter("f_status");
   String         primary_genre                   = request.getParameter("f_primary_genre");
@@ -81,8 +82,9 @@
                                 betweenfrom_yyyy, betweento_dd, betweento_mm,
                                 betweento_yyyy, umbrella);
   }
-  if(venue_id != null || venue_name != null || state != null){
+  if(venue_id != null || venue_name != null || state != null ){
       advancedSearch.setVenueInfo(venue_id, venue_name, state);
+      //advancedSearch.setVenueInfo(venue_id, venue_name, state, country);
   }
   if(primary_genre != null || secondary_genre != null){
     advancedSearch.setGenreInfo(primary_genre, secondary_genre);
