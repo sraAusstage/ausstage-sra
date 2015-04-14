@@ -352,8 +352,8 @@ public class Search {
 					m_sql_string.append(" and " + m_search_within_result_str);
 
 			} else { // single keyword
-				//m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word.toLowerCase()) + "') ");
-				m_sql_string.append("soundex_match('" + m_key_word + "', combined_all, ' ')");
+				m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word.toLowerCase()) + "') ");
+				//m_sql_string.append("soundex_match('" + m_key_word + "', combined_all, ' ')");
 
 				// /////////////////////////////////////////////////////////
 				// DEAL WITH NEW & OLD WHERE CLAUSE (search within result)
@@ -732,12 +732,14 @@ public class Search {
 	 */
 
 	public CachedRowSet getResources() {
-
+		System.out.println("get resources called");
 		// just select the fields that will be good for the distinct
 		String m_sql_items = "search_resource.itemid, search_resource.item_sub_type_lov_id,search_resource.item_sub_type,"
 				+ "  search_resource.copyright_date,  search_resource.issued_date, search_resource.accessioned_date,  search_resource.citation_date,"
 				+ " search_resource.source_citation,search_resource.citation,search_resource.title" + ", if(ITEM_URL is null,' ','ONLINE') resource_flag";
 		m_sql_string.append("select distinct " + m_sql_items + " from search_resource where ");
+		System.out.println("calling build resource sql search string");
+		
 		buildResourceSqlSearchString();
 
 		try {
@@ -971,7 +973,7 @@ public class Search {
 		if (calling_from_BSService) {
 
 			System.out.println("Executing method Search.getOrganisations(calling_from_BSService)");
-			String m_sql_items = "organisationid, name, address, suburb, org_state, web_links, resource_flag";
+			String m_sql_items = "organisationid, name, address, suburb, org_state, org_country, suburb_state_country, web_links, resource_flag";
 			m_sql_string.append("select distinct " + m_sql_items + "  from search_organisation where ");
 			buildSqlSearchString();
 
@@ -1002,7 +1004,7 @@ public class Search {
 
 	public CachedRowSet getOrganisations() {
 
-		String m_sql_items = "search_organisation.organisationid, name, address, suburb, org_state, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total, CONCAT_WS('- ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
+		String m_sql_items = "search_organisation.organisationid, name, address, suburb, org_state, org_country, suburb_state_country, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total, CONCAT_WS('- ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
 		m_sql_string
 				.append("select distinct " + m_sql_items + "  from search_organisation  LEFT JOIN orgevlink ON (orgevlink.organisationid = search_organisation.organisationid) "
 						+ "LEFT JOIN events ON (orgevlink.eventid = events.eventid) "

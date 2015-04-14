@@ -158,7 +158,7 @@
 			" LEFT JOIN item on (item.institutionid = organisation.organisationid) " +
 			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) LIKE '" + letter + "%' group by organisation.organisationid " +
   			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":
-  			((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state, organisation.suburb ":sortCol))+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+  			((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state "+sortOrd+", organisation.suburb ":sortCol))+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
   			
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;

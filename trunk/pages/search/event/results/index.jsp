@@ -76,6 +76,7 @@
   String         venue_id                        = request.getParameter("f_venue_id");
   String         venue_name                      = request.getParameter("f_venue_name");
   String         state                           = request.getParameter("f_states");
+  String         country                         = request.getParameter("f_countries");
   String         umbrella                        = request.getParameter("f_umbrella");
   String         status                          = request.getParameter("f_status");
   String         primary_genre                   = request.getParameter("f_primary_genre");
@@ -122,6 +123,7 @@
 
 
 
+
   ///////////////////////////////////
   //    DISPLAY SEARCH RESULTS
   //////////////////////////////////
@@ -152,7 +154,8 @@
                                 betweento_yyyy, umbrella);
   }
   if(venue_id != null || venue_name != null || state != null){
-      advancedSearch.setVenueInfo(venue_id, venue_name, state);
+     // advancedSearch.setVenueInfo(venue_id, venue_name, state);
+      advancedSearch.setVenueInfo(venue_id, venue_name, state, country);
   }
   if(primary_genre != null || secondary_genre != null){
     advancedSearch.setGenreInfo(primary_genre, secondary_genre);
@@ -216,7 +219,7 @@
       recset_count = Integer.toString(crset.getRow());
       crset.first();         
     }    
-  
+
      out.print("<div class=\"search\"><div class=\"search-bar b-90\">"
     		 +"<img src=\"../../../../resources/images/icon-event.png\" class=\"search-icon\">"
     		 +"<span class=\"search-heading large\">Events</span>"
@@ -243,6 +246,7 @@
     <input type="hidden" name="f_venue_id" value="<%=venue_id%>">
     <input type="hidden" name="f_venue_name" value="<%=venue_name%>">
     <input type="hidden" name="f_states" value="<%=state%>">
+    <input type="hidden" name="f_countries" value="<%=country%>">
     <input type="hidden" name="f_umbrella" value="<%=umbrella%>">
     <input type="hidden" name="f_primary_genre" value="<%=primary_genre%>">
     <%
@@ -298,18 +302,20 @@
         String bgcolour = "";
         if ((counter%2) == 0 ) // is it odd or even number???
         
-          bgcolour = "class=\"b-185\"";
+          bgcolour = "b-185";
         else
-          bgcolour = "class=\"b-184\"";
-      
-        out.println("      <tr>");
-        out.println("       <td " + bgcolour +  " valign=\"top\" ><a href=\"/pages/event/" + crset.getString("eventid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("event_name") + "</a></td>");
-        out.println("       <td " + bgcolour +  " valign=\"top\" >" + crset.getString("venue_name") + ", ");         
-      
-        if(crset.getString("suburb") != null){
-          out.println(crset.getString("suburb") + ", ");
-        }
-        out.println(crset.getString("state") + "</td>");
+          bgcolour = "b-184";
+        String venueAddress = "";
+        if(crset.getString("suburb") != null){ venueAddress = crset.getString("suburb")+", ";}  
+        if(crset.getString("state").equals("O/S")){ venueAddress += crset.getString("countryname");}
+        else venueAddress += crset.getString("state");
+      	%>
+        <tr>
+        	<td class="<%=bgcolour%>" valign="top" ><a href='/pages/event/<%=crset.getString("eventid")%>' onmouseover="this.style.cursor='hand';"><%=crset.getString("event_name")%></a></td>
+        	<td class="<%=bgcolour%>" valign="top" ><%=crset.getString("venue_name")+", "+venueAddress%></td>         
+        <%
+        
+       
         out.println("       <td " + bgcolour +  " valign=\"top\" align='right' >");
 
         formatted_date = "";
