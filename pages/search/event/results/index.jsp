@@ -106,7 +106,7 @@
   String resource_organisation_creator           = request.getParameter("f_resource_organisation_creator");
 
   String         table_to_search_from            = request.getParameter("f_search_from");
-  String         formatted_date                  = "";
+
   String         page_num                        = request.getParameter("f_page_num");
   String         recset_count                    = request.getParameter("f_recset_count");
   System.out.println("recset_count :" + recset_count);
@@ -313,38 +313,12 @@
         <tr>
         	<td class="<%=bgcolour%>" valign="top" ><a href='/pages/event/<%=crset.getString("eventid")%>' onmouseover="this.style.cursor='hand';"><%=crset.getString("event_name")%></a></td>
         	<td class="<%=bgcolour%>" valign="top" ><%=crset.getString("venue_name")+", "+venueAddress%></td>         
+       		<td class="<%=bgcolour%>" valign="top" align='right' ><%=formatDate(crset.getString("DDFIRST_DATE"), crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE"))%></td>
+        	<td class="<%=bgcolour%>" valign="top" align='right' ><%if(!crset.getString("total").equals("0"))out.println(crset.getString("total"));%></td>   
+        </tr>
         <%
-        
-       
-        out.println("       <td " + bgcolour +  " valign=\"top\" align='right' >");
 
-        formatted_date = "";
-        
-        out.println(formatDate(crset.getString("DDFIRST_DATE"), crset.getString("MMFIRST_DATE"),crset.getString("YYYYFIRST_DATE") ));
-        out.println(      "</td>");
-        
-        if(crset.getString("total").equals("0"))
-        {
-        	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" ></td>" );   
-        }else{
-        	out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" + crset.getString("total") + "</td>");   
-        }
-        
-      
-        /*
-        
-        if (crset.getString("ASSOC_ITEM")== null) {
-          out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>"); // For no online Resource Image
-        }
-        else if (crset.getString("ASSOC_ITEM").equals("ONLINE")) {
-          out.println("       <td " + bgcolour +  " width=\"1\"><img src='/resources/images/resourceicongreen.gif' alt='Related Online Resource'></td>"); // For Resource Image
-        }
-        else if (crset.getString("ASSOC_ITEM").equals("Y")) {
-          out.println("       <td " + bgcolour +  " width=\"1\"><img src='/resources/images/resourceicongrey.gif' alt='Related Resource'></td>"); // For Resource Image
-        }else {
-          out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>"); // For no online Resource Image
-        }*/
-        out.println(      "</tr>");
+
         counter++;                    
         if(counter == Integer.parseInt(resultsPerPage))
           break;

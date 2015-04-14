@@ -119,7 +119,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
   	///////////
 	//ORGANISATION select to retrieve data associated with organisations from the selected country
 	String orgSqlString =	"SELECT organisation.organisationid organisationid, organisation.name NAME , events.event_name, "+
-        			"concat_ws('-',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
+        			"concat_ws(' - ',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
         			"min(events.yyyyfirst_date) minyear, "+
 	        		"if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) as maxyear, "+
         			"count(distinct events.eventid) num, if(organisation.suburb is null, '', organisation.suburb) suburb "+
@@ -141,7 +141,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
    	///////////
 	//VENUE select to retrieve data associated with venues from the selected country 	
   	String	venSqlString =	"SELECT venue.venueid venueid,venue.venue_name name, "+
-			"concat_ws('-',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
+			"concat_ws(' - ',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
 			"count(distinct events.eventid) num, "+
 			"if(venue.suburb is null, 'none', venue.suburb) suburb "+
 			"FROM venue LEFT JOIN events ON (venue.venueid = events.venueid) "+
@@ -160,7 +160,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
   	///////////
 	//WORKselect to retrieve data associated with venues from the selected country 
   	String worSqlString = 	"select work.workid workid, work_title title, count(distinct events.eventid) num, country.countryid, "+
-			"concat_ws('-',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
+			"concat_ws(' - ',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
 			"concat_ws(', ', GROUP_CONCAT(distinct if (CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME) = '', null, CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME)) SEPARATOR ', '), group_concat(distinct organisation.name separator ', ')) creator "+
 			"from work "+
     			"left join eventworklink on(eventworklink.workid = work.workid) "+
@@ -187,7 +187,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 %>
 <div class="browse">
 
-	<div class="browse-bar b-88">
+	<div class="browse-bar b-88"><img class="browse-icon" src="../../../resources/images/icon-international.png">
    
 	    	<span class="browse-heading large"><b><%=countryName%></b></span>
 	    	<span class="browse-index browse-index-international">[<a href="#">Contributors</a> | <a href="#">Events</a>] <a href="<%=mapLink%>">Map</a></span>
@@ -204,68 +204,72 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
     <input type="hidden" name="worCol" value="<%=worSortCol%>">
     <input type="hidden" name="worOrder" value="<%=worSortOrd%>">
 <!-- ORGANISATION RESULTS -->
+
+<%if (orgCount>0){%>
 <table class="sub-browse-table ">
 	<thead>
     		<tr>
       		 <th width="25%" align="left" class="browse-th-organisation"><img class="browse-icon" src="../../../resources/images/icon-organisation.png">
-      		 <span class="sub-browse-heading"><b><a href="#" onClick="reSortDataOrg('name')"> Organisations(<%=orgCount%>)</a></b></span></th>
+      		 <span class="sub-browse-heading"><b><a href="#" onClick="reSortDataOrg('name')"> Organisations (<%=orgCount%>)</a></b></span></th>
      		 <th width="25%" align="left" class="browse-th-organisation"><a href="#" onClick="reSortDataOrg('suburb')">Suburb</a></th>
       		 <th width="25%" align="left" class="browse-th-organisation"><a href="#" onClick="reSortDataOrg('dates')">Event Dates</a></th>
       		 <th width="25%" align="right" class="browse-th-organisation"><a href="#" onClick="reSortDataOrg('num')">Events</a></th>
     		</tr>
     	</thead>
-<%
+	<%
 	while(org_rs.next()){
      		rowCounter++;
       		// set evenOddValue to 0 or 1 based on rowCounter
       		evenOddValue = 1;
       		if (rowCounter % 2 == 0) evenOddValue = 0;	
-%>
-        <tr class="<%=evenOdd[evenOddValue]%>">
-        	<td width="25%"><a href="/pages/organisation/<%=org_rs.getString("organisationid")%>"><%=org_rs.getString("name")%></a></td>
-        	<td width="25%"><%=org_rs.getString("suburb")%></td>
-        	<td width="25%"><%=org_rs.getString("dates")%></td>
-        	<td width="25%" align="right"><%=org_rs.getString("num")%></td>  
-        </tr>
-<%         
+	%>
+	        <tr class="<%=evenOdd[evenOddValue]%>">
+	        	<td width="25%"><a href="/pages/organisation/<%=org_rs.getString("organisationid")%>"><%=org_rs.getString("name")%></a></td>
+	        	<td width="25%"><%=org_rs.getString("suburb")%></td>
+	        	<td width="25%"><%=org_rs.getString("dates")%></td>
+        		<td width="25%" align="right"><%=org_rs.getString("num")%></td>  
+        	</tr>
+	<%         
 	}
+	%>
+	</table>
+<%}
+if (venCount >0){
 %>
-</table>
+	<!-- VENUE RESULTS -->
+	<table class="sub-browse-table">
+		<thead>
+	    		<tr>
+	      		 <th width="25%" align="left" class="browse-th-venue"><img class="browse-icon" src="../../../resources/images/icon-venue.png">
+	      		 <span class="sub-browse-heading"><b><a href="#" onClick="reSortDataVen('name')">Venues (<%=venCount%>)</a></b></span></th>
+	     		 <th width="25%" align="left" class="browse-th-venue"><a href="#" onClick="reSortDataVen('suburb')">Suburb</a></th>
+	      		 <th width="25%" align="left" class="browse-th-venue"><a href="#" onClick="reSortDataVen('dates')">Event Dates</a></th>
+	      		 <th width="25%" align="right" class="browse-th-venue"><a href="#" onClick="reSortDataVen('num')">Events</a></th>
+	    		</tr>
+	    	</thead>
+<%	
+		//ven_rs = m_db.runSQL (venSqlString, stmt);
+		//reset rowcounter so the odd even rows are reset.
+		rowCounter = 0;
+		while(ven_rs.next()){
+			rowCounter++;
+			// set evenOddValue to 0 or 1 based on rowCounter
+	      		evenOddValue = 1;
+	      		if (rowCounter % 2 == 0) evenOddValue = 0;	
+%>
+	        <tr class="<%=evenOdd[evenOddValue]%>">
+	        	<td width="25%"><a href="/pages/venue/<%=ven_rs.getString("venueid")%>"><%=ven_rs.getString("name")%></a></td>
+	        	<td width="25%"><%=ven_rs.getString("suburb")%></td>
+	        	<td width="25%"><%=ven_rs.getString("dates")%></td>
+	        	<td width="25%" align="right"><%=ven_rs.getString("num")%></td>  
+	        </tr>
+	<%         
+		}
+	%>
+	</table>
 
-<!-- VENUE RESULTS -->
-<table class="sub-browse-table">
-	<thead>
-    		<tr>
-      		 <th width="25%" align="left" class="browse-th-venue"><img class="browse-icon" src="../../../resources/images/icon-venue.png">
-      		 <span class="sub-browse-heading"><b><a href="#" onClick="reSortDataVen('name')">Venues(<%=venCount%>)</a></b></span></th>
-     		 <th width="25%" align="left" class="browse-th-venue"><a href="#" onClick="reSortDataVen('suburb')">Suburb</a></th>
-      		 <th width="25%" align="left" class="browse-th-venue"><a href="#" onClick="reSortDataVen('dates')">Event Dates</a></th>
-      		 <th width="25%" align="right" class="browse-th-venue"><a href="#" onClick="reSortDataVen('num')">Events</a></th>
-    		</tr>
-    	</thead>
-<%
-	//ven_rs = m_db.runSQL (venSqlString, stmt);
-	//reset rowcounter so the odd even rows are reset.
-	rowCounter = 0;
-	while(ven_rs.next()){
-		rowCounter++;
-		// set evenOddValue to 0 or 1 based on rowCounter
-      		evenOddValue = 1;
-      		if (rowCounter % 2 == 0) evenOddValue = 0;	
-%>
-        <tr class="<%=evenOdd[evenOddValue]%>">
-        	<td width="25%"><a href="/pages/venue/<%=ven_rs.getString("venueid")%>"><%=ven_rs.getString("name")%></a></td>
-        	<td width="25%"><%=ven_rs.getString("suburb")%></td>
-        	<td width="25%"><%=ven_rs.getString("dates")%></td>
-        	<td width="25%" align="right"><%=ven_rs.getString("num")%></td>  
-        </tr>
-<%         
-	}
-%>
-</table>
-
-<%
-	sqlString = 	"select count(*) as workcount "+
+<%}
+/*	sqlString = 	"select count(*) as workcount "+
 			"from events, country, playevlink, eventworklink, work "+
 			"where events.eventid = playevlink.eventid "+
 			"and playevlink.countryid = country.countryid "+
@@ -274,14 +278,15 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			"and country.countryid = "+id;
 	l_rs = m_db.runSQL (sqlString, stmt);
 	l_rs.next();
-
+*/
+if (worCount>0){
 %>
 
-<table class="sub-browse-table">
+	<table class="sub-browse-table">
 	<thead>
     		<tr>
-      		 <th width="25%" align="left" class="browse-th-work" >
-      		 <span class="sub-browse-heading"><b><a href="#" onClick="reSortDataWor('title')">Works(<%=worCount%>)</a></b></span></th>
+      		 <th width="25%" align="left" class="browse-th-work" ><img class="browse-icon" src="../../../resources/images/icon-work.png">
+      		 <span class="sub-browse-heading"><b><a href="#" onClick="reSortDataWor('title')">Works (<%=worCount%>)</a></b></span></th>
      		 <th width="25%" align="left" class="browse-th-work"><a href="#" onClick="reSortDataWor('creator')">Creators</a></th>
       		 <th width="25%" align="left" class="browse-th-work"><a href="#" onClick="reSortDataWor('dates')">Event Dates</a></th>
       		 <th width="25%" align="right" class="browse-th-work"><a href="#" onClick="reSortDataWor('num')">Events</a></th>
@@ -308,6 +313,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 	}
 %>
 </table>
+<%}%>
 </form>	
 </div>
 
