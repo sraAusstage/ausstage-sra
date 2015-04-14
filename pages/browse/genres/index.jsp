@@ -103,7 +103,7 @@
     </thead>
     <%
     sqlString = 	"SELECT secgenreclass.`genreclassid`, secgenreclass.genreclass name, min(events.yyyyfirst_date) year, max(events.yyyylast_date), "+
-			"count(distinct events.eventid) num, secgenreclass.secgenrepreferredid, COUNT(distinct itemsecgenrelink.itemid) as total "+
+			"count(distinct events.eventid) num, secgenreclass.secgenrepreferredid, COUNT(distinct itemsecgenrelink.itemid) as total,  max(events.yyyyfirst_date)"+
 			"FROM secgenreclass LEFT JOIN secgenreclasslink ON (secgenreclass.secgenrepreferredid = secgenreclasslink.secgenrepreferredid) "+
             		"LEFT JOIN events ON (secgenreclasslink.eventid = events.eventid) "+
 			"Left Join itemsecgenrelink ON (secgenreclass.`secgenrepreferredid` = itemsecgenrelink.secgenrepreferredid) "+
@@ -119,15 +119,37 @@
       %>
       <tr class="<%=evenOdd[evenOddValue]%>">
         <td width="40%"><a href="/pages/genre/<%=l_rs.getString(6)%>"><%=l_rs.getString(2)%></a></td>
-        <td width="20%" align="left"> <% if(l_rs.getString(5).equals("1") || l_rs.getString(3) != null && l_rs.getString(3).equals(l_rs.getString(4)) )
-	{	    
-	  if (l_rs.getString(3) != null) out.write(l_rs.getString(3)); 
-    	}
-    	else
-    	{
+        <td width="20%" align="left"> <% 
+
+        if ((l_rs.getString(5).equals("1") && l_rs.getString(3) != null && l_rs.getString(3).equals(l_rs.getString(4))))
+        {     
           if (l_rs.getString(3) != null) out.write(l_rs.getString(3)); 
-          if (l_rs.getString(3) != null && l_rs.getString(4) != null) out.write(" - ") ;
-          if (l_rs.getString(4) != null) out.write(l_rs.getString(4));
+        }
+        else
+        {
+          int maxFirstDate = 0; //Store max value of First date
+          int maxLastDate = 0;  //Store max value of Last date
+          try {
+            if (l_rs.getString(3) != null)
+            {
+                  out.write(l_rs.getString(3)); 
+                if (l_rs.getString(8) != null)
+                  maxFirstDate = Integer.parseInt(l_rs.getString(8));
+                if (l_rs.getString(4) != null)
+                  maxLastDate = Integer.parseInt(l_rs.getString(4));
+                if ((maxFirstDate < maxLastDate) && (l_rs.getString(3) != null))
+                {
+                  out.write(" - " + l_rs.getString(4));
+                }
+                else //Sometimes max last date might not exists or older than a new event date.
+                {
+                  out.write(" - " + l_rs.getString(8));
+                }
+            }
+          } catch (NumberFormatException e) {
+            //Will Throw exception!
+            out.write("An exception occurred: " + e.getMessage());
+          }
         }%>
         </td>
 	<td width="20%" align="right"><%if(l_rs.getString(5).equals("0")){
