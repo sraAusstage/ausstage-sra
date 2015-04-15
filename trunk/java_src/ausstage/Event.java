@@ -2578,6 +2578,40 @@ public class Event {
 		return (l_rs);
 
 	}
+	
+	 /*
+   * Name: getAllAssociatedWorks ()
+   * 
+   * Purpose: This method will return the Work details of given Event  
+   * 
+   * Parameters: event id, Statement
+   * 
+   * Returns: ResultSet
+   */
+	 public ResultSet getAllAssociatedWorks(int p_event_id, Statement p_stmt) {
+	    String l_sql = "";
+	    ResultSet l_rs = null;
+
+	    try {
+
+	      l_sql = "SELECT events.eventid, work.work_title, work.workid " 
+	          + "FROM events INNER JOIN eventworklink ON (events.eventid = eventworklink.eventid) "
+	          + "INNER JOIN work ON (eventworklink.workid = work.workid) " 
+	          + "WHERE events.eventid=" + p_event_id ;
+
+	      l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
+
+	    } catch (Exception e) {
+	      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+	      System.out.println("An Exception occured in Event.getAssociatedWorks().");
+	      System.out.println("MESSAGE: " + e.getMessage());
+	      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+	      System.out.println("CLASS.TOSTRING: " + e.toString());
+	      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+	    }
+	    return (l_rs);
+
+	 }
 
 	/*
 	 * Name: loadLinkedEvents ()
