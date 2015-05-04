@@ -31,7 +31,7 @@
 
 <div class="browse">
 
-<div class="browse-bar b-88"><img class="browse-icon" src="../../../resources/images/icon-international.png">
+<div class="browse-bar b-90"><img class="browse-icon" src="../../../resources/images/icon-international.png">
    
     <span class="browse-heading large">International</span>
 
@@ -204,7 +204,7 @@
       
       %>
       <tr class="<%=evenOdd[evenOddValue]%>">
-        <td width="20%"><a href="/pages/international/index.jsp?id=<%=l_rs.getString("countryid")%>"><%=l_rs.getString("countryname")%></a></td>
+        <td width="20%"><a href="/pages/country/<%=l_rs.getString("countryid")%>"><%=l_rs.getString("countryname")%></a></td>
         <td width="20%" align="left"><%=dateRange%> </td>
 	<td width="20%" align="right"><%if(l_rs.getString("orgcount").equals("0")){
    	  out.write("");}else
