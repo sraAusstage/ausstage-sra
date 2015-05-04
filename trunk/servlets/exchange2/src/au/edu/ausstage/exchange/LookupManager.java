@@ -224,4 +224,58 @@ public class LookupManager {
 		
 		return list.toString();	
 	}
+	
+	/**
+	 * A method to build the list of countries
+	 *
+	 * @return a JSON string containing countries
+	 */
+	@SuppressWarnings("unchecked")
+	public String getCountries() {
+	
+		String sql;
+		DbObjects results;
+		
+		JSONArray list = new JSONArray();
+		JSONObject obj;
+		
+		sql = 	"SELECT c.countryid, c.countryname, count(v.venueid) "+ 
+				"FROM country c "+
+				"LEFT JOIN venue v ON c.countryid = v.countryid "+
+				"GROUP BY c.countryid ORDER BY c.countryname ASC";
+			
+		// get the data
+		results = database.executeStatement(sql);
+	
+		// check to see that data was returned
+		if(results == null) {
+			throw new RuntimeException("unable to lookup country data");
+		}
+		
+		// build the list of contributors
+		ResultSet resultSet = results.getResultSet();
+		try {
+			while (resultSet.next()) {
+			
+				obj = new JSONObject();
+				
+				obj.put("id", resultSet.getString(1));
+				obj.put("name", resultSet.getString(2));
+				obj.put("venues", resultSet.getString(3));
+				
+				list.add(obj);				
+			}
+		} catch (java.sql.SQLException ex) {
+			throw new  RuntimeException("unable to build list of secondary genres: " + ex.toString());
+		}
+		
+		// play nice and tidy up
+		resultSet = null;
+		results.tidyUp();
+		results = null;
+		
+		return list.toString();	
+	}
 }
+
+
