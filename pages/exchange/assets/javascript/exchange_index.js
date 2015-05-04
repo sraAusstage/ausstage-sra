@@ -18,6 +18,7 @@
 
 // initialise the page
 $(document).ready(function() {
+        
 	// set up the main tabs
 	$('#tabs').tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
     $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
@@ -32,7 +33,7 @@ $(document).ready(function() {
 	$('.clickable').live('mouseleave', function() {
 		$(this).removeClass('clickable-hover');
 	});
-	
+	$('.no-fouc').removeClass('no-fouc');
 });
 
 // function to bring in identifiers
@@ -116,3 +117,4 @@ var list;
 	
 	$('#ressubtype-table').empty().append(list);
 }
+

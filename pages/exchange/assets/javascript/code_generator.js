@@ -15,14 +15,23 @@
  * along with AusStage Data Exchange Service.  
  * If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+var serverUrl	= window.location.protocol+"//"+window.location.host;
+
 var taskLabel 	= ["Contributor","Organisation","Venue","Second Genre", "Content Indicator"];
 var tasks		= ["contributor","organisation","venue","secgenre", "contentindicator"];
+
+var resourceTaskLabel 	= ["Resource Sub-Type"];
+var resourceTasks	= ["ressubtype"];
+
+var venueTaskLabel	= ["Country"];
+var venueTasks		= ["country"];
 
 var sortByLabel	= ["First Date", "Created Date", "Updated Date"];
 var sortBy	= ["firstdate", "createdate", "updatedate"];
 
-var typeLabel	= ["Events", "Resources"];
-var types		= ["events", "resources"];
+var typeLabel	= ["Events", "Resources", "Venues"];
+var types	= ["events", "resources", "venues"];
 
 var idList = [];
 
@@ -150,7 +159,8 @@ function getCode(){
 	var divId = new Date().getTime();
 	//create the embedd text
 	var embedText = '<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>\n'	
-					+'<script type="text/javascript" src="http://titan.csem.flinders.edu.au/pages/exchange/assets/javascript/aus_exchange.js"></script>\n'
+					//+'<script type="text/javascript" src="http://titan.csem.flinders.edu.au/pages/exchange/assets/javascript/aus_exchange.js"></script>\n'
+					+'<script type="text/javascript" src="'+serverUrl+'/pages/exchange/assets/javascript/aus_exchange.js"></script>\n'
 					+'<script type="text/javascript">\n'
 					+'<!--\n'
 					+'new AusstageDataEmbed('+embedList+',"'+divId+'","'+record_type+'","'+search_type+'","'+limit+'","'+sort_by+'",'+style+');\n'
@@ -172,6 +182,7 @@ function initSearch(){
 		if($('#task').val()=='secgenre'){$('#secgenre_select_div').dialog('open');}
 		else if($('#task').val()=='contentindicator'){$('#contentindicator_select_div').dialog('open');}
 		else if($('#task').val()=='ressubtype'){$('#ressubtype_select_div').dialog('open');}
+		else if($('#task').val()=='country'){$('#country_select_div').dialog('open');}
 		else $('#search_div').dialog('open');
 	});
 
@@ -221,7 +232,8 @@ function initSearch(){
 	});
 
 	//populate the second genre dialog
-	var url = "http://titan.csem.flinders.edu.au/opencms/elookup?task=contentindicator";
+	//var url = "http://titan.csem.flinders.edu.au/opencms/elookup?task=contentindicator";
+	var url = serverUrl+"/opencms/elookup?task=contentindicator";
 			
 	$.jsonp({
 		url:url+'&callback=?',
@@ -250,7 +262,8 @@ function initSearch(){
 	});
 
 	//populate the second genre dialog
-	var url = "http://titan.csem.flinders.edu.au/opencms/elookup?task=secgenre";
+	//var url = "http://titan.csem.flinders.edu.au/opencms/elookup?task=secgenre";
+	var url = serverUrl+"/opencms/elookup?task=secgenre";
 			
 			$.jsonp({
 				url:url+'&callback=?',
@@ -278,7 +291,8 @@ function initSearch(){
 	});
 
 	//populate the second genre dialog
-	var url = "http://titan.csem.flinders.edu.au/opencms/elookup?task=ressubtype";
+	//var url = "http://titan.csem.flinders.edu.au/opencms/elookup?task=ressubtype";
+	var url = serverUrl+"/opencms/elookup?task=ressubtype";
 			
 			$.jsonp({
 				url:url+'&callback=?',
@@ -288,6 +302,37 @@ function initSearch(){
 				}	
 	});
 
+/////////
+// setup the dialog box
+	$("#country_select_div").dialog({ 
+		autoOpen: false,
+		height: 400,
+		width: 400,
+		modal: true,
+		buttons: {
+			Close: function() {
+				$(this).dialog('close');
+			}
+		},
+		open: function() {
+		},
+		close: function() {
+		}
+	});
+
+	//populate the country dialog
+	//var url = "http://titan.csem.flinders.edu.au/opencms/elookup?task=country";
+	var url = "../../opencms/elookup?task=country";
+			
+			$.jsonp({
+				url:url+'&callback=?',
+				error: showErrorMessage,
+				success: function(data){
+					addCountryDialog(data);
+				}	
+	});
+
+//////////
 
 	// attach the validation plugin to the name search form
 	$("#search_form").validate({
@@ -297,7 +342,8 @@ function initSearch(){
 			}
 		},
 		submitHandler: function(form) {
-			var url = "http://titan.csem.flinders.edu.au/opencms/search?task="+$('#task').val()+"&type=name&format=json&limit="+recordLimit+"&query="+encodeURIComponent($('#query').val());
+			//var url = "http://titan.csem.flinders.edu.au/opencms/search?task="+$('#task').val()+"&type=name&format=json&limit="+recordLimit+"&query="+encodeURIComponent($('#query').val());
+			var url = serverUrl+"/opencms/search?task="+$('#task').val()+"&type=name&format=json&limit="+recordLimit+"&query="+encodeURIComponent($('#query').val());
 			$("#search_waiting").show(); clearSearchResults();
 			
 			$.jsonp({
@@ -694,14 +740,93 @@ function addResSubTypeDialog(data) {
 
 }
 
+
+//////addCountryDialogData
+function addCountryDialog(data) {
+	var list;
+	var counter = 0;
+	for(i = 0; i < data.length; i++) {
+		
+		if (data[i].venues > 0){
+			if(counter % 2 == 1) {
+				list += '<tr class="odd" >'; 
+			} else {
+				list += '<tr >'; 
+			}
+		
+			list += '<td><span id="choose_' + data[i].id +'_'+data[i].name+'" class="choose_button secGenreAddIcon ui-icon ui-icon-plus clickable" style="display: inline-block;" title="add this country">'
+			+'</td></span>' 
+			+'<td>' + data[i].name+ '</td><td class="alignRight">' + data[i].venues+ '</td></tr>';
+			counter++;
+		}
+	}
+	
+	$('#country-select-table').empty().append(list);
+	
+	$(".choose_button").click(function(eventObject) {
+
+		// get the id of this button
+		var id = this.id;
+			
+		var tags = id.split("_");
+			
+		// add the id to the text file
+		//$("#id").val(tags[1]);
+		var exists = false;
+		for (i in idList){
+			if(idList[i].id==tags[1]){
+				exists = true;
+			}	
+		}
+		if (!exists){idList.push({"id":tags[1], "name":tags[2]});}		
+		updateSelectedList();	
+	});
+	
+	// style the new buttons
+	//$("button, input:submit").button();
+
+}
+
 function addRemoveOptions(){
 	var current = $("#task").val();
-	//if events remove resource sub type option
-	//else add it.	
-	
-	if($('#type').val()=='events'){
-		$('#task').removeOption('ressubtype');	
-		if (current == 'ressubtype'){$('#task').change();}
-	}else $('#task').addOption('ressubtype', 'Resource Sub-Type');	 
-	$("#task").val(current);
+	var match = -1;
+
+	//empty the select
+	$("#task").empty();
+	//if type is events or resources repopulate with tasks
+	if($('#type').val()=='events' || $('#type').val()=='resources'){
+		$.each(taskLabel, function(index, value){
+			$("#task").addOption(tasks[index],value);
+			if(tasks[index] == current){ match = index;}
+		});	
+	}
+	//if option is resources add the resource specific options
+	if ($('#type').val()=='resources'){
+		$.each(resourceTaskLabel, function(index, value){
+			$("#task").addOption(resourceTasks[index],value);	
+		});
+	}
+	if ($('#type').val()=='venues'){
+		$.each(venueTaskLabel, function(index, value){
+			$("#task").addOption(venueTasks[index],value);	
+		});
+	}
+	if (match < 0 ){
+		$("#task").val(tasks[0]);
+		clearSelectedList();
+	}else {
+		$("#task").val(tasks[match]);
+	}
+	showHideSort();
+}
+
+function showHideSort(){
+	var type = $("#type").val();
+	if (type == 'venues'){
+		//hide the sort
+		$('#sortByRow').hide();
+	}else{
+		//show the sort
+		$('#sortByRow').show();
+	}
 }

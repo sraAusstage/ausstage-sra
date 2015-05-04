@@ -9,6 +9,8 @@
 <%
 String url = request.getServerName();
 %>
+	<style type="text/css">.no-fouc {display: none;}</style>
+	<script type="text/javascript">document.documentElement.className = 'no-fouc';</script>
 	 <link rel="stylesheet" href="/pages/exchange/assets/main-style.css"/> 
 	<!-- <link rel="stylesheet" href="/pages/ausstage/assets/jquery-ui/jquery-ui-1.8.6.custom.css"/> -->
 	<!-- libraries -->
@@ -20,7 +22,7 @@ String url = request.getServerName();
 	<script type="text/javascript" src="assets/javascript/libraries/jquery.selectboxes-2.2.4.min.js"></script>
 	<script type="text/javascript" src="assets/javascript/libraries/jquery.validate-1.7.min.js"></script>			
 	<!-- custom code -->
-	<script type="text/javascript" src="assets/javascript/index.js"></script>
+	<script type="text/javascript" src="assets/javascript/exchange_index.js"></script>
 	<script type="text/javascript" src="assets/javascript/code_generator.js"></script>
 	<script type="text/javascript" src="assets/javascript/aus_exchange.js"></script>		
 	<script type="text/javascript" src="assets/javascript/tab-selector.js"></script>
@@ -518,20 +520,20 @@ String url = request.getServerName();
 					</ul>
 				</div>
 				<!--Code generator-->
-				<div id="tabs-2" class="tab-content">
+				<div id="tabs-2" class="tab-content" >
 				
 					<h2>Embed Ausstage Data in Your Website</h2>
 					<p>This page helps you generate code that will dynamically show data from the Ausstage database.</p>
 					<p>The code is able to be copied and pasted directly into a web page.
 					</p>			
-					<table class="formTable">
+					<table class="formTable" width='100%'>
 						<tbody>
 							<tr>
 								<th class="alignRight" scope="row">
 									<label id="task_label" for="task">Records: </label>
 								</th>
 								<td>
-									<select id="type" name="type" title="Choose between events or resources">
+									<select id="type" name="type" title="Choose between events, resources, or venues">
 									</select>
 								</td>
 							</tr>
@@ -570,7 +572,7 @@ String url = request.getServerName();
 								</td>
 								<td id="limitError" class="error"></td>
 							</tr>	
-							<tr>
+							<tr id="sortByRow">
 								<th class="alignRight" scope="row">
 									<label id="sort_by_label" for="sortBy">Sort By: </label>
 								</th>
@@ -844,6 +846,29 @@ String url = request.getServerName();
 						<div class="ui-state-highlight ui-corner-all search-status-messages">
 							<p>
 								<span class="ui-icon ui-icon-info status-icon"></span>Loading subjects list, please wait...
+							</p>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div id="country_select_div">
+		<table width="100%">
+			<thead>
+				<tr>
+					<th class="alignRight"></th>
+					<th>Country</th>
+					<th class="alignRight">Venue Count</th>
+				</tr>
+			</thead>		
+			<tbody id="country-select-table">
+				<tr>
+					<td colspan="3">
+						<div class="ui-state-highlight ui-corner-all search-status-messages">
+							<p>
+								<span class="ui-icon ui-icon-info status-icon"></span>Loading country list, please wait...
 							</p>
 						</div>
 					</td>
