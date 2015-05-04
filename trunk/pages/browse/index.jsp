@@ -294,7 +294,7 @@ Should probably put this in a seperate .js file
 <span id="resource-count-load" class="box-count-load"><img src="../../resources/images/loader.gif"> </span>
 <span class="box-label">Resources </span> </a>
 
-<a id="international" class="box b-88" href='international/' style="cursor:pointer;" onmouseover="this.className='box b-89';" onmouseout="this.className='box b-88 ';">
+<a id="international" class="box b-88" href='countries/' style="cursor:pointer;" onmouseover="this.className='box b-89';" onmouseout="this.className='box b-88 ';">
 <img src="../../resources/images/icon-international.png" class="box-icon"> 
 <span class="box-label">International </span> </a>
 
