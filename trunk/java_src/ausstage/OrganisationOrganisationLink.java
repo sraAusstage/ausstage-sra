@@ -134,7 +134,7 @@ public class OrganisationOrganisationLink {
 			if (p_childLinks != null) {
 				for (int i = 0; i < p_childLinks.size(); i++) {
 					sqlString = "INSERT INTO OrgOrgLink " + "(organisationId, childId, function_lov_id, notes) " + "VALUES (" + p_organisationId + ", "
-							+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() +", '" + p_childLinks.get(i).getNotes() + "' )";
+							+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() +", '" + m_db.plSqlSafeString(p_childLinks.get(i).getNotes()) + "' )";
 					
 					m_db.runSQL(sqlString, stmt);
 				}
