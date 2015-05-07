@@ -225,7 +225,7 @@
     }
     %>
 
-    <tr  width="100%" class="browse-bar b-88" style="height:2.5em;" >
+    <tr  width="100%" class="browse-bar b-90" style="height:2.5em;" >
       <td align="right" colspan="5">
         <div class='browse-index browse-index-genre'>
         </div> 

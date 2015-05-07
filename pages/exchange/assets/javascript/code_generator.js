@@ -30,6 +30,9 @@ var venueTasks		= ["country"];
 var sortByLabel	= ["First Date", "Created Date", "Updated Date"];
 var sortBy	= ["firstdate", "createdate", "updatedate"];
 
+var countrySortByLabel 	= ["Country", "Venue Name"];
+var countrySortBy	= ["country", "venue"];
+
 var typeLabel	= ["Events", "Resources", "Venues"];
 var types	= ["events", "resources", "venues"];
 
@@ -94,7 +97,8 @@ function initEventPage(){
 	});
 	//if type changes add or remove options accordingly to the task list.
 	$('#type').change(function(){
-		addRemoveOptions()});
+		addRemoveOptions(); addRemoveSortOptions();});
+		
 	//add toggle functionality to the styleGroup radio buttons
 	$('input[name=styleGroup]:radio').change(function(){
 		toggleStyle(this)});
@@ -817,16 +821,32 @@ function addRemoveOptions(){
 	}else {
 		$("#task").val(tasks[match]);
 	}
-	showHideSort();
+
 }
 
-function showHideSort(){
+function addRemoveSortOptions(){
+
 	var type = $("#type").val();
+	var current = $("#sortBy").val();
+	var match = -1;
+	
+	//empty the select
+	$("#sortBy").empty();
+
 	if (type == 'venues'){
-		//hide the sort
-		$('#sortByRow').hide();
+		$.each(countrySortByLabel, function(index, value){
+			$("#sortBy").addOption(countrySortBy[index],value);
+			if(countrySortBy[index] == current){ match = index;}
+		});
+		if (match < 0 ){$("#sortBy").val(countrySortBy[0]);}
+		else {$("#sortBy").val(countrySortBy[match]);}	
 	}else{
-		//show the sort
-		$('#sortByRow').show();
+		$.each(sortByLabel, function(index, value){
+			$("#sortBy").addOption(sortBy[index],value);
+			if(sortBy[index] == current){ match = index;}//populate with SortBy		
+		});
+		if (match < 0 ){$("#sortBy").val(sortBy[0]);}
+		else {$("#sortBy").val(sortBy[match]);}	
 	}
 }
+

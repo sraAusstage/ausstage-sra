@@ -39,7 +39,7 @@ public class VenueServlet extends HttpServlet {
 	public static final String[] VALID_OUTPUT_TYPES   = {"html", "json", "xml", "rss"};
 	public static final String[] VALID_REQUEST_TYPES  = {"country"};
 	public static final String   DEFAULT_RESULT_LIMIT = "10";
-	public static final String[] VALID_SORT_TYPES     = {"firstdate", "createdate", "updatedate"};
+	public static final String[] VALID_SORT_TYPES     = {"country", "venue"};
 
 	/*
 	 * initialise this instance
@@ -138,7 +138,7 @@ public class VenueServlet extends HttpServlet {
 		}
 		
 		if(database.connect() == false) {
-			throw new ServletException("Unable to connect to the databasee");
+			throw new ServletException("Unable to connect to the database");
 		}
 		
 		// declare helper variables

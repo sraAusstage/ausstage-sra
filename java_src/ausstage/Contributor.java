@@ -332,7 +332,12 @@ public class Contributor {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT contribcontriblinkid " + "FROM contribcontriblink " + "WHERE contribcontriblink.contributorid =" + m_id;
+			l_sql = "SELECT DISTINCT contribcontriblinkid "+
+					"FROM contribcontriblink cl, contributor c, lookup_codes lu "+
+					"WHERE cl.contributorid =" + m_id +
+					" AND cl.childid = c.contributorid "+
+					"AND lu.code_lov_id = cl.function_lov_id "+
+					" ORDER BY lu.description ASC, c.last_name ASC";
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_contrib_contriblinks.removeAllElements();

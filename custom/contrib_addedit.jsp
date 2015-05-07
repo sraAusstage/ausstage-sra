@@ -39,11 +39,14 @@
   String action       = request.getParameter("act");
   String process_type = request.getParameter("process_type");
   String isForItem    = request.getParameter("isForItem");
-  
+    System.out.println("");
+  System.out.println("contrib_addedit message : loading page...");
+
   if (action == null) {
     action = "";
   }
-  
+  System.out.println("contrib_addedit message : action = "+ action);  
+
   String contrib_id = "";
 
   if (action.equals("PreviewForEvent"))
@@ -55,6 +58,7 @@
   else
     contrib_id = request.getParameter("f_contributor_id");
 
+    System.out.println("contrib_addedit message : contributor id = "+ contrib_id);
   String contrib_prefix          = "";
   String contrib_fname           = "";
   String contrib_mname           = "";
@@ -87,7 +91,7 @@
 
   if(action     == null)  {action = "";}
   if(contrib_id == null)  {contrib_id = "";}
-  //System.out.println("Con id:"+contrib_id);
+
   
   out.println("<form name='f_contributor_addedit' id='contrib_addedit_form' action='contrib_addedit_process.jsp' method='post' onsubmit='return checkManditoryFields();'>");
   out.println("<input type='hidden' name='f_contribid' value='" + contrib_id + "'>");
@@ -160,14 +164,15 @@
              !contrib_id.equals("") &&
              !contrib_id.equals ("0") && !action.equals("")) { // means we are editing contributor that is not part of the event that is stored in the session 
       contributor.load(Integer.parseInt(contrib_id));
+          System.out.println("contrib_addedit message : contributor loaded using id = "+contrib_id);
     }
     else if (request.getParameter("isReturn") != null || action.equals("")) {
     	//have returned from editing child records {
       contributor = (Contributor)session.getAttribute("contributor");
-      //out.println("get contributor = " + contributor);
+          System.out.println("contrib_addedit message : contributor loaded from session");
 
     }
-    //System.out.println("set contributor = " + contributor);
+
 
     // lets set the state of the object
     selectedOrgs        = contributor.getConOrgLinks();
@@ -228,6 +233,7 @@
     if(contrib_dod_y == null)       {contrib_dod_y = "";}
     if(contrib_funct_ids == null)   {contrib_funct_ids = "";}
     if(contrib_contrib_ids == null)   {contrib_contrib_ids = "";}
+
     
     contributor_link_vec	    = contributor.getContributorContributorLinks();
     LookupCode lc = new LookupCode(db_ausstage);
@@ -286,6 +292,7 @@
   <%
     pageFormater.writeTwoColTableFooter (out); 
     pageFormater.writeTwoColTableHeader (out, "Last Name *");
+    System.out.println("set contributor object = "+contributor.getId());
   %>
     <input class="line200" type="text" name="f_l_name" size="40" maxlength="40" value="<%=contrib_lname%>">
   <%

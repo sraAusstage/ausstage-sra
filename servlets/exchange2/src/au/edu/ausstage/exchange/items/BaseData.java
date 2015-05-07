@@ -23,6 +23,7 @@ import au.edu.ausstage.utils.*;
 import au.edu.ausstage.exchange.types.*;
 import au.edu.ausstage.exchange.builders.*;
 import au.edu.ausstage.exchange.EventServlet;
+import au.edu.ausstage.exchange.VenueServlet;
 import au.edu.ausstage.exchange.FeedbackServlet;
 
 import java.util.ArrayList;
@@ -157,8 +158,9 @@ public abstract class BaseData {
 			}
 		}
 		
-		if(InputUtils.isValid(sortOrder, EventServlet.VALID_SORT_TYPES) == false) {
-			throw new IllegalArgumentException("Invalid sort parameter. Expected one of: " + InputUtils.arrayToString(EventServlet.VALID_SORT_TYPES));
+		if(InputUtils.isValid(sortOrder, EventServlet.VALID_SORT_TYPES) == false && InputUtils.isValid(sortOrder, VenueServlet.VALID_SORT_TYPES) == false) {
+			throw new IllegalArgumentException("Invalid sort parameter. Expected one of: " + InputUtils.arrayToString(EventServlet.VALID_SORT_TYPES)
+															+", "+ InputUtils.arrayToString(VenueServlet.VALID_SORT_TYPES));
 		}
 		
 		this.database = database;

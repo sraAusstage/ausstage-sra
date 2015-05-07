@@ -676,7 +676,13 @@ public class Work {
 		String l_sql = "";
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			l_sql = "SELECT DISTINCT workworklinkid FROM workworklink WHERE workworklink.workid = " + m_workid;
+			l_sql =   " SELECT DISTINCT wl.workworklinkid "
+					+ " FROM workworklink wl, work w, lookup_codes lu"
+					+ " WHERE wl.workid = " + m_workid 
+					+ " AND wl.childid = w.workid"
+					+ " AND lu.code_lov_id = wl.function_lov_id"
+					+ " ORDER BY lu.description ASC, REPLACE(REPLACE(w.work_title, \"'\",\"\"), '\"', \"\") ASC" ;
+
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			m_work_worklinks.removeAllElements();
 			while (l_rs.next()) {

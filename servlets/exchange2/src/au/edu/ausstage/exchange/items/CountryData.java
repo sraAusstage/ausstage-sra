@@ -102,17 +102,12 @@ public class CountryData extends BaseData{
 		}
 		
 		// adjust the order by clause
-		/*String sort = getSortOrder();
-		if(sort.equals("firstdate") == true) {
-			sql += "ORDER BY e.yyyyfirst_date DESC, e.mmfirst_date DESC, e.ddfirst_date DESC";
-		} else if(sort.equals("createdate") == true) {
-			sql += "ORDER BY e.entered_date DESC";
-		} else if(sort.equals("updatedate") == true) {
-			sql += "ORDER BY e.updated_date DESC";
-		}*/
-		
-		//add the order by clause
-		sql += " ORDER BY countryname ASC, suburb ASC, name ASC";
+		String sort = getSortOrder();
+		if(sort.equals("country") == true) {
+			sql += "ORDER BY countryname ASC, suburb ASC, name ASC";
+		} else if(sort.equals("venue") == true) {
+			sql += "ORDER BY name ASC, suburb ASC, countryname ASC";
+		} 
 		
 		// get the data
 		results = getDatabase().executePreparedStatement(sql, ids);

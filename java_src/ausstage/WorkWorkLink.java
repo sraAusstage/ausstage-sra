@@ -144,8 +144,8 @@ public class WorkWorkLink {
 
 			if (p_childLinks != null) {
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					sqlString = "INSERT INTO WorkWorkLink " + "(workId, childId, function_lov_id) " + "VALUES (" + p_workId + ", "
-							+ ((WorkWorkLink) p_childLinks.get(i)).getChildId() + ", " + ((WorkWorkLink) p_childLinks.get(i)).getFunctionId() + ")";
+					sqlString = "INSERT INTO WorkWorkLink " + "(workId, childId, function_lov_id, notes) " + "VALUES (" + p_workId + ", "
+							+ ((WorkWorkLink) p_childLinks.get(i)).getChildId() + ", " + ((WorkWorkLink) p_childLinks.get(i)).getFunctionId() + ", '" + ((WorkWorkLink) p_childLinks.get(i)).getNotes() +"' )";
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;

@@ -305,7 +305,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<th class='record-label b-90'>Related Events</th>
 					
 					<td class='record-value' colspan='2'>
-						<table border="0" cellpadding="0" cellspacing="0">
+						<ul>
 						<%
 						for (EventEventLink eventEventLink : (Vector <EventEventLink>) event_eventlinks) {
 							assocEvent.load(new Integer(eventEventLink.getChildId()).intValue());
@@ -313,18 +313,17 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 							LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
 							if (eventEventLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(eventEventLink.getFunctionId()));
 							%>
-							<tr>
-								<td valign="top">
+							<li>
 									<%=lookUpCode.getDescription() %>
-									<a href="/pages/event/<%=assocEvent.getEventid()%>">
+									<a href="/pages/event/<%=assocEvent.getEventid()%>">       
 										<%=assocEvent.getEventName()%>
-									</a>
-								</td>
-							</tr>
+									</a><% if (!eventEventLink.getNotes().equals("")) out.print(" - "+eventEventLink.getNotes());%>
+
+							</li>
 							<%
 						}
 						%>
-						</table>
+						</ul>
 					</td>
 				</tr>
 				<%
@@ -440,7 +439,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			}
 
 			//Works
-			rset = event.getAssociatedWorks(Integer.parseInt(event_id), stmt);
+			rset = event.getAllAssociatedWorks(Integer.parseInt(event_id), stmt);
 			if (rset != null && rset.isBeforeFirst()) {
 				%>
 					<tr>

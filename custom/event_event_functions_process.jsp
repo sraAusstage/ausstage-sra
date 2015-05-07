@@ -26,7 +26,8 @@
 	
 	pageFormater.writeHeader(out);
 	pageFormater.writePageTableHeader(out, "", ausstage_main_page_link);
-	
+	System.out.println("");
+	System.out.println("loading event_event_functions_process...");
 	try {
 		for (int i=0; i < eventEventLinks.size(); i++) {
 			EventEventLink eventEventLink = new EventEventLink(db_ausstage);
@@ -34,7 +35,6 @@
 			childEventId = request.getParameter("f_child_event_id_" + i);
 			functionId = request.getParameter("f_function_lov_id_" + i);
 			notes = request.getParameter("f_notes_" + i);
-
 			eventEventLink.setChildId(childEventId);
 			eventEventLink.setFunctionLovId(functionId);
 			eventEventLink.setNotes(notes);
@@ -46,6 +46,7 @@
 	}
 
 	if (error_msg.equals("")) {
+		System.out.println("event_event_functions_process message : event object event id = "+eventObj.getEventid());
 		eventObj.setEventEventLinks(tempEventEventLinks);
 		session.setAttribute("eventObj", eventObj);
 		pageFormater.writeText(out, "Event to event process successful.");
@@ -54,7 +55,8 @@
 	}
 	
 	pageFormater.writePageTableFooter (out);
-	pageFormater.writeButtons(out, "", "", "", "", "event_addedit.jsp#event_event_link", "next.gif");
+	//pageFormater.writeButtons(out, "", "", "", "", "event_addedit.jsp#event_event_link", "next.gif");
+	pageFormater.writeButtons(out, "", "", "", "", "event_addedit.jsp", "next.gif");
 	pageFormater.writeFooter(out);
 	db_ausstage.disconnectDatabase();
 %>

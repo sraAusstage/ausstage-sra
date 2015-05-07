@@ -98,8 +98,8 @@
 					}
 		
 
-					Venue assocVenue = null;
-					Vector venue_venuelinks = venue.getVenueVenueLinks();
+				    Venue assocVenue = null;
+				    Vector venue_venuelinks = venue.getVenueVenueLinks();
 					if(venue_venuelinks.size() > 0){assocVenue = new Venue(db_ausstage_for_drill);}
 					
 					
@@ -191,16 +191,16 @@
 							</tr>
 						<%
 						}
-						
-						
-						// Related Venues
+						 
+
+						 // Related Venues
 						if (assocVenue != null && venue_venuelinks.size() > 0) {
 							%>
 							<tr>
 								<th class='record-label b-134'>Related Venues</th>
 								
 								<td class='record-value' colspan='2'>
-									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
+									<ul>
 									<%
 									for (VenueVenueLink venueVenueLink : (Vector <VenueVenueLink>) venue_venuelinks) {
 										assocVenue.load(new Integer(venueVenueLink.getChildId()).intValue());
@@ -208,31 +208,30 @@
 										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
 										if (venueVenueLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(venueVenueLink.getFunctionId()));
 										%>
-										<tr>
-											<td valign="top">
+										<li>
 												<%=lookUpCode.getDescription() %>
-												<a href="/pages/venue/<%=assocVenue.getVenueId()%>">
+												<a href="/pages/venue/<%=assocVenue.getVenueId()%>">       
 													<%=assocVenue.getName()%>
 												</a>
-											</td>
-										</tr>
+												<%if(!venueVenueLink.getNotes().equals("")) out.print(" - "+venueVenueLink.getNotes());%>
+										</li>
 										<%
 									}
 									%>
-									</table>
+									</ul>
 								</td>
 							</tr>
 							<%
 						}
-						
-						
+						 
+						 
 						//Latitude
 						if (hasValue(venue.getLatitude()) && hasValue(venue.getLongitude())) {
 						%>
 							
 
-							<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
-							<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+							<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+							<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 							<script type="text/javascript" language="javascript">
 								$(document).ready(function() {
 								

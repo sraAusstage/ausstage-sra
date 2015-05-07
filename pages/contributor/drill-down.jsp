@@ -270,7 +270,7 @@ Vector item_contentindlinks;
 			<th class='record-label b-105'>Related Contributors</th>
 			
 			<td class='record-value' colspan='2'>
-				<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
+				<ul>
 				<%
 				for (ContributorContributorLink contribContribLink : (Vector <ContributorContributorLink>) contrib_contriblinks) {
 					assocContrib.load(new Integer(contribContribLink.getChildId()).intValue());
@@ -278,26 +278,25 @@ Vector item_contentindlinks;
 					LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
 					if (contribContribLink.getFunctionId() != null) lookUpCode.load(Integer.parseInt(contribContribLink.getFunctionId()));
 					%>
-					<tr>
-						<td valign="top">
+					<li>
 							<%=lookUpCode.getDescription() %>
-							<a href="/pages/contributor/<%=assocContrib.getId()%>">
+							<a href="/pages/contributor/<%=assocContrib.getId()%>">       
 								<%=assocContrib.getDisplayName()%>
-							</a>
-						</td>
-					</tr>
+							</a> <% if(contribContribLink.getNotes().equals("") == false) out.print(" - "+contribContribLink.getNotes());%>
+
+					</li>
 					<%
 				}
 				%>
-				</table>
+				</ul>
 			</td>
 		</tr>
 		<%
 	}
     out.flush();
-    
+   
     %>
-    
+   
     <script type="text/javascript">
     function displayRow(name){
     	document.getElementById("function").style.display = 'none';
