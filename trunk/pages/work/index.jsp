@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8"%>
+page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import = "java.util.Vector, java.text.SimpleDateFormat"%>
@@ -196,7 +196,7 @@
 								<th class='record-label b-153'>Related Works</th>
 								
 								<td class='record-value' colspan='2'>
-									<table border="0" cellpadding="0" cellspacing="0">
+									<ul>
 									<%
 									for (WorkWorkLink workWorkLink : (Vector <WorkWorkLink>) work_worklinks) {
 										assocWork.load(new Integer(workWorkLink.getChildId()).intValue());
@@ -204,18 +204,17 @@
 										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
 										if (workWorkLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(workWorkLink.getFunctionId()));
 										%>
-										<tr>
-											<td valign="top">
+										<li>
 												<%=lookUpCode.getDescription() %>
 												<a href="/pages/work/<%=assocWork.getId()%>">
 													<%=assocWork.getName()%>
 												</a>
-											</td>
-										</tr>
+												<%if(!workWorkLink.getNotes().equals("")) out.print(" - "+workWorkLink.getNotes());%>
+										</li>
 										<%
 									}
 									%>
-									</table>
+									</ul>
 								</td>
 							</tr>
 							<%

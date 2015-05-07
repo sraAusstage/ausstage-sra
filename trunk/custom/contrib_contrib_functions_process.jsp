@@ -35,8 +35,8 @@
 			// get data from the request object
 			childContributorId = request.getParameter("f_child_contributor_id_" + i);
 			functionId = request.getParameter("f_function_lov_id_" + i);
-			notes = request.getParameter("f_notes_" + i);
-
+			notes = request.getParameter("f_notes_"+i);
+			
 			contributorContributorLink.setChildId(childContributorId);
 			contributorContributorLink.setFunctionLovId(functionId);
 			contributorContributorLink.setNotes(notes);
@@ -50,7 +50,9 @@
 	if (error_msg.equals("")) {
 		contributorObj.setContributorContributorLinks(tempContributorContributorLinks);
 		session.setAttribute("contributor", contributorObj);
+		System.out.println("Contrib contrib functions process setting contributor object to :"+contributorObj.getId());
 		pageFormater.writeText(out, "Contributor to contributor process successful.");
+	
 	} else {
 		pageFormater.writeText(out, error_msg);
 	}
@@ -63,7 +65,7 @@
 	  pageFormater.writeButtons(out, "", "", "", "", "contrib_addedit.jsp?act=" + action + "&isReturn=true#contributor_contributor_link", "next.gif");
 	}
 	else{
-	  pageFormater.writeButtons(out, "", "", "", "", "contrib_addedit.jsp?act=" + action + "&isReturn=true#contributor_contributor_link", "next.gif");
+	  pageFormater.writeButtons(out, "", "", "", "", "contrib_addedit.jsp?&isReturn=true&act=" + action + "#contributor_contributor_link", "next.gif");
 	}
 	pageFormater.writeFooter(out);
 	db_ausstage.disconnectDatabase();

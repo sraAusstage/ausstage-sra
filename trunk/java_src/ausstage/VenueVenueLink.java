@@ -132,8 +132,8 @@ public class VenueVenueLink {
 
 			if (p_childLinks != null) {
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id) " + "VALUES (" + p_venueId + ", "
-						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ")";
+					sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id, notes) " + "VALUES (" + p_venueId + ", "
+						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ", '" + p_childLinks.get(i).getNotes() +"')";
 					
 					m_db.runSQL(sqlString, stmt);
 				}
@@ -190,7 +190,12 @@ public class VenueVenueLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT VenueVenueLink.* " + " FROM VenueVenueLink " + " WHERE VenueVenueLink.venueId  = " + venueId;
+			sqlString =	"SELECT vl.* " 
+						+ " FROM VenueVenueLink vl, venue v, lookup_codes lu" 
+						+ " WHERE vl.venueId  = " + venueId
+						+ " AND vl.childid = v.venueid"
+						+ " AND lu.code_lov_id = vl.FUNCTION_LOV_ID"
+						+ " ORDER BY lu.description ASC, v.venue_name ASC"; 
 
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();

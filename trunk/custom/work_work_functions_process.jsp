@@ -68,7 +68,8 @@
 		pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp?action=isPreviewForEventWork#work_work_link", "next.gif");
 	}
 	else {
-		pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp#work_work_link", "next.gif");
+		pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp?#work_work_link", "next.gif");
+		//pageFormater.writeButtons(out, "", "", "", "", "work_addedit.jsp", "next.gif");
 	}
 	pageFormater.writeFooter(out);
 	db_ausstage.disconnectDatabase();

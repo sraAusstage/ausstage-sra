@@ -863,7 +863,13 @@ public class Organisation {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT orgorglinkid " + "FROM orgorglink " + "WHERE orgorglink.organisationid =" + m_organisation_id;
+			l_sql = "SELECT DISTINCT ol.orgorglinkid " 
+					+ " FROM orgorglink ol, organisation o, lookup_codes lu " 
+					+ " WHERE ol.organisationid =" + m_organisation_id
+					+ " AND ol.childid = o.organisationid"
+					+ " AND lu.code_lov_id = ol.function_lov_id"
+					+ " ORDER BY lu.description ASC, o.name ASC";
+			
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_org_orglinks.removeAllElements();

@@ -148,8 +148,8 @@ public class EventEventLink {
 				// System.out.println("Event:" + p_childLinks + ", Event Id:"+
 				// p_eventId);
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id) " + "VALUES (" + p_eventId + ", "
-						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ")";
+					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id, notes) " + "VALUES (" + p_eventId + ", "
+						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ", '"+p_childLinks.get(i).getNotes()+ "' )";
 					
 					m_db.runSQL(sqlString, stmt);
 				}

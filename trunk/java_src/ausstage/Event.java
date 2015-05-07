@@ -613,7 +613,12 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT eventeventlinkid " + "FROM eventeventlink " + "WHERE eventeventlink.eventid =" + m_eventid;
+			l_sql = "SELECT DISTINCT eventeventlinkid  " 
+					+ " FROM eventeventlink el, events e, lookup_codes lu" 
+					+ " WHERE el.eventid=" + m_eventid 
+					+ " AND el.childid = e.eventid "
+					+ " AND lu.code_lov_id = el.function_lov_id "
+					+ " ORDER BY lu.description ASC, event_name ASC";
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();
@@ -2632,8 +2637,11 @@ public class Event {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			l_sql = "SELECT eventeventlinkid  " 
-					+ "FROM eventeventlink " 
-					+ "WHERE eventid=" + m_eventid;
+					+ " FROM eventeventlink el, events e, lookup_codes lu" 
+					+ " WHERE eventid=" + m_eventid 
+					+ " AND el.childid = e.eventid "
+					+ " AND lu.code_lov_id = el.function_lov_id "
+					+ " ORDER BY lu.description ASC, event_name ASC";
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();

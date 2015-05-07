@@ -20,6 +20,7 @@
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
 
 <%
+  System.out.println("event_addedit message : loading page...");
   admin.ValidateLogin     login                = (admin.ValidateLogin) session.getAttribute("login");
   admin.FormatPage        pageFormater         = (admin.FormatPage)    session.getAttribute("pageFormater");
   ausstage.Database          db_ausstage          = new ausstage.Database ();
@@ -83,23 +84,33 @@
 
   // Are we editting, adding, or coming back from editting child records?
   mode = request.getParameter ("mode");
+  System.out.println("");
+System.out.println("event_addedit message : made recieved = "+mode);
   if (mode == null) { // Have come back from editing child records
     mode     = (String)session.getAttribute("eventMode");
     eventObj = (Event)session.getAttribute("eventObj");
     eventid  = eventObj.getEventid ();
     eventObj.setEventName(common.ReplaceStrWithStr(eventObj.getEventName(),"\"","&quot;"));
+    /////debug statements
+    System.out.println("Returned from editing CHILD records");
+    System.out.println("mode = "+mode);
+    System.out.println("eventid = "+eventObj.getEventid() );
     
   }
   else {
     // first time to this page
     eventid = request.getParameter ("f_eventid");
+
+ System.out.println("event_addedit message : first time - mode is not null");
     // if editing
     if (eventid == null) {
+System.out.println("event_addedit message : eventis is null");
       eventid = "0";
       mode = "add"; // Mode is really "add" if no event id was selected.
       eventObj = new Event(db_ausstage);
     }
     else {
+     System.out.println("event_addedit message : event id supplied. = "+eventid);
       eventidInt = Integer.parseInt(eventid);
       mode = "edit";
       eventObj.load(eventidInt);

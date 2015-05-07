@@ -97,4 +97,3 @@ function toTitleCase(str) {
         return match.toUpperCase();
     });
 }
-

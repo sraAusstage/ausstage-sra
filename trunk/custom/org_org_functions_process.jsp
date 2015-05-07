@@ -64,7 +64,8 @@
   }
 
   pageFormater.writePageTableFooter (out);
-  pageFormater.writeButtons (out, "", "", "", "", "organisation_addedit.jsp?act="+action+"&isReturn=true#organisation_organisation_link", "next.gif");
+//  pageFormater.writeButtons (out, "", "", "", "", "organisation_addedit.jsp?act="+action+"&isReturn=true#organisation_organisation_link", "next.gif");
+  pageFormater.writeButtons (out, "", "", "", "", "organisation_addedit.jsp?act="+action+"&isReturn=true", "next.gif");
   pageFormater.writeFooter(out);
   db_ausstage.disconnectDatabase();
 %><cms:include property="template" element="foot" />

@@ -64,7 +64,8 @@
   }
 
   pageFormater.writePageTableFooter (out);
-  pageFormater.writeButtons (out, "", "", "", "", "venue_addedit.jsp?act="+action+"#venue_venue_link", "next.gif");
+  pageFormater.writeButtons (out, "", "", "", "", "venue_addedit.jsp?#venue_venue_link&act="+action, "next.gif");
+ // pageFormater.writeButtons (out, "", "", "", "", "venue_addedit.jsp?act="+action, "next.gif");
   pageFormater.writeFooter(out);
   db_ausstage.disconnectDatabase();
 %><cms:include property="template" element="foot" />

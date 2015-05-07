@@ -132,8 +132,9 @@ public class ContributorContributorLink {
 			if (p_childLinks != null) {
 				for (int i = 0; i < p_childLinks.size(); i++) {
 					sqlString = "INSERT INTO ContribContribLink " 
-							+ "(contributorId, childId, function_lov_id) " 
-							+ "VALUES (" + p_contributorId + ", " + p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ")";
+							+ "(contributorId, childId, function_lov_id, notes) " 
+							+ "VALUES (" + p_contributorId + ", " + p_childLinks.get(i).getChildId() + ", " 
+							+ p_childLinks.get(i).getFunctionId() + ", '" + p_childLinks.get(i).getNotes()+"' )";
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;

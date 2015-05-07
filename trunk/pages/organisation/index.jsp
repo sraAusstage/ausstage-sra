@@ -222,7 +222,7 @@
 								<th class='record-label b-121'>Related Organisations</th>
 								
 								<td class='record-value' colspan='2'>
-									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
+									<ul>
 									<%
 									for (OrganisationOrganisationLink orgOrgLink : (Vector <OrganisationOrganisationLink>) org_orglinks) {
 										assocOrganisation.load(new Integer(orgOrgLink.getChildId()).intValue());
@@ -230,23 +230,23 @@
 										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
 										if (orgOrgLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(orgOrgLink.getFunctionId()));
 										%>
-										<tr>
-											<td valign="top">
+										<li>
 												<%=lookUpCode.getDescription() %>
-												<a href="/pages/organisation/<%=assocOrganisation.getId()%>">
+												<a href="/pages/organisation/<%=assocOrganisation.getId()%>">       
 													<%=assocOrganisation.getName()%>
 												</a>
-											</td>
-										</tr>
+												<%if (!orgOrgLink.getNotes().equals("")) out.print(" - "+orgOrgLink.getNotes());%>
+										</li>
 										<%
 									}
 									%>
-									</table>
+									</ul>
 								</td>
 							</tr>
 							<%
 						}
-						
+						 
+						 
 						
 						//get associated objects
 						
