@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8"%>
+page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import = "ausstage.SearchCount, admin.Common"%>
@@ -38,6 +38,7 @@ Should probably put this in a seperate .js file
 	    	//if there are search terms
 	    	//if ($('#header-search-keywords').val().trim().length>0){
 	    	if ($.trim($('#header-search-keywords').val()).length>0){
+	    	
 	    	
 	    		url = "../search/results/";
 	    		var eventUrl = url + "event_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
@@ -91,47 +92,47 @@ Should probably put this in a seperate .js file
 	    	// queue this request
                 ajaxQueue.add({
                 	success: function(html){updateCount("event",$.trim(html))},
-                        url: eventUrl
+                        url: encodeURI(eventUrl)
                 });
 	    	
 	    	ajaxQueue.add({
                 	success: function(html){updateCount("contrib",$.trim(html))},
-                        url: contribUrl
+                        url: encodeURI(contribUrl)
                 });
 	    	
 	    	ajaxQueue.add({
                 	success: function(html){updateCount("venue",$.trim(html))},
-                        url: venueUrl
+                        url: encodeURI(venueUrl)
                 });	
 
 	    	ajaxQueue.add({
                 	success: function(html){updateCount("org",$.trim(html))},
-                        url: orgUrl
+                        url: encodeURI(orgUrl)
                 });	
 	    	
 	 	ajaxQueue.add({
                 	success: function(html){updateCount("genre",$.trim(html))},
-                        url: genreUrl
+                        url: encodeURI(genreUrl)
                 });
                 	
 	 	ajaxQueue.add({
                 	success: function(html){updateCount("function",$.trim(html))},
-                        url: functUrl
+                        url: encodeURI(functUrl)
                 });
 	 		
 	 	ajaxQueue.add({
                 	success: function(html){updateCount("subject",$.trim(html))},
-                        url: subjUrl
+                        url: encodeURI(subjUrl)
                 });
 	    		
 	  	ajaxQueue.add({
                 	success: function(html){updateCount("works",$.trim(html))},
-                        url: workUrl
+                        url: encodeURI(workUrl)
                 });
 	    		
 	    	ajaxQueue.add({
                 	success: function(html){updateCount("resource",$.trim(html))},
-                        url: resUrl
+                        url: encodeURI(resUrl)
                 });
                 
 	    		
