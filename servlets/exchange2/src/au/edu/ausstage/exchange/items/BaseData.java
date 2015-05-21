@@ -244,4 +244,50 @@ public abstract class BaseData {
 		
 		return address;
 	}
+	
+	/**
+	 * Build the long version of the Venue Address
+	 */
+	public final String buildFullVenueAddress(String country, String street, String suburb, String postcode, String state) {
+	
+		String address = "";
+		
+		if(InputUtils.isValid(country) && country.equals("Australia")) {
+			if(InputUtils.isValid(street) == true) {
+				address += street + ", ";
+			}
+			if(InputUtils.isValid(suburb) == true) {
+				address += suburb + ", ";
+			}
+			if(InputUtils.isValid(postcode) == true) {
+				address += postcode + ", ";
+			}
+			if(InputUtils.isValid(state) == true) {
+				address += state;
+			} else {
+				address = address.substring(0, address.length() - 2);
+			}
+			
+		} else {
+		
+			if(InputUtils.isValid(street) == true) {
+				address += street + ", ";
+			}
+			if(InputUtils.isValid(suburb) == true) {
+				address += suburb + ", ";
+			}
+			if(InputUtils.isValid(postcode) == true) {
+				address += postcode + ", ";
+			}
+			if(InputUtils.isValid(country) == true) {
+				address += country;
+			} else {
+				if (address.length()>2){
+					address = address.substring(0, address.length() - 2);
+				}
+			}
+		}
+		
+		return address;
+	}
 }

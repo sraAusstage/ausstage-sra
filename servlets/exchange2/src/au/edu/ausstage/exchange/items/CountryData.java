@@ -123,7 +123,7 @@ public class CountryData extends BaseData{
 			while (resultSet.next()) {
 			
 				// get the venue and first date
-				address = buildShortVenueAddress(resultSet.getString("countryname"), resultSet.getString("street"), resultSet.getString("suburb"), resultSet.getString("state"));
+				address = buildFullVenueAddress(resultSet.getString("countryname"), resultSet.getString("street"), resultSet.getString("suburb"),resultSet.getString("postcode"), resultSet.getString("state"));
 				//venue = resultSet.getString(7) + ", " + venue;
 				
 				//firstDate = DateUtils.buildDisplayDate(resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
