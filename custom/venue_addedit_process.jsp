@@ -34,6 +34,9 @@
   }
 
   venueObj.setName(request.getParameter("f_venue_name"));
+  venueObj.setOtherNames1(request.getParameter("f_other_names1"));
+  venueObj.setOtherNames2(request.getParameter("f_other_names2"));
+  venueObj.setOtherNames3(request.getParameter("f_other_names3"));
   venueObj.setStreet(request.getParameter("f_street"));
   venueObj.setSuburb(request.getParameter("f_suburb"));
   venueObj.setPostcode(request.getParameter("f_postcode"));

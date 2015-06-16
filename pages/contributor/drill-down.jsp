@@ -162,6 +162,15 @@ Vector item_contentindlinks;
 	    out.println("     <td class='record-value' colspan='2'>" + contributor.getNationality() + "</td>");
 	    out.println("   </tr>");
     }
+    if (hasValue(contributor.getDodYear()) && hasValue(contributor.getDobYear())) {
+	  //Date of Birth  
+	    out.println("   <tr>");
+	    out.println("     <th class='record-label b-105'>Date of Birth</th>");
+	    out.println("     <td class='record-value' colspan='2'>");
+	    out.print(formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()));
+	    out.println("     </td>");
+	    out.println("   </tr>");
+	}
     //Place of Birth
     if(contributor.getPlaceOfBirth() != null && !contributor.getPlaceOfBirth().equals("")) {
             Venue pob = new Venue(db_ausstage_for_drill);
@@ -171,6 +180,20 @@ Vector item_contentindlinks;
 	    out.println("     <td class='record-value' colspan='2'><a href=\"/pages/venue/" + contributor.getPlaceOfBirth() + "\">" + pob.getName() + "</a></td>");
 	    out.println("   </tr>");
     }
+     //Legally can only display date of birth if the date of death is null. 
+
+    // New rules (23/12/2008)
+   
+    if (hasValue(contributor.getDodYear()) && hasValue(contributor.getDobYear())) {
+      //Date of death
+		out.println("   <tr>");
+		out.println("     <th class='record-label b-105'>Date of Death</th>");
+		out.println("     <td class='record-value' colspan='2'>");
+		out.print(formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
+		out.println("     </td>");
+		out.println("   </tr>");
+    }
+        
     //Place of Death
     if(contributor.getPlaceOfDeath() != null && !contributor.getPlaceOfDeath().equals("")) {
             Venue pod = new Venue(db_ausstage_for_drill);
@@ -180,28 +203,7 @@ Vector item_contentindlinks;
 	    out.println("     <td class='record-value' colspan='2'><a href=\"/pages/venue/" + contributor.getPlaceOfDeath() + "\">" + pod.getName() + "</a></td>");
 	    out.println("   </tr>");
     }
-    //Legally can only display date of birth if the date of death is null. 
-
-    // New rules (23/12/2008)
-   
-    if (hasValue(contributor.getDodYear()) && hasValue(contributor.getDobYear())) {
-	  //Date of Birth  
-	    out.println("   <tr>");
-	    out.println("     <th class='record-label b-105'>Date of Birth</th>");
-	    out.println("     <td class='record-value' colspan='2'>");
-	    out.print(formatDate(contributor.getDobDay(),contributor.getDobMonth(),contributor.getDobYear()));
-	    out.println("     </td>");
-	    out.println("   </tr>");
-      //Date of death
-		out.println("   <tr>");
-		out.println("     <th class='record-label b-105'>Date of Death</th>");
-		out.println("     <td class='record-value' colspan='2'>");
-		out.print(formatDate(contributor.getDodDay(),contributor.getDodMonth(),contributor.getDodYear()));
-		out.println("     </td>");
-		out.println("   </tr>");
-    }
-    
-   /*
+      /*
     if(contributor.getDodYear() == null || contributor.getDodYear().equals("") ){
       //Date of Birth
       out.println("   <tr>");

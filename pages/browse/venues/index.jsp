@@ -61,6 +61,13 @@
   if (letter == null) letter = "a";
     if (letter.length() > 1) letter = letter.substring(0,1);
   letter = letter.toLowerCase();
+  
+     //added to account for numbers and non alphanumeric at the beginning of names
+   String switchLike = "";
+   if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else switchLike = " LIKE '" + letter + "%' ";
+  
 %>
 
 <!--<div class='letters'>-->
@@ -91,6 +98,9 @@
   <a href="?letter=X" <%=letter.equals("x")?"class='b-135 bold'":""%>>X</a>
   <a href="?letter=Y" <%=letter.equals("y")?"class='b-135 bold'":""%>>Y</a>
   <a href="?letter=Z" <%=letter.equals("z")?"class='b-135 bold'":""%>>Z</a>
+  <a href="?letter=0" <%=letter.equals("0")?"class='b-135 bold'":""%>>0-9</a>
+  <a href="?letter=*" <%=letter.equals("*")?"class='b-135 bold'":""%>>%</a>
+
 </div>
 </div>
 <%
@@ -121,7 +131,7 @@
   m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
   Statement stmt    = m_db.m_conn.createStatement ();
       
-  sqlString =	"SELECT COUNT(distinct venue.venueid) From `venue` WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) LIKE '" + letter + "%'";
+  sqlString =	"SELECT COUNT(distinct venue.venueid) From `venue` WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) "+switchLike;
   l_rs = m_db.runSQL (sqlString, stmt);
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
@@ -151,7 +161,7 @@
 			"LEFT JOIN states ON (venue.state = states.stateid) "+
 			"LEFT JOIN country ON (venue.countryid = country.countryid) "+
 			"LEFT JOIN itemvenuelink ON (venue.venueid = itemvenuelink.venueid) "+
-			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) LIKE '" + letter + "%' group by venue.venueid " +
+			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) " + switchLike + " group by venue.venueid " +
   			"ORDER BY  " 
   			+ ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME))))":
   			 ((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state "+sortOrd +", venue.suburb":sortCol)) 
@@ -170,31 +180,26 @@
     <tr class="<%=evenOdd[evenOddValue]%>">
       <td width="25%"><a href="/pages/venue/<%=l_rs.getString(1)%>"><%=l_rs.getString(2)%></a></td>
       <td width="35%"> 
-      <%
-      	String address = "";
-      	if (l_rs.getString("street") != null) 
-      		address = l_rs.getString("street");
-      	
+            <%
+      String address = "";
       	if (l_rs.getString("suburb") != null){ 
-      		if (!address.equals("")){
-      			address += ", ";
-      		}
       		address += l_rs.getString("suburb") ;
       	}
       		
-      	if ((l_rs.getString("state") != null)&&(!l_rs.getString("state").equals("O/S"))){
+      	if ((l_rs.getString("state") != null)&&(!l_rs.getString("state").equals("O/S")) &&(!l_rs.getString("state").equals("[Unknown]"))){
     	    	if (!address.equals("")){
     	    		address += ", ";
     	    	}
     	    	address += l_rs.getString("state");
     	}
-    	if ((l_rs.getString("countryname") != null)&&(l_rs.getString("state").equals("O/S"))){
+    	if ((l_rs.getString("countryname") != null)){
     		if (!address.equals("")){
     	    		address += ", ";
     	    	}
     	    	address += l_rs.getString("countryname");
     	}
         out.write(address);
+
       %>
       </td>
       <td width="10%" align="left"> 

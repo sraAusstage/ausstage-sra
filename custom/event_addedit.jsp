@@ -20,18 +20,19 @@
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
 
 <%
+  System.out.println("-----------------------");
   System.out.println("event_addedit message : loading page...");
-  admin.ValidateLogin     login                = (admin.ValidateLogin) session.getAttribute("login");
-  admin.FormatPage        pageFormater         = (admin.FormatPage)    session.getAttribute("pageFormater");
-  ausstage.Database          db_ausstage          = new ausstage.Database ();
-  Event              eventObj                  = new Event(db_ausstage);
-  Status             statusObj                 = new Status(db_ausstage);
-  DescriptionSource  descriptionSourceObj      = new DescriptionSource(db_ausstage);
-  PrimaryGenre       primaryGenreObj           = new PrimaryGenre(db_ausstage);
-  String             mode                      = "";
-  State              state                     = new State(db_ausstage);
-  Country            country                   = new Country(db_ausstage);
-  AusstageCommon          ausstageCommon       = new AusstageCommon();
+  admin.ValidateLogin   login                = (admin.ValidateLogin) session.getAttribute("login");
+  admin.FormatPage      pageFormater         = (admin.FormatPage)    session.getAttribute("pageFormater");
+  ausstage.Database     db_ausstage          = new ausstage.Database ();
+  Event              	eventObj             = new Event(db_ausstage);
+  Status             	statusObj            = new Status(db_ausstage);
+  DescriptionSource  	descriptionSourceObj = new DescriptionSource(db_ausstage);
+  PrimaryGenre       	primaryGenreObj      = new PrimaryGenre(db_ausstage);
+  String             	mode                 = "";
+  State              	state                = new State(db_ausstage);
+  Country            	country              = new Country(db_ausstage);
+  AusstageCommon        ausstageCommon       = new AusstageCommon();
 
   String       eventid = "";
   int          eventidInt = 0;
@@ -45,28 +46,28 @@
   ausstage.HtmlGenerator htmlGenerator = new ausstage.HtmlGenerator (db_ausstage);
   ausstage.Datasource    datasource    = new ausstage.Datasource (db_ausstage);
   
-  Vector data_source_vec            = new Vector();
-  Vector second_genres_link_vec     = new Vector();
-  Vector second_genres_vec          = new Vector();
-  Vector primary_content_link_vec   = new Vector();
-  Vector primary_content_ind_vec    = new Vector();
-  Vector secondary_content_link_vec = new Vector();
-  Vector secondary_content_pref_vec = new Vector();
-  Vector work_vec                   = new Vector();
-  Vector work_name_vec              = new Vector();
-  Vector work_link_vec              = new Vector();
-  Vector articles_link_vec          = new Vector();
-  Vector contributor_link_vec       = new Vector();
-  Vector contributor_name_vec       = new Vector();
-  Vector event_name_vec				= new Vector();
+  Vector data_source_vec            	= new Vector();
+  Vector second_genres_link_vec     	= new Vector();
+  Vector second_genres_vec          	= new Vector();
+  Vector primary_content_link_vec   	= new Vector();
+  Vector primary_content_ind_vec    	= new Vector();
+  Vector secondary_content_link_vec 	= new Vector();
+  Vector secondary_content_pref_vec 	= new Vector();
+  Vector work_vec                   	= new Vector();
+  Vector work_name_vec              	= new Vector();
+  Vector work_link_vec              	= new Vector();
+  Vector articles_link_vec          	= new Vector();
+  Vector contributor_link_vec       	= new Vector();
+  Vector contributor_name_vec       	= new Vector();
+  Vector event_name_vec			= new Vector();
   Vector<EventEventLink> event_link_vec	= new Vector<EventEventLink>();
-  Vector organisation_link_vec      = new Vector();
-  Vector organisation_name_vec      = new Vector();
-  Vector national_play_vec          = new Vector();
-  Vector national_production_vec    = new Vector();
-  Vector resource_link_vec          = new Vector();
-  Vector resource_name_vec          = new Vector();
-  
+  Vector organisation_link_vec      	= new Vector();
+  Vector organisation_name_vec      	= new Vector();
+  Vector national_play_vec          	= new Vector();
+  Vector national_production_vec    	= new Vector();
+  Vector resource_link_vec          	= new Vector();
+  Vector resource_name_vec          	= new Vector();
+  	
   /** 
   Hashtable
   hidden_fields : for FORM hidden field type
@@ -85,7 +86,7 @@
   // Are we editting, adding, or coming back from editting child records?
   mode = request.getParameter ("mode");
   System.out.println("");
-System.out.println("event_addedit message : made recieved = "+mode);
+  System.out.println("event_addedit message : mode recieved = "+mode);
   if (mode == null) { // Have come back from editing child records
     mode     = (String)session.getAttribute("eventMode");
     eventObj = (Event)session.getAttribute("eventObj");
@@ -101,16 +102,16 @@ System.out.println("event_addedit message : made recieved = "+mode);
     // first time to this page
     eventid = request.getParameter ("f_eventid");
 
- System.out.println("event_addedit message : first time - mode is not null");
+    System.out.println("event_addedit message : first time to this page - mode is not null. Event id set to "+eventid);
     // if editing
     if (eventid == null) {
-System.out.println("event_addedit message : eventis is null");
+	System.out.println("event_addedit message : ADDING EVENT eventis is null");
       eventid = "0";
       mode = "add"; // Mode is really "add" if no event id was selected.
       eventObj = new Event(db_ausstage);
     }
     else {
-     System.out.println("event_addedit message : event id supplied. = "+eventid);
+     System.out.println("event_addedit message : EDITING EVENT event id supplied. Assume editing event = "+eventid);
       eventidInt = Integer.parseInt(eventid);
       mode = "edit";
       eventObj.load(eventidInt);
@@ -141,8 +142,6 @@ System.out.println("event_addedit message : eventis is null");
     secondary_content_pref_vec.add(secContentIndicatorEvLink.getSecContentIndPref());
   }
   
-   
-
   work_link_vec = eventObj.getWorks();
   for (int i=0; i < work_link_vec.size(); i++) {
     Work work = new Work(db_ausstage);
@@ -158,6 +157,7 @@ System.out.println("event_addedit message : eventis is null");
   LookupCode lc = new LookupCode(db_ausstage);
   event_link_vec	        = eventObj.getEventEventLinks();
   Event event 			= null;
+  System.out.println("loading linked events:");
   for(int i=0; i < event_link_vec.size(); i++ ){
 	  event = new Event(db_ausstage);
 	  event.load(Integer.parseInt(event_link_vec.get(i).getChildId()));
@@ -167,6 +167,7 @@ System.out.println("event_addedit message : eventis is null");
 	  } else {
 		  event_name_vec.add(event.getEventName());
 	  }
+	  System.out.println("link event : "+event.getEventName()+" loaded");
   }
   
   for (int i=0; i < resource_link_vec.size(); i++) {
@@ -671,6 +672,8 @@ if (groupNames.contains("Administrators") || groupNames.contains("Reviewers")) {
 
   // reset/set the state of the EVENT object
   session.setAttribute("eventObj",eventObj);
+  System.out.println("end page load");
+    System.out.println("-----------------------");
 %>
 </form>
 <script language="javascript">

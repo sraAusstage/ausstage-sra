@@ -274,7 +274,7 @@
     pageFormater.writeTwoColTableFooter (out); 
     
 
-    pageFormater.writeTwoColTableHeader (out, "First Name *");
+    pageFormater.writeTwoColTableHeader (out, "Given Name *");
   %>
     <input type="hidden" name="f_contrib_id" value="<%=contrib_id%>">
     <input class="line200" type="text" name="f_f_name" size="40" maxlength="40" value="<%=contrib_fname%>">
@@ -291,7 +291,7 @@
     <input class="line200" type="text" name="f_m_name" size="40" maxlength="40" value="<%=contrib_mname%>">
   <%
     pageFormater.writeTwoColTableFooter (out); 
-    pageFormater.writeTwoColTableHeader (out, "Last Name *");
+    pageFormater.writeTwoColTableHeader (out, "Family Name *");
     System.out.println("set contributor object = "+contributor.getId());
   %>
     <input class="line200" type="text" name="f_l_name" size="40" maxlength="40" value="<%=contrib_lname%>">
@@ -308,7 +308,11 @@
     <input class="line200" type="text" name="f_display_name" size="40" maxlength="40" value="<%=contrib_display_name%>">
   <%
     pageFormater.writeTwoColTableFooter (out); 
-    
+    pageFormater.writeTwoColTableHeader (out, "Other Names");
+  %>
+    <input class="line200" type="text" name="f_contrib_other_names" size="40" maxlength="40" value="<%=contrib_other_names%>">
+  <%
+    pageFormater.writeTwoColTableFooter (out);
      
     pageFormater.writeTwoColTableHeader (out, "Gender");
   
@@ -376,11 +380,6 @@
     <input class="line200" type="text" name="f_contrib_nationality" size="40" maxlength="40" value="<%=contrib_nationality%>">
   <%
     pageFormater.writeTwoColTableFooter (out);
-    pageFormater.writeTwoColTableHeader (out, "Other Names");
-  %>
-    <input class="line200" type="text" name="f_contrib_other_names" size="40" maxlength="40" value="<%=contrib_other_names%>">
-  <%
-    pageFormater.writeTwoColTableFooter (out);
     pageFormater.writeTwoColTableHeader (out, "Contributor Address");
   %>
     <input class="line200" type="text" name="f_contrib_address" size="80" maxlength="80" value="<%=contrib_address%>">
@@ -420,21 +419,6 @@
     <input class="line200" type="text" name="f_contrib_postcode" size="4" maxlength="4" value="<%=contrib_postcode%>">
   <%
     pageFormater.writeTwoColTableFooter (out);
-    pageFormater.writeTwoColTableHeader (out, "Email");
-  %>
-    <input class="line200" type="text" name="f_contrib_email" size="40" maxlength="40" value="<%=contrib_email%>">
-  <%
-    pageFormater.writeTwoColTableFooter (out);
-    pageFormater.writeTwoColTableHeader (out, "Notes");
-  %>
-    <textarea name="f_contrib_notes" rows="6" cols="55"><%=contrib_notes%></textarea>
-  <%
-    pageFormater.writeTwoColTableFooter (out);
-    pageFormater.writeTwoColTableHeader (out, "NLA");
-  %>
-    <input class="line200" type="text" name="f_contrib_nla" size="100" maxlength="100" value="<%=contrib_nla%>">
-  <%
-    pageFormater.writeTwoColTableFooter (out);
     pageFormater.writeTwoColTableHeader (out, "Country");
     
     rset = country.getCountries(stmt);
@@ -461,6 +445,22 @@
     }
   
     pageFormater.writeTwoColTableFooter (out); 
+
+    pageFormater.writeTwoColTableHeader (out, "Email");
+  %>
+    <input class="line200" type="text" name="f_contrib_email" size="40" maxlength="40" value="<%=contrib_email%>">
+  <%
+    pageFormater.writeTwoColTableFooter (out);
+    pageFormater.writeTwoColTableHeader (out, "Notes");
+  %>
+    <textarea name="f_contrib_notes" rows="6" cols="55"><%=contrib_notes%></textarea>
+  <%
+    pageFormater.writeTwoColTableFooter (out);
+    pageFormater.writeTwoColTableHeader (out, "NLA");
+  %>
+    <input class="line200" type="text" name="f_contrib_nla" size="100" maxlength="100" value="<%=contrib_nla%>">
+  <%
+    pageFormater.writeTwoColTableFooter (out);
     pageFormater.writeTwoColTableHeader (out, "Contributor Function");
   
     rset = contfunct.getNames();

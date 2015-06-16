@@ -346,8 +346,9 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 									<a href="/pages/organisation/<%=organisation.getId()%>"><%=organisation.getName()%></a><%
 									if (hasValue(orgEvLink.getFunctionDesc())) {
 										out.print(", " + orgEvLink.getFunctionDesc());
-									} else {
-										out.print(", No Function");
+									} 
+									else {
+										//out.print(", No Function");
 									}
 									if (hasValue(orgEvLink.getArtisticFunctionDesc())) {
 										out.print(", " + orgEvLink.getArtisticFunctionDesc());

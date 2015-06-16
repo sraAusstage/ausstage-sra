@@ -144,7 +144,7 @@
     	<td class='search-form-value'>
     		<select name="f_countries">
     		<%
-	  	  crset = country.getCountries(stmt);
+	  	  crset = country.getVenueCountries(stmt, "Australia");
  	  	if(crset != null && crset.next()) 
 	 	  {
     		    out.println("<option value=\"\">Country</option>");
@@ -236,7 +236,7 @@
     <td class='search-form-value'>
       <select name="f_origin_of_text" Size='1' onChange="">
 	<% 
-  	  crset = country.getCountries(stmt);
+  	  crset = country.getOriginOfTextCountries(stmt, "Australia");
   	  if(crset != null && crset.next())
   	  {
    	    out.println("<option value=\"\">Origin of Text</option>");
@@ -257,7 +257,7 @@
     <td class='search-form-value'>
       <select name="f_origin_of_production" id="f_origin_of_production" Size='1' onChange="">
 	<%
-  	  crset = country.getCountries(stmt);
+  	  crset = country.getOriginOfProductionCountries(stmt, "Australia");
  	  if(crset != null && crset.next()) 
  	  {
     	    out.println("<option value=\"\">Origin of Production</option>");

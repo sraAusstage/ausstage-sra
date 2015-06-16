@@ -1,4 +1,4 @@
-page pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import = "java.util.Vector, java.text.SimpleDateFormat"%>
@@ -234,12 +234,13 @@ page pageEncoding="UTF-8"%>
 							String sqlString = 
 							"SELECT DISTINCT organisation.organisationid, organisation.name, "+
 							"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, "+
-							"venue.venue_name,venue.suburb,states.state,evcount.num "+
-							"FROM events,venue,states,eventworklink,orgevlink,organisation, "+
+							"venue.venue_name,venue.suburb,states.state,evcount.num, country.countryname as countryname  "+
+							"FROM events,venue,states,eventworklink,orgevlink,organisation, country, "+
 							"(SELECT orgevlink.organisationid, count(distinct orgevlink.eventid) num "+
 							"FROM orgevlink, eventworklink where orgevlink.eventid=eventworklink.eventid and eventworklink.workid=" + work_id + " "+
 							"GROUP BY orgevlink.organisationid) evcount "+
 							"WHERE eventworklink.workid = " + work_id + " AND "+
+							"country.countryid = venue.countryid AND "+
 							"evcount.organisationid = organisation.organisationid AND "+
 							"eventworklink.eventid = events.eventid AND "+
 							"events.venueid = venue.venueid AND "+
@@ -253,8 +254,8 @@ page pageEncoding="UTF-8"%>
 							sqlString = 
 							"SELECT DISTINCT contributor.contributorid, concat_ws(' ', contributor.first_name, contributor.last_name) contributor_name, " +
 							   "events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date, " +
-							   "venue.venue_name,venue.suburb,states.state,evcount.num , functs.funct " +
-							"FROM events,venue,states,eventworklink,conevlink,contributor " +
+							   "venue.venue_name,venue.suburb,states.state,evcount.num , functs.funct, country.countryname as countryname " +
+							"FROM events,venue,states,country,eventworklink,conevlink,contributor " +
 							"inner join (SELECT conevlink.contributorid, count(distinct conevlink.eventid) num " +
 												  "FROM conevlink, eventworklink where conevlink.eventid=eventworklink.eventid and eventworklink.workid=" + work_id + " " +
 													"GROUP BY conevlink.contributorid) evcount ON (evcount.contributorid = contributor.contributorid) " +
@@ -270,6 +271,7 @@ page pageEncoding="UTF-8"%>
 							"eventworklink.eventid = events.eventid AND " +
 							"events.venueid = venue.venueid AND " +
 							"venue.state = states.stateid AND " +
+							"venue.countryid = country.countryid AND " +
 							"events.eventid = eventworklink.eventid AND " +
 							"eventworklink.eventid=conevlink.eventid AND " +
 							"conevlink.contributorid = contributor.contributorid " +
@@ -278,8 +280,8 @@ page pageEncoding="UTF-8"%>
 							
 							//venues
 							sqlString = "SELECT DISTINCT venue.venueid, venue.venue_name, venue.suburb,states.state, " + 
-								"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date,evcount.num " + 
-								"FROM events,venue,states,eventworklink,orgevlink,organisation, " + 
+								"events.eventid,events.event_name,events.ddfirst_date,events.mmfirst_date,events.yyyyfirst_date,evcount.num, country.countryname as countryname " + 
+								"FROM events,venue,states,country,eventworklink,orgevlink,organisation, " + 
 								"(SELECT events.venueid, count(distinct eventworklink.eventid) num " + 
 								"FROM events, eventworklink where events.eventid=eventworklink.eventid and eventworklink.workid=" + work_id + " " + 
 								"GROUP BY events.venueid) evcount " + 
@@ -288,6 +290,7 @@ page pageEncoding="UTF-8"%>
 								"eventworklink.eventid = events.eventid AND  " + 
 								"events.venueid = venue.venueid AND  " + 
 								"venue.state = states.stateid AND  " + 
+								"venue.countryid = country.countryid AND " +
 								"events.eventid = eventworklink.eventid AND  " + 
 								"eventworklink.eventid=orgevlink.eventid AND  " + 
 								"orgevlink.organisationid = organisation.organisationid  " + 
@@ -333,7 +336,7 @@ page pageEncoding="UTF-8"%>
 										<li>
 										<a href="/pages/event/<%=rsetEvt.getString("eventid")%>">
 											<%=rsetEvt.getString("event_name")%></a><%
-										if (hasValue(rsetEvt.getString("Output"))) out.print(", " + rsetEvt.getString("Output").replace(", O/S", ""));
+										if (hasValue(rsetEvt.getString("Output"))) out.print(", " + rsetEvt.getString("Output").replace(", O/S", ", "+rsetEvt.getString("countryname")));
 										if (hasValue(formatDate(rsetEvt.getString("DDFIRST_DATE"),rsetEvt.getString("MMFIRST_DATE"),rsetEvt.getString("YYYYFIRST_DATE"))))
 											out.print(", " + formatDate(rsetEvt.getString("DDFIRST_DATE"),rsetEvt.getString("MMFIRST_DATE"),rsetEvt.getString("YYYYFIRST_DATE")));
 										%>
@@ -383,10 +386,11 @@ page pageEncoding="UTF-8"%>
 									<%=crsetOrg.getString("event_name")%></a><%
 									if(hasValue(crsetOrg.getString("venue_name"))) 
 										out.print(", " + crsetOrg.getString("venue_name"));
-						  	        if(hasValue(crsetOrg.getString("suburb"))) 
+						  	        if(hasValue(crsetOrg.getString("suburb")) && (!crsetOrg.getString("suburb").equals("")||!crsetOrg.getString("suburb").equals(" "))) 
 										out.print(", " + crsetOrg.getString("suburb"));
 						           	if(hasValue(crsetOrg.getString("state")) && !crsetOrg.getString("state").equals("O/S"))
 										out.print(", " + crsetOrg.getString("state"));
+								else out.print(", " + crsetOrg.getString("countryname"));
 									if (hasValue(formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE"))))
 										out.print(", " + formatDate(crsetOrg.getString("DDFIRST_DATE"),crsetOrg.getString("MMFIRST_DATE"),crsetOrg.getString("YYYYFIRST_DATE")));
 									%>
@@ -437,8 +441,10 @@ page pageEncoding="UTF-8"%>
 									<a href="/pages/event/<%=crsetCon.getString("eventid")%>">
 										<%=crsetCon.getString("event_name")%></a><%
 									if(hasValue(crsetCon.getString("venue_name"))) out.print(", " + crsetCon.getString("venue_name"));
-									if(hasValue(crsetCon.getString("suburb"))) out.print(", " + crsetCon.getString("suburb"));
+									if(hasValue(crsetCon.getString("suburb")) && (!crsetCon.getString("suburb").equals("")||!crsetCon.getString("suburb").equals(" "))) 
+									out.print(", " + crsetCon.getString("suburb"));
 									if(hasValue(crsetCon.getString("state")) && !crsetCon.getString("state").equals("O/S")) out.print(", " + crsetCon.getString("state"));
+									else out.print(", " + crsetCon.getString("countryname"));
 									if(hasValue(formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE"))))
 					            		out.print(", " + formatDate(crsetCon.getString("DDFIRST_DATE"),crsetCon.getString("MMFIRST_DATE"),crsetCon.getString("YYYYFIRST_DATE")));
 									%>
@@ -479,6 +485,8 @@ page pageEncoding="UTF-8"%>
 									out.print(", " + crsetVen.getString("suburb"));
 								if(hasValue(crsetVen.getString("state")) && (!crsetVen.getString("state").equals("O/S")))
 									out.print(", " + crsetVen.getString("state"));
+								else out.print(", " + crsetVen.getString("countryname"));
+
 								%>
 								</h3>
 								<ul>

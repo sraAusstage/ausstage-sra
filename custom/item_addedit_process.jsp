@@ -38,7 +38,7 @@
   
   session.setAttribute("item", item);
   item.setDatabaseConnection(db_ausstage); // Refresh connection
-
+ 
   // adding a item
   if (itemid.equals ("-1"))
   {

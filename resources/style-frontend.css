@@ -381,7 +381,7 @@ th {
 	text-decoration: none;
 	}	
 
-.browse-index-international a:hover, .browse-index-function a:hover {
+.browse-index-international a:hover {
 	background-color:#2557d3 ; /* b-91 un blue*/
 	text-decoration: none;
 	}
@@ -454,7 +454,7 @@ th {
 	padding: 0.3em;
 }
 
-.browse-th-organisation a, .browse-th-venue a, .browse-th-work a  {
+.browse-th-organisation a, .browse-th-venue a, .browse-th-work a, .browse-th-event a  {
 	color:#ffffff;
 	text-decoration: none;	
 }
@@ -474,12 +474,21 @@ th {
 	background-color:#ffb620; /*b-135*/
 	text-decoration: none;
 		
-} .browse-th-work{
+}
+ .browse-th-work{
 	background-color:#8c4eb8; /*b-153*/
 	text-decoration: none;	
 }
 .browse-th-work:hover{
 	background-color:#7234a4; /*b-154*/
+	text-decoration: none;	
+} 
+.browse-th-event{
+	background-color:#3875d7; /*b-91*/
+	text-decoration: none;	
+}
+.browse-th-event:hover{
+	background-color:#2557d3; /*b-90*/
 	text-decoration: none;	
 } 
 
