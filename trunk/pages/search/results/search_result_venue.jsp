@@ -89,10 +89,10 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
 					out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/venue/" + crset.getString("venueid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("venue_name") + "</a></td>");
                     out.println("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
 
-					if(crset.getString("street") != null)
+					if(crset.getString("street") != null && (!crset.getString("street").equals(""))&& (!crset.getString("street").equals(" ")))
 						out.println(crset.getString("street") + ", ");
               
-					if(crset.getString("suburb") != null)
+					if(crset.getString("suburb") != null && (!crset.getString("suburb").equals(""))&& (!crset.getString("suburb").equals(" ")))
 						out.println(crset.getString("suburb")  + ", ");
 
 					if(crset.getString("venue_state") != null)

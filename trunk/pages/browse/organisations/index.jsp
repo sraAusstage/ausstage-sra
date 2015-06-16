@@ -62,6 +62,12 @@
   if (letter == null) letter = "a";
     if (letter.length() > 1) letter = letter.substring(0,1);
   letter = letter.toLowerCase();
+  
+   //added to account for numbers and non alphanumeric at the beginning of organistaion names
+   String switchLike = "";
+   if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else switchLike = " LIKE '" + letter + "%' ";
 %>
 
 <div class='browse-index browse-index-organisation'>
@@ -91,8 +97,11 @@
   <a href="?letter=X" <%=letter.equals("x")?"class='b-122 bold'":""%>>X</a>
   <a href="?letter=Y" <%=letter.equals("y")?"class='b-122 bold'":""%>>Y</a>
   <a href="?letter=Z" <%=letter.equals("z")?"class='b-122 bold'":""%>>Z</a>
+  <a href="?letter=0" <%=letter.equals("0")?"class='b-122 bold'":""%>>0-9</a>
+  <a href="?letter=*" <%=letter.equals("*")?"class='b-122 bold'":""%>>%</a>  
 </div>
 </div>
+
 <%
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
@@ -117,11 +126,14 @@
   ausstage.Database     m_db = new ausstage.Database ();
   CachedRowSet  l_rs     = null;
  
+  
   admin.AppConstants constants = new admin.AppConstants();
   m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
   Statement stmt    = m_db.m_conn.createStatement ();
-      
-  sqlString =	"SELECT COUNT(*) From `organisation` WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) LIKE '" + letter + "%'";
+
+
+  sqlString =	"SELECT COUNT(*) From `organisation` WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) "+switchLike;
+  
   l_rs = m_db.runSQL (sqlString, stmt);
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
@@ -143,12 +155,7 @@
     </tr>
     </thead>
     <%
-   // sqlString = 	"SELECT organisation.organisationid, organisation.name NAME , events.event_name, min(events.yyyyfirst_date) year, if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))), count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total " +
-//			"FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) LEFT JOIN events ON (orgevlink.eventid = events.eventid) " +
-//			"LEFT JOIN itemorglink ON (organisation.organisationid = itemorglink.organisationid) "+
-//			" LEFT JOIN item on (item.institutionid = organisation.organisationid) " +
-//			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) LIKE '" + letter + "%' group by organisation.organisationid " +
-//  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":sortCol)+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+ 
  sqlString = 	"SELECT organisation.organisationid, organisation.name NAME , events.event_name, min(events.yyyyfirst_date) year, if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))), count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total " +
  			", organisation.suburb, states.state, country.countryname, concat_ws(', ',country.countryname, states.state, organisation.suburb) as address "+
 			"FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) LEFT JOIN events ON (orgevlink.eventid = events.eventid) " +
@@ -156,7 +163,7 @@
 			"LEFT JOIN states ON (organisation.state = states.stateid) "+
 			"LEFT JOIN country ON (organisation.countryid = country.countryid) "+
 			" LEFT JOIN item on (item.institutionid = organisation.organisationid) " +
-			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) LIKE '" + letter + "%' group by organisation.organisationid " +
+  			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) "+switchLike+" group by organisation.organisationid " +
   			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":
   			((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state "+sortOrd+", organisation.suburb ":sortCol))+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
   			

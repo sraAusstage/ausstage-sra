@@ -56,7 +56,7 @@
 	
 	pageFormater.writePageTableFooter (out);
 	//pageFormater.writeButtons(out, "", "", "", "", "event_addedit.jsp#event_event_link", "next.gif");
-	pageFormater.writeButtons(out, "", "", "", "", "event_addedit.jsp", "next.gif");
+	pageFormater.writeButtons(out, "", "", "", "", "event_addedit.jsp#event_events", "next.gif");
 	pageFormater.writeFooter(out);
 	db_ausstage.disconnectDatabase();
 %>

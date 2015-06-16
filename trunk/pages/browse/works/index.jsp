@@ -62,6 +62,12 @@
   if (letter == null) letter = "a";
     if (letter.length() > 1) letter = letter.substring(0,1);
   letter = letter.toLowerCase();
+  
+     //added to account for numbers and non alphanumeric at the beginning of names
+   String switchLike = "";
+   if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else switchLike = " LIKE '" + letter + "%' ";
 %>
 
 <div class='browse-index browse-index-work'>
@@ -91,6 +97,8 @@
   <a href="?letter=X" <%=letter.equals("x")?"class='b-154 bold'":""%>>X</a>
   <a href="?letter=Y" <%=letter.equals("y")?"class='b-154 bold'":""%>>Y</a>
   <a href="?letter=Z" <%=letter.equals("z")?"class='b-154 bold'":""%>>Z</a>
+  <a href="?letter=0" <%=letter.equals("0")?"class='b-154 bold'":""%>>0-9</a>
+  <a href="?letter=*" <%=letter.equals("*")?"class='b-154 bold'":""%>>%</a>
 </div>
 </div>
 <%
@@ -122,7 +130,7 @@
   m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
   Statement stmt    = m_db.m_conn.createStatement ();
       
-  sqlString =	"SELECT COUNT(*) From `work` WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) LIKE '" + letter + "%'";
+  sqlString =	"SELECT COUNT(*) From `work` WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) " + switchLike;
   l_rs = m_db.runSQL (sqlString, stmt);
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
@@ -152,7 +160,7 @@
 			"LEFT  JOIN contributor ON (workconlink.contributorid = contributor.contributorid)  Left  Join `workorglink` ON (work.`workid`= `workorglink`.`workid`)"+
  			"Left  Join `organisation` ON (`workorglink`.`organisationid`= `organisation`.`organisationid`)" +
  			"Left join itemworklink On (work.workid = itemworklink.workid) "+
-			"WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) LIKE '" + letter + "%' group by work.`workid`" +
+			"WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) " + switchLike + " group by work.`workid`" +
   			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", titlesort limit " + ((pageno)*resultsPerPage ) + ","+(resultsPerPage +1);
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;  

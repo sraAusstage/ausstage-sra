@@ -7,6 +7,8 @@
 <%@ include file="../admin/content_common.jsp"%>
 <%@ include file="ausstage_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
+<script type="text/javascript" src="../pages/assets/javascript/libraries/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="../pages/assets/javascript/libraries/jquery-ui-1.8.12.custom.min.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
 
 <%
@@ -112,13 +114,22 @@ function load() {
 }
 
 function checkMandatoryFields(){
-    //all fields are empty
-    if(document.venue_addedit_form.f_street.value == ""){      
-      alert("Please enter street and suburb details.");
-      return (false);
-    }   
-    msg = "";
+
+  if(!validateUrl( $('input[name=f_web_links]'))) return false;
+  if(!checkStateCountry())return false;
+
+  return true;
+    
   }
+  
+function checkStateCountry(){
+	var state = $("[name=f_state_id] option:selected").text();
+	var country = $("[name=f_country] option:selected").text();
+	var returnVal = true;
+	if ((state == "O/S") && (country =="Australia")){alert("If the State is O/S, the Country can not be Australia. Please ensure the data is entered correctly and try again."); returnVal = false;}
+	if ((state != "O/S") && (country != "Australia")){alert("If the Country is not Australia, the State must be O/S. Please ensure the data is entered correctly and try again."); returnVal = false;}
+	return returnVal;
+}
 
 function showAddress() {
 	
@@ -195,7 +206,7 @@ document.body.onload=function(){load();};
   
   <%
   if (action1 != null && action1.equals("ForVenue") || isPreviewForVenueVenue.equals("true")){
-      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?action=" + action1 +  "' method='post'>\n");
+      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?action=" + action1 +  "' method='post' >\n");
       out.println("<input type='hidden' name='isPreviewForVenueVenue' value='true'>");
       out.println("<input type='hidden' name='ForVenue' value='true'>");
   }
@@ -212,7 +223,7 @@ document.body.onload=function(){load();};
   	out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?place_of_demise=1' method='post'>");
   }      
   else{
-      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp' method='post'>");
+      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp' method='post' onsubmit='return checkMandatoryFields();'>");
   }
   
   
@@ -229,6 +240,11 @@ document.body.onload=function(){load();};
   out.println("<input type=\"text\" name=\"f_venue_name\" size=\"60\" class=\"line150\" maxlength=60 value=\"" + venueObj.getName() + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
+pageFormater.writeTwoColTableHeader(out, "Other names");
+  out.println("<input type=\"text\" name=\"f_other_names1\" size=\"60\" class=\"line150\" maxlength=60 value=\"" + venueObj.getOtherNames1() + "\">");  
+  out.println("<input type=\"text\" name=\"f_other_names2\" size=\"60\" class=\"line150\" maxlength=60 value=\"" + venueObj.getOtherNames2() + "\">");
+  out.println("<input type=\"text\" name=\"f_other_names3\" size=\"60\" class=\"line150\" maxlength=60 value=\"" + venueObj.getOtherNames3() + "\">");
+  pageFormater.writeTwoColTableFooter(out);
   // Display Dates
   pageFormater.writeTwoColTableFooter(out);
  // pageFormater.writeHelper(out, "Dates", "helpers_no2.gif");
@@ -281,32 +297,7 @@ document.body.onload=function(){load();};
   out.print(stateLeadingSubString + stateTrailingSubString);
   out.println("</select>");
   pageFormater.writeTwoColTableFooter(out);
- 
-  pageFormater.writeTwoColTableHeader(out, "Capacity");
-  out.println("<input type=\"text\" name=\"f_capacity\" size=\"5\" class=\"line50\" maxlength=40 value=\"" + venueObj.getCapacity() + "\">");
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Contact Name");
-  out.println("<input type=\"text\" name=\"f_contact\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getContact() + "\">");
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Contact Phone");
-  out.println("<input type=\"text\" name=\"f_phone\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getPhone() + "\">");
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Contact Fax");
-  out.println("<input type=\"text\" name=\"f_fax\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getFax() + "\">");
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Contact Email");
-  out.println("<input type=\"text\" name=\"f_email\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getEmail() + "\">");
-  pageFormater.writeTwoColTableFooter(out);
-
-  pageFormater.writeTwoColTableHeader(out, "Web Link");
-  out.println("<input type=\"text\" name=\"f_web_links\" size=\"40\" class=\"line300\" maxlength=2048 value=\"" + venueObj.getWebLinks() + "\">");
-  pageFormater.writeTwoColTableFooter(out);
-
-  // Countries
+// Countries
   pageFormater.writeTwoColTableHeader(out, "Country");
   out.println("<select name=\"f_country\" size=\"1\" class=\"line150\">");
   rset = countryObj.getCountries (stmt);
@@ -329,6 +320,31 @@ document.body.onload=function(){load();};
   out.print(countryLeadingSubString + countryTrailingSubString);
     
   out.println("</select>");
+  pageFormater.writeTwoColTableFooter(out);
+
+ 
+  pageFormater.writeTwoColTableHeader(out, "Capacity");
+  out.println("<input type=\"text\" name=\"f_capacity\" size=\"5\" class=\"line50\" maxlength=40 value=\"" + venueObj.getCapacity() + "\">");
+  pageFormater.writeTwoColTableFooter(out);
+
+  pageFormater.writeTwoColTableHeader(out, "Contact Name");
+  out.println("<input type=\"text\" name=\"f_contact\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getContact() + "\">");
+  pageFormater.writeTwoColTableFooter(out);
+
+  pageFormater.writeTwoColTableHeader(out, "Contact Phone");
+  out.println("<input type=\"text\" name=\"f_phone\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getPhone() + "\">");
+  pageFormater.writeTwoColTableFooter(out);
+
+  pageFormater.writeTwoColTableHeader(out, "Contact Fax");
+  out.println("<input type=\"text\" name=\"f_fax\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getFax() + "\">");
+  pageFormater.writeTwoColTableFooter(out);
+
+  pageFormater.writeTwoColTableHeader(out, "Contact Email");
+  out.println("<input type=\"text\" name=\"f_email\" size=\"40\" class=\"line150\" maxlength=40 value=\"" + venueObj.getEmail() + "\">");
+  pageFormater.writeTwoColTableFooter(out);
+
+  pageFormater.writeTwoColTableHeader(out, "Web Link");
+  out.println("<input type=\"text\" name=\"f_web_links\" size=\"40\"  class=\"line300\" maxlength=2048 value=\"" + venueObj.getWebLinks() + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
   // Longitude

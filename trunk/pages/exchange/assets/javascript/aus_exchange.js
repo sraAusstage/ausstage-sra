@@ -11,7 +11,8 @@ function AusstageDataEmbed(id_list,div_id,record_type,search_type,limit,sort_by,
 	var names = "";
 	var lookup_code="";
 	var html;
-	var urlStart = window.location.protocol+'//'+window.location.host+'/pages/';	
+	var urlStart = "http://www.ausstage.edu.au/pages/";
+	//var urlStart = window.location.protocol+'//'+window.location.host+'/pages/';	
 	//define css style to embed
 	var styleString = "<style type='text/css'>\n"
 						+"<!-- \n"
@@ -55,10 +56,10 @@ function AusstageDataEmbed(id_list,div_id,record_type,search_type,limit,sort_by,
 	var header = "<p>"+toTitleCase(record_type)+" for "+names+"</p>";			
 
 	//prepare the url to retrieve the records
-//	var url = 'http://titan.csem.flinders.edu.au/opencms/e'+record_type+'?type='+search_type+'&id='+id+'&limit='+limit+'&sort='+sort_by
-//			+'&output=json&callback=?'
-	var url = window.location.protocol+"//"+window.location.host+'/opencms/e'+record_type+'?type='+search_type+'&id='+id+'&limit='+limit+'&sort='+sort_by
+	var url = 'http://www.ausstage.edu.au/opencms/e'+record_type+'?type='+search_type+'&id='+id+'&limit='+limit+'&sort='+sort_by
 			+'&output=json&callback=?'
+//	var url = window.location.protocol+"//"+window.location.host+'/opencms/e'+record_type+'?type='+search_type+'&id='+id+'&limit='+limit+'&sort='+sort_by
+//			+'&output=json&callback=?'
 
 	//retrieve the records and create the html to display them
 	$.getJSON(url, 
@@ -97,3 +98,4 @@ function toTitleCase(str) {
         return match.toUpperCase();
     });
 }
+

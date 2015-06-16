@@ -190,7 +190,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 	<div class="browse-bar b-90"><img class="browse-icon" src="../../../resources/images/icon-international.png">
    
 	    	<span class="browse-heading large"><b><%=countryName%></b></span>
-	    	<span class="browse-index browse-index-international">[<a href="#">Contributors</a> | <a href="#">Events</a>] <a href="<%=mapLink%>">Map</a></span>
+	    	<span class="browse-index browse-index-international"><a href="events/index.jsp?id=<%=id%>">Events</a> | <a href="<%=mapLink%>">Map</a></span>
 
 	</div>
 

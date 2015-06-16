@@ -66,6 +66,7 @@
 						}
 				
 						State state = new State(db_ausstage_for_drill);
+						Venue venue = new Venue(db_ausstage_for_drill);
 						Event event = null;
 						
 						Country country;
@@ -164,7 +165,56 @@
 							</td>
 						</tr>
 						<%
-							
+						//first date
+						if (hasValue(formatDate(organisation.getDdfirstDate(),organisation.getMmfirstDate(),organisation.getYyyyfirstDate()))){
+
+						%>
+						<tr>
+							<th class='record-label b-121'>First Date</th>
+								<td class='record-value' colspan='2'>
+									<%=formatDate(organisation.getDdfirstDate(),organisation.getMmfirstDate(),organisation.getYyyyfirstDate())%>
+								</td>
+						</tr>
+
+						<%
+						}						
+						//place of origin
+						if (hasValue(organisation.getPlaceOfOrigin())) {
+						%>
+						<tr>
+							<th class='record-label b-121'>Place of Origin</th>
+								<%venue.load(Integer.parseInt(organisation.getPlaceOfOrigin()));%>
+								<td class='record-value' colspan='2'>
+									<a href="../venue/<%=organisation.getPlaceOfOrigin()%>"><%=venue.getName()%></a>
+								</td>
+						</tr>
+						<%
+						}
+						//last date
+						if (hasValue(formatDate(organisation.getDdlastDate(),organisation.getMmlastDate(),organisation.getYyyylastDate()))){
+					
+						%>
+						<tr>
+							<th class='record-label b-121'>Last Date</th>
+								<td class='record-value' colspan='2'>
+									<%=formatDate(organisation.getDdlastDate(),organisation.getMmlastDate(),organisation.getYyyylastDate())%>
+								</td>
+						</tr>
+						
+						<%
+						}
+						//place of demise
+						if (hasValue(organisation.getPlaceOfDemise())) {
+						%>
+						<tr>
+							<th class='record-label b-121'>Place of Demise</th>
+								<%venue.load(Integer.parseInt(organisation.getPlaceOfDemise()));%>
+								<td class='record-value' colspan='2'>
+									<a href="../venue/<%=organisation.getPlaceOfDemise()%>"><%=venue.getName()%></a>
+								</td>
+						</tr>
+						<%
+						}	
 						//Website
 						if (hasValue(organisation.getWebLinks())) {
 						%>
@@ -197,7 +247,11 @@
 							<tr >
 								<th class='record-label b-121'>NLA</th>
 								
-								<td class='record-value' colspan='2'><%=organisation.getNLA()%></td>
+								<td class='record-value' colspan='2'>
+									<a href="<%=(organisation.getNLA().indexOf("http://") < 0)?"http://":""%><%=organisation.getNLA()%>">
+										<%=organisation.getNLA()%>
+									</a>
+								</td>
 							</tr>
 						<%
 						}

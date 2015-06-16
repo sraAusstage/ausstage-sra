@@ -8,8 +8,16 @@
 <%@ include file="../admin/content_common.jsp"%>
 <%@ include file="ausstage_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
-<link rel="stylesheet" type="text/css" href="resources/backend.css" />
+	<link rel="stylesheet" type="text/css" href="resources/backend.css" />
+	<script type="text/javascript" src="../pages/assets/javascript/libraries/jquery-1.6.min.js"></script>
+	<script type="text/javascript" src="../pages/assets/javascript/libraries/jquery-ui-1.8.12.custom.min.js"></script>
+	<script type="text/javascript" src="../pages/assets/javascript/libraries/jquery.validate-1.7.min.js"></script>
+
 <%
+  System.out.println("---------------");
+  System.out.println("- ITEM ADD EDIT LOAD PAGE");
+  System.out.println("- ");
+  
   admin.ValidateLogin     login                = (admin.ValidateLogin) session.getAttribute("login");
   admin.FormatPage        pageFormater         = (admin.FormatPage) session.getAttribute("pageFormater");
   ausstage.Database          db_ausstage          = new ausstage.Database ();
@@ -32,6 +40,7 @@
   Vector                  m_item_creator_conlinks;
   Vector                  m_item_contentindlinks;
   Vector                  m_item_worklinks;
+  Vector 		  m_additional_urls; // BW additional Urls
   String                  institution_id       = "0";
   String                  item_type_id         = "0";
   String                  item_sub_type_id     = "0";
@@ -48,6 +57,10 @@
   String disabled = "";
   boolean preview = false;
   
+  System.out.println("- action ="+action);
+  System.out.println("- f_itemid = "+itemid);
+  System.out.println("- f_catalogue_id = "+catalogueID);
+  
   if(action != null && action.equals("preview")){
     readOnly = "readonly";
     disabled = "disabled";
@@ -59,16 +72,20 @@
   if(catalogueID == null) catalogueID = "";
   // use a new Item object that is not from the session.
   if(action != null && action.equals("add")){
+    System.out.println("- action is ADD. item id set to 0");
     action = "add";
     itemid = "0";
   }
   else if (action != null && action.equals("edit")){ //editing existing Item
+    System.out.println("- action is EDIT");
     if (itemid != null && !itemid.equals("")) {  // try the item id first
+      System.out.println(" - item ID is not NULL. loading ITEM based on item id.");
       item.load(Integer.parseInt(itemid));
     }
     else { //try the catalogue ID next
       item.load(catalogueID);
       itemid  = item.getItemId();
+      System.out.println(" - catalogue ID is not NULL. loading ITEM based on Catalogue id.");
       //if someone selects a catalogue  id that doesn't exist
       //we still want this to be displayed so that they do not have to type it in again
       //when creating the new item
@@ -77,10 +94,12 @@
       }
   }
   else if (action != null && action.equals("copy")){
+    System.out.println("- action is COPY");
     item.load(catalogueID);
     itemid  = item.getItemId();
   }
   else if (action != null && action.equals("preview")){
+    System.out.println("- action is PREVIEW");
     if (request.getParameter("f_select_this_child_id") != null) {
       item.load(Integer.parseInt(request.getParameter("f_select_this_child_id")));
     }
@@ -90,6 +109,7 @@
     itemid  = item.getItemId();
   }
   else{ //use the item object from the session.
+    System.out.println("- no other options available. using session object...");
     item = (Item)session.getAttribute("item");
     itemid  = item.getItemId();
   }
@@ -101,13 +121,17 @@
   m_item_evlinks            = item.getAssociatedEvents();
   m_item_secgenrelinks      = item.getAssociatedSecGenres();
   m_item_itemlinks          = item.getItemItemLinks();
+  System.out.println("get associated organisation links");
   m_item_orglinks           = item.getAssociatedOrganisations();
   m_item_creator_orglinks   = item.getAssociatedCreatorOrganisations();
   m_item_venuelinks         = item.getAssociatedVenues();
   m_item_conlinks           = item.getAssociatedContributors();
   m_item_creator_conlinks   = item.getAssociatedCreatorContributors();
   m_item_contentindlinks    = item.getAssociatedContentIndicators();
+  System.out.println("get associated work links");
   m_item_worklinks          = item.getAssociatedWorks();
+  m_additional_urls	    = item.getAdditionalUrls();
+      System.out.println("- creators :"+m_item_creator_conlinks.toString());
   
   out.println("<form name='item_addedit_form' id='item_addedit_form' action='item_addedit_process.jsp' method='post' onsubmit='return checkManditoryFields();'>");
   out.println("<input type='hidden' name='f_itemid' value='" + itemid + "'>");
@@ -173,7 +197,7 @@
   ///////////////////////////////////
   // Creator Contributor Association(s)
   ///////////////////////////////////
-  //out.println("<a name='item_creator_contributors_link' />");
+  out.println("<a name='item_creator_contributors_link' ></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_creator_conlinks, "creator contributor", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -189,7 +213,7 @@
   ///////////////////////////////////
   // Creator ORGANISATIONS Association(s)
   ///////////////////////////////////
-  //out.println("<a name='item_creator_organisations_link' />");
+  out.println("<a name='item_creator_organisations_link' ></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_creator_orglinks, "creator organisation", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -462,12 +486,24 @@
   ****************************/
   pageFormater.writeHelper(out, "Identifiers", "helpers_no8.gif");
   pageFormater.writeTwoColTableHeader(out, "Resource URL");
-  out.println("<input type='text' name='f_item_url' size='60' maxlength='2048' class='line250' value='" + item.getItemUrl() + "'" + readOnly + ">");
+  out.println("<input type='text' name='f_item_url' size='60' maxlength='2048' class='line250' onblur='validateUrl($(this));' value='" + item.getItemUrl() + "'" + readOnly + ">");
+  pageFormater.writeTwoColTableFooter(out);
+
+  //BW additional URLs
+
+    pageFormater.writeTwoColTableHeader(out, "Additional URLs", 600); 
+    //hidden field to store and pass urls between pages (comma delimited. Updated via javascript functions on the add remove links and onblur events)
+  out.println("<input type='hidden' name='f_additional_urls' size='60' value=''>");    
+  out.println("<span width='100%' name='additional_url_span'><input type='text' name='f_enter_additional_url' size='50' maxlength='2048' class='line250' onblur='addUrl($(this));' value=''" + readOnly + "><a href='#additional_url' onclick='addUrl($(\"input[name=f_enter_additional_url]\"))'> Add</a></span>");
+  for (int i = 0; i < m_additional_urls.size(); i++){
+  	out.println("<span name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a></span>");
+  }
   pageFormater.writeTwoColTableFooter(out);
   
   pageFormater.writeTwoColTableHeader(out, "International Standard Book Number");
   out.println("<input type='text' name='f_ident_isbn' size='60' class='line250' maxlength=60 value=\"" + item.getIdentIsbn() + "\"" + readOnly + ">");
   pageFormater.writeTwoColTableFooter(out);
+  
   
   pageFormater.writeTwoColTableHeader(out, "International Standard Music Number");
   out.println("<input type='text' name='f_ident_ismn' size='60' class='line250' maxlength=60 value=\"" + item.getIdentIsmn() + "\"" + readOnly + ">");
@@ -504,7 +540,7 @@
        Contributor Association/s
   ****************************/
   pageFormater.writeHelper(out, "Contributor Association/s", "helpers_no10.gif");
-  out.println("<a name='item_contributors_link' /></a>");
+  out.println("<a name='item_contributors_link' ></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_conlinks, "contributor", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -538,7 +574,7 @@
        Venue Association/s
   ****************************/
   pageFormater.writeHelper(out, "Venue Association/s", "helpers_no12.gif");
-  out.println("<a name='item_venues_link' /></a>");
+  out.println("<a name='item_venues_link' ></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_venuelinks, "venue", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -555,7 +591,7 @@
        Work Association/s
   ****************************/
   pageFormater.writeHelper(out, "Work Association/s", "helpers_no13.gif");
-  out.println("<a name='item_work_link' /></a>");
+  out.println("<a name='item_work_link' ></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_worklinks, "work", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -573,7 +609,7 @@
        Genre Association/s
   ****************************/
   pageFormater.writeHelper(out, "Genre Association/s", "helpers_no14.gif");
-  out.println("<a name='item_second_genre_link' /></a>");
+  out.println("<a name='item_second_genre_link' ></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_secgenrelinks, "genre", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -590,7 +626,7 @@
        Content Indicator Association/s
   ****************************/
   pageFormater.writeHelper(out, "Subjects Association/s", "helpers_no15.gif");
-  out.println("<a name='item_content_indicator_link' /></a>");
+  out.println("<a name='item_content_indicator_link'/></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_contentindlinks, "contentInd", stmt);
   out.println (htmlGenerator.displayLinkedItem("",
@@ -608,7 +644,7 @@
        Resource Association/s
   ****************************/
   pageFormater.writeHelper(out, "Resource Association/s", "helpers_no16.gif");
-  out.println("<a name='item_item_link' /></a>");
+  out.println("<a name='item_item_link' ></a>");
   hidden_fields.clear();
   temp_display_info = item.generateDisplayInfo(m_item_itemlinks, "item", stmt);
   
@@ -678,6 +714,46 @@
 </form>
 <script language="javascript">
 <!--
+  var url_count = 0;
+   
+  $(document).ready(function(){
+    $("input[name*='f_additional_url_']").each(function(index){
+      url_count++;
+    });
+    updateUrlList();
+  }); 
+   
+  function addUrl(field_to_check){
+    console.log("add url called");
+    if (field_to_check.val()!=""){
+      console.log("field has value :"+field_to_check.val());
+      if (validateUrl(field_to_check)){
+        console.log("field is valid");
+        $('[name=additional_url_span]').after("<span name='url_line_"+url_count+"'><input type='text' name='f_additional_url_"+url_count+"' size='50' maxlength='2048' class='line250' value="
+        					+field_to_check.val()+" ><a href='#additional_url' onclick='removeUrl("+url_count+")'> Remove</a></span>");
+        field_to_check.val("");
+        url_count++;
+        updateUrlList();
+      }
+    }
+    return false;
+  }
+  
+  function removeUrl(i){
+    console.log("remove the current text field and link. using id."+i);
+    $("[name=url_line_"+i+"]").remove();
+    updateUrlList();
+  }  
+
+  
+  function updateUrlList(){
+    var delimited_list = "";
+    $("input[name*='f_additional_url_']").each(function(index){ 
+      if($(this).val()!="") {delimited_list += $(this).val()+",";} 
+    });
+    $("input[name='f_additional_urls']").val(delimited_list);
+
+  }
 
   function checkManditoryFields(){
     if(document.item_addedit_form.f_item_type.value == null ||

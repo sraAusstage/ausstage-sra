@@ -221,6 +221,32 @@
   pageFormater.writeTwoColTableHeader(out, "Postcode");
   out.println("<input type=\"text\" name=\"f_postcode\" size=\"5\" class=\"line50\" maxlength=40 value=\"" + ((organisationObj.getPostcode() == null)?"":organisationObj.getPostcode()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
+   // Countries
+  pageFormater.writeTwoColTableHeader(out, "Country");
+  out.println("<select name=\"f_country\" size=\"1\" class=\"line150\">");
+  rset = countryObj.getCountries (stmt);
+
+  // Display all of the Countries
+ 
+  while (rset.next())
+  {
+    String selected = "";
+    if (organisationObj.getCountry() != null && !organisationObj.getCountry().equals("") && organisationObj.getCountry().equals(rset.getString ("countryid")))
+      selected = "selected";
+        
+    if(!rset.getString ("countryname").toLowerCase().equals("australia")){
+      countryTrailingSubString += "<option " + selected + " value='" + rset.getString ("countryid") + "'" +
+                                  ">" + rset.getString ("countryname") + "</option>\n";
+    }else{
+      countryLeadingSubString = "<option " + selected + " value='" + rset.getString ("countryid") + "'>" + rset.getString ("countryname") + "</option>\n";
+    }
+  }
+  rset.close ();
+  out.print(countryLeadingSubString + countryTrailingSubString);
+  out.println("</select>");
+
+  pageFormater.writeTwoColTableFooter(out);
+
 
   pageFormater.writeTwoColTableHeader(out, "Contact Name");
   out.println("<input type=\"text\" name=\"f_contact\" size=\"40\" class=\"line300\" maxlength=40 value=\"" + ((organisationObj.getContact() == null)?"":organisationObj.getContact()) + "\">");
@@ -247,35 +273,10 @@
   pageFormater.writeTwoColTableFooter(out);
 
   pageFormater.writeTwoColTableHeader(out, "Web Link");
-  out.println("<input type=\"text\" name=\"f_web_links\" size=\"100\" class=\"line300\" maxlength=2048 value=\"" + ((organisationObj.getWebLinks() == null)?"":organisationObj.getWebLinks()) + "\">");
+  out.println("<input type=\"text\" name=\"f_web_links\" size=\"100\"  class=\"line300\" maxlength=2048 value=\"" + ((organisationObj.getWebLinks() == null)?"":organisationObj.getWebLinks()) + "\">");
   pageFormater.writeTwoColTableFooter(out);
 
-  // Countries
-  pageFormater.writeTwoColTableHeader(out, "Country");
-  out.println("<select name=\"f_country\" size=\"1\" class=\"line150\">");
-  rset = countryObj.getCountries (stmt);
-
-  // Display all of the Countries
  
-  while (rset.next())
-  {
-    String selected = "";
-    if (organisationObj.getCountry() != null && !organisationObj.getCountry().equals("") && organisationObj.getCountry().equals(rset.getString ("countryid")))
-      selected = "selected";
-        
-    if(!rset.getString ("countryname").toLowerCase().equals("australia")){
-      countryTrailingSubString += "<option " + selected + " value='" + rset.getString ("countryid") + "'" +
-                                  ">" + rset.getString ("countryname") + "</option>\n";
-    }else{
-      countryLeadingSubString = "<option " + selected + " value='" + rset.getString ("countryid") + "'>" + rset.getString ("countryname") + "</option>\n";
-    }
-  }
-  rset.close ();
-  out.print(countryLeadingSubString + countryTrailingSubString);
-  out.println("</select>");
-
-  pageFormater.writeTwoColTableFooter(out);
-
    // Dislpay Organisation Types
   pageFormater.writeTwoColTableHeader(out, "Organisation Type *");
   out.println("<select name=\"f_organisation_type\" size=\"1\" class=\"line150\">");
@@ -375,8 +376,10 @@
 <script language="javascript">
   function checkFields(){
     var msg = "";
-   
- 
+    
+    if(!validateUrl($('input[name=f_web_links]'))){return false;}
+    if(!checkStateCountry())return false;
+
     if($( '[name|="f_organisation_name"]').val().length<1)
     //if(isBlank(document.org_form.f_orgname.value))
       msg += "\t-Organisation Name \n";
@@ -390,8 +393,21 @@
       alert("You appear to have not entered the following information for:\n" + msg + "Please press the OK button to continue and then fill in the required fields.");
         return false;
     }
-    return true;
+    //return true;
+    return false;
   }
+
+  function checkStateCountry(){
+  console.log("checking");
+	var state = $("[name=f_org_state_id] option:selected").text();
+	var country = $("[name=f_country] option:selected").text();
+	var returnVal = true;
+	console.log(state +"|"+country);
+	if ((state == "O/S") && (country =="Australia")){alert("If the State is O/S, the Country can not be Australia. Please ensure the data is entered correctly and try again."); returnVal = false;}
+	if ((state != "O/S") && (country != "Australia")){alert("If the Country is not Australia, the State must be O/S. Please ensure the data is entered correctly and try again."); returnVal = false;}
+	return returnVal;
+}
+  
 </script>
 <%
   stmt.close();

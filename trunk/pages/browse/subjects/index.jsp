@@ -55,6 +55,13 @@
   if (letter == null) letter = "a";
     if (letter.length() > 1) letter = letter.substring(0,1);
   letter = letter.toLowerCase();
+   
+   //added to account for numbers and non alphanumeric at the beginning of names
+   String switchLike = "";
+   if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else switchLike = " LIKE '" + letter + "%' ";
+  
 %>
 <br>
 <div class='browse-index browse-index-event'>
@@ -84,6 +91,8 @@
   <a href="?letter=X" <%=letter.equals("x")?"class='b-91 bold'":""%>>X</a>
   <a href="?letter=Y" <%=letter.equals("y")?"class='b-91 bold'":""%>>Y</a>
   <a href="?letter=Z" <%=letter.equals("z")?"class='b-91 bold'":""%>>Z</a>
+  <a href="?letter=0" <%=letter.equals("0")?"class='b-91 bold'":""%>>0-9</a>
+  <a href="?letter=*" <%=letter.equals("*")?"class='b-91 bold'":""%>>%</a>  
 </div>
 </div>
 <%
@@ -120,7 +129,7 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
 	"LEFT JOIN primcontentindicatorevlink on (contentindicator.contentindicatorid = primcontentindicatorevlink.primcontentindicatorid) " +
 	"LEFT JOIN events ON (primcontentindicatorevlink.eventid = events.eventid) "+
 	"LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) "+
-	"WHERE lcase(contentindicator.contentindicator) LIKE '" + letter + "%' "+
+	"WHERE lcase(contentindicator.contentindicator) " + switchLike + " "+
 	"group by contentindicator.contentindicatorid) contentindicator WHERE contentindicator.eventnum > 0 or contentindicator.itemcount > 0 ";
 	
   l_rs = m_db.runSQL (sqlString, stmt);
@@ -152,7 +161,7 @@ m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD
       bgcolour = "bgcolor='#FFFFFF'";
       sqlString = "SELECT * FROM (SELECT contentindicator.contentindicator,min(events.yyyyfirst_date) year, max(events.yyyylast_date) , count(distinct events.eventid) num, count(distinct itemcontentindlink.itemid) itemcount, contentindicator.contentindicatorid " +
 		"FROM contentindicator LEFT JOIN primcontentindicatorevlink on (contentindicator.contentindicatorid = primcontentindicatorevlink.primcontentindicatorid) LEFT JOIN events ON (primcontentindicatorevlink.eventid = events.eventid) LEFT JOIN itemcontentindlink ON (contentindicator.contentindicatorid = itemcontentindlink.contentindicatorid) " +
-		"WHERE lcase(contentindicator.contentindicator) LIKE '" + letter + "%' group by contentindicator.contentindicator order by " + sortCol + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", contentindicator.contentindicator) sub WHERE sub.num > 0 or sub.itemcount > 0 limit " + ((pageno)*resultsPerPage ) + ","+(resultsPerPage +1);
+		"WHERE lcase(contentindicator.contentindicator) " + switchLike + " group by contentindicator.contentindicator order by " + sortCol + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", contentindicator.contentindicator) sub WHERE sub.num > 0 or sub.itemcount > 0 limit " + ((pageno)*resultsPerPage ) + ","+(resultsPerPage +1);
       l_rs = m_db.runSQL (sqlString, stmt);
       int i = 0;
       while (l_rs.next())

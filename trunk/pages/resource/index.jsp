@@ -591,23 +591,42 @@
 						//added extra table row for item url 21-02-06.
 						if (hasValue(item.getItemUrl())) {
 							String b64 =  item.getThumbnail(item.getItemUrl());
+							Vector additionalUrls = item.getAdditionalUrls(); 
 						%>
-							<tr >
-								<th class='record-label b-153'>Item URL</th>
-								
+						<tr >
+							<th class='record-label b-153'>Item URL</th>
 								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
-												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
+											<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
+													<%=item.getItemUrl()%></a><br>
+											<%if (b64 != null && additionalUrls.size() == 0){ %>
+%>												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
 													<img src="data:image/jpg;base64, <%=b64%>" alt="Image not found" />
-												</a><br>
-												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
-													<%=item.getItemUrl()%>
 												</a>
-												
+											<% } %>												
 											</td>
 										</tr>
+										<!--//additional urls-->
+										<tr>
+											<td>
+										 	<% 
+										 	for (int i = 0; i < additionalUrls.size(); i++) {
+										 	b64 = item.getThumbnail(additionalUrls.elementAt(i).toString());
+										 	if (b64 != null){
+										 	%>
+										 	<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
+										 	<img src="data:image/jpg;base64, <%=b64%>" alt="Image not found" />
+										 	</a>
+
+										 	<%
+										 	}
+										 	}
+										 	%>
+											</td>
+										</tr>
+
 									</table>
 								</td>
 							</tr>

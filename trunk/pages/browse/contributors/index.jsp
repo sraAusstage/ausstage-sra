@@ -47,10 +47,17 @@
 
 
 <%
+
   String letter = request.getParameter("letter");
   if (letter == null) letter = "a";
-    if (letter.length() > 1) letter = letter.substring(0,1);
+  if (letter.length() > 1) letter = letter.substring(0,1);
   letter = letter.toLowerCase();
+   
+   //added to account for numbers and non alphanumeric at the beginning of names
+   String switchLike = "";
+   if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else switchLike = " LIKE '" + letter + "%' ";
 
   String pno=request.getParameter("pno"); // this will be coming from url
   int pageno=0;
@@ -71,13 +78,17 @@
   if (sortCol == null || !validSql.contains(sortCol)) sortCol = "name";
   String sortOrd = request.getParameter("order");
   if (sortOrd == null) sortOrd = "ASC";
+  System.out.println("3");
   ausstage.Database     m_db = new ausstage.Database ();
+  System.out.println("4");
   CachedRowSet  l_rs     = null;
   admin.AppConstants constants = new admin.AppConstants();
+  
   m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
+    System.out.println("5");
   Statement stmt    = m_db.m_conn.createStatement ();
       
-  sqlString =	"SELECT COUNT(*) From `contributor` WHERE lcase(`contributor`.last_name) LIKE '" + letter + "%'";
+  sqlString =	"SELECT COUNT(*) From `contributor` WHERE lcase(`contributor`.last_name) "+switchLike;
   l_rs = m_db.runSQL (sqlString, stmt);
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
@@ -124,6 +135,8 @@
   <a href="?letter=X" <%=letter.equals("x")?"class='b-106 bold'":""%>>X</a>
   <a href="?letter=Y" <%=letter.equals("y")?"class='b-106 bold'":""%>>Y</a>
   <a href="?letter=Z" <%=letter.equals("z")?"class='b-106 bold'":""%>>Z</a>
+  <a href="?letter=0" <%=letter.equals("0")?"class='b-106 bold'":""%>>0-9</a>
+  <a href="?letter=*" <%=letter.equals("*")?"class='b-106 bold'":""%>>%</a>
 </span>
 </div>
 
@@ -143,7 +156,7 @@
     sqlString = 	"SELECT contributor.`contributorid`,contributor.last_name name,contributor.first_name, min(events.yyyyfirst_date)year,max(events.yyyylast_date),count(distinct events.eventid) num, group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') function, count(distinct itemconlink.itemid) total " +
 			"FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) LEFT JOIN events ON (conevlink.eventid = events.eventid) Left JOIN contfunctlink ON (contributor.contributorid = contfunctlink.contributorid) Left JOIN contributorfunctpreferred ON (contfunctlink.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid)" +
 			"Left join itemconlink ON (contributor.contributorid = itemconlink.contributorid) "+
-			"WHERE lcase(`contributor`.last_name) LIKE '" + letter + "%' group by `contributor`.contributorid " +
+			"WHERE lcase(`contributor`.last_name) " + switchLike + " group by `contributor`.contributorid " +
   			"ORDER BY  " + (sortCol.equals("last_name")?"last_name " + sortOrd + ", first_name":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + (sortCol.equals("last_name")?"":", last_name asc, first_name asc") + " limit " + ((pageno)*100) + ",101";  l_rs = m_db.runSQL (sqlString, stmt);      
     int i = 0;
     while (l_rs.next())
