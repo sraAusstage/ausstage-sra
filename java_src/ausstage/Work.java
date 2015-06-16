@@ -59,10 +59,15 @@ public class Work {
 
 	public void load(String p_id) {
 		String sqlString = "";
+
 		try {
+
 			Statement stmt = m_db.m_conn.createStatement();
+
 			sqlString = (new StringBuilder("SELECT * FROM work WHERE workid = '")).append(p_id).append("'").toString();
+
 			ResultSet l_rs = m_db.runSQL(sqlString, stmt);
+
 			if (l_rs.next()) {
 				m_workid = l_rs.getString("workid");
 				m_work_title = l_rs.getString("work_title");
@@ -453,6 +458,7 @@ public class Work {
 	}
 
 	public String getLinkedOrganisationNames() {
+		//System.out.println("getLinkedOrganisations function -----");
 		String orgNames = "";
 		ResultSet l_rs = null;
 		String l_sql = "";
@@ -463,7 +469,6 @@ public class Work {
 					+ " workorglink.organisationid = organisation.organisationid AND workorglink.workid=")).append(m_workid).append(" ").append("ORDER BY organisation.name ")
 					.toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
-			
 			while (l_rs.next()) {
 				if(orgNames.equals("")){
 					orgNames += l_rs.getString("name");
@@ -471,9 +476,9 @@ public class Work {
 					orgNames += ", " + l_rs.getString("name");
 				}
 			}
-
 			l_rs.close();
 			stmt.close();
+
 			return orgNames;
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -533,16 +538,20 @@ public class Work {
 		String l_sql = "";
 		ResultSet l_rs = null;
 		try {
-			l_sql = (new StringBuilder("SELECT work.workid, events.eventid, events.event_name,work.work_title,concat_ws("
-					+ "', ',venue.venue_name, venue.suburb,states.state) as Output,  date_format(STR_TO"
-					+ "_DATE(CONCAT(events.ddfirst_date,' ',events.mmfirst_date,' ',events.yyyyfirst_da"
-					+ "te), '%d %m %Y'), '%e %M %Y'), events.ddfirst_date, events.mmfirst_date, events."
-					+ "yyyyfirst_date,events.FIRST_DATE, STR_TO_DATE(CONCAT_WS(' ', events.ddfirst_date"
-					+ ", events.mmfirst_date, events.yyyyfirst_date), '%d %m %Y') as datesort FROM work"
-					+ " INNER JOIN eventworklink ON (work.workid = eventworklink.workid) INNER JOIN eve"
-					+ "nts ON (eventworklink.eventid = events.eventid) INNER JOIN venue ON (events.venu"
-					+ "eid = venue.venueid)  INNER JOIN states ON (venue.state = states.stateid) WHERE " + "work.workid=")).append(p_id).append(" order by events.FIRST_DATE DESC")
-					.toString();
+			l_sql = (new StringBuilder("SELECT work.workid, events.eventid, events.event_name,work.work_title," 
+					+ "concat_ws(', ',venue.venue_name, IF((venue.suburb = ''), null, venue.suburb) ,states.state) as Output, "
+					+ "date_format(STR_TO_DATE(CONCAT(events.ddfirst_date,' ',events.mmfirst_date,' ',events.yyyyfirst_date), '%d %m %Y'), '%e %M %Y'), "
+					+ "events.ddfirst_date, events.mmfirst_date, events."
+					+ "yyyyfirst_date,events.FIRST_DATE, "
+					+ "STR_TO_DATE(CONCAT_WS(' ', events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date), '%d %m %Y') as datesort, "
+					+ "country.countryname as countryname "
+					+ "FROM work "
+					+ "INNER JOIN eventworklink ON (work.workid = eventworklink.workid) "
+					+ "INNER JOIN events ON (eventworklink.eventid = events.eventid) "
+					+ "INNER JOIN venue ON (events.venueid = venue.venueid)  "
+					+ "INNER JOIN states ON (venue.state = states.stateid) "
+					+ "INNER JOIN country on (country.countryid = venue.countryid) "
+					+ "WHERE " + "work.workid=")).append(p_id).append(" order by events.FIRST_DATE DESC").toString();
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");

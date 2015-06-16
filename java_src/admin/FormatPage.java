@@ -68,6 +68,22 @@ public class FormatPage {
 		}
 	}
 
+	public void writeTwoColTableHeader(JspWriter p_out, String p_text, int tableWidth) {
+		try {
+			p_out.println("<table style='border:0;' width='"+tableWidth+"' cellspacing='0' cellpadding='0'>");
+			p_out.println("<tr>");
+			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' style='border: 0;'></td>");
+			p_out.println("  <td valign='top' align='left' width='125' class='heading'><img src='/custom/ima" + "ges/spacer.gif' width='125' height='1' style='border: 0;'></td>");
+			p_out.println("  <td valign='top' align='left' width='"+(tableWidth-(90+25))+"' class='bodytext'><img src='/custom/im" + "ages/spacer.gif' width='285' height='1' style='border: 0;'></td>");
+			p_out.println("</tr>");
+			p_out.println("<tr>");
+			p_out.println("  <td valign='top' align='left' width='90'><img src='/custom/images/spacer.gif' w" + "idth='90' height='1' style='border: 0;'></td>");
+			p_out.println("  <td valign='top' align='left' width='125' class='bodytext'>" + p_text + "</td>");
+			p_out.println("  <td valign='top' align='left' width='285' class='bodytext'>");
+		} catch (Exception e) {
+			System.out.println("An exception occurred when trying to access the JspWriter object");
+		}
+	}
 	public void writeTwoColTableFooter(JspWriter p_out) {
 		try {
 			p_out.println("</td>");

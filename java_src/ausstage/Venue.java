@@ -276,7 +276,7 @@ public class Venue {
 			if (validateObjectForDB()) {
 				// As the notes is a text area, need to limit characters
 				if (m_notes.length() >= 300) m_notes = m_notes.substring(0, 299);
-				sqlString = "INSERT INTO VENUE (VENUE_NAME,  "
+				sqlString = "INSERT INTO VENUE (VENUE_NAME, OTHER_NAMES1, OTHER_NAMES2, OTHER_NAMES3, "
 						+ "STREET, SUBURB, POSTCODE, STATE, CAPACITY, CONTACT, PHONE, "
 						+ "FAX, EMAIL, WEB_LINKS, NOTES, COUNTRYID, entered_by_user, entered_date, ddfirst_date, mmfirst_date, yyyyfirst_date, ddlast_date, mmlast_date, yyyylast_date ";
 				if (!m_longitude.equals("")) sqlString += ",LONGITUDE ";
@@ -284,7 +284,11 @@ public class Venue {
 				if (!m_radius.equals("")) sqlString += ",RADIUS ";
 				if (!m_elevation.equals("")) sqlString += ",ELEVATION ";
 
-				sqlString += ") VALUES (" + "'" + m_db.plSqlSafeString(m_venue_name) + "'," + "'" + m_db.plSqlSafeString(m_street) + "','" + m_db.plSqlSafeString(m_suburb) + "','"
+				sqlString += ") VALUES (" + "'" + m_db.plSqlSafeString(m_venue_name) + "',"
+						  + "'" + m_db.plSqlSafeString(m_other_names1)+ "',"
+						  + "'" + m_db.plSqlSafeString(m_other_names2)+ "',"
+						  + "'" + m_db.plSqlSafeString(m_other_names3)+ "',"
+						  + "'" + m_db.plSqlSafeString(m_street) + "','" + m_db.plSqlSafeString(m_suburb) + "','"
 						+ m_db.plSqlSafeString(m_postcode) + "'," + Integer.parseInt(m_state_id) + "," + strCapacity + "," + "'" + m_db.plSqlSafeString(m_contact) + "','"
 						+ m_db.plSqlSafeString(m_phone) + "'," + "'" + m_db.plSqlSafeString(m_fax) + "','" + m_db.plSqlSafeString(m_email) + "'," + "'"
 						+ m_db.plSqlSafeString(m_web_links) + "','" + m_db.plSqlSafeString(m_notes) + "'," + m_country + "," + "'" + m_db.plSqlSafeString(m_entered_by_user)
@@ -346,7 +350,11 @@ public class Venue {
 					strCapacity = Integer.toString(Integer.parseInt(m_capacity));
 				}
 
-				sqlString = "UPDATE VENUE set VENUE_NAME='" + m_db.plSqlSafeString(m_venue_name) + "', " + "STREET='" + m_db.plSqlSafeString(m_street) + "', " + "SUBURB='"
+				sqlString = "UPDATE VENUE set VENUE_NAME='" + m_db.plSqlSafeString(m_venue_name) + "', "
+						+ "OTHER_NAMES1 ='" + m_db.plSqlSafeString(m_other_names1)+ "',"
+						+ "OTHER_NAMES2 ='" + m_db.plSqlSafeString(m_other_names2)+ "',"
+						+ "OTHER_NAMES3 ='" + m_db.plSqlSafeString(m_other_names3)+ "',"
+						+ "STREET='" + m_db.plSqlSafeString(m_street) + "', " + "SUBURB='"
 						+ m_db.plSqlSafeString(m_suburb) + "', STATE=" + Integer.parseInt(m_state_id) + ", " + "POSTCODE='" + m_db.plSqlSafeString(m_postcode) + "',"
 						+ " updated_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) + "'" + ", updated_DATE =  now()  " + ",CAPACITY=" + strCapacity + " , CONTACT='"
 						+ m_db.plSqlSafeString(m_contact) + "', " + "PHONE='" + m_db.plSqlSafeString(m_phone) + "', FAX='" + m_db.plSqlSafeString(m_fax) + "', EMAIL='"
@@ -515,6 +523,17 @@ public class Venue {
 		m_venue_name = p_name;
 	}
 
+	public void setOtherNames1(String p_name) {
+		m_other_names1 = p_name;
+	}
+	public void setOtherNames2(String p_name) {
+		m_other_names2 = p_name;
+	}
+	public void setOtherNames3(String p_name) {
+		m_other_names3 = p_name;
+	}
+	
+	
 	public void setStreet(String p_street) {
 		m_street = p_street;
 	}

@@ -868,7 +868,7 @@ public class Search {
 
 	public CachedRowSet getVenues() {
 
-		String m_sql_items = "search_venue.venueid, venue_name, street, suburb, venue_state, web_links, resource_flag, CONCAT_WS('- '  ,min(events.yyyyfirst_date), max(events.yyyylast_date)) dates,count(distinct events.eventid) num, "
+		String m_sql_items = "search_venue.venueid, venue_name, street, suburb, venue_state, web_links, resource_flag, CONCAT_WS(' - '  ,min(events.yyyyfirst_date), max(events.yyyylast_date)) dates,count(distinct events.eventid) num, "
 				+ " count(distinct itemvenuelink.itemid) as total";
 		m_sql_string.append("select distinct " + m_sql_items + " from search_venue " + "LEFT JOIN events ON (search_venue.venueid = events.venueid) "
 				+ "LEFT JOIN itemvenuelink ON (search_venue.venueid = itemvenuelink.venueid)where ");
@@ -1004,7 +1004,7 @@ public class Search {
 
 	public CachedRowSet getOrganisations() {
 
-		String m_sql_items = "search_organisation.organisationid, name, address, suburb, org_state, org_country, suburb_state_country, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total, CONCAT_WS('- ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
+		String m_sql_items = "search_organisation.organisationid, name, address, suburb, org_state, org_country, suburb_state_country, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total, CONCAT_WS(' - ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
 		m_sql_string
 				.append("select distinct " + m_sql_items + "  from search_organisation  LEFT JOIN orgevlink ON (orgevlink.organisationid = search_organisation.organisationid) "
 						+ "LEFT JOIN events ON (orgevlink.eventid = events.eventid) "
@@ -1105,6 +1105,9 @@ public class Search {
 
 	public void setKeyWord(String p_key_word) {
 		m_key_word = p_key_word.trim();
+		System.out.println("*********************************************");
+		System.out.println("search term is "+m_key_word);
+		System.out.println("*********************************************");
 	}
 
 	public void setSqlSwitch(String p_sql_switch) {
