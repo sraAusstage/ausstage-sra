@@ -24,6 +24,7 @@ import ausstage.Event;
 import ausstage.Organisation;
 import ausstage.Venue;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.Vector;
@@ -90,6 +91,9 @@ public class Item {
   private Vector m_item_creator_conlinks;
   private Vector m_item_secgenrelinks;
   private Vector m_item_workslinks;
+  
+  // ADDED BY BW FOR ADDITIONAL ITEM URLs
+  private Vector m_additional_urls;
 
   // CR0001
   private String m_ddCreate_date;
@@ -212,6 +216,7 @@ public class Item {
     m_item_creator_conlinks = new Vector();
     m_item_secgenrelinks = new Vector();
     m_item_workslinks = new Vector();
+    m_additional_urls = new Vector(); //BW ADDITIONAL ITEM URLS
 
     // CR0001
     m_ddCreate_date = "";
@@ -524,6 +529,7 @@ public class Item {
         loadLinkedCreatorOrganisations();
         loadLinkedContentInd();
         loadLinkedWork();
+        loadAdditionalUrls(); //BW -additional URLS
 
         // Load the source citation
         if (m_sourceid != null && !m_sourceid.equals("")) {
@@ -806,6 +812,11 @@ public class Item {
     return m_item_workslinks;
   }
 
+  //BW additional URLS
+  public Vector getAdditionalUrls() {
+	    return m_additional_urls;
+  }
+  
   public Vector<Item> getAssociatedItems() {
 	Vector<Item> items = new Vector<Item>();
 	for (ItemItemLink iil : m_item_itemlinks) {
@@ -1238,7 +1249,14 @@ public class Item {
                 "," + m_item_workslinks.elementAt(i) + ")";
             m_db.runSQLResultSet(l_sql, stmt);
           }
-
+          //BW additional URLS
+          for (int i = 0; i < m_additional_urls.size(); i++) {
+              l_sql = 
+                  "INSERT INTO item_url (ITEMID, URL) " + "VALUES (" + l_item_id + 
+                  ",'" + m_db.plSqlSafeString((String)m_additional_urls.elementAt(i)) + "')";
+              m_db.runSQLResultSet(l_sql, stmt);
+            }
+          
           for (int i = 0; i < m_item_itemlinks.size(); i++) {
             ItemItemLink itemItemLink = m_item_itemlinks.elementAt(i);
             l_sql = 
@@ -1758,6 +1776,16 @@ public class Item {
               "," + m_item_workslinks.elementAt(i) + ")";
           m_db.runSQLResultSet(l_sql, stmt);
         }
+        //BW ADDITIONAL URLS
+        l_sql = "DELETE FROM item_url WHERE itemid=" + m_itemid;
+        m_db.runSQLResultSet(l_sql, stmt);
+        for (int i = 0; i < m_additional_urls.size(); i++) {
+          l_sql = 
+              "INSERT INTO item_url (itemid, url)VALUES (" + m_itemid + 
+              ",'" + m_db.plSqlSafeString((String) m_additional_urls.elementAt(i)) + "')";
+          m_db.runSQLResultSet(l_sql, stmt);
+        }
+        
 
         l_sql = "DELETE FROM itemitemlink WHERE itemid=" + m_itemid;
         m_db.runSQLResultSet(l_sql, stmt);
@@ -1950,6 +1978,9 @@ public class Item {
       m_db.runSQLResultSet(l_sql, stmt);
 
       l_sql = "DELETE FROM ITEMWORKLINK WHERE itemid=" + m_itemid;
+      m_db.runSQLResultSet(l_sql, stmt);
+      //BW ADDITIONAL URL
+      l_sql = "DELETE FROM ITEMURL WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
 
       l_sql = "DELETE FROM item WHERE itemid=" + m_itemid;
@@ -2294,6 +2325,50 @@ public class Item {
       System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
     }
   }
+  /*
+  Name: loadAdditionalUrls ()
+
+  Purpose: Sets the class to contain the additional Urls for the
+          specified item id.
+
+  Parameters:
+   None
+
+  Returns:
+    None
+
+  */
+
+  private void loadAdditionalUrls() {
+    ResultSet l_rs = null;
+    String l_sql = "";
+
+    try {
+      Statement stmt = m_db.m_conn.createStatement();
+
+      l_sql = 
+          "SELECT url FROM item_url WHERE itemid = " + m_itemid +";";
+      l_rs = m_db.runSQLResultSet(l_sql, stmt);
+      // Reset the object
+      m_additional_urls.removeAllElements();
+
+      while (l_rs.next()) {
+        m_additional_urls.addElement(l_rs.getString("url"));
+      }
+      l_rs.close();
+      stmt.close();
+    } catch (Exception e) {
+      System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+      System.out.println("An Exception occured in loadLinkedWork().");
+      System.out.println("MESSAGE: " + e.getMessage());
+      System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+      System.out.println("CLASS.TOSTRING: " + e.toString());
+      System.out.println("sqlString: " + l_sql);
+      System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+    }
+  }
+
+  
   /*
   Name: loadLinkedVenues ()
 
@@ -2935,6 +3010,11 @@ public class Item {
   public void setItemWorkLinks(Vector p_item_worklinks) {
     m_item_workslinks = p_item_worklinks;
   }
+  
+  //BW additional URLS
+  public void setAdditionalUrls(Vector p_additional_urls) {
+	    m_additional_urls = p_additional_urls;
+	  }
 
   public void setEnteredByUser(String p_user_name) {
     m_entered_by_user = p_user_name;
@@ -3147,8 +3227,18 @@ public class Item {
     Calendar calendar;
     String day = "";
     String month = "";
-    String year = "";
-
+    String year = "";  
+    
+    //BW additional URLS
+    //System.out.println("empty additional urls");
+    m_additional_urls.clear();
+    String urls [] = request.getParameter("f_additional_urls").split(",");
+    //System.out.println("urls length"+urls.length);
+    for (int i = 0; i < urls.length; i++){
+    	if (!urls[i].equals(""))
+        m_additional_urls.add(urls[i]);
+    }//BW additional URLS
+    
     this.m_itemid = request.getParameter("f_itemid");
     if (m_itemid == null)
       m_itemid = "0";
@@ -3579,7 +3669,7 @@ public class Item {
 			  }
 			  img = new Image(url.openStream(), imageType);
 			  //small thumbs
-	          return squareIt(img, 50, 0.1, 0.95f, 0.08f);
+	          return squareIt(img, 100, 0.1, 0.95f, 0.08f);
 		  } else {
 			  System.out.println("Not a url");
 		  }

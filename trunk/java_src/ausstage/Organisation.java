@@ -297,9 +297,9 @@ public class Organisation {
 						+ m_state_id
 						+ ",'"
 						+ m_db.plSqlSafeString(m_contact)
-						+ "',"
-						+ m_db.plSqlSafeString(m_postcode.equals("") ? "null" : m_postcode)
-						+ ",'"
+						+ "','"
+						+ m_db.plSqlSafeString(m_postcode)
+						+ "','"
 						+ m_db.plSqlSafeString(m_phone1)
 						+ "',"
 						+ "'"
@@ -397,7 +397,7 @@ public class Organisation {
 						+ "'" + ", updated_DATE =  now(),  ":"") + "other_names1='" + m_db.plSqlSafeString(m_other_names1) + "', " + "other_names2='"
 						+ m_db.plSqlSafeString(m_other_names2) + "', " + "other_names3='" + m_db.plSqlSafeString(m_other_names3) + "', " + "address='"
 						+ m_db.plSqlSafeString(m_address) + "', " + "SUBURB='" + m_db.plSqlSafeString(m_suburb) + "', " + "state=" + m_state_id + ", " + "contact='"
-						+ m_db.plSqlSafeString(m_contact) + "', " + "postcode=" + m_db.plSqlSafeString(m_postcode.equals("") ? "null" : m_postcode) + ", " + "phone1='"
+						+ m_db.plSqlSafeString(m_contact) + "', " + "postcode='" + m_db.plSqlSafeString(m_postcode) + "', " + "phone1='"
 						+ m_db.plSqlSafeString(m_phone1) + "'," + "phone2='" + m_db.plSqlSafeString(m_phone2) + "'," + "phone3='" + m_db.plSqlSafeString(m_phone3) + "'," + "fax='"
 						+ m_db.plSqlSafeString(m_fax) + "', " + "email='" + m_db.plSqlSafeString(m_email) + "', " + "web_links='" + m_db.plSqlSafeString(m_web_links) + "', "
 						+ "notes='" + m_db.plSqlSafeString(m_notes) + "', countryid=" + m_country + ", " + "organisation_type_id=" + m_organisation_type + ", " + "ddfirst_date= '"

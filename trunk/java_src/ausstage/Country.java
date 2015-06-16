@@ -290,7 +290,130 @@ public class Country {
 			return (null);
 		}
 	}
+	
+	/*
+	 * Name: getVenueCountries ()
+	 * 
+	 * Purpose: Returns a record set with all of the country information in it restricted to those countries that are used in venues.
+	 * 
+	 * Parameters: p_stmt : Database statement
+	 * 
+	 * Returns: A record set.
+	 */
+	public CachedRowSet getVenueCountries(Statement p_stmt, String firstCountry) {
+		
+		CachedRowSet l_rs;
+		String sqlString;
+		String l_ret;
+		String orderByCase = "";
+		
+		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+firstCountry+"%' THEN 1 ELSE 2 END, "; }
+		
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
 
+			sqlString = "SELECT DISTINCT country.countryid as countryid, countryname "+ 
+						"FROM country "+ 
+						"left join venue "+ 
+						"ON country.countryid = venue.countryid "+ 
+						"WHERE venue.countryid IS NOT NULL "+
+						"ORDER BY "+orderByCase+" country.countryname";
+			l_rs = m_db.runSQL(sqlString, stmt);
+			stmt.close();
+			return (l_rs);
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getVenueCountries().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return (null);
+		}
+	}
+
+	/*
+	 * Name: getOriginOfTextCountries ()
+	 * 
+	 * Purpose: Returns a record set with all of the country information in it restricted to those countries that are referenced as an orign of text.
+	 * 
+	 * Parameters: p_stmt : Database statement
+	 * 
+	 * Returns: A record set.
+	 */
+	public CachedRowSet getOriginOfTextCountries(Statement p_stmt, String firstCountry) {
+		
+		CachedRowSet l_rs;
+		String sqlString;
+		String l_ret;
+		String orderByCase = "";
+		
+		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+firstCountry+"%' THEN 1 ELSE 2 END, "; }
+		
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+
+			sqlString = "SELECT DISTINCT country.countryid as countryid, countryname "+ 
+						"FROM country "+ 
+						"LEFT JOIN playevlink "+ 
+						"ON country.countryid = playevlink.countryid "+ 
+						"WHERE playevlink.countryid IS NOT NULL "+
+						"ORDER BY "+orderByCase+" country.countryname";
+			l_rs = m_db.runSQL(sqlString, stmt);
+			stmt.close();
+			return (l_rs);
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getOriginOfTextCountries().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return (null);
+		}
+	}
+	
+	/*
+	 * Name: getOriginOfProductionCountries ()
+	 * 
+	 * Purpose: Returns a record set with all of the country information in it restricted to those countries that are referenced as an orign of production.
+	 * 
+	 * Parameters: p_stmt : Database statement
+	 * 
+	 * Returns: A record set.
+	 */
+	public CachedRowSet getOriginOfProductionCountries(Statement p_stmt, String firstCountry) {
+		
+		CachedRowSet l_rs;
+		String sqlString;
+		String l_ret;
+		String orderByCase = "";
+		
+		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+firstCountry+"%' THEN 1 ELSE 2 END, "; }
+		
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+
+			sqlString = "SELECT DISTINCT country.countryid as countryid, countryname "+ 
+						"FROM country "+ 
+						"LEFT JOIN productionevlink "+ 
+						"ON country.countryid = productionevlink.countryid "+ 
+						"WHERE productionevlink.countryid IS NOT NULL "+
+						"ORDER BY "+orderByCase+" country.countryname";
+			l_rs = m_db.runSQL(sqlString, stmt);
+			stmt.close();
+			return (l_rs);
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getOriginOfProductionCountries().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return (null);
+		}
+	}
+	
 	void handleException(Exception p_e, String p_description) {
 		System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 		System.out.println("MESSAGE: " + p_e.getMessage());
