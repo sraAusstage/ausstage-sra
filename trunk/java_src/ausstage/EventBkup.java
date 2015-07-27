@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import sun.jdbc.rowset.CachedRowSet;
 
-public class Event {
+public class EventBkup {
 	private ausstage.Database m_db;
 	private admin.AppConstants AppConstants = new admin.AppConstants();
 	private admin.Common Common = new admin.Common();
@@ -108,7 +108,7 @@ public class Event {
 	 * 
 	 * Returns: None
 	 */
-	public Event(ausstage.Database p_db) {
+	public EventBkup(ausstage.Database p_db) {
 		m_db = p_db;
 		initialise();
 	}
@@ -613,18 +613,12 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			/*l_sql = "SELECT DISTINCT eventeventlinkid  " 
-					+ " FROM eventeventlink el" 
-					+ " WHERE (el.eventid=" + m_eventid + " OR el.childid = "+ m_eventid + ")";*/
-			l_sql = "SELECT DISTINCT eventeventlinkid "
-				 + "FROM eventeventlink eel, events e, events child, relation_lookup rl " 
-				 + "WHERE (eel.eventid =  "+ m_eventid +"  || eel.childid = "+ m_eventid +") " 
-				 + "AND eel.eventid = e.eventid " 
-				 + "AND eel.childid = child.eventid " 
-				 + "AND eel.relationlookupid = rl.relationlookupid " 
-				 + "ORDER BY CASE WHEN eel.childid = "+ m_eventid +" THEN rl.child_relation ELSE rl.parent_relation END, " 
-				 + "CASE WHEN eel.childid = "+ m_eventid +" THEN e.event_name ELSE child.event_name END";
-			
+			l_sql = "SELECT DISTINCT eventeventlinkid  " 
+					+ " FROM eventeventlink el, events e, lookup_codes lu" 
+					+ " WHERE el.eventid=" + m_eventid 
+					+ " AND el.childid = e.eventid "
+					+ " AND lu.code_lov_id = el.function_lov_id "
+					+ " ORDER BY lu.description ASC, event_name ASC";
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();
@@ -1857,10 +1851,10 @@ public class Event {
 
 	// Derived Objects
 
-	public Vector<Event> getAssociatedEvents() {
-		Vector<Event> events = new Vector<Event>();
+	public Vector<EventBkup> getAssociatedEvents() {
+		Vector<EventBkup> events = new Vector<EventBkup>();
 		for (EventEventLink eel : m_event_eventlinks) {
-			Event event = new Event(m_db);
+			EventBkup event = new EventBkup(m_db);
 			event.load(Integer.parseInt(eel.getChildId()));
 			events.add(event);
 		}
@@ -1903,7 +1897,7 @@ public class Event {
 		return m_con_evlinks;
 	}
 
-	public Vector<Event> getEvents() {
+	public Vector<EventBkup> getEvents() {
 		return getAssociatedEvents();
 	}
 
@@ -2643,8 +2637,11 @@ public class Event {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			l_sql = "SELECT eventeventlinkid  " 
-					+ " FROM eventeventlink el" 
-					+ " WHERE (eventid=" + m_eventid + " OR childid = " + m_eventid + " )";
+					+ " FROM eventeventlink el, events e, lookup_codes lu" 
+					+ " WHERE eventid=" + m_eventid 
+					+ " AND el.childid = e.eventid "
+					+ " AND lu.code_lov_id = el.function_lov_id "
+					+ " ORDER BY lu.description ASC, event_name ASC";
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();

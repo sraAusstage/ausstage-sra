@@ -18,19 +18,19 @@ import admin.AppConstants;
 import admin.Common;
 import sun.jdbc.rowset.CachedRowSet;
 
-public class EventEventLink {
+public class EventEventLinkBKUP {
 	private Database m_db;
 	private AppConstants AppConstants = new AppConstants();
 	private Common Common = new Common();
 
 	// All of the record information
+
 	private String eventId;
 	private String childId;
-	private String relationLookupId;
+	private String functionLovId;
 	private String notes;
-	private String childNotes;
 	private String m_error_string;
-	
+
 	/*
 	 * Name: EventEventLink ()
 	 * 
@@ -40,7 +40,7 @@ public class EventEventLink {
 	 * 
 	 * Returns: None
 	 */
-	public EventEventLink(ausstage.Database m_db2) {
+	public EventEventLinkBKUP(ausstage.Database m_db2) {
 		m_db = m_db2;
 		initialise();
 	}
@@ -58,9 +58,8 @@ public class EventEventLink {
 
 		eventId = "0";
 		childId = "0";
-		relationLookupId = "0";
+		functionLovId = "0";
 		notes = "";
-		childNotes = "";
 		m_error_string = "";
 	}
 
@@ -92,12 +91,10 @@ public class EventEventLink {
 
 				eventId = l_rs.getString("eventId");
 				childId = l_rs.getString("childId");
-				relationLookupId = l_rs.getString("relationlookupid");
+				functionLovId = l_rs.getString("function_lov_id");
 				notes = l_rs.getString("notes");
-				childNotes = l_rs.getString("childnotes");
 
 				if (notes == null) notes = "";
-				if (childNotes == null) childNotes = "";
 			}
 			l_rs.close();
 			stmt.close();
@@ -121,8 +118,8 @@ public class EventEventLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	public boolean add(String p_eventId, Vector<EventEventLink> p_links) {
-		return update(p_eventId, p_links);
+	public boolean add(String p_eventId, Vector<EventEventLinkBKUP> p_childLinks) {
+		return update(p_eventId, p_childLinks);
 	}
 
 	/*
@@ -136,7 +133,7 @@ public class EventEventLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	public boolean update(String p_eventId, Vector<EventEventLink> p_links) {
+	public boolean update(String p_eventId, Vector<EventEventLinkBKUP> p_childLinks) {
 		// System.out.println("In update:" + p_childLinks + ", Event Id:"+
 		// p_eventId);
 		try {
@@ -147,18 +144,12 @@ public class EventEventLink {
 			System.out.println("In update");
 			sqlString = "DELETE FROM EventEventLink where " + "eventId=" + p_eventId;
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE FROM EventEventLink where " + "childId=" + p_eventId;
-			m_db.runSQL(sqlString, stmt);
-			if (p_links != null) {
+			if (p_childLinks != null) {
 				// System.out.println("Event:" + p_childLinks + ", Event Id:"+
 				// p_eventId);
-				for (int i = 0; i < p_links.size(); i++) {
-					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, relationlookupid, notes, childnotes) " 
-								+ "VALUES (" + p_links.get(i).getEventId() 
-								+ ", " + p_links.get(i).getChildId() 
-								+ ", " + p_links.get(i).getRelationLookupId()
-								+ ", '" + m_db.plSqlSafeString(p_links.get(i).getNotes())+ "' "
-								+ ", '" + m_db.plSqlSafeString(p_links.get(i).getChildNotes())+ "' )";
+				for (int i = 0; i < p_childLinks.size(); i++) {
+					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id, notes) " + "VALUES (" + p_eventId + ", "
+						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ", '"+m_db.plSqlSafeString(p_childLinks.get(i).getNotes())+ "' )";
 					
 					m_db.runSQL(sqlString, stmt);
 				}
@@ -186,16 +177,14 @@ public class EventEventLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
-			//String ret;
+			String ret;
+
 			sqlString = "DELETE from EventEventLink WHERE eventId = " + eventId;
-			m_db.runSQL(sqlString, stmt);
-			stmt.close();
-			sqlString = "DELETE from EventEventLink WHERE childId = " + eventId;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-			System.out.println("An Exception occured in deleteEventEventLinksForEvent().");
+			System.out.println("An Exception occured in deleteConEvLinksForEvent().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());
@@ -220,20 +209,8 @@ public class EventEventLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			/*sqlString = "SELECT eventeventlink.* " 
-						+ " FROM EventEventLink " 
-						+ " WHERE (EventEventLink.eventId  = " + eventId
-						+ " OR EventEventLink.childid = "+ eventId + ")" ;*/
-			
-			sqlString = "SELECT eventeventlink.* "
-						 + "FROM eventeventlink eel, events e, events child, relation_lookup rl " 
-						 + "WHERE (eel.eventid =  "+ eventId +"  || eel.childid = "+ eventId +") " 
-						 + "AND eel.eventid = e.eventid " 
-						 + "AND eel.childid = child.eventid " 
-						 + "AND eel.relationlookupid = rl.relationlookupid " 
-						 + "ORDER BY CASE WHEN eel.childid = "+ eventId +" THEN rl.child_relation ELSE rl.parent_relation END, " 
-						 + "CASE WHEN eel.childid = "+ eventId +" THEN e.event_name ELSE child.event_name END";
-			
+			sqlString = "SELECT eventeventlink.* " + " FROM EventEventLink " + " WHERE EventEventLink.eventId  = " + eventId;
+
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
@@ -249,7 +226,7 @@ public class EventEventLink {
 	}
 
 	/*
-	 * Name: getEventEventLinksForEvent (eventId)
+	 * Name: getConEvLinksForEvent (eventId)
 	 * 
 	 * Purpose: Returns a Vector containing all the ConEvLinks for this Event.
 	 * 
@@ -258,19 +235,18 @@ public class EventEventLink {
 	 * Returns: A Vector of all ConEvLinks for this Event.
 	 */
 
-	public Vector<EventEventLink> getEventEventLinksForEvent(int eventId) {
-		Vector<EventEventLink> allEventEventLinks = new Vector<EventEventLink>();
+	public Vector<EventEventLinkBKUP> getEventEventLinksForEvent(int eventId) {
+		Vector<EventEventLinkBKUP> allEventEventLinks = new Vector<EventEventLinkBKUP>();
 		CachedRowSet rset = this.getEventEventLinks(eventId);
-		EventEventLink eventEventLink = null;
+		EventEventLinkBKUP eventEventLink = null;
 
 		try {
 			while (rset.next()) {
-				eventEventLink = new EventEventLink(m_db);
+				eventEventLink = new EventEventLinkBKUP(m_db);
 				eventEventLink.setEventId(rset.getString("eventId"));
 				eventEventLink.setChildId(rset.getString("childId"));
-				eventEventLink.setRelationLookupId(rset.getString("relationlookupid"));
+				eventEventLink.setFunctionLovId(rset.getString("function_lov_Id"));
 				eventEventLink.setNotes(rset.getString("notes"));
-				eventEventLink.setChildNotes(rset.getString("childnotes"));
 
 				allEventEventLinks.add(eventEventLink);
 			}
@@ -298,21 +274,16 @@ public class EventEventLink {
 		childId = s;
 	}
 
-	public void setRelationLookupId(String s) {
-		relationLookupId = s;
+	public void setFunctionLovId(String s) {
+		functionLovId = s;
 	}
+
 	public void setNotes(String s) {
 		notes = s;
 		if (notes == null) notes = "";
 		if (notes.length() > 500) notes = notes.substring(0, 499);
 	}
 
-	public void setChildNotes(String s) {
-		childNotes = s;
-		if (childNotes == null) childNotes = "";
-		if (childNotes.length() > 500) childNotes = childNotes.substring(0, 499);
-	}
-	
 	public String getEventId() {
 		return (eventId);
 	}
@@ -320,19 +291,15 @@ public class EventEventLink {
 	public String getChildId() {
 		return (childId);
 	}
-	
-	public String getRelationLookupId() {
-		return (relationLookupId);
+
+	public String getFunctionId() {
+		return (functionLovId);
 	}
 
 	public String getNotes() {
 		return (notes);
 	}
 
-	public String getChildNotes() {
-		return (childNotes);
-	}
-	
 	public String getError() {
 		return (m_error_string);
 	}

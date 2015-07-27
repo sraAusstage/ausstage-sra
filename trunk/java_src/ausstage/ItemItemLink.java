@@ -27,8 +27,9 @@ public class ItemItemLink {
 	// private String itemItemLinkId;
 	private String itemId;
 	private String childId;
-	private String functionLovId;
+	private String relationLookupId;
 	private String notes;
+	private String childNotes;
 	private String m_error_string;
 
 	/*
@@ -58,8 +59,9 @@ public class ItemItemLink {
 		// itemItemLinkId = "0";
 		itemId = "0";
 		childId = "0";
-		functionLovId = "0";
+		relationLookupId = "0";
 		notes = "";
+		childNotes = "";
 		m_error_string = "";
 	}
 
@@ -91,10 +93,12 @@ public class ItemItemLink {
 				// itemItemLinkId = l_rs.getString("itemIdItemLinkId");
 				itemId = l_rs.getString("itemId");
 				childId = l_rs.getString("childId");
-				functionLovId = l_rs.getString("function_lov_id");
+				relationLookupId = l_rs.getString("relationlookupid");
 				notes = l_rs.getString("notes");
+				childNotes = l_rs.getString("childnotes");
 
 				if (notes == null) notes = "";
+				if (childNotes == null) childNotes = "";
 			}
 			l_rs.close();
 			stmt.close();
@@ -142,11 +146,18 @@ public class ItemItemLink {
 
 			sqlString = "DELETE FROM ItemItemLink where " + "itemId=" + p_itemId;
 			m_db.runSQL(sqlString, stmt);
+			sqlString = "DELETE FROM ItemItemLink where " + "childId=" + p_itemId;
+			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; p_childLinks != null && i < p_childLinks.size(); i++) {
 				itemItemLink = (ItemItemLink) p_childLinks.get(i);
-				sqlString = "INSERT INTO ItemItemLink " + "(itemId, childId, function_lov_id, notes) " + "VALUES (" + p_itemId + ", " + itemItemLink.getChildId() + ", "
-						+ itemItemLink.getFunctionId() + ", '" + m_db.plSqlSafeString(itemItemLink.getNotes()) + "')";
+				sqlString = "INSERT INTO ItemItemLink " 
+							+ "(itemId, childId, relationloookupid, notes, childnotes) " 
+							+ "VALUES (" + itemItemLink.getItemId() 
+							+ ", " + itemItemLink.getChildId() 
+							+ ", " + itemItemLink.getRelationLookupId() 
+							+ ", '" + m_db.plSqlSafeString(itemItemLink.getNotes()) + "'"
+							+ ", '" + m_db.plSqlSafeString(itemItemLink.getChildNotes()) + "')";
 				m_db.runSQL(sqlString, stmt);
 			}
 			l_ret = true;
@@ -167,8 +178,8 @@ public class ItemItemLink {
 		childId = s;
 	}
 
-	public void setFunctionLovId(String s) {
-		functionLovId = s;
+	public void setRelationLookupId(String s) {
+		relationLookupId = s;
 	}
 
 	public void setNotes(String s) {
@@ -177,6 +188,12 @@ public class ItemItemLink {
 		if (notes.length() > 500) notes = notes.substring(0, 499);
 	}
 
+	public void setChildNotes(String s) {
+		childNotes = s;
+		if (childNotes == null) childNotes = "";
+		if (childNotes.length() > 500) childNotes = childNotes.substring(0, 499);
+	}
+	
 	public String getItemId() {
 		return (itemId);
 	}
@@ -185,14 +202,18 @@ public class ItemItemLink {
 		return (childId);
 	}
 
-	public String getFunctionId() {
-		return (functionLovId);
+	public String getRelationLookupId() {
+		return (relationLookupId);
 	}
 
 	public String getNotes() {
 		return (notes);
 	}
 
+	public String getChildNotes() {
+		return (childNotes);
+	}
+	
 	public String getError() {
 		return (m_error_string);
 	}
