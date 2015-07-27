@@ -11,7 +11,7 @@
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.OrganisationOrganisationLink"%>
 <%@ page import = "ausstage.ConEvLink, ausstage.Contributor"%>
-<%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.ContentIndicator"%>
+<%@ page import = "ausstage.Item, ausstage.RelationLookup, ausstage.ContentIndicator"%>
 <%@ page import = "ausstage.ItemContribLink, ausstage.ItemOrganLink"%>
 <%@ page import = "ausstage.SecondaryGenre, ausstage.Work"%>
 <%@ page import = "ausstage.WorkContribLink, ausstage.WorkEvLink,ausstage.WorkOrganLink" %>
@@ -279,17 +279,29 @@
 									<ul>
 									<%
 									for (OrganisationOrganisationLink orgOrgLink : (Vector <OrganisationOrganisationLink>) org_orglinks) {
-										assocOrganisation.load(new Integer(orgOrgLink.getChildId()).intValue());
+										boolean isParent = true;
+										if (org_id.equals(orgOrgLink.getChildId())){
+											isParent = false;
+											assocOrganisation.load(new Integer(orgOrgLink.getOrganisationId()).intValue());
+										} else {
+											assocOrganisation.load(new Integer(orgOrgLink.getChildId()).intValue());
+										}
 										
-										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
-										if (orgOrgLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(orgOrgLink.getFunctionId()));
+										RelationLookup lookup = new RelationLookup(db_ausstage_for_drill);
+										if (orgOrgLink.getRelationLookupId()!=null) lookup.load(Integer.parseInt(orgOrgLink.getRelationLookupId()));
 										%>
 										<li>
-												<%=lookUpCode.getDescription() %>
+												<%=(isParent) ? lookup.getParentRelation() : lookup.getChildRelation() %>
 												<a href="/pages/organisation/<%=assocOrganisation.getId()%>">       
 													<%=assocOrganisation.getName()%>
 												</a>
-												<%if (!orgOrgLink.getNotes().equals("")) out.print(" - "+orgOrgLink.getNotes());%>
+												<%
+												if (isParent){
+													if (!orgOrgLink.getNotes().equals("")) out.print(" - "+orgOrgLink.getNotes());
+												} else {
+													if (!orgOrgLink.getChildNotes().equals("")) out.print(" - "+orgOrgLink.getChildNotes());
+												}
+										%>			
 										</li>
 										<%
 									}

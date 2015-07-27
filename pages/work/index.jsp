@@ -11,7 +11,7 @@
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
 <%@ page import = "ausstage.ConEvLink, ausstage.Contributor"%>
-<%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.ContentIndicator"%>
+<%@ page import = "ausstage.Item, ausstage.RelationLookup, ausstage.ContentIndicator"%>
 <%@ page import = "ausstage.ItemContribLink, ausstage.ItemOrganLink"%>
 <%@ page import = "ausstage.SecondaryGenre, ausstage.Work"%>
 <%@ page import = "ausstage.WorkContribLink, ausstage.WorkEvLink,ausstage.WorkOrganLink" %>
@@ -199,17 +199,19 @@
 									<ul>
 									<%
 									for (WorkWorkLink workWorkLink : (Vector <WorkWorkLink>) work_worklinks) {
-										assocWork.load(new Integer(workWorkLink.getChildId()).intValue());
+										boolean isParent = work_id.equals(workWorkLink.getWorkId());
+										assocWork.load(new Integer((isParent)?workWorkLink.getChildId(): workWorkLink.getWorkId()).intValue());
 										
-										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
-										if (workWorkLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(workWorkLink.getFunctionId()));
+										RelationLookup lookUpCode = new RelationLookup(db_ausstage_for_drill);
+										if (workWorkLink.getRelationLookupId()!=null) lookUpCode.load(Integer.parseInt(workWorkLink.getRelationLookupId()));
 										%>
 										<li>
-												<%=lookUpCode.getDescription() %>
+												<%=(isParent)?lookUpCode.getParentRelation():lookUpCode.getChildRelation() %>
 												<a href="/pages/work/<%=assocWork.getId()%>">
 													<%=assocWork.getName()%>
 												</a>
-												<%if(!workWorkLink.getNotes().equals("")) out.print(" - "+workWorkLink.getNotes());%>
+												<%if((isParent) && !workWorkLink.getNotes().equals("")) out.print(" - "+workWorkLink.getNotes());
+												  if((!isParent) && !workWorkLink.getChildNotes().equals("")) out.print(" - "+workWorkLink.getChildNotes());%>
 										</li>
 										<%
 									}
