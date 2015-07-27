@@ -10,6 +10,10 @@
 <%@ page import="ausstage.AusstageCommon"%>
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
 <%
+	System.out.println("");
+	System.out.println("######################");
+	System.out.println("#contrib_contrib.jsp");
+
 	admin.ValidateLogin login = (admin.ValidateLogin) session.getAttribute("login");
 	admin.FormatPage pageFormater = (admin.FormatPage) session.getAttribute("pageFormater");
 	ausstage.Database db_ausstage = new ausstage.Database();
@@ -90,14 +94,19 @@
 	if (fromContribPage) contributor.setContributorAttributes(request);
 
 	String f_contribid = Integer.toString(contributor.getId());
-	System.out.println("contribid " + f_contribid);
+
+	System.out.println("# contributor id from contributor object =" +f_contribid);
+
 	int contribId = Integer.parseInt(f_contribid);
 	hidden_fields.put("f_contribid", f_contribid);
 	hidden_fields.put("f_contributor_id", f_contribid);
 	hidden_fields.put("act", action);
 
+	
 	String f_select_this_contributor_id = request.getParameter("f_select_this_contributor_id");
 	String f_unselect_this_contributor_id = request.getParameter("f_unselect_this_contributor_id");
+	System.out.println("#select_this_contributor_id : "+f_select_this_contributor_id);
+	System.out.println("#unselect_this_contributor_id : "+f_unselect_this_contributor_id);
 	String orderBy = request.getParameter("f_order_by");
 	//get me all the contributors from the current item
 	//object in the session.
@@ -115,7 +124,15 @@
 	//remove contributor from the contributor
 	if (f_unselect_this_contributor_id != null) {
 		for (ContributorContributorLink existing : contribContribLinks) {
-			if (existing.getChildId().equals(f_unselect_this_contributor_id)) {
+			if (f_contribid.equals(f_unselect_this_contributor_id)){
+				if (existing.getChildId().equals(f_unselect_this_contributor_id)&& existing.getContributorId().equals(f_unselect_this_contributor_id)) {
+					contribContribLinks.remove(existing);
+					break;
+				}
+			}else if (existing.getChildId().equals(f_unselect_this_contributor_id)|| existing.getContributorId().equals(f_unselect_this_contributor_id)) {
+			System.out.println("# removing contributor link");
+			System.out.println("#  childId 		: "+existing.getChildId());
+			System.out.println("#  contributorId 	: "+existing.getContributorId());
 				contribContribLinks.remove(existing);
 				break;
 			}
@@ -156,10 +173,10 @@
 	buttons_actions.addElement("Javascript:search_form.action='contrib_contrib_functions.jsp?act="+action+"';search_form.submit();");
 
 	selected_db_sql = "";
-	Vector<ContributorContributorLink> selectedContributors = new Vector<ContributorContributorLink>();
+	//Vector<ContributorContributorLink> selectedContributors = new Vector<ContributorContributorLink>();
 	Vector temp_vector = new Vector();
 	String temp_string = "";
-	selectedContributors = contributor.getContributorContributorLinks();
+	Vector selectedContributors = new Vector();
 
 	//because the vector that gets returned contains only linked
 	//contributor ids as strings we need to create a temp vector
@@ -169,13 +186,24 @@
 
 	//for each contributor id get name and add the id and the name to a temp vector.
 
-	for (int i = 0; i < selectedContributors.size(); i++) {
-		temp_string = contributor.getContributorInfoForDisplay(Integer.parseInt(selectedContributors.get(i).getChildId()), stmt);
-		
-		temp_vector.add(Integer.parseInt(selectedContributors.get(i).getChildId()));//add the id to the temp vector.
-		temp_vector.add(temp_string);//add the contributor name to the temp_vector.
-		// System.out.println("Temp STring:"+temp_string);
-	}
+  	for(int i = 0; i < contribContribLinks.size(); i ++){
+		System.out.println("# ");		
+		System.out.println("# f_contribid : "+f_contribid);		
+		System.out.println("# link parent : "+contribContribLinks.get(i).getContributorId());						
+		System.out.println("# link child  :"+contribContribLinks.get(i).getChildId());				
+		System.out.println("# ");				
+  		if (f_contribid.equals(contribContribLinks.get(i).getContributorId())){
+			
+		  temp_string = contributor.getContributorInfoForDisplay(Integer.parseInt(contribContribLinks.get(i).getChildId()), stmt);
+			
+		  temp_vector.add(contribContribLinks.get(i).getChildId());//add the id to the temp vector.
+		}else {
+		  temp_string = contributor.getContributorInfoForDisplay(Integer.parseInt(contribContribLinks.get(i).getContributorId()), stmt);
+		  	
+		  temp_vector.add(contribContribLinks.get(i).getContributorId());//add the id to the temp vector.
+		}
+	        temp_vector.add(temp_string);//add the event name to the temp_vector.
+   	}
 
 	selectedContributors = temp_vector;
 	stmt.close();

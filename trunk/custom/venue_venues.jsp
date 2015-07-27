@@ -113,10 +113,15 @@
              
   } 
   //remove venue from the venue
-  if(f_unselect_this_venue_id != null)
-  {
+  if(f_unselect_this_venue_id != null){
     for (VenueVenueLink existing : venuevenueLinks) {
-    	if (existing.getChildId().equals(f_unselect_this_venue_id)) {
+    	if (f_venueid.equals(f_unselect_this_venue_id)){
+    		if (existing.getChildId().equals(f_unselect_this_venue_id)&& existing.getVenueId().equals(f_unselect_this_venue_id)) {
+					venuevenueLinks.remove(existing);
+					break;
+    		}
+    	}
+    	else if (existing.getChildId().equals(f_unselect_this_venue_id)|| existing.getVenueId().equals(f_unselect_this_venue_id)){
     		venuevenueLinks.remove(existing);
     		break;
     	}
@@ -172,9 +177,14 @@
 
   //for each venue id get the name and add the id and the name to a temp vector.
   for(int i = 0; i < selectedVenues.size(); i ++){
-  	temp_string = venue.getVenueInfoForVenueDisplay(Integer.parseInt(selectedVenues.get(i).getChildId()), stmt);
-	
-    temp_vector.add(selectedVenues.get(i).getChildId());//add the id to the temp vector.
+  	if (f_venueid.equals(venuevenueLinks.get(i).getVenueId())){	
+	  	temp_string = venue.getVenueInfoForVenueDisplay(Integer.parseInt(selectedVenues.get(i).getChildId()), stmt);
+	  	temp_vector.add(selectedVenues.get(i).getChildId());//add the id to the temp vector.
+	}else {
+	  	temp_string = venue.getVenueInfoForVenueDisplay(Integer.parseInt(selectedVenues.get(i).getVenueId()), stmt);
+	  	temp_vector.add(selectedVenues.get(i).getVenueId());//add the id to the temp vector.
+	}
+    
 	temp_vector.add(temp_string);//add the venue name to the temp_vector.
   }
   selectedVenues = temp_vector;

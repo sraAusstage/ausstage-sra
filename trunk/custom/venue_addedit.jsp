@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
-<%@ page  import = "java.sql.*, sun.jdbc.rowset.*, ausstage.Venue, ausstage.VenueVenueLink, admin.Common, java.util.*, ausstage.LookupCode"%>
+<%@ page  import = "java.sql.*, sun.jdbc.rowset.*, ausstage.Venue, ausstage.VenueVenueLink, admin.Common, java.util.*, ausstage.LookupCode, ausstage.RelationLookup"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ include file="ausstage_common.jsp"%>
@@ -285,7 +285,7 @@ pageFormater.writeTwoColTableHeader(out, "Other names");
     if (venueObj.getState().equals(rset.getString("stateid")))//therefore editing existing state
         selected = "selected";
      
-    if(!rset.getString("state").toLowerCase().equals("unknown")){
+    if(!rset.getString("state").toLowerCase().equals("unknown") && !rset.getString("state").toLowerCase().equals("[unknown]")){
       stateTrailingSubString += "<option " + selected + " value='" + rset.getString ("stateid") + "'" +
                                     ">" + rset.getString ("state") + "</option>\n";
     }else{
@@ -390,14 +390,15 @@ pageFormater.writeTwoColTableHeader(out, "Other names");
   hidden_fields.clear();
   hidden_fields.put("act", action);
 
-  LookupCode lc = new LookupCode(db_ausstage);
+  //LookupCode lc = new LookupCode(db_ausstage);
+  RelationLookup lc = new RelationLookup(db_ausstage);
   for(int i=0; i < venue_link_vec.size(); i++ ){
     venueTemp = new Venue(db_ausstage);
-    
-    venueTemp.load(Integer.parseInt(venue_link_vec.get(i).getChildId())); 
-	 if (venue_link_vec.get(i).getFunctionId() != null) {
-		lc.load(Integer.parseInt(venue_link_vec.get(i).getFunctionId()));
-		venue_name_vec.add(venueTemp.getName() + " (" + lc.getDescription() + ")");
+    boolean isParent = venue_id.equals(venue_link_vec.get(i).getVenueId());
+    venueTemp.load(Integer.parseInt((isParent)?venue_link_vec.get(i).getChildId():venue_link_vec.get(i).getVenueId())); 
+	 if (venue_link_vec.get(i).getRelationLookupId() != null) {
+		lc.load(Integer.parseInt(venue_link_vec.get(i).getRelationLookupId()));
+		venue_name_vec.add(venueTemp.getName() + " (" + ((isParent)?lc.getParentRelation():lc.getChildRelation()) + ")");
 	 } else {
 		venue_name_vec.add(venueTemp.getName());
 	 }

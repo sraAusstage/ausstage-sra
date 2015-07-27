@@ -3,7 +3,7 @@
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page import = "java.sql.Statement, sun.jdbc.rowset.CachedRowSet, java.util.*"%>
-<%@ page import = "ausstage.Venue, ausstage.VenueVenueLink, admin.Common, ausstage.LookupCode"%>
+<%@ page import = "ausstage.Venue, ausstage.VenueVenueLink, admin.Common, ausstage.LookupCode, ausstage.RelationLookup"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
@@ -21,8 +21,9 @@
   String functionId   = "";
   String functionDesc = "";
   String notes        = "";
-  LookupCode lookUps = new LookupCode(db_ausstage);
-  CachedRowSet rsetVenueFuncLookUps = lookUps.getLookupCodes("VENUE_FUNCTION");
+  //LookupCode lookUps = new LookupCode(db_ausstage);
+  RelationLookup lookUps = new RelationLookup(db_ausstage);
+  CachedRowSet rsetVenueFuncLookUps = lookUps.getRelationLookups("VENUE_FUNCTION");
   String action = request.getParameter("act");
   
   pageFormater.writeHeader(out);
@@ -41,29 +42,47 @@
 
   for(int i=0; i < venueVenueLinks.size(); i++) {
   	VenueVenueLink venueVenueLink = venueVenueLinks.elementAt(i);
-    
+    	boolean isParent = true;
     // Load up the child items so that we can get the title and citation for display
-    Venue tempVenue = new Venue(db_ausstage);
-    tempVenue.load(Integer.parseInt(venueVenueLink.getChildId()));
+	Venue tempVenue = new Venue(db_ausstage);
+    	if (venueid.equals(venueVenueLink.getVenueId())){
+	    	tempVenue.load(Integer.parseInt(venueVenueLink.getChildId()));    	
+    	} else {
+    		isParent = false;
+    		tempVenue.load(Integer.parseInt(venueVenueLink.getVenueId()));    	
+    	}
+
+
     %>
     <tr>
       <td class="bodytext" colspan=3><b>Editing Venue:</b> <%=venueObj.getName()%><br><br></td>
     </tr>
     <tr>
       <td class="bodytext" colspan=3><%
-      out.println("<input type='hidden' name='f_child_venue_id_" + i + "' id='f_child_venue_id_" + i + "' value='" + venueVenueLinks.elementAt(i).getChildId() + "'>");
-      out.println("<select name='f_function_lov_id_" + i + "' id='f_function_lov_id_" + i + "' size='1' class='line150' >");
+      out.println("<input type='hidden' name='f_link_venue_id_" + i + "' id='f_link_venue_id_" + i + "' value='" + tempVenue.getVenueId() + "'>");
+      out.println("<select name='f_relation_lookup_id_" + i + "' id='f_relation_lookup_id_" + i + "' size='1' class='line150' >");
 
-      out.print("<option value='0'>--Select new Function--</option>");
+      out.print("<option value='0'>--Select new Relation--</option>");
       rsetVenueFuncLookUps.beforeFirst();
+      
       while (rsetVenueFuncLookUps.next()) {
-        String tempFunctionId = rsetVenueFuncLookUps.getString ("code_lov_id");
-        out.print("<option value='" + tempFunctionId + "'");
   
-        if (tempFunctionId.equals(venueVenueLink.getFunctionId())) {
-          out.print(" selected");
+        String tempRelationId = rsetVenueFuncLookUps.getString("relationlookupid");
+        out.print("<option value='" + tempRelationId + "_parent'");
+  
+        if (venueVenueLink.getRelationLookupId().equals(tempRelationId) && ( isParent || rsetVenueFuncLookUps.getString("parent_relation").equals(rsetVenueFuncLookUps.getString("child_relation")))) {		
+		out.print(" selected");
         }
-        out.print(">" + rsetVenueFuncLookUps.getString ("description") + "</option>");
+        out.print(">" + rsetVenueFuncLookUps.getString ("parent_relation") + "</option>");
+      	if(!rsetVenueFuncLookUps.getString("parent_relation").equals(rsetVenueFuncLookUps.getString("child_relation"))){
+		        out.print("<option value='" + tempRelationId + "_child'");	
+	        
+	        	if (venueVenueLink.getRelationLookupId().equals(tempRelationId) && !isParent) {
+          			out.print(" selected");
+		        }
+                	out.print("> " + rsetVenueFuncLookUps.getString("child_relation") + "</option>");  
+		}
+      
       }%>
       </select>*<br><br>
     </td>
@@ -72,8 +91,13 @@
       <td class="bodytext" colspan=3><b>Associated Venue:</b> <%=tempVenue.getName()%></td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><br><b>Comments</b><br>
-        <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=venueVenueLink.getNotes()%></textarea>
+      <td class="bodytext" colspan=3><br><b>Comments for </b> <%=venueObj.getName()%> to <%=tempVenue.getName()%> <br>
+        <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?venueVenueLink.getNotes():venueVenueLink.getChildNotes()%></textarea>
+      </td>
+    </tr>
+     <tr>
+      <td class="bodytext" colspan=3><br><b>Comments for </b> <%=tempVenue.getName()%> to <%=venueObj.getName()%><br>
+        <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?venueVenueLink.getChildNotes():venueVenueLink.getNotes()%></textarea>
         <br><br><br><hr><br><br>
       </td>
     </tr>
@@ -92,7 +116,7 @@ function validateForm() {
   // All functions must be selected
   <%
   for(int i=0; i < venueVenueLinks.size(); i++) {
-	  out.println("if (document.getElementById('f_function_lov_id_" + i + "').options [document.getElementById('f_function_lov_id_" + i + "').selectedIndex].value=='0') { alert('Please select all functions'); return (false);} ");
+	  out.println("if (document.getElementById('f_relation_lookup_id_" + i + "').options [document.getElementById('f_relation_lookup_id_" + i + "').selectedIndex].value=='0') { alert('Please select all functions'); return (false);} ");
   } %>
   return (true);
 }

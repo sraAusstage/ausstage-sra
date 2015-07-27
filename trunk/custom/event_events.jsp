@@ -112,10 +112,16 @@
   //remove event from the event
   if (f_unselect_this_event_id != null) {
 	for (EventEventLink existing : eventEventLinks) {
-		if (existing.getChildId().equals(f_unselect_this_event_id)) {
-			eventEventLinks.remove(existing);
-			break;
-		}
+		if (f_eventid.equals(f_unselect_this_event_id)){
+    			if (existing.getChildId().equals(f_unselect_this_event_id)&& existing.getEventId().equals(f_unselect_this_event_id)) {
+					eventEventLinks.remove(existing);
+					break;
+	    		}
+    		}
+    		else if (existing.getChildId().equals(f_unselect_this_event_id)|| existing.getEventId().equals(f_unselect_this_event_id)){
+		   		eventEventLinks.remove(existing);
+		   		break;
+    		}
 	}
     event.setEventEventLinks(eventEventLinks);   
   }
@@ -195,10 +201,14 @@
 
   //for each event id get name and add the id and the name to a temp vector.
   for(int i = 0; i < eventEventLinks.size(); i ++){
-	temp_string = event.getEventInfoForDisplay(Integer.parseInt(eventEventLinks.get(i).getChildId()), stmt);
-	
-    temp_vector.add(eventEventLinks.get(i).getChildId());//add the id to the temp vector.
-    temp_vector.add(temp_string);//add the event name to the temp_vector.
+  	if (f_eventid.equals(eventEventLinks.get(i).getEventId())){
+	  temp_string = event.getEventInfoForDisplay(Integer.parseInt(eventEventLinks.get(i).getChildId()), stmt);
+	  temp_vector.add(eventEventLinks.get(i).getChildId());//add the id to the temp vector.
+	}else {
+	  temp_string = event.getEventInfoForDisplay(Integer.parseInt(eventEventLinks.get(i).getEventId()), stmt);
+	  temp_vector.add(eventEventLinks.get(i).getEventId());//add the id to the temp vector.
+	}
+        temp_vector.add(temp_string);//add the event name to the temp_vector.
    
   }
   selectedevents = temp_vector;

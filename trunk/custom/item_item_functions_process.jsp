@@ -22,28 +22,42 @@
   System.out.println("Item Id:" + itemId);
 	Vector<ItemItemLink> itemItemLinks = itemObj.getItemItemLinks();
   String error_msg   = "";
-	String functionId   = "";
-	String notes        = "";
-  String childItemId  = "";
+  String relationLookupId   = "";
+  String notes        	= "";
+  String childNotes   	= "";
+  String linkItemId  	= "";
+  String isParent	= "";
 
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "", ausstage_main_page_link);
 
   try {
-	  for(int i=0; i < itemItemLinks.size(); i++) {
-	    ItemItemLink itemItemLink = new ItemItemLink(db_ausstage);
+	for(int i=0; i < itemItemLinks.size(); i++) {
+		ItemItemLink itemItemLink = new ItemItemLink(db_ausstage);
       
-      // get data from the request object
-      childItemId = request.getParameter("f_child_item_id_" + i);
-      functionId  = request.getParameter("f_function_lov_id_" + i);
-      notes       = request.getParameter("f_notes_" + i);
+	     	// get data from the request object
+      		linkItemId  = request.getParameter("f_link_item_id_" + i);
+      		notes       = request.getParameter("f_notes_" + i);
+      		childNotes  = request.getParameter("f_child_notes_" + i);
 
-      itemItemLink.setChildId(childItemId);
-      itemItemLink.setFunctionLovId(functionId);
-      itemItemLink.setNotes(notes);
+		//get the relation lookup id and the perspective (ie parent or child) 
+		String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
+		relationLookupId = lookupAndPerspective[0];
+		isParent = lookupAndPerspective[1];
 
-
-      itemItemLinks.set(i, itemItemLink);
+		if (isParent.equals("parent")){
+			itemItemLink.setChildId(linkItemId);
+			itemItemLink.setItemId(itemId);
+			itemItemLink.setNotes(notes);
+			itemItemLink.setChildNotes(childNotes);
+		} else {
+			itemItemLink.setChildId(itemId);
+			itemItemLink.setItemId(linkItemId);
+			itemItemLink.setNotes(childNotes);
+			itemItemLink.setChildNotes(notes);		
+		}
+		itemItemLink.setRelationLookupId(relationLookupId);
+		itemItemLinks.set(i, itemItemLink);
     }
   }
   catch(Exception e) {

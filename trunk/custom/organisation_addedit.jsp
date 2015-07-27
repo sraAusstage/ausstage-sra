@@ -3,7 +3,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import = "java.sql.*, admin.Common, java.util.*, sun.jdbc.rowset.*"%>
-<%@ page import = " ausstage.Database, ausstage.Organisation,ausstage.OrganisationOrganisationLink, ausstage.Venue, ausstage.Contributor, ausstage.LookupCode"%>
+<%@ page import = " ausstage.Database, ausstage.Organisation,ausstage.OrganisationOrganisationLink, ausstage.Venue, ausstage.Contributor, ausstage.RelationLookup"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ include file="ausstage_common.jsp"%>
@@ -12,27 +12,37 @@
 <script type="text/javascript" src="/pages/assets/javascript/libraries/jquery-1.6.1.min.js"></script>
 
 <%
+  //define variables and attributes for use in the page
+  //	login, page attributes and database connection
   admin.ValidateLogin   login           = (admin.ValidateLogin) session.getAttribute("login");
   admin.FormatPage      pageFormater    = (admin.FormatPage) session.getAttribute("pageFormater");
   ausstage.Database        db_ausstage     = new ausstage.Database ();
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
   Statement stmt = db_ausstage.m_conn.createStatement ();
+
+  //page html helper, and area lookup helpers
   ausstage.HtmlGenerator  htmlGenerator        = new ausstage.HtmlGenerator (db_ausstage);
   ausstage.Organisation organisationObj = new ausstage.Organisation (db_ausstage);
   ausstage.State        stateObj        = new ausstage.State (db_ausstage);
   ausstage.Country      countryObj      = new ausstage.Country(db_ausstage);
+
+  //result sets for storing database data.
   CachedRowSet          rset;
   ResultSet             l_rs;
   Vector<OrganisationOrganisationLink> m_org_orglinks;
   Vector<OrganisationOrganisationLink> org_link_vec	= new Vector<OrganisationOrganisationLink>();
   Vector org_name_vec	= new Vector();
+
+  //all of the fun things to do with how we got to the page, and where we're going... 
   String isReturn	= request.getParameter("isReturn");
   String action         = request.getParameter("act");
   if(action == null) {action = request.getParameter("action");}
   
   String stateLeadingSubString = "", stateTrailingSubString = "";
+  
+  //get the ID of the current organisation
   String organisation_id = request.getParameter("f_organisation_id");
-  //System.out.println("Organisation:"+ organisation_id );
+
   String countryLeadingSubString = "", countryTrailingSubString = "";
   int                     counter              = 0;
   Common                  common               = new Common();
@@ -44,10 +54,10 @@
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "", AusstageCommon.ausstage_main_page_link);
   
-   if(isReturn!=null){
+  if(isReturn!=null){
       organisationObj = (Organisation)session.getAttribute("organisationObj");
       organisation_id  = Integer.toString(organisationObj.getId());
-   }
+  }
   
   if(organisation_id == null) organisation_id = "";
   //use a new Organisation object that is not from the session.
@@ -62,16 +72,16 @@
 			  				  action.equals("EditForItem") ||
 				  			  action.equals("EditForEvent") ||
 							  action.equals("EditForCreatorItem"))){ //editing existing Orgs
-    if (organisation_id == null || organisation_id.equals("")) {
-    	if (request.getParameter("f_select_this_organisation_id") != null) {
-    		organisation_id = request.getParameter("f_select_this_organisation_id");
-    	} else {
-      		organisation_id = "";
-    	}
-    }
-    if (organisation_id != null && !organisation_id.equals("") && !organisation_id.equals("null")) {  
-        organisationObj.load(Integer.parseInt(organisation_id));
-    } 
+  	if (organisation_id == null || organisation_id.equals("")) {
+    		if (request.getParameter("f_select_this_organisation_id") != null) {
+    			organisation_id = request.getParameter("f_select_this_organisation_id");
+	    	} else {
+      			organisation_id = "";
+	    	}
+	}
+    	if (organisation_id != null && !organisation_id.equals("") && !organisation_id.equals("null")) {  
+        	organisationObj.load(Integer.parseInt(organisation_id));
+    	} 
   }
   else {//use the org object from the session.
       organisationObj = (Organisation)session.getAttribute("organisationObj");
@@ -87,13 +97,26 @@
   org_link_vec	        = organisationObj.getOrganisationOrganisationLinks();
   Organisation orgTemp 			= null;
  
-  LookupCode lc = new LookupCode(db_ausstage);
+  //ORGORGLINKS 
+  RelationLookup lc = new RelationLookup(db_ausstage);
+
+  //loop through the associated relations
   for(int i=0; i < org_link_vec.size(); i++ ){
+	 boolean isParent = false;   	
 	 orgTemp = new Organisation(db_ausstage);
-	 orgTemp.load(Integer.parseInt(org_link_vec.get(i).getChildId()));
-	 if (org_link_vec.get(i).getFunctionId() != null) {
-		lc.load(Integer.parseInt(org_link_vec.get(i).getFunctionId()));
-		org_name_vec.add(orgTemp.getName() + " (" + lc.getDescription() + ")");
+	 //before loading the related organisation - is this current organisation the parent or child in the relation?
+	 if (organisation_id.equals(org_link_vec.get(i).getOrganisationId())){
+	 	isParent = true;
+	 }
+	 //load the appropriate organisation record
+	 orgTemp.load(Integer.parseInt(
+	 	(isParent) ? org_link_vec.get(i).getChildId() : org_link_vec.get(i).getOrganisationId())
+	 );
+	 	
+	 if (org_link_vec.get(i).getRelationLookupId() != null) {
+		lc.load(Integer.parseInt(org_link_vec.get(i).getRelationLookupId()));
+		
+		org_name_vec.add(orgTemp.getName() + " (" + ((isParent) ? lc.getParentRelation() : lc.getChildRelation()) + ")");
 	 } else {
 		org_name_vec.add(orgTemp.getName());
 	 }
@@ -393,8 +416,8 @@
       alert("You appear to have not entered the following information for:\n" + msg + "Please press the OK button to continue and then fill in the required fields.");
         return false;
     }
-    //return true;
-    return false;
+    return true;
+    
   }
 
   function checkStateCountry(){

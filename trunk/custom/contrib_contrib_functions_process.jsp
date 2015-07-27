@@ -17,12 +17,15 @@
 
 	Contributor contributorObj = (Contributor) session.getAttribute("contributor");
 	String contributorId = Integer.toString(contributorObj.getId());
-	Vector<ContributorContributorLink> contributorContributorLinks = contributorObj.getContributorContributorLinks();
-	Vector<ContributorContributorLink> tempContributorContributorLinks = new Vector<ContributorContributorLink>();
+	Vector<ContributorContributorLink> contribContribLinks = contributorObj.getContributorContributorLinks();
+	Vector<ContributorContributorLink> tempContribContribLinks = new Vector<ContributorContributorLink>();
 	String error_msg = "";
 	String functionId = "";
 	String notes = "";
-	String childContributorId = "";
+	String childNotes = "";
+	String linkContributorId = "";
+	String relationLookupId = "";
+	String isParent = "";
 	
 	String action = request.getParameter("act");
 
@@ -30,25 +33,46 @@
 	pageFormater.writePageTableHeader(out, "", ausstage_main_page_link);
 
 	try {
-		for (int i = 0; i < contributorContributorLinks.size(); i++) {
-			ContributorContributorLink contributorContributorLink = new ContributorContributorLink(db_ausstage);
+		for (int i = 0; i < contribContribLinks.size(); i++) {
+			ContributorContributorLink contribContribLink = new ContributorContributorLink(db_ausstage);
 			// get data from the request object
-			childContributorId = request.getParameter("f_child_contributor_id_" + i);
 			functionId = request.getParameter("f_function_lov_id_" + i);
+			linkContributorId = request.getParameter("f_link_contributor_id_"+ i);
 			notes = request.getParameter("f_notes_"+i);
+			childNotes = request.getParameter("f_child_notes_"+i);
 			
-			contributorContributorLink.setChildId(childContributorId);
-			contributorContributorLink.setFunctionLovId(functionId);
-			contributorContributorLink.setNotes(notes);
+			String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
+			relationLookupId = lookupAndPerspective[0];
+			//System.out.println(relationLookupId);
+			isParent = lookupAndPerspective[1];
+			System.out.println("* is parent = "+isParent);						
+			System.out.println("** linkContributorId = "+linkContributorId);
+			System.out.println("** ContributorId = "+contributorId);
+			if (isParent.equals("parent")){
+				contribContribLink.setChildId(linkContributorId);
+				contribContribLink.setContributorId(contributorId);
+				contribContribLink.setNotes(notes);
+				contribContribLink.setChildNotes(childNotes);
 
-			tempContributorContributorLinks.insertElementAt(contributorContributorLink, i);
+			}
+			else {
+				contribContribLink.setChildId(contributorId);
+				contribContribLink.setContributorId(linkContributorId);
+				contribContribLink.setNotes(childNotes);
+				contribContribLink.setChildNotes(notes);
+			}
+
+			contribContribLink.setRelationLookupId(relationLookupId);
+			//contribContribLink.setNotes(notes);
+
+			tempContribContribLinks.insertElementAt(contribContribLink, i);
 		}
 	} catch (Exception e) {
 		error_msg = "Error: Resource to resource links process NOT successful." + e.toString();
 	}
 
 	if (error_msg.equals("")) {
-		contributorObj.setContributorContributorLinks(tempContributorContributorLinks);
+		contributorObj.setContributorContributorLinks(tempContribContribLinks);
 		session.setAttribute("contributor", contributorObj);
 		System.out.println("Contrib contrib functions process setting contributor object to :"+contributorObj.getId());
 		pageFormater.writeText(out, "Contributor to contributor process successful.");

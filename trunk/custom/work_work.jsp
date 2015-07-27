@@ -99,12 +99,17 @@
 	//remove work from the work
 	if (f_unselect_this_work_id != null) {
 		for (WorkWorkLink existing : workWorkLinks) {
-			if (existing.getChildId().equals(f_unselect_this_work_id)) {
-				workWorkLinks.remove(existing);
-				break;
-			}
+			if (f_workid.equals(f_unselect_this_work_id)){
+    				if (existing.getChildId().equals(f_unselect_this_work_id)&& existing.getWorkId().equals(f_unselect_this_work_id)) {
+						workWorkLinks.remove(existing);
+						break;
+	    			}
+    			}
+    			else if (existing.getChildId().equals(f_unselect_this_work_id)|| existing.getWorkId().equals(f_unselect_this_work_id)){
+		    		workWorkLinks.remove(existing);
+		    		break;
+    			}
 		}
-
 		work.setWorkWorkLinks(workWorkLinks);
 	}
 
@@ -156,8 +161,10 @@
 
 	//for each Work id get name and add the id and the name to a temp vector.
 	for (int i = 0; i < selectedWorks.size(); i++) {
-		temp_string = work.getWorkInfoForDisplay(Integer.parseInt(selectedWorks.get(i).getChildId()), stmt);
-		temp_vector.add(selectedWorks.get(i).getChildId());//add the id to the temp vector.
+		boolean isParent = f_workid.equals(selectedWorks.get(i).getWorkId());
+
+		temp_string = work.getWorkInfoForDisplay(Integer.parseInt((isParent) ? selectedWorks.get(i).getChildId() : selectedWorks.get(i).getWorkId()), stmt);
+		temp_vector.add((isParent) ? selectedWorks.get(i).getChildId() : selectedWorks.get(i).getWorkId());//add the id to the temp vector.
 		temp_vector.add(temp_string);//add the Work name to the temp_vector.
 	}
 	selectedWorks = temp_vector;

@@ -2,7 +2,7 @@
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page import = "java.sql.*, sun.jdbc.rowset.*, java.util.*, ausstage.LookupCode, ausstage.Event, ausstage.Venue, ausstage.ConEvLink, admin.Common"%>
+<%@ page import = "java.sql.*, sun.jdbc.rowset.*, java.util.*, ausstage.LookupCode, ausstage.RelationLookup, ausstage.Event, ausstage.Venue, ausstage.ConEvLink, admin.Common"%>
 <%@ page import = " ausstage.Database, ausstage.Work, ausstage.Contributor, ausstage.ContributorContributorLink"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
@@ -236,6 +236,37 @@
 
     
     contributor_link_vec	    = contributor.getContributorContributorLinks();
+
+	//***************
+	  //BW reciprocal relations
+	System.out.println("***************");
+	RelationLookup rl = new RelationLookup(db_ausstage);
+	boolean isParent = true;
+	for(int i=0; i < contributor_link_vec.size(); i++ ){
+	System.out.println("********"+i);
+  	  isParent = true;
+	  Contributor contributorTemp = new Contributor(db_ausstage);
+	  if (contrib_id.equals(contributor_link_vec.get(i).getChildId())){
+	  	  isParent = false;
+	  	  System.out.println(contributor_link_vec.get(i).getContributorId()+"----");
+		  contributorTemp.load(Integer.parseInt(contributor_link_vec.get(i).getContributorId()));	
+	  }else{ 
+		  System.out.println(contributor_link_vec.get(i).getChildId()+"----");
+		  contributorTemp.load(Integer.parseInt(contributor_link_vec.get(i).getChildId()));
+	  }
+	  if (contributor_link_vec.get(i).getRelationLookupId() != null) {
+		  rl.load(Integer.parseInt(contributor_link_vec.get(i).getRelationLookupId()));
+		  if (isParent){
+			  contributor_name_vec.add(contributorTemp.getDisplayName() + " (" + rl.getParentRelation() + ")");
+		  } else {contributor_name_vec.add(contributorTemp.getDisplayName() + " (" + rl.getChildRelation() + ")");}
+	  } else {
+		  contributor_name_vec.add(contributorTemp.getDisplayName());
+	  }
+	  System.out.println("link event : "+contributorTemp.getDisplayName()+" loaded");
+  }
+  //***************
+    
+    /*
     LookupCode lc = new LookupCode(db_ausstage);
     
     for(ContributorContributorLink ccl : contributor_link_vec){
@@ -248,7 +279,7 @@
 			contributor_name_vec.add(contributorTemp.getDisplayName());
 		}
 	}
-    
+    */    
     String f_selected_venue_id = request.getParameter("f_selected_venue_id");
 
     if (f_selected_venue_id == null) f_selected_venue_id = "";

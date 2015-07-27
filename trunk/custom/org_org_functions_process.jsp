@@ -22,33 +22,51 @@
   //System.out.println("Organisation Id:" + organisationId);
   Vector<OrganisationOrganisationLink> organisationOrganisationLinks = organisationObj.getOrganisationOrganisationLinks();
   Vector<OrganisationOrganisationLink> tempOrganisationOrganisationLinks = new Vector<OrganisationOrganisationLink>();
-  String error_msg   = "";
-  String functionId   = "";
-  String notes        = "";
-  String childOrganisationId  = "";
+  String error_msg   		= "";
+  String relationLookupId 	= "";
+  String notes        		= "";
+  String childNotes        	= "";
+  String linkOrganisationId  	= "";
+  String isParent		= "";
   String action = request.getParameter("act");
   if (action == null ) {action = "";}
 
   pageFormater.writeHeader(out);
   pageFormater.writePageTableHeader (out, "", ausstage_main_page_link);
 
+
   try {
-    for(int i=0; i < organisationOrganisationLinks.size(); i++) {
-      OrganisationOrganisationLink organisationOrganisationLink = new OrganisationOrganisationLink(db_ausstage);
-      // get data from the request object
-      childOrganisationId = request.getParameter("f_child_organisation_id_" + i);
-      //System.out.println("Child Id:" +childOrganisationId);
-      functionId  = request.getParameter("f_function_lov_id_" + i);
-      notes       = request.getParameter("f_notes_" + i);
+	for(int i=0; i < organisationOrganisationLinks.size(); i++) {
+        	
+        	OrganisationOrganisationLink orgOrgLink = new OrganisationOrganisationLink(db_ausstage);
+		// get data from the request object
+	        
+	        linkOrganisationId = request.getParameter("f_link_org_id_" + i);    
+	        notes       = request.getParameter("f_notes_" + i);
+	        childNotes  = request.getParameter("f_child_notes_" + i);      
 
-      organisationOrganisationLink.setChildId(childOrganisationId);
-      organisationOrganisationLink.setFunctionLovId(functionId);
-      organisationOrganisationLink.setNotes(notes);
+		//get the relation lookup id and the perspective (ie parent or child) 
+		String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
+		relationLookupId = lookupAndPerspective[0];
+		isParent = lookupAndPerspective[1];
+		
+		if(isParent.equals("parent")){
+		        orgOrgLink.setChildId(linkOrganisationId);
+		        orgOrgLink.setOrganisationId(organisationId);
+	        	orgOrgLink.setNotes(notes);
+	        	orgOrgLink.setChildNotes(childNotes);
+		} else {
+		        orgOrgLink.setChildId(organisationId);
+		        orgOrgLink.setOrganisationId(linkOrganisationId);
+	        	orgOrgLink.setNotes(childNotes);
+	        	orgOrgLink.setChildNotes(notes);
+		}
+	
 
-      //if (error_msg.length() == 0)
-      //BW organisationOrganisationLinks.set(i, organisationOrganisationLink);
-      tempOrganisationOrganisationLinks.insertElementAt(organisationOrganisationLink, i);
-    }
+	        orgOrgLink.setRelationLookupId(relationLookupId);
+	        
+	        tempOrganisationOrganisationLinks.insertElementAt(orgOrgLink, i);
+    	}
   }
   catch(Exception e) {
     error_msg = "Error: Organisation to organisation links process NOT successful.";
