@@ -11,7 +11,7 @@
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
 <%@ page import = "ausstage.ConEvLink, ausstage.Contributor"%>
-<%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.ContentIndicator"%>
+<%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.RelationLookup, ausstage.ContentIndicator"%>
 <%@ page import = "ausstage.ItemContribLink, ausstage.ItemOrganLink"%>
 <%@ page import = "ausstage.SecondaryGenre, ausstage.Work"%>
 <%@ page import = "ausstage.WorkContribLink, ausstage.WorkEvLink,ausstage.WorkOrganLink" %>
@@ -203,17 +203,28 @@
 									<ul>
 									<%
 									for (VenueVenueLink venueVenueLink : (Vector <VenueVenueLink>) venue_venuelinks) {
-										assocVenue.load(new Integer(venueVenueLink.getChildId()).intValue());
-										
-										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
-										if (venueVenueLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(venueVenueLink.getFunctionId()));
+										boolean isParent = true;
+										if (venue_id.equals(venueVenueLink.getChildId())){
+											isParent = false;
+											assocVenue.load(new Integer(venueVenueLink.getVenueId()).intValue());
+										}else{
+											assocVenue.load(new Integer(venueVenueLink.getChildId()).intValue());
+										}
+										RelationLookup lookUpCode = new RelationLookup(db_ausstage_for_drill);
+										if (venueVenueLink.getRelationLookupId()!=null) lookUpCode.load(Integer.parseInt(venueVenueLink.getRelationLookupId()));
 										%>
 										<li>
-												<%=lookUpCode.getDescription() %>
+												<%=(isParent)?lookUpCode.getParentRelation():lookUpCode.getChildRelation() %>
 												<a href="/pages/venue/<%=assocVenue.getVenueId()%>">       
 													<%=assocVenue.getName()%>
 												</a>
-												<%if(!venueVenueLink.getNotes().equals("")) out.print(" - "+venueVenueLink.getNotes());%>
+												<%
+												if (isParent){
+													if(!venueVenueLink.getNotes().equals("")) out.print(" - "+venueVenueLink.getNotes());
+												}else{
+													if(!venueVenueLink.getChildNotes().equals("")) out.print(" - "+venueVenueLink.getChildNotes());
+												}
+												%>
 										</li>
 										<%
 									}

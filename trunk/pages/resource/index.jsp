@@ -11,7 +11,7 @@
 <%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
 <%@ page import = "ausstage.ConEvLink, ausstage.Contributor"%>
-<%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.ContentIndicator"%>
+<%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.RelationLookup, ausstage.ContentIndicator"%>
 <%@ page import = "ausstage.ItemContribLink, ausstage.ItemOrganLink"%>
 <%@ page import = "ausstage.SecondaryGenre, ausstage.Work"%>
 <%@ page import = "ausstage.WorkContribLink, ausstage.WorkEvLink,ausstage.WorkOrganLink" %>
@@ -417,17 +417,23 @@
 									<table width="<%=baseCol3Wdth%>" border="0" cellpadding="0" cellspacing="0">
 									<%
 									for (ItemItemLink itemItemLink : (Vector <ItemItemLink>) item_itemlinks) {
-										assocItem.load(new Integer(itemItemLink.getChildId()).intValue());
+										boolean isParent = item_id.equals(itemItemLink.getItemId());
 										
-										LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
-										lookUpCode.load(Integer.parseInt(itemItemLink.getFunctionId()));
+										assocItem.load(new Integer((isParent) ? itemItemLink.getChildId() : itemItemLink.getItemId()).intValue());
+										
+										RelationLookup lookUpCode = new RelationLookup(db_ausstage_for_drill);
+										lookUpCode.load(Integer.parseInt(itemItemLink.getRelationLookupId()));
 										%>
 										<tr>
 											<td valign="top">
-												<%=lookUpCode.getDescription() %>
+												<%=(isParent)? lookUpCode.getParentRelation() : lookUpCode.getChildRelation() %>
 												<a href="/pages/resource/<%=assocItem.getItemId()%>">       
 													<%=assocItem.getCitation()%>
 												</a>
+												<%
+													if((isParent) && !itemItemLink.getNotes().equals("")) out.print(" - "+itemItemLink.getNotes());
+												  	if((!isParent) && !itemItemLink.getChildNotes().equals("")) out.print(" - "+itemItemLink.getChildNotes());
+												  %>
 											</td>
 										</tr>
 										<%

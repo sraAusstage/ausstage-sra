@@ -12,7 +12,7 @@
 <%@ page import="ausstage.Country,ausstage.PrimContentIndicatorEvLink"%>
 <%@ page import="ausstage.OrgEvLink,ausstage.Organisation,ausstage.Organisation"%>
 <%@ page import="ausstage.ConEvLink,ausstage.Contributor"%>
-<%@ page import="ausstage.Item,ausstage.LookupCode,ausstage.ContentIndicator"%>
+<%@ page import="ausstage.Item,ausstage.LookupCode,ausstage.RelationLookup,ausstage.ContentIndicator"%>
 <%@ page import="ausstage.ItemContribLink,ausstage.ItemOrganLink"%>
 <%@ page import="ausstage.SecondaryGenre,ausstage.Work"%>
 <%@ page import="ausstage.WorkContribLink,ausstage.WorkEvLink,ausstage.WorkOrganLink"%>
@@ -58,7 +58,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			DescriptionSource descriptionSource;
 			Datasource datasourceEvlink;
 
-			Venue venue = null;
+			//Venue venue = null;
 			PrimaryGenre primarygenre;
 			Organisation organisation;
 			Organisation organisationCreator = null;
@@ -73,7 +73,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			Item assocItem = null;
 			ContentIndicator contentIndicator = null;
 
-			SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat formatPattern = new SimpleDateFormat("dd MMMM yyyy");
 
 			boolean displayUpdateForm = true;
 			admin.Common Common = new admin.Common();
@@ -86,10 +86,10 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			event.load(Integer.parseInt(event_id));
 			descriptionSource = new DescriptionSource(db_ausstage_for_drill);
 
-
+			Venue assocVenue = new Venue(db_ausstage_for_drill); ;
 		    Event assocEvent = null;
 		    Vector event_eventlinks = event.getEventEventLinks();
-			if(event_eventlinks.size() > 0){assocEvent = new Event(db_ausstage_for_drill);}
+			if(event_eventlinks.size() > 0){assocEvent = new Event(db_ausstage_for_drill); }
 			
 	
 			//Event Name
@@ -308,16 +308,34 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 						<ul>
 						<%
 						for (EventEventLink eventEventLink : (Vector <EventEventLink>) event_eventlinks) {
-							assocEvent.load(new Integer(eventEventLink.getChildId()).intValue());
+							boolean isParent = true;
+							if(event_id.equals(eventEventLink.getChildId())){
+								isParent = false;
+								assocEvent.load(new Integer(eventEventLink.getEventId()).intValue());
+								
+							}else{
+								assocEvent.load(new Integer(eventEventLink.getChildId()).intValue());
+								
+							}
+							RelationLookup relationLookup = new RelationLookup(db_ausstage_for_drill);
+							String assocEventDate = "";
+							assocEventDate = formatDate(assocEvent.getDdfirstDate(),assocEvent.getMmfirstDate(),assocEvent.getYyyyfirstDate());
 							
-							LookupCode lookUpCode = new LookupCode(db_ausstage_for_drill);
-							if (eventEventLink.getFunctionId()!=null) lookUpCode.load(Integer.parseInt(eventEventLink.getFunctionId()));
+							if (eventEventLink.getRelationLookupId()!=null) relationLookup.load(Integer.parseInt(eventEventLink.getRelationLookupId()));
 							%>
 							<li>
-									<%=lookUpCode.getDescription() %>
+									<%=(isParent)?relationLookup.getParentRelation():relationLookup.getChildRelation() %>
 									<a href="/pages/event/<%=assocEvent.getEventid()%>">       
-										<%=assocEvent.getEventName()%>
-									</a><% if (!eventEventLink.getNotes().equals("")) out.print(" - "+eventEventLink.getNotes());%>
+										<%=assocEvent.getEventName()+", "%>
+									</a><%=assocVenue.getVenueInfoForVenueDisplay(new Integer(assocEvent.getVenueid()).intValue(), stmt)%> 
+									<%=", "+assocEventDate%>
+									<% if (isParent){
+										if (!eventEventLink.getNotes().equals("")) out.print(" - "+eventEventLink.getNotes());
+									   } 
+									   else {
+										if (!eventEventLink.getChildNotes().equals("")) out.print(" - "+eventEventLink.getChildNotes());									   
+									   }
+									%>
 
 							</li>
 							<%
@@ -541,14 +559,14 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			if (!event.getDataSources().isEmpty()) {
 			%>
 				<tr>
-					<th class='record-label b-90'>Data Source</td>
+					<th class='record-label b-90'>Data Source</th>
 					
-					<td class=''  colspan='2'>
+					<td class='record-value'  colspan='2'>
 						<table  class='record-value' cellspacing="0">
 							<tr>
-								<td  class='record-value-table light nowrap'>Source</td>
+								<th  class='record-value-table light nowrap'>Source</th>
 								
-								<td  class='record-value-table light nowrap'>Description</td>
+								<th  class='record-value-table light nowrap'>Description</th>
 								
 								<!--<td  class='record-value-table light nowrap' >Part of Collection</td>-->
 							</tr>
