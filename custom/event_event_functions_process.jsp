@@ -20,9 +20,13 @@
 	Vector<EventEventLink> eventEventLinks = eventObj.getEventEventLinks();
 	Vector<EventEventLink> tempEventEventLinks = new Vector<EventEventLink>();
 	String error_msg = "";
-	String functionId = "";
+
 	String notes = "";
+	String childNotes = "";
 	String childEventId = "";
+	String linkEventId = "";
+	String relationLookupId = "";
+	String isParent = "";
 	
 	pageFormater.writeHeader(out);
 	pageFormater.writePageTableHeader(out, "", ausstage_main_page_link);
@@ -33,16 +37,40 @@
 			EventEventLink eventEventLink = new EventEventLink(db_ausstage);
 			// get data from the request object
 			childEventId = request.getParameter("f_child_event_id_" + i);
-			functionId = request.getParameter("f_function_lov_id_" + i);
+						
+			linkEventId = request.getParameter("f_link_event_id_" + i);
+
+			String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
+
+			System.out.println(Arrays.toString(lookupAndPerspective));
+			relationLookupId = lookupAndPerspective[0];
+
+			System.out.println(relationLookupId);
+			isParent = lookupAndPerspective[1];
+
+			System.out.println(isParent);						
 			notes = request.getParameter("f_notes_" + i);
-			eventEventLink.setChildId(childEventId);
-			eventEventLink.setFunctionLovId(functionId);
-			eventEventLink.setNotes(notes);
+			childNotes = request.getParameter("f_child_notes_" + i);
+			
+			if (isParent.equals("parent")){ 
+				eventEventLink.setChildId(linkEventId);
+				eventEventLink.setEventId(eventId);
+				eventEventLink.setNotes(notes);
+				eventEventLink.setChildNotes(childNotes);
+			} 
+			else {	eventEventLink.setEventId(linkEventId);
+				eventEventLink.setChildId(eventId);
+				eventEventLink.setNotes(childNotes);
+				eventEventLink.setChildNotes(notes);				
+			}
+			
+			eventEventLink.setRelationLookupId(relationLookupId);
+			//eventEventLink.setNotes(notes);
 			
 			tempEventEventLinks.insertElementAt(eventEventLink, i);
 		}
 	} catch(Exception e) {
-		error_msg = "Error: Resource to resource links process NOT successful.";
+		error_msg = "Error: Event to Event links process NOT successful."+e.toString();
 	}
 
 	if (error_msg.equals("")) {

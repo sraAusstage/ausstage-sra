@@ -3,7 +3,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import = "java.sql.*, admin.Common, java.util.*"%>
-<%@ page import = " ausstage.Database, ausstage.Work,ausstage.WorkWorkLink, ausstage.Contributor, ausstage.LookupCode"%>
+<%@ page import = " ausstage.Database, ausstage.Work,ausstage.WorkWorkLink, ausstage.Contributor, ausstage.RelationLookup"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ include file="ausstage_common.jsp"%>
@@ -13,23 +13,29 @@
 <%
   admin.ValidateLogin     login                = (admin.ValidateLogin) session.getAttribute("login");
   admin.FormatPage        pageFormater         = (admin.FormatPage) session.getAttribute("pageFormater");
-  ausstage.Database          db_ausstage          = new ausstage.Database ();
+  ausstage.Database       db_ausstage          = new ausstage.Database ();
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
+
   Statement               stmt                 = db_ausstage.m_conn.createStatement ();
   ausstage.HtmlGenerator  htmlGenerator        = new ausstage.HtmlGenerator (db_ausstage);
   ausstage.Datasource     datasource           = new ausstage.Datasource (db_ausstage);
-  Work                    work                 = new Work(db_ausstage);
-  Work             workObj                  = new Work(db_ausstage);
-  String                  workid               = request.getParameter("f_workid");
-  Vector                  temp_display_info;
-  Vector                  m_work_orglinks;
-  Vector                  m_work_conlinks;
+
+  Work		work 	= new Work(db_ausstage);
+  Work          workObj = new Work(db_ausstage);
+  String        workid  = request.getParameter("f_workid");
+  
+  Vector        temp_display_info;
+  Vector        m_work_orglinks;
+  Vector        m_work_conlinks;
+  
   Vector<WorkWorkLink> work_link_vec = new Vector();
-  Vector work_name_vec				 = new Vector();
-  String                  work_title           = "";
-  String                  alter_work_title     = "0";
-  String                  action               = request.getParameter("action");
+  Vector work_name_vec		= new Vector();
+  String   work_title           = "";
+  String   alter_work_title     = "0";
+  String   action               = request.getParameter("action");
+
   if (action == null) action = "";
+
   int                     counter              = 0;
   ResultSet               rset;
   Common                  common               = new Common();
@@ -105,15 +111,21 @@
   Work workTemp 			= null;
   WorkWorkLink workWorkLink     = null;
   
-  LookupCode lc = new LookupCode(db_ausstage);
-  
+  RelationLookup lc = new RelationLookup(db_ausstage);
+
+	//Loop through the related works  
   for(int i=0; i < work_link_vec.size(); i++ ){
-	  workTemp = new Work(db_ausstage);
-	  workTemp.load(Integer.parseInt(work_link_vec.get(i).getChildId()));
+  	boolean isParent = true;
+  	//check - if current objects work id != associated objects work id then it is not parent
+  	if (!workid.equals(work_link_vec.get(i).getWorkId())) isParent = false;
+  	
+	workTemp = new Work(db_ausstage);
+	//load work object depending on parent condition
+	workTemp.load(Integer.parseInt((isParent) ? work_link_vec.get(i).getChildId() : work_link_vec.get(i).getWorkId()));
 	  
-	  if (work_link_vec.get(i).getFunctionId() != null) {
-		lc.load(Integer.parseInt(work_link_vec.get(i).getFunctionId()));
-		work_name_vec.add(workTemp.getWorkTitle() + " (" + lc.getDescription() + ")");
+	  if (work_link_vec.get(i).getRelationLookupId() != null) {
+		lc.load(Integer.parseInt(work_link_vec.get(i).getRelationLookupId()));
+		work_name_vec.add(workTemp.getWorkTitle() + " (" + ((isParent) ? lc.getParentRelation() : lc.getChildRelation()) + ")");
 	  } else {
 		work_name_vec.add(workTemp.getWorkTitle());
 	  }

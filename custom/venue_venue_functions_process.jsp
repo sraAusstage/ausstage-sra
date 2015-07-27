@@ -23,9 +23,12 @@
   Vector<VenueVenueLink> venueVenueLinks 	= venueObj.getVenueVenueLinks();
   Vector<VenueVenueLink> tempVenueVenueLinks 	= new Vector();
   String error_msg   		= "";
-  String functionId   		= "";
+  String relationLookupId	= "";
   String notes        		= "";
-  String childVenueId  		= "";
+  String childNotes    		= "";
+  String linkVenueId		= "";
+  String isParent		= "";
+  
   //System.out.println("Child Id:" + request.getParameter("f_child_venue_id_"));
   String action = request.getParameter("act");
   
@@ -33,6 +36,49 @@
   pageFormater.writePageTableHeader (out, "", ausstage_main_page_link);
 
   try {
+		for (int i = 0; i < venueVenueLinks.size(); i++) {
+			VenueVenueLink venueVenueLink = new VenueVenueLink(db_ausstage);
+			// get data from the request object
+			linkVenueId 		= request.getParameter("f_link_venue_id_"+ i);
+			notes 			= request.getParameter("f_notes_"+i);
+			childNotes 		= request.getParameter("f_child_notes_"+i);
+			
+			String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
+			relationLookupId = lookupAndPerspective[0];
+			//System.out.println(relationLookupId);
+			isParent = lookupAndPerspective[1];
+			//System.out.println("* is parent = "+isParent);						
+			//System.out.println("** linkContributorId = "+linkContributorId);
+			//System.out.println("** ContributorId = "+contributorId);
+			if (isParent.equals("parent")){
+			//	System.out.println("* ");
+			//	System.out.println("* is parent.");				
+			//	System.out.println("*  - parent id = "+contributorId);			
+			//	System.out.println("*  - child id = "+linkContributorId);			
+				venueVenueLink.setChildId(linkVenueId);
+				venueVenueLink.setVenueId(venueId);
+				venueVenueLink.setNotes(notes);
+				venueVenueLink.setChildNotes(childNotes);
+			}
+			else {
+			//	System.out.println("* ");
+			//	System.out.println("* is child - child id = "+contributorId);			
+			//	System.out.println("* is child - parent id = "+linkContributorId);			
+				venueVenueLink.setChildId(venueId);
+				venueVenueLink.setVenueId(linkVenueId);
+				venueVenueLink.setNotes(childNotes);
+				venueVenueLink.setChildNotes(notes);
+				
+			}
+
+			venueVenueLink.setRelationLookupId(relationLookupId);
+			//venueVenueLink.setNotes(notes);
+
+			tempVenueVenueLinks.insertElementAt(venueVenueLink, i);
+		}
+	}
+  
+  /*{
 	for(int i=0; i < venueVenueLinks.size(); i++) {
 	    VenueVenueLink venueVenueLink = new VenueVenueLink(db_ausstage);
             // get data from the request object
@@ -49,7 +95,7 @@
 	    // BW venueVenueLinks.set(i, venueVenueLink);
 	    tempVenueVenueLinks.insertElementAt(venueVenueLink, i); 
     }
-  }
+  }*/
   catch(Exception e) {
     error_msg = "Error: Resource to resource links process NOT successful.";
   }

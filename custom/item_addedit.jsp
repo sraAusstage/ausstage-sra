@@ -3,7 +3,7 @@
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page import = "java.sql.*, admin.Common, java.util.*"%>
-<%@ page import = " ausstage.Database, ausstage.Item, ausstage.Contributor, ausstage.ItemItemLink, ausstage.LookupCode"%>
+<%@ page import = " ausstage.Database, ausstage.Item, ausstage.Contributor, ausstage.ItemItemLink, ausstage.RelationLookup"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ include file="ausstage_common.jsp"%>
@@ -490,16 +490,28 @@
   pageFormater.writeTwoColTableFooter(out);
 
   //BW additional URLs
-
+/****************************************************************************
     pageFormater.writeTwoColTableHeader(out, "Additional URLs", 600); 
     //hidden field to store and pass urls between pages (comma delimited. Updated via javascript functions on the add remove links and onblur events)
-  out.println("<input type='hidden' name='f_additional_urls' size='60' value=''>");    
+  out.println("<input type='hidden' name='f_additional_urls' size='60' value=''>");  
   out.println("<span width='100%' name='additional_url_span'><input type='text' name='f_enter_additional_url' size='50' maxlength='2048' class='line250' onblur='addUrl($(this));' value=''" + readOnly + "><a href='#additional_url' onclick='addUrl($(\"input[name=f_enter_additional_url]\"))'> Add</a></span>");
   for (int i = 0; i < m_additional_urls.size(); i++){
   	out.println("<span name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a></span>");
   }
   pageFormater.writeTwoColTableFooter(out);
-  
+**********************************************/  
+
+  pageFormater.writeTwoColTableHeader(out, "Additional URLs", 600); 
+
+  out.println("<input type='hidden' name='f_additional_urls' size='60' value=''>");    
+  out.println("<table id='additional_url_span'>");
+  out.println("<tr><td width='100%' ><input type='text' name='f_enter_additional_url' size='50' maxlength='2048' class='line250' onblur='addUrl($(this));' value=''" + readOnly + "></td><td><a href='#additional_url' onclick='addUrl($(\"input[name=f_enter_additional_url]\"))'> Add</a></td></tr>");
+  for (int i = 0; i < m_additional_urls.size(); i++){
+  	out.println("<tr><td name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "></td><td><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a></td></tr>");
+  }
+  out.println("</table>");
+  pageFormater.writeTwoColTableFooter(out);
+
   pageFormater.writeTwoColTableHeader(out, "International Standard Book Number");
   out.println("<input type='text' name='f_ident_isbn' size='60' class='line250' maxlength=60 value=\"" + item.getIdentIsbn() + "\"" + readOnly + ">");
   pageFormater.writeTwoColTableFooter(out);
@@ -649,11 +661,15 @@
   temp_display_info = item.generateDisplayInfo(m_item_itemlinks, "item", stmt);
   
   for(int i=0; i < m_item_itemlinks.size(); i++) {
+    
     ItemItemLink itemItemLink = m_item_itemlinks.elementAt(i);
-    LookupCode lookUpCode = new LookupCode(db_ausstage);
-    lookUpCode.load(Integer.parseInt(itemItemLink.getFunctionId()));
+    RelationLookup lookUpCode = new RelationLookup(db_ausstage);
+    
+    boolean isParent = itemid.equals(itemItemLink.getItemId());
+    
+    lookUpCode.load(Integer.parseInt(itemItemLink.getRelationLookupId()));
     String tempString = (String)temp_display_info.elementAt(i);
-    tempString = lookUpCode.getDescription() + ": " + tempString;
+    tempString = ((isParent)? lookUpCode.getParentRelation() : lookUpCode.getChildRelation()) + ": " + tempString;
     temp_display_info.removeElementAt(i);
     temp_display_info.insertElementAt(tempString, i);
   }
@@ -729,8 +745,8 @@
       console.log("field has value :"+field_to_check.val());
       if (validateUrl(field_to_check)){
         console.log("field is valid");
-        $('[name=additional_url_span]').after("<span name='url_line_"+url_count+"'><input type='text' name='f_additional_url_"+url_count+"' size='50' maxlength='2048' class='line250' value="
-        					+field_to_check.val()+" ><a href='#additional_url' onclick='removeUrl("+url_count+")'> Remove</a></span>");
+        $('#additional_url_span tr:last').after("<tr><td name='url_line_"+url_count+"'><input type='text' name='f_additional_url_"+url_count+"' size='50' maxlength='2048' class='line250' value="
+        					+field_to_check.val()+" ></td><td><a href='#additional_url' onclick='removeUrl("+url_count+")'> Remove</a></td>");
         field_to_check.val("");
         url_count++;
         updateUrlList();
@@ -741,7 +757,7 @@
   
   function removeUrl(i){
     console.log("remove the current text field and link. using id."+i);
-    $("[name=url_line_"+i+"]").remove();
+    $("[name=url_line_"+i+"]").parent('tr').remove();
     updateUrlList();
   }  
 

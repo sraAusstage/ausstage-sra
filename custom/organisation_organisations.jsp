@@ -107,10 +107,17 @@
  //remove  venue from the venue
   if (f_unselect_this_org_id != null) {
       for (OrganisationOrganisationLink existing : OrgOrgLinks) {
-    	  if (existing.getChildId().equals(f_unselect_this_org_id)) {
-    		  OrgOrgLinks.remove(existing);
-    		  break;
-    	  }
+		//handle the case where object is linked to itsself
+		if(f_organisation_id.equals(f_unselect_this_org_id)){
+			if(existing.getChildId().equals(f_organisation_id) && existing.getOrganisationId().equals(f_organisation_id)){
+				OrgOrgLinks.remove(existing);
+				break;
+			}
+		}
+		else if (existing.getChildId().equals(f_unselect_this_org_id)|| existing.getOrganisationId().equals(f_unselect_this_org_id)) {
+	    		OrgOrgLinks.remove(existing);
+			break;
+	 	}
       }
 	  
       organisation.setOrgOrgLinks(OrgOrgLinks);   
@@ -159,17 +166,27 @@
   buttons_actions.addElement ("Javascript:search_form.action='org_org_functions.jsp?act="+action+"';search_form.submit();");
  
   selected_db_sql = "";
-  Vector<OrganisationOrganisationLink> selectedOrganisations = new Vector<OrganisationOrganisationLink>();
+  //Vector<OrganisationOrganisationLink> selectedOrganisations = new Vector<OrganisationOrganisationLink>();
   Vector temp_vector          = new Vector();
   String temp_string          = "";         
-  selectedOrganisations = organisation.getOrganisationOrganisationLinks();
+  //selectedOrganisations = organisation.getOrganisationOrganisationLinks();
   
-  for (int i=0; i < selectedOrganisations.size(); i++){
-	  temp_string = organisation.getOrganisationInfoForOrganisationDisplay(Integer.parseInt(selectedOrganisations.get(i).getChildId()), stmt);
-	  temp_vector.add(selectedOrganisations.get(i).getChildId());//add the id to the temp vector.
+  //for (int i=0; i < selectedOrganisations.size(); i++){
+  for (int i=0; i < OrgOrgLinks.size(); i++){
+  	boolean isParent = false;
+  	if(f_organisation_id.equals(OrgOrgLinks.get(i).getOrganisationId())){
+  		isParent = true;
+		temp_string = organisation.getOrganisationInfoForOrganisationDisplay(Integer.parseInt(OrgOrgLinks.get(i).getChildId()), stmt);
+		temp_vector.add(OrgOrgLinks.get(i).getChildId());//add the id to the temp vector.
+
+  	} else {
+		temp_string = organisation.getOrganisationInfoForOrganisationDisplay(Integer.parseInt(OrgOrgLinks.get(i).getOrganisationId()), stmt);
+		temp_vector.add(OrgOrgLinks.get(i).getOrganisationId());//add the id to the temp vector.\ 	
+  	}
+  	
 	  temp_vector.add(temp_string);//add the venue name to the temp_vector.
   }
-  selectedOrganisations = temp_vector;
+  OrgOrgLinks = temp_vector;
    
   stmt.close();
   
@@ -215,7 +232,7 @@
                   "Selected Organisations", filter_display_names,
                   filter_names, order_display_names, order_names, list_name,
                   list_db_sql, list_db_field_id_name, textarea_db_display_fields,
-                  selected_list_name, selectedOrganisations, selected_list_db_field_id_name,
+                  selected_list_name, OrgOrgLinks, selected_list_db_field_id_name,
                   buttons_names, buttons_actions, hidden_fields, false, MAX_RESULTS_RETURNED));
 
   db_ausstage.disconnectDatabase();

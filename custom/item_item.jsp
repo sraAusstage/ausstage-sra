@@ -45,6 +45,7 @@
 
 	Hashtable hidden_fields = new Hashtable();
 	Item item = (Item) session.getAttribute("item");
+	
 
 	String comeFromItemAddeditPage = request.getParameter("f_from_item_add_edit_page");
 	if (comeFromItemAddeditPage != null && comeFromItemAddeditPage.equals("true")) {
@@ -55,6 +56,7 @@
 	String f_select_this_child_id = request.getParameter("f_select_this_child_id");
 	String f_unselect_this_child_id = request.getParameter("f_unselect_this_child_id");
 
+	String f_itemid = item.getItemId();
 	Vector <ItemItemLink> childItemItemLinks = item.getItemItemLinks();
 
 	if (f_select_this_child_id != null) {
@@ -69,10 +71,16 @@
 	//remove child item from the item
 	if (f_unselect_this_child_id != null) {
 		for (ItemItemLink existing : childItemItemLinks) {
-			if (existing.getChildId().equals(f_unselect_this_child_id)) {
-				childItemItemLinks.remove(existing);
-				break;
-			}
+			if (f_itemid.equals(f_unselect_this_child_id)){
+    				if (existing.getChildId().equals(f_unselect_this_child_id)&& existing.getItemId().equals(f_unselect_this_child_id)) {
+						childItemItemLinks.remove(existing);
+						break;
+	    			}
+    			}
+    			else if (existing.getChildId().equals(f_unselect_this_child_id)|| existing.getItemId().equals(f_unselect_this_child_id)){
+		    		childItemItemLinks.remove(existing);
+		    		break;
+    			}	
 		}
 		item.setItemItemLinks(childItemItemLinks);
 	}
@@ -151,11 +159,13 @@
 	selected_db_sql = "";
 	int i = 0;
 	for (ItemItemLink temp_iil : (Vector<ItemItemLink>) item.getItemItemLinks()) {
-		temp_string = item.getItemInfoForItemDisplay(Integer.parseInt(temp_iil.getChildId()), stmt);
-		temp_vector.add(temp_iil.getChildId());//add the id to the temp vector.
+		boolean isParent = f_itemid.equals(temp_iil.getItemId());
+		
+		temp_string = item.getItemInfoForItemDisplay((isParent)?Integer.parseInt(temp_iil.getChildId()) : Integer.parseInt(temp_iil.getItemId()), stmt);
+		temp_vector.add((isParent)?temp_iil.getChildId():temp_iil.getItemId());//add the id to the temp vector.
 		temp_vector.add(temp_string);//add the event name to the temp_vector.
 		if (i > 0) selected_db_sql += ", ";
-		selected_db_sql += temp_iil.getChildId();
+		selected_db_sql += (isParent)?temp_iil.getChildId():temp_iil.getItemId();
 		i++;
 	}
 	selectedItem = temp_vector;

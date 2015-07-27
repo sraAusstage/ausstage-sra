@@ -3,7 +3,7 @@
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <%@ page import = "java.sql.Statement, sun.jdbc.rowset.CachedRowSet, java.util.*"%>
-<%@ page import = "ausstage.Work, ausstage.WorkWorkLink, admin.Common, ausstage.LookupCode"%>
+<%@ page import = "ausstage.Work, ausstage.WorkWorkLink, admin.Common, ausstage.RelationLookup"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
@@ -18,11 +18,9 @@
   Work		workObj        = (Work)session.getAttribute("work");
   String 	workid		= workObj.getWorkId();
   Vector<WorkWorkLink> workWorkLinks = workObj.getWorkWorkLinks();
-  String functionId   = "";
-  String functionDesc = "";
-  String notes        = "";
-  LookupCode lookUps = new LookupCode(db_ausstage);
-  CachedRowSet rsetWorkFuncLookUps = lookUps.getLookupCodes("WORK_FUNCTION");
+
+  RelationLookup lookUps = new RelationLookup(db_ausstage);
+  CachedRowSet rsetWorkFuncLookUps = lookUps.getRelationLookups("WORK_FUNCTION");
 
   String isPreviewForEventWork = request.getParameter("isPreviewForEventWork");
   if(isPreviewForEventWork == null){isPreviewForEventWork = "false"; }
@@ -45,11 +43,12 @@
   }
 
   for(int i=0; i < workWorkLinks.size(); i++) {
-    WorkWorkLink workWorkLink = workWorkLinks.elementAt(i);
-    
-    // Load up the child works 
-    Work tempWork = new Work(db_ausstage);
-    tempWork.load(Integer.parseInt(workWorkLinks.elementAt(i).getChildId()));
+  	WorkWorkLink workWorkLink = workWorkLinks.elementAt(i);
+  	
+    	boolean isParent = workid.equals(workWorkLink.getWorkId());
+  	// Load up the child works 
+    	Work tempWork = new Work(db_ausstage);
+    	tempWork.load(Integer.parseInt((isParent)? workWorkLink.getChildId() : workWorkLink.getWorkId()));
     
     %>
     <tr>
@@ -57,29 +56,51 @@
     </tr>
     <tr>
       <td class="bodytext" colspan=3><%
-      out.println("<input type='hidden' name='f_child_work_id_" + i + "' id='f_child_work_id_" + i + "' value='" + tempWork.getWorkId() + "'>");
-      out.println("<select name='f_function_lov_id_" + i + "' id='f_function_lov_id_" + i + "' size='1' class='line150' >");
-      out.print("<option value='0'>--Select new Function--</option>");
-      rsetWorkFuncLookUps.beforeFirst();
-      while (rsetWorkFuncLookUps.next()) {
-        String tempFunctionId = rsetWorkFuncLookUps.getString ("code_lov_id");
-        out.print("<option value='" + tempFunctionId + "'");
-          if (tempFunctionId.equals(workWorkLink.getFunctionId())) {
-          out.print(" selected");
-        }
-        out.print(">" + rsetWorkFuncLookUps.getString ("description") + "</option>");
-      }%></select>*<br><br>
+    	out.println("<input type='hidden' name='f_link_work_id_" + i + "' id='f_link_work_id_" + i + "' value='" + tempWork.getWorkId() + "'>");
+        out.println("<select name='f_relation_lookup_id_" + i + "' id='f_relation_lookup_id_" + i + "' size='1' class='line150' >");
+        
+        out.print("<option value='0'>--Select new Function--</option>");
+        
+        rsetWorkFuncLookUps.beforeFirst();
+        
+        while (rsetWorkFuncLookUps.next()) {
+        
+        	String tempRelationId = rsetWorkFuncLookUps.getString ("relationlookupid");
+        	out.print("<option value='" + tempRelationId + "_parent'");
+	        
+	        if (workWorkLink.getRelationLookupId().equals(tempRelationId) && ( isParent || rsetWorkFuncLookUps.getString("parent_relation").equals(rsetWorkFuncLookUps.getString("child_relation")))) 
+	        {		
+			out.print(" selected");
+       		}
+        	out.print(">" + rsetWorkFuncLookUps.getString ("parent_relation") + "</option>");
+        	if(!rsetWorkFuncLookUps.getString("parent_relation").equals(rsetWorkFuncLookUps.getString("child_relation"))){
+		        out.print("<option value='" + tempRelationId + "_child'");	
+	        
+	        	if (workWorkLink.getRelationLookupId().equals(tempRelationId) && !isParent) {
+          			out.print(" selected");
+		        }
+                	out.print("> " + rsetWorkFuncLookUps.getString("child_relation") + "</option>");  
+		}
+      	}
+      	%>
+      	</select>*<br><br>
       </td>
     </tr>
     <tr>
       <td class="bodytext" colspan=3><b>Associated Work:</b> <%=tempWork.getName()%></td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><br><b>Comments</b><br>
-        <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=workWorkLink.getNotes()%></textarea>
+      <td class="bodytext" colspan=3><br><b>Comments for </b> <%=workObj.getName()%> to <%=tempWork.getName()%><br>
+        <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)? workWorkLink.getNotes() : workWorkLink.getChildNotes()%></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td class="bodytext" colspan=3><br><b>Comments for </b> <%=tempWork.getName()%> to <%=workObj.getName()%><br>
+        <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent)? workWorkLink.getChildNotes() : workWorkLink.getNotes()%></textarea>
         <br><br><br><hr><br><br>
       </td>
     </tr>
+
 <%
   }
   out.println("</table>");
@@ -95,7 +116,7 @@ function validateForm() {
   // All functions must be selected
   <%
   for(int i=0; i < workWorkLinks.size(); i++) {
-	  out.println("if (document.getElementById('f_function_lov_id_" + i + "').options [document.getElementById('f_function_lov_id_" + i + "').selectedIndex].value=='0') { alert('Please select all functions'); return (false);} ");
+	  out.println("if (document.getElementById('f_relation_lookup_id_" + i + "').options [document.getElementById('f_relation_lookup_id_" + i + "').selectedIndex].value=='0') { alert('Please select all functions'); return (false);} ");
   } %>
   return (true);
 }

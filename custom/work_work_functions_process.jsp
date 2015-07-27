@@ -27,9 +27,11 @@
 	if (isPreviewForItemWork == null){isPreviewForItemWork = "false";}
 
 	String error_msg = "";
-	String functionId = "";
+	String relationLookupId = "";
 	String notes = "";
-	String childWorkId = "";
+	String childNotes = "";	
+	String linkWorkId = "";
+	String isParent = "";
 
 	pageFormater.writeHeader(out);
 	pageFormater.writePageTableHeader(out, "", ausstage_main_page_link);
@@ -38,16 +40,31 @@
 		for (int i = 0; i < workWorkLinks.size(); i++) {
 			WorkWorkLink workWorkLink = new WorkWorkLink(db_ausstage);
 			// get data from the request object
-			childWorkId = request.getParameter("f_child_work_id_" + i);
-			functionId = request.getParameter("f_function_lov_id_" + i);
+			linkWorkId = request.getParameter("f_link_work_id_" + i);
 			notes = request.getParameter("f_notes_" + i);
+			childNotes = request.getParameter("f_child_notes_" + i);			
+			
+			String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
+			relationLookupId = lookupAndPerspective[0];
+			isParent = lookupAndPerspective[1];
 
-			workWorkLink.setChildId(childWorkId);
-			workWorkLink.setFunctionLovId(functionId);
-			workWorkLink.setNotes(notes);
-
+			if (isParent.equals("parent")){
+				workWorkLink.setChildId(linkWorkId);
+				workWorkLink.setWorkId(workId);
+				workWorkLink.setNotes(notes);
+				workWorkLink.setChildNotes(childNotes);			
+			}
+			else {
+				workWorkLink.setChildId(workId);
+				workWorkLink.setWorkId(linkWorkId);
+				workWorkLink.setNotes(childNotes);
+				workWorkLink.setChildNotes(notes);			
+			}
+			workWorkLink.setRelationLookupId(relationLookupId);			
 			tempWorkWorkLinks.insertElementAt(workWorkLink, i);
+			
 		}
+		
 	} catch (Exception e) {
 		error_msg = "Error: Resource to resource links process NOT successful.";
 	}
