@@ -15,8 +15,9 @@ public class VenueVenueLink {
 	// All of the record information
 	private String venueId;
 	private String childId;
-	private String functionLovId;
+	private String relationLookupId;
 	private String notes;
+	private String childNotes;
 	private String m_error_string;
 
 	/*
@@ -45,8 +46,9 @@ public class VenueVenueLink {
 	public void initialise() {
 		venueId = "0";
 		childId = "0";
-		functionLovId = "0";
+		relationLookupId = "0";
 		notes = "";
+		childNotes = "";
 		m_error_string = "";
 	}
 
@@ -77,8 +79,9 @@ public class VenueVenueLink {
 				// venuevenuelinkId = l_rs.getString("venuevenuelinkId");
 				venueId = l_rs.getString("venueId");
 				childId = l_rs.getString("childId");
-				functionLovId = l_rs.getString("function_lov_id");
+				relationLookupId = l_rs.getString("relationlookupid");
 				notes = l_rs.getString("notes");
+				childNotes = l_rs.getString("childnotes");
 
 				if (notes == null) notes = "";
 			}
@@ -121,7 +124,7 @@ public class VenueVenueLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean update(String p_venueId, Vector<VenueVenueLink> p_childLinks) {
+	public boolean update(String p_venueId, Vector<VenueVenueLink> p_links) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
@@ -129,11 +132,17 @@ public class VenueVenueLink {
 
 			sqlString = "DELETE FROM VenueVenueLink where " + "venueId=" + p_venueId;
 			m_db.runSQL(sqlString, stmt);
-
-			if (p_childLinks != null) {
-				for (int i = 0; i < p_childLinks.size(); i++) {
-					sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, function_lov_id, notes) " + "VALUES (" + p_venueId + ", "
-						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ", '" + m_db.plSqlSafeString(p_childLinks.get(i).getNotes()) +"')";
+			sqlString = "DELETE FROM VenueVenueLink where " + "childId=" + p_venueId;
+			m_db.runSQL(sqlString, stmt);
+			
+			if (p_links != null) {
+				for (int i = 0; i < p_links.size(); i++) {
+					sqlString = "INSERT INTO venueVenueLink " + "(venueId, childId, relationlookupid, notes, childnotes) " 
+								+ "VALUES (" + p_links.get(i).getVenueId() 
+								+ ", "+ p_links.get(i).getChildId() 
+								+ ", " + p_links.get(i).getRelationLookupId() 
+								+ ", '" + m_db.plSqlSafeString(p_links.get(i).getNotes()) +"'"
+								+ ", '" + m_db.plSqlSafeString(p_links.get(i).getChildNotes()) +"')";
 					
 					m_db.runSQL(sqlString, stmt);
 				}
@@ -163,6 +172,9 @@ public class VenueVenueLink {
 			sqlString = "DELETE from VenueVenueLink WHERE venueId = " + venueId;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
+			sqlString = "DELETE from VenueVenueLink WHERE childId = " + venueId;
+			m_db.runSQL(sqlString, stmt);
+			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 			System.out.println("An Exception occured in deleteVenueVenueLinksForVenue().");
@@ -190,12 +202,14 @@ public class VenueVenueLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString =	"SELECT vl.* " 
-						+ " FROM VenueVenueLink vl, venue v, lookup_codes lu" 
-						+ " WHERE vl.venueId  = " + venueId
-						+ " AND vl.childid = v.venueid"
-						+ " AND lu.code_lov_id = vl.FUNCTION_LOV_ID"
-						+ " ORDER BY lu.description ASC, v.venue_name ASC"; 
+			sqlString = "SELECT vvl.* "
+						+ " FROM venuevenuelink vvl, venue v, venue child, relation_lookup rl" 
+						+ " WHERE (vvl.venueid =  " + venueId + "  || vvl.childid = " + venueId + ")" 
+						+ " AND vvl.venueid = v.venueid" 
+						+ " AND vvl.childid = child.venueid" 
+						+ " AND vvl.relationlookupid = rl.relationlookupid" 
+						+ " ORDER BY CASE WHEN vvl.childid = " + venueId + " THEN rl.child_relation ELSE rl.parent_relation END," 
+						+ " CASE WHEN vvl.childid = " + venueId + " THEN v.venue_name ELSE child.venue_name END";
 
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
@@ -232,8 +246,9 @@ public class VenueVenueLink {
 				venueVenueLink = new VenueVenueLink(m_db);
 				venueVenueLink.setVenueId(rset.getString("venueId"));
 				venueVenueLink.setChildId(rset.getString("childId"));
-				venueVenueLink.setFunctionLovId(rset.getString("function_lov_id"));
+				venueVenueLink.setRelationLookupId(rset.getString("relationlookupid"));
 				venueVenueLink.setNotes(rset.getString("notes"));
+				venueVenueLink.setChildNotes(rset.getString("childnotes"));
 
 				allVenueVenueLinks.add(venueVenueLink);
 			}
@@ -261,8 +276,8 @@ public class VenueVenueLink {
 		childId = s;
 	}
 
-	public void setFunctionLovId(String s) {
-		functionLovId = s;
+	public void setRelationLookupId(String s) {
+		relationLookupId = s;
 	}
 
 	public void setNotes(String s) {
@@ -271,6 +286,12 @@ public class VenueVenueLink {
 		if (notes.length() > 500) notes = notes.substring(0, 499);
 	}
 
+	public void setChildNotes(String s) {
+		childNotes = s;
+		if (childNotes == null) childNotes = "";
+		if (childNotes.length() > 500) childNotes = childNotes.substring(0, 499);
+	}
+	
 	public String getVenueId() {
 		return (venueId);
 	}
@@ -279,14 +300,18 @@ public class VenueVenueLink {
 		return (childId);
 	}
 
-	public String getFunctionId() {
-		return (functionLovId);
+	public String getRelationLookupId() {
+		return (relationLookupId);
 	}
 
 	public String getNotes() {
 		return (notes);
 	}
 
+	public String getChildNotes() {
+		return (childNotes);
+	}
+	
 	public String getError() {
 		return (m_error_string);
 	}

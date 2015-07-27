@@ -863,12 +863,14 @@ public class Organisation {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT DISTINCT ol.orgorglinkid " 
-					+ " FROM orgorglink ol, organisation o, lookup_codes lu " 
-					+ " WHERE ol.organisationid =" + m_organisation_id
-					+ " AND ol.childid = o.organisationid"
-					+ " AND lu.code_lov_id = ol.function_lov_id"
-					+ " ORDER BY lu.description ASC, o.name ASC";
+			l_sql = 	"SELECT distinct ool.orgorglinkid "
+						+ " FROM orgorglink ool, organisation o, organisation child, relation_lookup rl"
+						+ " WHERE (ool.organisationid = "+m_organisation_id+"  || ool.childid = "+m_organisation_id+" )"
+						+ " AND ool.organisationid = o.organisationid"
+						+ " AND ool.childid = child.organisationid"
+						+ " AND ool.relationlookupid = rl.relationlookupid"
+						+ " ORDER BY CASE WHEN ool.childid = "+m_organisation_id+" THEN rl.child_relation ELSE rl.parent_relation END,"
+						+ " CASE WHEN ool.childid = "+m_organisation_id+" THEN o.name ELSE child.name END";
 			
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object

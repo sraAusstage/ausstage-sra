@@ -238,7 +238,7 @@ public class Venue {
 		m_db = p_db;
 	}
 
-	public Vector<Venue> getVenues() {
+	/*public Vector<Venue> getVenues() {
 		Vector<Venue> venues = new Vector<Venue>();
 		for (VenueVenueLink vvl : m_venue_venuelinks) {
 			Venue venue = new Venue(m_db);
@@ -246,8 +246,16 @@ public class Venue {
 			venues.add(venue);
 		}
 		return venues;
+	}*/
+	public Vector<Venue> getVenues() {
+		Vector<Venue> venues = new Vector<Venue>();
+		for (VenueVenueLink vvl : m_venue_venuelinks) {
+			Venue venue = new Venue(m_db);
+			venue.load(Integer.parseInt((m_venue_id.equals(vvl.getChildId()))? vvl.getVenueId(): vvl.getChildId()));
+			venues.add(venue);
+		}
+		return venues;
 	}
-
 	/*
 	 * Name: add ()
 	 * 
@@ -788,7 +796,7 @@ public class Venue {
 	// Utility methods
 	// //////////////////////
 
-	public String getVenueInfoForVenueDisplay(int p_venue_id, Statement p_stmt) {
+	public String	getVenueInfoForVenueDisplay(int p_venue_id, Statement p_stmt) {
 		String sqlString = "", retStr = "";
 		ResultSet l_rs = null;
 		try {

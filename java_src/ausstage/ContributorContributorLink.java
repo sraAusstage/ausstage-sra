@@ -13,8 +13,9 @@ public class ContributorContributorLink {
 	// All of the record information
 	private String contributorId;
 	private String childId;
-	private String functionLovId;
+	private String relationLookupId;
 	private String notes;
+	private String childNotes;
 	private String m_error_string;
 
 	/*
@@ -45,8 +46,9 @@ public class ContributorContributorLink {
 	public void initialise() {
 		contributorId = "0";
 		childId = "0";
-		functionLovId = "0";
+		relationLookupId = "0";
 		notes = "";
+		childNotes = "";
 		m_error_string = "";
 	}
 
@@ -76,10 +78,12 @@ public class ContributorContributorLink {
 			if (l_rs.next()) {
 				contributorId = l_rs.getString("contributorId");
 				childId = l_rs.getString("childId");
-				functionLovId = l_rs.getString("function_lov_id");
+				relationLookupId = l_rs.getString("relationlookupid");
 				notes = l_rs.getString("notes");
+				childNotes = l_rs.getString("childnotes");
 
 				if (notes == null) notes = "";
+				if (childNotes == null) childNotes = "";
 			}
 			l_rs.close();
 			stmt.close();
@@ -120,7 +124,7 @@ public class ContributorContributorLink {
 	 * Returns: True if successful, else false
 	 */
 
-	public boolean update(String p_contributorId, Vector<ContributorContributorLink> p_childLinks) {
+	public boolean update(String p_contributorId, Vector<ContributorContributorLink> p_links) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
@@ -128,13 +132,19 @@ public class ContributorContributorLink {
 
 			sqlString = "DELETE FROM ContribContribLink where contributorId=" + p_contributorId;
 			m_db.runSQL(sqlString, stmt);
+			sqlString = "DELETE FROM ContribContribLink where childId=" + p_contributorId;
+			m_db.runSQL(sqlString, stmt);
 
-			if (p_childLinks != null) {
-				for (int i = 0; i < p_childLinks.size(); i++) {
+			if (p_links != null) {
+				for (int i = 0; i < p_links.size(); i++) {
 					sqlString = "INSERT INTO ContribContribLink " 
-							+ "(contributorId, childId, function_lov_id, notes) " 
-							+ "VALUES (" + p_contributorId + ", " + p_childLinks.get(i).getChildId() + ", " 
-							+ p_childLinks.get(i).getFunctionId() + ", '" + m_db.plSqlSafeString(p_childLinks.get(i).getNotes())+"' )";
+							+ "(contributorId, childId, relationlookupid, notes, childnotes) " 
+							+ "VALUES (" + p_links.get(i).getContributorId() 
+							+ ", " + p_links.get(i).getChildId() 
+							+ ", " + p_links.get(i).getRelationLookupId()
+							+ ", '" + m_db.plSqlSafeString(p_links.get(i).getNotes())+"'"
+							+ ", '" + m_db.plSqlSafeString(p_links.get(i).getChildNotes())
+							+"' )";
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;
@@ -166,6 +176,9 @@ public class ContributorContributorLink {
 			sqlString = "DELETE from ContribContribLink WHERE contributorId = " + contributorId;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
+			sqlString = "DELETE from ContribContribLink WHERE childId = " + contributorId;
+			m_db.runSQL(sqlString, stmt);
+			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 			System.out.println("An Exception occured in deleteContributorContributorLinksForContributor().");
@@ -194,8 +207,19 @@ public class ContributorContributorLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT contribcontriblink.* " + " FROM ContribContribLink " + " WHERE contributorId  = " + contributorId;
-
+			/*sqlString = "SELECT contribcontriblink.* " 
+						+ " FROM ContribContribLink " 
+						+ " WHERE (contributorId  = " + contributorId
+						+ " OR childId = " + contributorId + ")";
+			 */
+			sqlString = "SELECT * "
+						+ " FROM contribcontriblink ccl, contributor c, contributor child, relation_lookup rl "
+						+ " WHERE (ccl.contributorid = "+ contributorId +" || ccl.childid = "+ contributorId +") "
+						+ " AND ccl.contributorid = c.contributorid "
+						+ " AND ccl.childid = child.contributorid "
+						+ " AND ccl.relationlookupid = rl.relationlookupid "
+						+ " ORDER BY CASE WHEN ccl.childid = "+ contributorId +" THEN rl.child_relation ELSE rl.parent_relation END, " 
+						+ " CASE WHEN ccl.childid = "+ contributorId +" THEN c.first_name ELSE child.first_name END";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
@@ -231,8 +255,9 @@ public class ContributorContributorLink {
 				contributorContributorLink = new ContributorContributorLink(m_db);
 				contributorContributorLink.setContributorId(rset.getString("contributorId"));
 				contributorContributorLink.setChildId(rset.getString("childId"));
-				contributorContributorLink.setFunctionLovId(rset.getString("function_Lov_Id"));
+				contributorContributorLink.setRelationLookupId(rset.getString("relationlookupid"));
 				contributorContributorLink.setNotes(rset.getString("notes"));
+				contributorContributorLink.setChildNotes(rset.getString("childnotes"));
 
 				allContributorContributorLinks.add(contributorContributorLink);
 			}
@@ -259,15 +284,21 @@ public class ContributorContributorLink {
 	public void setChildId(String s) {
 		childId = s;
 	}
-
-	public void setFunctionLovId(String s) {
-		functionLovId = s;
+	
+	public void setRelationLookupId(String s) {
+		relationLookupId = s;
 	}
 
 	public void setNotes(String s) {
 		notes = s;
 		if (notes == null) notes = "";
 		if (notes.length() > 500) notes = notes.substring(0, 499);
+	}
+	
+	public void setChildNotes(String s) {
+		childNotes = s;
+		if (childNotes == null) childNotes = "";
+		if (childNotes.length() > 500) childNotes = childNotes.substring(0, 499);
 	}
 
 	public String getContributorId() {
@@ -278,14 +309,17 @@ public class ContributorContributorLink {
 		return (childId);
 	}
 
-	public String getFunctionId() {
-		return (functionLovId);
+	public String getRelationLookupId() {
+		return (relationLookupId);
 	}
 
 	public String getNotes() {
 		return (notes);
 	}
 
+	public String getChildNotes() {
+		return (childNotes);
+	}
 	public String getError() {
 		return (m_error_string);
 	}

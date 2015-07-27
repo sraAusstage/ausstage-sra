@@ -686,11 +686,10 @@ public class Work {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql =   " SELECT DISTINCT wl.workworklinkid "
-					+ " FROM workworklink wl, work w, lookup_codes lu"
-					+ " WHERE wl.workid = " + m_workid 
+					+ " FROM workworklink wl, work w"
+					+ " WHERE (wl.workid = " + m_workid + " || wl.childid = " + m_workid + " )" 
 					+ " AND wl.childid = w.workid"
-					+ " AND lu.code_lov_id = wl.function_lov_id"
-					+ " ORDER BY lu.description ASC, REPLACE(REPLACE(w.work_title, \"'\",\"\"), '\"', \"\") ASC" ;
+					+ " ORDER BY REPLACE(REPLACE(w.work_title, \"'\",\"\"), '\"', \"\") ASC" ;
 
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			m_work_worklinks.removeAllElements();

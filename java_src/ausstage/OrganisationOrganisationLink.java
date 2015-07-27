@@ -16,8 +16,9 @@ public class OrganisationOrganisationLink {
 	// private String OrganisationOrganisationLinkId;
 	private String organisationId;
 	private String childId;
-	private String functionLovId;
+	private String relationLookupId;
 	private String notes;
+	private String childNotes;
 	private String m_error_string;
 
 	/*
@@ -47,8 +48,9 @@ public class OrganisationOrganisationLink {
 		// OrganisationOrganisationLinkId = "0";
 		organisationId = "0";
 		childId = "0";
-		functionLovId = "0";
+		relationLookupId = "0";
 		notes = "";
+		childNotes = "";
 		m_error_string = "";
 	}
 
@@ -78,10 +80,12 @@ public class OrganisationOrganisationLink {
 			if (l_rs.next()) {
 				organisationId = l_rs.getString("organisationId");
 				childId = l_rs.getString("childId");
-				functionLovId = l_rs.getString("function_lov_id");
+				relationLookupId = l_rs.getString("relationlookupid");
 				notes = l_rs.getString("notes");
+				childNotes = l_rs.getString("childNotes");
 
 				if (notes == null) notes = "";
+				if (childNotes == null) childNotes = "";
 			}
 			l_rs.close();
 			stmt.close();
@@ -130,11 +134,19 @@ public class OrganisationOrganisationLink {
 			System.out.println("In update");
 			sqlString = "DELETE FROM OrgOrgLink where " + "organisationId=" + p_organisationId;
 			m_db.runSQL(sqlString, stmt);
+			sqlString = "DELETE FROM OrgOrgLink where " + "childId=" + p_organisationId;
+			m_db.runSQL(sqlString, stmt);
+			
 
 			if (p_childLinks != null) {
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					sqlString = "INSERT INTO OrgOrgLink " + "(organisationId, childId, function_lov_id, notes) " + "VALUES (" + p_organisationId + ", "
-							+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() +", '" + m_db.plSqlSafeString(p_childLinks.get(i).getNotes()) + "' )";
+					sqlString = "INSERT INTO OrgOrgLink " 
+								+ "(organisationId, childId, relationlookupid, notes, childnotes) " 
+								+ "VALUES (" + p_childLinks.get(i).getOrganisationId() 
+								+ ", " + p_childLinks.get(i).getChildId() 
+								+ ", " + p_childLinks.get(i).getRelationLookupId() 
+								+ ", '" + m_db.plSqlSafeString(p_childLinks.get(i).getNotes()) + "' "
+								+ ", '" + m_db.plSqlSafeString(p_childLinks.get(i).getChildNotes()) + "')";
 					
 					m_db.runSQL(sqlString, stmt);
 				}
@@ -164,6 +176,10 @@ public class OrganisationOrganisationLink {
 			String sqlString;
 			sqlString = "DELETE from OrgOrgLink WHERE organisationId = " + organisationId;
 			m_db.runSQL(sqlString, stmt);
+			sqlString = "DELETE from OrgOrgLink WHERE childId = " + organisationId;
+			m_db.runSQL(sqlString, stmt);
+			
+			
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -192,7 +208,15 @@ public class OrganisationOrganisationLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT OrgOrgLink.* " + " FROM OrgOrgLink " + " WHERE OrgOrgLink.organisationId  = " + organisationId;
+			sqlString = "SELECT ool.* "
+						 + " FROM orgorglink ool, organisation o, organisation child, relation_lookup rl "
+						 + " WHERE (ool.organisationid = "+organisationId+"  || ool.childid = "+organisationId+" ) "
+						 + " AND ool.organisationid = o.organisationid "
+						 + " AND ool.childid = child.organisationid "
+						 + " AND ool.relationlookupid = rl.relationlookupid "
+						 + " ORDER BY CASE WHEN ool.childid = "+organisationId+" THEN rl.child_relation ELSE rl.parent_relation END, "
+						 + " CASE WHEN ool.childid = "+organisationId+" THEN o.name ELSE child.name END ";
+
 
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
@@ -230,8 +254,9 @@ public class OrganisationOrganisationLink {
 				organisationOrganisationLink = new OrganisationOrganisationLink(m_db);
 				organisationOrganisationLink.setOrganisationId(rset.getString("organisationId"));
 				organisationOrganisationLink.setChildId(rset.getString("childId"));
-				organisationOrganisationLink.setFunctionLovId(rset.getString("function_Lov_Id"));
+				organisationOrganisationLink.setRelationLookupId(rset.getString("relationlookupid"));
 				organisationOrganisationLink.setNotes(rset.getString("notes"));
+				organisationOrganisationLink.setChildNotes(rset.getString("childNotes"));
 
 				allOrganisationOrganisationLinks.add(organisationOrganisationLink);
 			}
@@ -259,8 +284,8 @@ public class OrganisationOrganisationLink {
 		childId = s;
 	}
 
-	public void setFunctionLovId(String s) {
-		functionLovId = s;
+	public void setRelationLookupId(String s) {
+		relationLookupId = s;
 	}
 
 	public void setNotes(String s) {
@@ -269,6 +294,11 @@ public class OrganisationOrganisationLink {
 		if (notes.length() > 500) notes = notes.substring(0, 499);
 	}
 
+	public void setChildNotes(String s) {
+		childNotes = s;
+		if (childNotes == null) childNotes = "";
+		if (childNotes.length() > 500) childNotes = childNotes.substring(0, 499);
+	}
 	public String getOrganisationId() {
 		return (organisationId);
 	}
@@ -277,14 +307,18 @@ public class OrganisationOrganisationLink {
 		return (childId);
 	}
 
-	public String getFunctionId() {
-		return (functionLovId);
+	public String getRelationLookupId() {
+		return (relationLookupId);
 	}
 
 	public String getNotes() {
 		return (notes);
 	}
 
+	public String getChildNotes() {
+		return (childNotes);
+	}
+	
 	public String getError() {
 		return (m_error_string);
 	}

@@ -27,8 +27,9 @@ public class WorkWorkLink {
 	//
 	private String workId;
 	private String childId;
-	private String functionLovId;
+	private String relationLookupId;
 	private String notes;
+	private String childNotes;
 	private String m_error_string;
 
 	/*
@@ -58,8 +59,9 @@ public class WorkWorkLink {
 		//
 		workId = "0";
 		childId = "0";
-		functionLovId = "0";
+		relationLookupId = "0";
 		notes = "";
+		childNotes = "";
 		m_error_string = "";
 	}
 
@@ -91,10 +93,12 @@ public class WorkWorkLink {
 				//
 				workId = l_rs.getString("workId");
 				childId = l_rs.getString("childId");
-				functionLovId = l_rs.getString("function_lov_id");
+				relationLookupId = l_rs.getString("relationlookupid");
 				notes = l_rs.getString("notes");
+				childNotes = l_rs.getString("childNotes");
 
 				if (notes == null) notes = "";
+				if (childNotes == null) childNotes = "";
 			}
 			l_rs.close();
 			stmt.close();
@@ -141,11 +145,18 @@ public class WorkWorkLink {
 
 			sqlString = "DELETE FROM WorkWorkLink where " + "workId=" + p_workId;
 			m_db.runSQL(sqlString, stmt);
+			sqlString = "DELETE FROM WorkWorkLink where " + "childId=" + p_workId;
+			m_db.runSQL(sqlString, stmt);
 
+			
 			if (p_childLinks != null) {
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					sqlString = "INSERT INTO WorkWorkLink " + "(workId, childId, function_lov_id, notes) " + "VALUES (" + p_workId + ", "
-							+ ((WorkWorkLink) p_childLinks.get(i)).getChildId() + ", " + ((WorkWorkLink) p_childLinks.get(i)).getFunctionId() + ", '" + m_db.plSqlSafeString(((WorkWorkLink) p_childLinks.get(i)).getNotes()) +"' )";
+					sqlString = "INSERT INTO WorkWorkLink " + "(workId, childId, relationlookupid, notes, childnotes) " 
+								+ "VALUES (" + ((WorkWorkLink) p_childLinks.get(i)).getWorkId() 
+								+ ", " + ((WorkWorkLink) p_childLinks.get(i)).getChildId() 
+								+ ", " + ((WorkWorkLink) p_childLinks.get(i)).getRelationLookupId()
+								+ ", '" + m_db.plSqlSafeString(((WorkWorkLink) p_childLinks.get(i)).getNotes()) +"'"
+								+ ", '" + m_db.plSqlSafeString(((WorkWorkLink) p_childLinks.get(i)).getChildNotes()) +"' )";
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;
@@ -172,6 +183,8 @@ public class WorkWorkLink {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			sqlString = "DELETE from WorkWorkLink WHERE workId = " + workId;
+			m_db.runSQL(sqlString, stmt);
+			sqlString = "DELETE from WorkWorkLink WHERE ChildId = " + workId;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {
@@ -201,7 +214,9 @@ public class WorkWorkLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT WorkWorkLink.* " + " FROM WorkWorkLink " + " WHERE WorkWorkLink.workId  = " + workId;
+			sqlString = "SELECT WorkWorkLink.* " 
+						+ " FROM WorkWorkLink " 
+						+ " WHERE ( WorkWorkLink.workId  = " + workId + " || WorkWorkLink.childId  = " + workId + ")";
 
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
@@ -236,9 +251,10 @@ public class WorkWorkLink {
 			while (rset.next()) {
 				workWorkLink = new WorkWorkLink(m_db);
 				workWorkLink.setWorkId(rset.getString("workId"));
-				workWorkLink.setFunctionLovId(rset.getString("function_Lov_Id"));
+				workWorkLink.setRelationLookupId(rset.getString("relationlookupid"));
 				workWorkLink.setChildId(rset.getString("childId"));
 				workWorkLink.setNotes(rset.getString("notes"));
+				workWorkLink.setChildNotes(rset.getString("childnotes"));
 
 				allWorkWorkLinks.add(workWorkLink);
 			}
@@ -266,14 +282,20 @@ public class WorkWorkLink {
 		childId = s;
 	}
 
-	public void setFunctionLovId(String s) {
-		functionLovId = s;
+	public void setRelationLookupId(String s) {
+		relationLookupId = s;
 	}
 
 	public void setNotes(String s) {
 		notes = s;
 		if (notes == null) notes = "";
 		if (notes.length() > 500) notes = notes.substring(0, 499);
+	}
+
+	public void setChildNotes(String s) {
+		childNotes = s;
+		if (childNotes == null) childNotes = "";
+		if (childNotes.length() > 500) childNotes = childNotes.substring(0, 499);
 	}
 
 	public String getWorkId() {
@@ -284,14 +306,18 @@ public class WorkWorkLink {
 		return (childId);
 	}
 
-	public String getFunctionId() {
-		return (functionLovId);
+	public String getRelationLookupId() {
+		return (relationLookupId);
 	}
 
 	public String getNotes() {
 		return (notes);
 	}
 
+	public String getChildNotes() {
+		return (childNotes);
+	}
+	
 	public String getError() {
 		return (m_error_string);
 	}

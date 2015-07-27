@@ -1260,10 +1260,11 @@ public class Item {
           for (int i = 0; i < m_item_itemlinks.size(); i++) {
             ItemItemLink itemItemLink = m_item_itemlinks.elementAt(i);
             l_sql = 
-                "INSERT INTO itemitemlink (ITEMID, CHILDID, FUNCTION_LOV_ID, NOTES) " + 
-                "VALUES (" + l_item_id + "," + itemItemLink.getChildId() + 
-                ", " + itemItemLink.getFunctionId() + ", '" + 
-                m_db.plSqlSafeString(itemItemLink.getNotes()) + "')";
+                "INSERT INTO itemitemlink (ITEMID, CHILDID, RELATIONLOOKUPID, NOTES, CHILDNOTES) " + 
+                "VALUES (" + itemItemLink.getItemId() + "," + itemItemLink.getChildId() + 
+                ", " + itemItemLink.getRelationLookupId() + ", '" + 
+                m_db.plSqlSafeString(itemItemLink.getNotes()) + "','" +
+                m_db.plSqlSafeString(itemItemLink.getChildNotes()) + "')";
             m_db.runSQLResultSet(l_sql, stmt);
           }
           //insert into the itemconlinks table
@@ -1789,14 +1790,18 @@ public class Item {
 
         l_sql = "DELETE FROM itemitemlink WHERE itemid=" + m_itemid;
         m_db.runSQLResultSet(l_sql, stmt);
+        l_sql = "DELETE FROM itemitemlink WHERE childid=" + m_itemid;
+        m_db.runSQLResultSet(l_sql, stmt);
         for (int i = 0; i < m_item_itemlinks.size(); i++) {
           ItemItemLink itemItemLink = 
             (ItemItemLink)m_item_itemlinks.elementAt(i);
           l_sql = 
-              "INSERT INTO itemitemlink (itemid, childid, FUNCTION_LOV_ID, NOTES) " + 
-              "VALUES (" + m_itemid + ", " + itemItemLink.getChildId() + ", " + 
-              itemItemLink.getFunctionId() + ", '" + 
-              m_db.plSqlSafeString(itemItemLink.getNotes()) + "')";
+              "INSERT INTO itemitemlink (itemid, childid, relationlookupid, NOTES, childnotes) " + 
+              "VALUES (" + itemItemLink.getItemId() 
+              			+ ", " + itemItemLink.getChildId() 
+              			+ ", " + itemItemLink.getRelationLookupId() 
+              			+ ", '" + m_db.plSqlSafeString(itemItemLink.getNotes()) + "'"
+              			+ ", '" + m_db.plSqlSafeString(itemItemLink.getChildNotes()) + "')";
           m_db.runSQLResultSet(l_sql, stmt);
         }
 
@@ -1966,6 +1971,8 @@ public class Item {
       m_db.runSQLResultSet(l_sql, stmt);
       l_sql = "DELETE FROM itemitemlink WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
+      l_sql = "DELETE FROM itemitemlink WHERE childid=" + m_itemid;
+      m_db.runSQLResultSet(l_sql, stmt);
       l_sql = "DELETE FROM itemsecgenrelink WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
       l_sql = "DELETE FROM itemconlink WHERE itemid=" + m_itemid;
@@ -1980,7 +1987,7 @@ public class Item {
       l_sql = "DELETE FROM ITEMWORKLINK WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
       //BW ADDITIONAL URL
-      l_sql = "DELETE FROM ITEMURL WHERE itemid=" + m_itemid;
+      l_sql = "DELETE FROM ITEM_URL WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
 
       l_sql = "DELETE FROM item WHERE itemid=" + m_itemid;
@@ -2106,13 +2113,14 @@ public class Item {
     try {
       Statement stmt = m_db.m_conn.createStatement();
 
-      l_sql = 
-          "SELECT child.itemid childid, ITEMITEMLINKID  " + 
-          "FROM itemitemlink, item, item child  " + 
-          "WHERE item.itemid = itemitemlink.itemid " + 
-          "AND itemitemlink.childid = child.itemid " + 
-          "AND item.itemid=" + m_itemid + " " +
-          "ORDER BY child.ISSUED_DATE, child.CREATED_DATE";
+      l_sql = 	" SELECT distinct iil.itemitemlinkid " 
+				+ " FROM itemitemlink iil, item p, item child, relation_lookup rl "
+				+ " WHERE (iil.itemid = "+m_itemid+"  || iil.childid = "+m_itemid+" ) "
+				+ " AND iil.itemid = p.itemid "
+				+ " AND iil.childid = child.itemid "
+				+ " AND iil.relationlookupid = rl.relationlookupid "
+				+ " ORDER BY CASE WHEN iil.childid = "+m_itemid+" THEN rl.child_relation ELSE rl.parent_relation END, "
+				+ " CASE WHEN iil.childid = "+m_itemid+" THEN p.issued_date ELSE child.issued_date END ";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_itemlinks.removeAllElements();
@@ -2831,9 +2839,10 @@ public class Item {
         l_display_info.add(l_info_to_add);
       }
       if (p_id_type.equals("item")) {
-        Item childItem = new Item(m_db);
+        boolean isParent = m_itemid.equals(m_item_itemlinks.elementAt(i).getItemId());
+    	Item childItem = new Item(m_db);
         int childItemId = 
-          Integer.parseInt(((ItemItemLink)m_item_itemlinks.elementAt(i)).getChildId());
+        	Integer.parseInt((isParent)?((ItemItemLink)m_item_itemlinks.elementAt(i)).getChildId() : ((ItemItemLink)m_item_itemlinks.elementAt(i)).getItemId());
         l_info_to_add = 
             childItem.getItemInfoForItemDisplay(childItemId, p_stmt);
 
