@@ -1462,6 +1462,16 @@ public class Event {
 				temp_object.deleteEventEventLinksForEvent(m_eventid);
 				break;
 			case INSERT:
+				// update the event_event_links to have the correct eventid (it wouldn't have existed before the links were created.)
+				// LOOP m_event_eventlinks
+				for (EventEventLink eel : m_event_eventlinks){
+					if (eel.getChildId().equals("0")){
+						eel.setChildId(m_eventid);
+					}
+					if (eel.getEventId().equals("0")){
+						eel.setEventId(m_eventid);
+					}
+				}
 				temp_object.add(m_eventid, m_event_eventlinks);
 				break;
 			}

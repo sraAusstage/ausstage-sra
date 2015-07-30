@@ -1009,6 +1009,14 @@ public class Organisation {
 				temp_object.deleteOrganisationOrganisationLinksForOrganisation(Integer.toString(m_organisation_id));
 				break;
 			case INSERT:
+				for (OrganisationOrganisationLink ool : m_org_orglinks){
+					if (ool.getChildId().equals("0")){
+						ool.setChildId(Integer.toString(m_organisation_id));
+					}
+					if (ool.getOrganisationId().equals("0")){
+						ool.setOrganisationId(Integer.toString(m_organisation_id));
+					}
+				}
 				temp_object.add(Integer.toString(m_organisation_id), m_org_orglinks);
 				break;
 			}

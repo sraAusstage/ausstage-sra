@@ -652,6 +652,14 @@ public class Contributor {
 				temp_object.deleteContributorContributorLinksForContributor(Integer.toString(m_id));
 				break;
 			case INSERT:
+				for (ContributorContributorLink ccl : m_contrib_contriblinks){
+					if (ccl.getChildId().equals("0")){
+						ccl.setChildId(Integer.toString(m_id));
+					}
+					if (ccl.getContributorId().equals("0")){
+						ccl.setContributorId(Integer.toString(m_id));
+					}
+				}
 				temp_object.add(Integer.toString(m_id), m_contrib_contriblinks);
 				break;
 			}

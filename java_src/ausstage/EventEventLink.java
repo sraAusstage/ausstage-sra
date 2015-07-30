@@ -189,7 +189,6 @@ public class EventEventLink {
 			//String ret;
 			sqlString = "DELETE from EventEventLink WHERE eventId = " + eventId;
 			m_db.runSQL(sqlString, stmt);
-			stmt.close();
 			sqlString = "DELETE from EventEventLink WHERE childId = " + eventId;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
