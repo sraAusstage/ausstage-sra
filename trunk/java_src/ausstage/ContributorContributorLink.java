@@ -175,7 +175,7 @@ public class ContributorContributorLink {
 
 			sqlString = "DELETE from ContribContribLink WHERE contributorId = " + contributorId;
 			m_db.runSQL(sqlString, stmt);
-			stmt.close();
+			
 			sqlString = "DELETE from ContribContribLink WHERE childId = " + contributorId;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();

@@ -414,6 +414,14 @@ public class Work {
 				break;
 
 			case 0: // '\0'
+				for (WorkWorkLink wwl : m_work_worklinks){
+					if (wwl.getChildId().equals("0")){
+						wwl.setChildId(m_workid);
+					}
+					if (wwl.getWorkId().equals("0")){
+						wwl.setWorkId(m_workid);
+					}
+				}
 				temp_object.add(m_workid, m_work_worklinks);
 				break;
 			}

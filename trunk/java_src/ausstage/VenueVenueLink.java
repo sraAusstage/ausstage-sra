@@ -169,12 +169,16 @@ public class VenueVenueLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
+			
 			sqlString = "DELETE from VenueVenueLink WHERE venueId = " + venueId;
 			m_db.runSQL(sqlString, stmt);
-			stmt.close();
+			//stmt.close();
+			
 			sqlString = "DELETE from VenueVenueLink WHERE childId = " + venueId;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
+			
+			System.out.println("VenueVenueLinks DELETED");
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 			System.out.println("An Exception occured in deleteVenueVenueLinksForVenue().");

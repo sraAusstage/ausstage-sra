@@ -1256,7 +1256,16 @@ public class Item {
                   ",'" + m_db.plSqlSafeString((String)m_additional_urls.elementAt(i)) + "')";
               m_db.runSQLResultSet(l_sql, stmt);
             }
-          
+          // update the item_item_links to have the correct itemid (it wouldn't have existed before the links were created.)
+          // LOOP m_item_itemlinks (THIS section should be tidied up)
+          for (ItemItemLink iil : m_item_itemlinks){
+        	  if (iil.getChildId().equals("0")){
+        		  iil.setChildId(l_item_id);
+        	  }
+        	  if (iil.getItemId().equals("0")){
+        		  iil.setItemId(l_item_id);
+        	  }
+          }
           for (int i = 0; i < m_item_itemlinks.size(); i++) {
             ItemItemLink itemItemLink = m_item_itemlinks.elementAt(i);
             l_sql = 
@@ -2492,11 +2501,12 @@ public class Item {
       Statement stmt = m_db.m_conn.createStatement();
 
       l_sql = 
-          "SELECT ITEMCONLINKID " + "FROM contributor, itemconlink, item " + 
-          "WHERE item.itemid = itemconlink.itemid " + 
-          "AND itemconlink.contributorid = contributor.contributorid " + 
-          "AND item.itemid=" + m_itemid + " " + 
-          "AND CREATOR_FLAG = 'Y' order by contributor.last_name, contributor.first_name";
+          	"SELECT ITEMCONLINKID " 
+    	  + "FROM contributor, itemconlink, item " 
+    	  + "WHERE item.itemid = itemconlink.itemid " 
+    	  + "AND itemconlink.contributorid = contributor.contributorid " 
+    	  + "AND item.itemid=" + m_itemid + " " 
+    	  + "AND CREATOR_FLAG = 'Y' order by orderby ASC, contributor.last_name, contributor.first_name";
       l_rs = m_db.runSQLResultSet(l_sql, stmt);
       // Reset the object
       m_item_creator_conlinks.removeAllElements();

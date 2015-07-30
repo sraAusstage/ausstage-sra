@@ -425,6 +425,8 @@ public class Venue {
 			String ret;
 
 			modifyVenueVenueLinks(DELETE);
+			
+			
 			sqlString = "DELETE from VENUE WHERE venueid=" + m_venue_id;
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
@@ -505,8 +507,12 @@ public class Venue {
 			if (m_capacity.equals("")) m_capacity = "null";
 
 			// Check to see if a Venue record exists (same name and state)
-			sqlString = "select venueid from venue where venue_name='" + m_db.plSqlSafeString(m_venue_name) + "' and state=" + m_state_id + " and suburb='"
-					+ m_db.plSqlSafeString(m_suburb) + "' and venueid!=" + m_venue_id;
+			sqlString = "select venueid from venue where venue_name='" 
+						+ m_db.plSqlSafeString(m_venue_name) 
+						+ "' and state=" + m_state_id 
+						+ " and suburb='" + m_db.plSqlSafeString(m_suburb) 
+						+ "' and venueid!=" + (m_venue_id.equals("") ? "0" : m_venue_id);
+			System.out.println(sqlString);
 			l_rs = m_db.runSQL(sqlString, stmt);
 			// System.out.println("3 Query executed");
 			if (l_rs.next()) {
@@ -1001,12 +1007,20 @@ public class Venue {
 				temp_object.deleteVenueVenueLinksForVenue(m_venue_id);
 				break;
 			case INSERT:
+				for (VenueVenueLink vvl : m_venue_venuelinks){
+					if (vvl.getChildId().equals("0")||vvl.getChildId().equals("")){
+						vvl.setChildId(m_venue_id);
+					}
+					if (vvl.getVenueId().equals("0")||vvl.getVenueId().equals("")){
+						vvl.setVenueId(m_venue_id);
+					}
+				}
 				temp_object.add(m_venue_id, m_venue_venuelinks);
 				break;
 			}
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-			System.out.println("An Exception occured in modifyEventEventLinks().");
+			System.out.println("An Exception occured in modifyVenueVenueLinks().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());
