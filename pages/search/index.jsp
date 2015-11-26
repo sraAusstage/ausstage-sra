@@ -67,6 +67,7 @@
 	  	  <option value="venue"        <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("venue")) { out.print(" selected ");}%>>Venues</option>
 		  <option value="resource"     <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("resource")) { out.print(" selected ");}%>>Resources</option>
 	  	  <option value="work"         <%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("work")) { out.print(" selected 		");}%>>Works</option>
+	  	  <option value="international"<%if(request.getParameter("f_search_from") != null && request.getParameter("f_search_from").equals("international")) { out.print(" selected 		");}%>>International</option>
 	  	</select>
 	      </td>
 	      <td><input type="submit" value="Search"></td>

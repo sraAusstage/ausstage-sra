@@ -65,7 +65,7 @@
      //added to account for numbers and non alphanumeric at the beginning of names
    String switchLike = "";
    if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
-   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else if (letter.equals("*")) switchLike = "REGEXP '^[^A-Za-z0-9]'";
    else switchLike = " LIKE '" + letter + "%' ";
   
 %>
@@ -161,9 +161,9 @@
 			"LEFT JOIN states ON (venue.state = states.stateid) "+
 			"LEFT JOIN country ON (venue.countryid = country.countryid) "+
 			"LEFT JOIN itemvenuelink ON (venue.venueid = itemvenuelink.venueid) "+
-			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name)))) " + switchLike + " group by venue.venueid " +
+			"WHERE TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.venue_name))))) " + switchLike + " group by venue.venueid " +
   			"ORDER BY  " 
-  			+ ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME))))":
+  			+ ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?((letter.equals("0"))?"convert(":"")+"TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(venue.VENUE_NAME)))))"+ ((letter.equals("0"))?", decimal)":""):
   			 ((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state "+sortOrd +", venue.suburb":sortCol)) 
   			+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") 
     			+ " limit " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);

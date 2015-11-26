@@ -34,36 +34,35 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
 
 			// DISPLAY NUMBER OF RESULTS
 			// SPECIFY THE MESSAGE WHETHER OR NOT THE SEARCH WITHIN RESULT WAS ACTIVATED
-			out.print("<div class=\"search\"><div class=\"search-bar b-134\">"
-				+"<img src=\"../../../resources/images/icon-venue.png\" class=\"search-icon\">"
-				+"<span class=\"search-heading large\">Venues</span>"
-				+"<span class=\"search-index search-index-venue\">Search results for \'"+keyword+"\'. "
-				+((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1)+ " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder
-				+"</span></div>");
-        
-        
-			out.println("     <table class=\"search-table\">");        
-			%>
-			<form name="form_searchSort_report" method="POST" action="?">
-				<input type="hidden" name="f_order_by" value="<%=orderBy%>">
+        		%>
+        		<div class="search"><div class="search-bar b-134">
+				<img src="../../../resources/images/icon-venue.png" class="search-icon">
+				<span class="search-heading large">Venues</span>
+				<span class="search-index search-index-venue">Search results for '<%=keyword%>'. 
+				<%=((Integer.parseInt(page_num) -1)* Integer.parseInt(resultsPerPage)+ 1) + " to " + (((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage)) > Integer.parseInt(recset_count)?recset_count:((Integer.parseInt(page_num)-1)*Integer.parseInt(resultsPerPage)+ Integer.parseInt(resultsPerPage))) + " of " + recset_count + " "+resultPlaceholder %>
+				</span>
+			</div>
+			<table class="search-table">
+				<form name="form_searchSort_report" method="POST" action="?">
+					<input type="hidden" name="f_order_by" value="<%=orderBy%>">
 					<input type="hidden" name="order" value="<%=sortOrd%>">
 					<input type="hidden" name="f_keyword" value="<%=keyword%>">
 					<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
 					<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
-			</form>
+				</form>
 			<%
-        
 			// DISPLAY HEADERS AND TITLES        
-
-			out.println("      <thead>");          
-			out.println("      <tr>");
-			out.println("       <th width=\"215\" ><b><a href=\"#\" onClick=\"reSortData('venue_name')\">Name</a></b></th>");
-			out.println("       <th width=\"277\" ><b><a href=\"#\" onClick=\"reSortData('street')\">Address</a></b></th>");
-            out.println("       <th width=\"80\"><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></th>");
-            out.println("       <th width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('num')\">Events</a></b></th>");
-            out.println("       <th width=\"80\" align='right'><b><a href=\"#\" onClick=\"reSortData('total')\">Resources</a></b></th>");
-			out.println("      </thead>");
-			out.println("      </tr>");
+			%>
+				<thead>          
+				<tr>
+				<th width="215" ><b><a href="#" onClick="reSortData('venue_name')">Name</a></b></th>
+				<th width="277" ><b><a href="#" onClick="reSortData('street')">Address</a></b></th>
+	            		<th width="80"><b><a href="#" onClick="reSortData('dates')">Event Dates</a></b></th>
+	            		<th width="80" align='right'><b><a href="#" onClick="reSortData('num')">Events</a></b></th>
+				<th width="80" align='right'><b><a href="#" onClick="reSortData('total')">Resources</a></b></th>
+				</thead>
+				</tr>
+			<%
        
 			counter       = 0;
 			start_trigger = 0;
@@ -81,61 +80,56 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
 				}          
 				if(do_print){
 					String bgcolour = "";
-						if ((counter%2) == 0 ) // is it odd or even number???
-							bgcolour = "class='b-184'";
-						else
-							bgcolour = "class='b-185'";                    
-					out.println("      <tr>");
-					out.println("       <td " + bgcolour +  " valign=\"top\" width=\"215\" ><a href=\"/pages/venue/" + crset.getString("venueid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("venue_name") + "</a></td>");
-                    out.println("       <td " + bgcolour +  " valign=\"top\" width=\"277\" >");
+					if ((counter%2) == 0 ) // is it odd or even number???
+						bgcolour = "class='b-184'";
+					else
+						bgcolour = "class='b-185'";                    
+					%>
+					<tr>
+					<td " <%= bgcolour%> " valign="top" width="215" ><a href="/pages/venue/<%=crset.getString("venueid") %>" onmouseover="this.style.cursor='hand';"><%= crset.getString("venue_name") %></a></td>
+                   			<td " <%= bgcolour%>  " valign="top" width="277" >
+					<%
 
-					if(crset.getString("street") != null && (!crset.getString("street").equals(""))&& (!crset.getString("street").equals(" ")))
-						out.println(crset.getString("street") + ", ");
-              
+					//if(crset.getString("street") != null && (!crset.getString("street").equals(""))&& (!crset.getString("street").equals(" ")))
+					//	out.println(crset.getString("street") + ", ");
+					
 					if(crset.getString("suburb") != null && (!crset.getString("suburb").equals(""))&& (!crset.getString("suburb").equals(" ")))
 						out.println(crset.getString("suburb")  + ", ");
 
-					if(crset.getString("venue_state") != null)
-						out.println(crset.getString("venue_state"));
+					if(crset.getString("venue_state") != null && !crset.getString("venue_state").equals("O/S") && !crset.getString("venue_state").equals("[Unknown]"))
+						out.println(crset.getString("venue_state") + ", ");
+
+					if(crset.getString("venue_country") != null )
+						out.println(crset.getString("venue_country"));
             
-					out.print("         </td>");
-            
-					/*
-					if(crset.getString("web_links") != null){
-						out.println("<a href=\"");
-						if(crset.getString("web_links").indexOf("http://") < 0)
-							out.println("http://");
-						out.println(crset.getString("web_links") + "\">" + crset.getString("web_links") + "</a>");
-					}
-					*/
-                   out.println("       <td " + bgcolour +  " align=\"left\" valign=\"top\" >" + crset.getString("dates"));   
-            
-				   out.println(      "</td>");
-                 
+					%>
+					</td>
+					<td <%=bgcolour%> align="left" valign="top" >
+						<%= crset.getString("dates")%>   
+            				</td>
+					
+					<%
 					if(crset.getString("num").equals("0")){
-						out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" );   
+					%>
+						<td <%=bgcolour%> align="right" valign="top" ></td>
+					<%   
 					}else{
-						out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" + crset.getString("num"));   
+					%>
+						<td <%=bgcolour%> align="right" valign="top" ><%= crset.getString("num")%></td>   
+					<%
 					}          
-                    if(crset.getString("total").equals("0")){
-						out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" );   
+			                if(crset.getString("total").equals("0")){
+					%>
+						<td <%=bgcolour%> align="right" valign="top" ></td>
+					<%	
 					}else{
-						out.println("       <td " + bgcolour +  " align=\"right\" valign=\"top\" >" + crset.getString("total"));   
+					%>
+						<td <%=bgcolour%> align="right" valign="top" ><%= crset.getString("total")%></td>   
+					<%
 					}
-            
-					/*
-					if (crset.findColumn("resource_flag") > -1){
-						if (crset.getString("resource_flag").equals("ONLINE")) {
-							out.println("       <td " + bgcolour +  " width=\"1\"><img src='/custom/ausstage/images/resourceicongreen.gif' alt='Related Online Resource'></td>"); // For Resource Image
-						}
-						else if (crset.getString("resource_flag").equals("Y")) {
-							out.println("       <td " + bgcolour +  " width=\"1\"><img src='/custom/ausstage/images/resourceicongrey.gif' alt='Related Resource'></td>"); // For Resource Image
-						}else {
-							out.println("       <td " + bgcolour +  " width=\"1\">&nbsp;</td>"); // For no online Resource Image
-						}
-					}
-					*/
-					out.println("</tr>");
+            				%>
+            				</tr>
+            				<%
 					counter++;                       
 					if(counter == Integer.parseInt(resultsPerPage))
 						break;
@@ -153,14 +147,14 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
           
         
 			if(Integer.parseInt(recset_count) > Integer.parseInt(resultsPerPage)){
-       
-				out.println("      <tr>");
-				out.println("       <td colspan=\"10\">&nbsp;</td>");
-				out.println("      </tr>");
-				out.println("      <tr width=\"100%\" class=\"search-bar b-134\" style=\"height:2.5em;\">");
-				out.println("       <td align=\"right\" colspan=\"10\" >");
-				out.println("        <div class=\"search-index search-index-venue\">"); 
-         
+       				%>
+				<tr>
+					<td colspan="10">&nbsp;</td>
+				</tr>
+				<tr width="100%" class="search-bar b-134" style="height:2.5em;">
+					<td align="right" colspan="10" >
+				<div class="search-index search-index-venue"> 
+         			<%
 				unrounded_page_num  = Double.toString(Double.parseDouble(Integer.toString(Integer.parseInt(recset_count))) / Double.parseDouble(resultsPerPage + ""));
 				rounded_num_pages   = Integer.parseInt(unrounded_page_num.substring(0, unrounded_page_num.indexOf(".")));     // ie. 5.4 will return 5    
 				remainder_num       = Integer.parseInt(unrounded_page_num.substring(unrounded_page_num.indexOf(".") + 1, unrounded_page_num.indexOf(".") + 2)); // ie. 5.4 will return 4          
@@ -189,6 +183,8 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
                         "&f_recset_count=" + recset_count + 
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") + //BW
+                        "&order=" + request.getParameter("order") + //BW
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">First</a>&nbsp;");
 					out.println("<a href=\"" + 
@@ -198,6 +194,8 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
                         "&f_recset_count=" + recset_count + 
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") + //BW
+                        "&order=" + request.getParameter("order") + //BW
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Previous</a>&nbsp;");
 				}
@@ -219,6 +217,8 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
                         "&f_recset_count=" + recset_count + 
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") + 
+                        "&f_order_by=" + request.getParameter("f_order_by") + //BW                          
+                        "&order=" + request.getParameter("order") + //BW
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\"" + highlight_number_str + "</a>&nbsp;");
 
@@ -237,6 +237,8 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
                           "&f_recset_count=" + recset_count + 
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") + //BW                          
+                        "&order=" + request.getParameter("order") + //BW
                           "&f_search_within_search=" + search_within_search_for_result +
                           "\">Next</a>&nbsp;");              
 						out.println("<a href=\"" + 
@@ -246,6 +248,8 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
                           "&f_recset_count=" + recset_count + 
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") + //BW                         
+                        "&order=" + request.getParameter("order") + //BW
                           "&f_search_within_search=" + search_within_search_for_result +
                           "\">Last</a>");                                                    
 					}
@@ -257,6 +261,8 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
                         "&f_recset_count=" + recset_count +
                         "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                         "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") + //BW                       
+                        "&order=" + request.getParameter("order") + //BW
                         "&f_search_within_search=" + search_within_search_for_result +
                         "\">Next</a>&nbsp;");
              
@@ -267,6 +273,8 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
                           "&f_recset_count=" + recset_count + 
                           "&f_sql_switch=" + request.getParameter("f_sql_switch") +
                           "&f_sort_by=" + request.getParameter("f_sort_by") +
+                        "&f_order_by=" + request.getParameter("f_order_by") + //BW                          
+                        "&order=" + request.getParameter("order") + //BW
                           "&f_search_within_search=" + search_within_search_for_result +
                           "\">Last</a>");                        
                        

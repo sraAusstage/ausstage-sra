@@ -292,14 +292,17 @@
 										%>
 										<li>
 												<%=(isParent) ? lookup.getParentRelation() : lookup.getChildRelation() %>
-												<a href="/pages/organisation/<%=assocOrganisation.getId()%>">       
-													<%=assocOrganisation.getName()%>
-												</a>
 												<%
+												out.print("<a href=\"/pages/organisation/"+assocOrganisation.getId()+"\">"+assocOrganisation.getName()+"</a>");
+												String datesRange = assocOrganisation.getOrganisationEvtDateRange(assocOrganisation.getId(), stmt);
+												if (datesRange!=null && !datesRange.equals("")){
+													out.print(", "+datesRange);
+												}
+												out.print(". ");;
 												if (isParent){
-													if (!orgOrgLink.getNotes().equals("")) out.print(" - "+orgOrgLink.getNotes());
+													if (!orgOrgLink.getNotes().equals("")) out.print(orgOrgLink.getNotes());
 												} else {
-													if (!orgOrgLink.getChildNotes().equals("")) out.print(" - "+orgOrgLink.getChildNotes());
+													if (!orgOrgLink.getChildNotes().equals("")) out.print(orgOrgLink.getChildNotes());
 												}
 										%>			
 										</li>

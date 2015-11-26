@@ -66,7 +66,7 @@
      //added to account for numbers and non alphanumeric at the beginning of names
    String switchLike = "";
    if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
-   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else if (letter.equals("*")) switchLike = "REGEXP '^[^A-Za-z0-9]'";
    else switchLike = " LIKE '" + letter + "%' ";
 %>
 
@@ -130,7 +130,7 @@
   m_db.connDatabase(constants.DB_ADMIN_USER_NAME, constants.DB_ADMIN_USER_PASSWORD);
   Statement stmt    = m_db.m_conn.createStatement ();
       
-  sqlString =	"SELECT COUNT(*) From `work` WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) " + switchLike;
+  sqlString =	"SELECT COUNT(*) From `work` WHERE (TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title)))))) " + switchLike;
   l_rs = m_db.runSQL (sqlString, stmt);
   l_rs.next();
   int recordCount = Integer.parseInt(l_rs.getString(1));
@@ -152,17 +152,21 @@
     </tr>
     </thead>
     <%
-      sqlString = 	"SELECT  work.work_title title,contributor.last_name n,contributor.first_name f,`organisation`.`name`,work.workid,min(events.yyyyfirst_date) year,if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))),count(distinct events.eventid) num,  count(distinct itemworklink.itemid) as total, " +
+      sqlString = 	"SELECT  work.work_title title,contributor.last_name n,contributor.first_name f,`organisation`.`name`,work.workid,min(events.yyyyfirst_date) year,"+
+      			"greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)),"+
+      			//"if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))),"+
+      			"count(distinct events.eventid) num,  count(distinct itemworklink.itemid) as total, " +
 			"concat_ws(', ', GROUP_CONCAT(distinct if (CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME) = '', null, CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME)) SEPARATOR ', '), group_concat(distinct organisation.name separator ', ')) contrib,  "+
 			"concat_ws(', ', GROUP_CONCAT(distinct if (CONCAT_WS(' ', CONTRIBUTOR.LAST_NAME ,CONTRIBUTOR.FIRST_NAME) = '', null, CONCAT_WS(' ', CONTRIBUTOR.LAST_NAME ,CONTRIBUTOR.FIRST_NAME)) SEPARATOR ', '), group_concat(distinct organisation.name separator ', ')) contribsort,  "+
-			"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title)))) titlesort " +
+			"TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) titlesort " +
 			"FROM work  LEFT  JOIN eventworklink ON (work.workid = eventworklink.workid) LEFT  JOIN events ON (eventworklink.eventid = events.eventid)  LEFT  JOIN workconlink ON (work.workid = workconlink.workid) "+
 			"LEFT  JOIN contributor ON (workconlink.contributorid = contributor.contributorid)  Left  Join `workorglink` ON (work.`workid`= `workorglink`.`workid`)"+
  			"Left  Join `organisation` ON (`workorglink`.`organisationid`= `organisation`.`organisationid`)" +
  			"Left join itemworklink On (work.workid = itemworklink.workid) "+
-			"WHERE (TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title))))) " + switchLike + " group by work.`workid`" +
+			"WHERE (TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(work.work_title)))))) " + switchLike + " group by work.`workid`" +
   			"ORDER BY  " + (sortCol.equals("contrib")?"contribsort":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", titlesort limit " + ((pageno)*resultsPerPage ) + ","+(resultsPerPage +1);
       l_rs = m_db.runSQL (sqlString, stmt);
+      System.out.println(sqlString);
       int i = 0;  
       while (l_rs.next())
       {
@@ -179,7 +183,7 @@
     	<td width="10%" align="left"><% if(l_rs.getString(8).equals("1") ||l_rs.getString(6) != null && l_rs.getString(6).equals(l_rs.getString(7) ) ){
     	    					if (l_rs.getString(6) != null) out.write(l_rs.getString(6)); }
     	    					else{if (l_rs.getString(6) != null) out.write(l_rs.getString(6));
-    	    				      if (l_rs.getString(6) != null && l_rs.getString(7) != null) out.write(" - ") ;
+    	    				      if (l_rs.getString(6) != null && l_rs.getString(7) != null && l_rs.getString(6) != l_rs.getString(7)) out.write(" - ") ;
     	    				      if (l_rs.getString(7) != null) out.write(l_rs.getString(7));}%>
 	</td>
    	<td width="15%" align="right"><%if(l_rs.getString(8).equals("0")){

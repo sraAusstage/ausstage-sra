@@ -3,7 +3,7 @@
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import="java.sql.*, ausstage.*, sun.jdbc.rowset.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
-<cms:include property="template" element="head" /><%@ include file="../../public/common.jsp"%>
+<cms:include property="template" element="head" /><%@ include file="../../../public/common.jsp"%>
 
 <!--<%@ page session="true" import="org.opencms.main.*,org.opencms.jsp.*,org.opencms.file.*,java.lang.String,java.util.*"%>
 <%
@@ -98,14 +98,14 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 
 	
 	String id=request.getParameter("id");
+	String keyword = request.getParameter("f_keyword");
+	String where_clause = request.getParameter("f_where_clause");
 	ausstage.Database     m_db = new ausstage.Database ();
   	CachedRowSet  l_rs      = null;
   	CachedRowSet  org_rs    = null;
   	int orgCount		= 0;
-  	String orgIds		= "";
   	CachedRowSet  ven_rs    = null;
   	int venCount		= 0;
-  	String venIds		= "";
   	CachedRowSet  wor_rs    = null;  	
   	int worCount		= 0;
   	admin.AppConstants constants = new admin.AppConstants();
@@ -118,42 +118,50 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
   	
   	///////////
 	//ORGANISATION select to retrieve data associated with organisations from the selected country
-	String orgSqlString =	"SELECT organisation.organisationid organisationid, organisation.name NAME , events.event_name, "+
-        			"concat_ws(' - ',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
-        			"min(events.yyyyfirst_date) minyear, "+
-	        		"if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) as maxyear, "+
-        			"count(distinct events.eventid) num, if(organisation.suburb is null, '', organisation.suburb) suburb "+
-				"FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) "+
-            			"LEFT JOIN events ON (orgevlink.eventid = events.eventid) "+
-				"WHERE organisation.countryid = "+id+
-        	     		" group by organisation.organisationid Order by " + orgSortCol + " " + orgSortOrd ;
-  	
+	String orgSqlString =	"SELECT search_organisation.organisationid, organisation.name, "+
+	      			"concat_ws(' - ',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
+			      	"min(events.yyyyfirst_date) minyear,  "+
+	        		"if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) as maxyear,  "+
+        			"count(distinct events.eventid) num, if(organisation.suburb is null, '', organisation.suburb) suburb  "+
+				"FROM search_organisation "+
+				"LEFT JOIN organisation  "+
+				"    ON search_organisation.organisationid = organisation.organisationid "+
+				"LEFT JOIN orgevlink  "+
+				"    ON (organisation.organisationid = orgevlink.organisationid)  "+
+				"LEFT JOIN events  "+
+				"    ON (orgevlink.eventid = events.eventid)      "+
+				"WHERE organisation.countryid =  "+ id +
+				" AND "+ where_clause +
+				" group by organisation.organisationid Order by " + orgSortCol + " " + orgSortOrd ; 
+
   	org_rs = m_db.runSQL (orgSqlString, stmt);
-  	//collect all the organisation id's for the map link
+
   	//get the count of results.
   	//hold onto the result set for the display of results
   	while(org_rs.next()){
   		orgCount++;
-  		orgIds += org_rs.getString("organisationid")+",";
   	}
   	org_rs.beforeFirst();
   	
    	///////////
 	//VENUE select to retrieve data associated with venues from the selected country 	
-  	String	venSqlString =	"SELECT venue.venueid venueid,venue.venue_name name, "+
-			"concat_ws(' - ',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates, "+
-			"count(distinct events.eventid) num, "+
-			"if(venue.suburb is null, 'none', venue.suburb) suburb "+
-			"FROM venue LEFT JOIN events ON (venue.venueid = events.venueid) "+
-			"WHERE venue.countryid = "+id+
-			" group by venue.venueid Order by " + venSortCol + " " + venSortOrd ; 
+  	String	venSqlString =	"SELECT search_venue.venueid venueid,venue.venue_name name, "+ 
+				"concat_ws(' - ',min(events.yyyyfirst_date), if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))) ) as dates,  "+
+				"count(distinct events.eventid) num,  "+
+				"if(venue.suburb is null, 'none', venue.suburb) suburb  "+
+				"FROM search_venue  "+
+            			"LEFT JOIN venue ON (search_venue.venueid = venue.venueid) "+
+            			"LEFT JOIN events ON (venue.venueid = events.venueid)              "+
+				"WHERE venue.countryid = "+id+
+			        " AND "+where_clause +
+			 	" group by venue.venueid Order by " + venSortCol + " " + venSortOrd ; 
   	ven_rs = m_db.runSQL (venSqlString, stmt);
-  	//collect all the venue id's for the map link
+  	System.out.println(orgSqlString);
+  	System.out.println(venSqlString);
   	//get the count of results.
   	//hold onto the result set for the display of results
   	while(ven_rs.next()){
   		venCount++;
-  		venIds += ven_rs.getString("venueid")+",";
   	}
   	ven_rs.beforeFirst();
   
@@ -174,7 +182,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
  			"where country.countryid = "+id+
 			" group by work.workid Order by " + worSortCol + " " + worSortOrd ; 
 	wor_rs = m_db.runSQL (worSqlString, stmt);
-  	//collect all the work id's for the map link
+
   	//get the count of results.
   	//hold onto the result set for the display of results
   	while(wor_rs.next()){
@@ -182,21 +190,21 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
   	}
   	wor_rs.beforeFirst(); 	
   	
-  	//MAP LINK
-  	String mapLink = "/pages/map/?complex-map=true&c=&o="+orgIds+"&v="+venIds+"&e=";	
 %>
 <div class="browse">
 
 	<div class="browse-bar b-90"><img class="browse-icon" src="../../../resources/images/icon-international.png">
    
 	    	<span class="browse-heading large"><b><%=countryName%></b></span>
-	    	<span class="browse-index browse-index-international"><a href="events/index.jsp?id=<%=id%>">Events</a> | <a href="<%=mapLink%>">Map</a></span>
+	    	<span class="search-index search-index-international">Search results for '<%=keyword%>'. </span>
 
 	</div>
 
 
 <form name="form_searchSort_report" method="POST" action=".">	
     <input type="hidden" name="id" value="<%=id%>">
+    <input type="hidden" name="f_keyword" value="<%=keyword%>">    
+    <input type="hidden" name="f_where_clause" value="<%=where_clause%>">    
     <input type="hidden" name="orgCol" value="<%=orgSortCol%>">
     <input type="hidden" name="orgOrder" value="<%=orgSortOrd%>">
     <input type="hidden" name="venCol" value="<%=venSortCol%>">
@@ -227,7 +235,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 	        	<td width="25%"><a href="/pages/organisation/<%=org_rs.getString("organisationid")%>"><%=org_rs.getString("name")%></a></td>
 	        	<td width="25%"><%=org_rs.getString("suburb")%></td>
 	        	<td width="25%"><%=org_rs.getString("dates")%></td>
-        		<td width="25%" align="right"><%=org_rs.getString("num")%></td>  
+        		<td width="25%" align="right"><%=(org_rs.getString("num").equals("0"))?"":org_rs.getString("num")%></td>  
         	</tr>
 	<%         
 	}
@@ -261,7 +269,7 @@ if (venCount >0){
 	        	<td width="25%"><a href="/pages/venue/<%=ven_rs.getString("venueid")%>"><%=ven_rs.getString("name")%></a></td>
 	        	<td width="25%"><%=ven_rs.getString("suburb")%></td>
 	        	<td width="25%"><%=ven_rs.getString("dates")%></td>
-	        	<td width="25%" align="right"><%=ven_rs.getString("num")%></td>  
+	        	<td width="25%" align="right"><%=(ven_rs.getString("num").equals("0"))?"":ven_rs.getString("num")%></td>  
 	        </tr>
 	<%         
 		}

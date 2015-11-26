@@ -31,20 +31,29 @@
   String list_name;
   String list_db_sql;
   String list_db_field_id_name;
-  String filter_work_id, filter_work_title;
+  String filter_work_id, filter_work_title, filter_first_name, filter_last_name, filter_org_name;
 
   // Get the form parameters that are used to create the SQL that determines what
   // will be displayed in the list box (as this page posts to itself
   // when a user performs a search)
   filter_work_id     = request.getParameter ("f_id");
   filter_work_title   = request.getParameter ("f_work_title");
+  filter_first_name = request.getParameter ("f_first_name");
+  filter_last_name = request.getParameter ("f_last_name");
+  filter_org_name = request.getParameter ("f_org_name");
 
 
   // Setup the vectors for the search
   filter_display_names.addElement ("ID");
   filter_display_names.addElement ("Title");
+  filter_display_names.addElement ("Creator First Name");
+  filter_display_names.addElement ("Creator Last Name");
+  filter_display_names.addElement ("Organisation name");
   filter_names.addElement ("f_id");
   filter_names.addElement ("f_work_title");
+  filter_names.addElement ("f_first_name");
+  filter_names.addElement ("f_last_name");
+  filter_names.addElement ("f_org_name");
 
   order_display_names.addElement ("Work Title");
   order_names.addElement ("work_title");
@@ -76,6 +85,8 @@
 			"FROM work  " +
 			"LEFT JOIN workconlink ON work.workid = workconlink.workid " +
 			"LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid " +
+			"LEFT JOIN workorglink ON work.workid = workorglink.workid "+
+			"LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid "+
 			"GROUP BY work.workid " +
 			"ORDER BY LOWER(work_title)";
   }
@@ -88,11 +99,26 @@
 			"FROM work  " +
 			"LEFT JOIN workconlink ON work.workid = workconlink.workid " +
 			"LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid " +
+			"LEFT JOIN workorglink ON work.workid = workorglink.workid "+
+			"LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid "+
 			"WHERE ";
 
     // Add the filters to the SQL
     if ( !filter_work_id.equals (""))
       list_db_sql += " work.workid=" + filter_work_id + " and ";
+    
+    if ( !filter_first_name.equals ("")) {
+      list_db_sql += " LOWER(contributor.first_name) like '%" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "%' AND ";
+    } 
+    
+    if ( !filter_last_name.equals ("")) {
+      list_db_sql += " LOWER(contributor.last_name) like '%" + db_ausstage.plSqlSafeString(filter_last_name.toLowerCase()) + "%' AND ";
+    } 
+    
+    if ( !filter_org_name.equals ("")) {
+      list_db_sql += " LOWER(organisation.name) like '%" + db_ausstage.plSqlSafeString(filter_org_name.toLowerCase()) + "%' AND ";
+    } 
+    
     if ( !filter_work_title.equals ("")) {
       list_db_sql += " LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
       list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";

@@ -215,16 +215,21 @@
 										%>
 										<li>
 												<%=(isParent)?lookUpCode.getParentRelation():lookUpCode.getChildRelation() %>
-												<a href="/pages/venue/<%=assocVenue.getVenueId()%>">       
-													<%=assocVenue.getName()%>
-												</a>
 												<%
-												if (isParent){
-													if(!venueVenueLink.getNotes().equals("")) out.print(" - "+venueVenueLink.getNotes());
-												}else{
-													if(!venueVenueLink.getChildNotes().equals("")) out.print(" - "+venueVenueLink.getChildNotes());
+												out.print("<a href=\"/pages/venue/"+assocVenue.getVenueId()+"\">"+assocVenue.getName()+"</a>");
+												String datesRange = assocVenue.getVenueEvtDateRange(Integer.parseInt(assocVenue.getVenueId()), stmt);
+												if (datesRange!=null && !datesRange.equals("")){
+													out.print(", "+datesRange);
 												}
+												out.print(". ");;
+												if (isParent){
+													if (!venueVenueLink.getNotes().equals("")) out.print(venueVenueLink.getNotes());
+												} else {
+													if (!venueVenueLink.getChildNotes().equals("")) out.print(venueVenueLink.getChildNotes());
+												}
+												
 												%>
+												
 										</li>
 										<%
 									}

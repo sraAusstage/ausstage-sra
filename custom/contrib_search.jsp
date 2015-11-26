@@ -144,6 +144,13 @@
 "Where 1=1 ";	
 
     //System.out.println(list_db_sql);
+    //handle the expansive search
+    String fNameHolder = db_ausstage.plSqlSafeString(filter_f_name.toLowerCase());
+    String lNameHolder = db_ausstage.plSqlSafeString(filter_l_name.toLowerCase());
+    String shortfNameHolder = fNameHolder; 
+    String shortlNameHolder = lNameHolder;
+    if (fNameHolder.length()>2){shortfNameHolder = fNameHolder.substring(0,2);}
+    if (lNameHolder.length()>2){shortlNameHolder = lNameHolder.substring(0,2);}
 
     // Add the filters to the SQL
     if (!filter_id.equals (""))
@@ -154,7 +161,7 @@
         list_db_sql += "and LOWER(first_name) = '" + db_ausstage.plSqlSafeString(filter_f_name.toLowerCase()) + "' ";
       }
       else {
-        list_db_sql += "and LOWER(first_name) like '%" + db_ausstage.plSqlSafeString(filter_f_name.toLowerCase()) + "%' ";
+        list_db_sql += "and LOWER(first_name) like '%" + shortfNameHolder + "%' ";
       }
     }
       
@@ -163,17 +170,33 @@
         list_db_sql += "and LOWER(last_name) = '" + db_ausstage.plSqlSafeString(filter_l_name.toLowerCase()) + "' ";
       }
       else {
-        list_db_sql += "and lower(last_name) like '%" + db_ausstage.plSqlSafeString(filter_l_name.toLowerCase()) + "%' ";
+        list_db_sql += "and lower(last_name) like '%" + shortlNameHolder + "%' ";
       }
     }
       
-  
-    list_db_sql += "Group by contributor.contributorid order by " + request.getParameter ("f_order_by");
+
+    
+    list_db_sql += "Group by contributor.contributorid order by " 
+		// first - John Smith
+    		+"CASE WHEN lower(first_name) LIKE '"+fNameHolder+"' "
+    		+	"AND lower(last_name) like '"+lNameHolder+"' THEN 1 ELSE 5 END, ";
+    		
+    		//then Jo% Smith
+    list_db_sql += "CASE WHEN lower(first_name) LIKE '" + shortfNameHolder + "%' "
+		+	"AND lower(last_name) like '" + lNameHolder + "' then 2 ELSE 5 END, ";
+		//then John Sm%
+    list_db_sql +="CASE WHEN lower(first_name) LIKE '" + fNameHolder + "' "
+		+	"AND lower(last_name) like '" + shortlNameHolder + "%' then 3 ELSE 5 END, ";
+		//then jo% sm%
+    list_db_sql +="CASE WHEN lower(first_name) LIKE '" + shortfNameHolder + "%' "
+		+	"AND lower(last_name) like '" + shortlNameHolder + "%' then 4 ELSE 5 END, " ;
+    list_db_sql +=request.getParameter ("f_order_by");
   }
 
   // Need to do the following type of select of Oracle will not return the rows
   // in the correct order.
   //pageFormater.writeHelper(out, "Contributor Maintenance","helpers_no1.gif");
+  //System.out.println(list_db_sql);
   list_db_sql = list_db_sql + " limit " + (MAX_RESULTS_RETURNED + 5) + ""; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
 
   String cbxExactHTML = "<br><br>Exact First Name <input type='checkbox' name='exactFirstName' value='true'><br>Exact Last Name<input type='checkbox' name='exactLastName' value='true'>";

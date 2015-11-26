@@ -66,7 +66,7 @@
    //added to account for numbers and non alphanumeric at the beginning of organistaion names
    String switchLike = "";
    if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
-   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^A-Za-z0-9]'";
    else switchLike = " LIKE '" + letter + "%' ";
 %>
 
@@ -156,16 +156,20 @@
     </thead>
     <%
  
- sqlString = 	"SELECT organisation.organisationid, organisation.name NAME , events.event_name, min(events.yyyyfirst_date) year, if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))), count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total " +
+ sqlString = 	"SELECT organisation.organisationid, organisation.name NAME , events.event_name, min(events.yyyyfirst_date) year, "+
+			"greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)),"+
+ 			//"if(max(ifnull(events.yyyylast_date, events.yyyyfirst_date)) = min(events.yyyyfirst_date), null, max(ifnull(events.yyyylast_date, events.yyyyfirst_date))),"+
+ 			" count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total " +
  			", organisation.suburb, states.state, country.countryname, concat_ws(', ',country.countryname, states.state, organisation.suburb) as address "+
 			"FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) LEFT JOIN events ON (orgevlink.eventid = events.eventid) " +
 			"LEFT JOIN itemorglink ON (organisation.organisationid = itemorglink.organisationid) "+
 			"LEFT JOIN states ON (organisation.state = states.stateid) "+
 			"LEFT JOIN country ON (organisation.countryid = country.countryid) "+
 			" LEFT JOIN item on (item.institutionid = organisation.organisationid) " +
-  			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))) "+switchLike+" group by organisation.organisationid " +
-  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))":
+  			"WHERE TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME))))) "+switchLike+" group by organisation.organisationid " +
+  			"ORDER BY  " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?((letter.equals("0"))?"convert(":"")+"TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(organisation.NAME)))))" + ((letter.equals("0"))?", decimal)":""):
   			((sortCol.equals("address"))? "CASE WHEN address like 'Australia%' THEN 1 ELSE 2 END, country.countryname, states.state "+sortOrd+", organisation.suburb ":sortCol))+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + ", organisation.name LIMIT " + ((pageno)*recordsPerPage) + ","+(recordsPerPage+1);
+  			
   			
     l_rs = m_db.runSQL (sqlString, stmt);
     int i = 0;
@@ -202,7 +206,7 @@
         {if (l_rs.getString(4) != null) out.write(l_rs.getString(4)); }
     	else{
     	  if (l_rs.getString(4) != null) out.write(l_rs.getString(4)); 
-    	  if (l_rs.getString(4) != null && l_rs.getString(5) != null) out.write(" - ") ;
+    	  if (l_rs.getString(4) != null && l_rs.getString(5) != null && l_rs.getString(4) != l_rs.getString(5)) out.write(" - ") ;
     	  if (l_rs.getString(5) != null) out.write(l_rs.getString(5));}%>
       </td>
       <td width="10%" align="right"><%if(l_rs.getString(6).equals("0")){

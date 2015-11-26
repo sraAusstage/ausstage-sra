@@ -28,6 +28,7 @@
  	if(search_from.equals("subject"))crset = search.getSubjectCount();
  	if(search_from.equals("resource"))crset = search.getResourceCount();
  	if(search_from.equals("works"))crset = search.getWorksCount();
+ 	if(search_from.equals("country"))crset = search.getCountriesCount();
  		
        	while(crset.next()){
 		out.print(crset.getString(1));

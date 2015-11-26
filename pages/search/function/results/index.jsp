@@ -113,11 +113,24 @@
     </tr>
     </thead>
     <%
-    sqlString = 	"SELECT contributorfunctpreferred.preferredterm,count(contfunctlink.contributorid) as total,`contributorfunctpreferred`.`contributorfunctpreferredid`  " +
-			"FROM contributorfunctpreferred "+
-			"INNER JOIN contfunctlink ON (contributorfunctpreferred.contributorfunctpreferredid = contfunctlink.contributorfunctpreferredid) "+
+    sqlString = 	"SELECT contributorfunctpreferred.preferredterm,count(contfunctlink.contributorid) as total,`contributorfunctpreferred`.`contributorfunctpreferredid`  "+
+			"FROM contfunctlink  "+
+			"INNER JOIN contributorfunctpreferred ON (contfunctlink.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid)   "+
+					"INNER JOIN contributor ON (contfunctlink.contributorid = contributor.contributorid)  "+
+					"INNER JOIN (SELECT conel.contributorid, conel.function,  "+
+								"min(e.yyyyfirst_date) as min_first_date, max(e.yyyylast_date) as max_last_date, max(e.yyyyfirst_date) as max_first_date  "+
+								"FROM events e  "+
+								"INNER JOIN conevlink conel on (e.eventid = conel.eventid)  "+
+								"WHERE conel.contributorid is not null  "+
+								"GROUP BY conel.contributorid, conel.function) event_dates   "+
+					"on (contfunctlink.contributorid = event_dates.contributorid AND contfunctlink.contributorfunctpreferredid = event_dates.function)  "+
 			"WHERE lcase(`contributorfunctpreferred`.preferredterm) LIKE '%" + keyword + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid` " +
-  			"Order by " + sortCol + " " + sortOrd + " limit " + ((pageno)*25) + ",26";  
+  			"Order by " + sortCol + " " + sortOrd + " limit " + ((pageno)*25) + ",26"; 
+   //sqlString = 	"SELECT contributorfunctpreferred.preferredterm,count(contfunctlink.contributorid) as total,`contributorfunctpreferred`.`contributorfunctpreferredid`  " +
+//			"FROM contributorfunctpreferred "+
+//			"INNER JOIN contfunctlink ON (contributorfunctpreferred.contributorfunctpreferredid = contfunctlink.contributorfunctpreferredid) "+
+//			"WHERE lcase(`contributorfunctpreferred`.preferredterm) LIKE '%" + keyword + "%' group by `contributorfunctpreferred`.`contributorfunctpreferredid` " +
+  //			"Order by " + sortCol + " " + sortOrd + " limit " + ((pageno)*25) + ",26";  
     l_rs = m_db.runSQL (sqlString, stmt);      
     int i = 0;
     while (l_rs.next())

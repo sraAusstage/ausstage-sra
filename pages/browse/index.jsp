@@ -1,4 +1,4 @@
-page pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ page import = "ausstage.SearchCount, admin.Common"%>
@@ -74,6 +74,10 @@ Should probably put this in a seperate .js file
     					+ "&f_sql_switch=and"
     					+ "&f_sort_by=alphab_frwd"
     					+ "&f_year=";
+   			var countryUrl = url + "country_ajax.jsp?f_keyword="+$("#header-search-keywords").val()
+	    				+ "&f_search_from=country"
+    					+ "&f_sql_switch=and"
+    					+ "&f_sort_by=alphab_frwd";
 	    			
 	    	} else {
 	    		url = "index_ajax.jsp?f_keyword="+$("#header-search-keywords").val()+"&f_search_from=";
@@ -86,6 +90,7 @@ Should probably put this in a seperate .js file
 	    		var subjUrl = 	url + "subject";
 	    		var workUrl = 	url + "works";
     			var resUrl = 	url + "resource";	
+		   	var countryUrl = url + "country";	
 	    	
 	    	}
 	    	                        
@@ -133,6 +138,10 @@ Should probably put this in a seperate .js file
 	    	ajaxQueue.add({
                 	success: function(html){updateCount("resource",$.trim(html))},
                         url: encodeURI(resUrl)
+                });
+                ajaxQueue.add({
+                	success: function(html){updateCount("country",$.trim(html))},
+                        url: encodeURI(countryUrl)
                 });
                 
 	    		
@@ -195,7 +204,13 @@ Should probably put this in a seperate .js file
     		 		submitSearch(id);
     		 	}
     		}
-    		else if ($.trim($('#header-search-keywords').val()).length == 0){window.location.href = id+"s/";}
+    		else if ($.trim($('#header-search-keywords').val()).length == 0){
+    			if(id=="international"){
+    				window.location.href = "countries/";
+    			}
+    			else
+    				window.location.href = id+"s/";
+    		}
     	
     	} 	 	
 	
@@ -295,9 +310,16 @@ Should probably put this in a seperate .js file
 <span id="resource-count-load" class="box-count-load"><img src="../../resources/images/loader.gif"> </span>
 <span class="box-label">Resources </span> </a>
 
-<a id="international" class="box b-90" href='countries/' style="cursor:pointer;" onmouseover="this.className='box b-91';" onmouseout="this.className='box b-90 ';">
+<a id="international" class="box b-90" href='#' onclick="doSearch($(this).attr('id'));" style="cursor:pointer;" onmouseover="this.className='box b-91';" onmouseout="this.className='box b-90 ';">
 <img src="../../resources/images/icon-international.png" class="box-icon"> 
+<span id="country-count" class="box-count"></span>
+<span id="country-count-load" class="box-count-load"><img src="../../resources/images/loader.gif"> </span> 
 <span class="box-label">International </span> </a>
+
+<a class="box b-175 " id='contribute' href='../learn/contribute' style="cursor:pointer;" onmouseover="this.className='box b-176 ';" onmouseout="this.className='box b-175 ';">
+<img src="../../resources/images/icon-blank.png" class="box-icon"> 
+
+<span class="box-label">How to contribute</span> </a>
 
 
 

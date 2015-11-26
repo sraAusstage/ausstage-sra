@@ -113,8 +113,8 @@ Vector item_contentindlinks;
     Contributor assocContrib = null;
     Vector contrib_contriblinks = contributor.getContributorContributorLinks();
 	if(contrib_contriblinks.size() > 0){assocContrib = new Contributor(db_ausstage_for_drill);}
-	
-	out.println("   <table class='record-table'");	
+	out.println("   <div class='record'>");	
+	out.println("   <table class='record-table'>");	
    
     //Name
     out.println("   <tr>");
@@ -288,13 +288,38 @@ Vector item_contentindlinks;
 					%>
 					<li>
 							<%=(isParent)?relationLookup.getParentRelation():relationLookup.getChildRelation()%>
-							<a href="/pages/contributor/<%=assocContrib.getId()%>">       
-								<%=assocContrib.getDisplayName()%>
-							</a> <% if (isParent){
-									if(contribContribLink.getNotes().equals("") == false) out.print(" - "+contribContribLink.getNotes());	
+							<!--display name as Link 		(function1, function2. Event Dates : YYYY-YYYY). Comments-->
+
+							<%out.print("<a href=\"/pages/contributor/"+assocContrib.getId()+"\" >"+assocContrib.getDisplayName()+"</a>");
+							
+							//if has functions or a date range 
+							String contDateRange = assocContrib.getContributorDateRange(Integer.toString(assocContrib.getId()));
+							if (contDateRange==null){
+								contDateRange = "";
+							}
+							String contFunctions = assocContrib.getContFunctPreffTermByContributor(Integer.toString(assocContrib.getId()));
+							if (contFunctions==null){
+								contFunctions = "";
+							}
+							if (!contDateRange.equals("") || !contFunctions.equals("")){
+								out.print(" (");
+								if (!contFunctions.equals("")){
+									out.print(contFunctions);
+								}
+								if (!contDateRange.equals("")){
+									if(!contFunctions.equals("")){
+										out.print(". ");
+									}
+									out.print("Event Dates: "+contDateRange );
+								}
+								out.print(")");
+							}
+							out.print(". ");
+							 	if (isParent){
+									if(contribContribLink.getNotes().equals("") == false) out.print(contribContribLink.getNotes());	
 								} else 
 								{
-									if(contribContribLink.getChildNotes().equals("") == false) out.print(" - "+contribContribLink.getChildNotes());
+									if(contribContribLink.getChildNotes().equals("") == false) out.print(contribContribLink.getChildNotes());
 								}		
 							%>
 
@@ -651,6 +676,7 @@ Vector item_contentindlinks;
     out.println("     <td class='record-value' colspan='2'>" + contributor.getId() +"</td>");
     out.println("   </tr>");    
     out.println(" </table>");
+    out.println(" </div>");
   } 
   // close statement
   stmt.close();

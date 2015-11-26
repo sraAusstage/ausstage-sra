@@ -56,7 +56,7 @@
    //added to account for numbers and non alphanumeric at the beginning of names
    String switchLike = "";
    if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
-   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^A-Za-z0-9]'";
    else switchLike = " LIKE '" + letter + "%' ";
 
   String pno=request.getParameter("pno"); // this will be coming from url
@@ -153,11 +153,23 @@
     </tr>
 </thead>
     <%
-    sqlString = 	"SELECT contributor.`contributorid`,contributor.last_name name,contributor.first_name, min(events.yyyyfirst_date)year,max(events.yyyylast_date),count(distinct events.eventid) num, group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') function, count(distinct itemconlink.itemid) total " +
-			"FROM contributor LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) LEFT JOIN events ON (conevlink.eventid = events.eventid) Left JOIN contfunctlink ON (contributor.contributorid = contfunctlink.contributorid) Left JOIN contributorfunctpreferred ON (contfunctlink.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid)" +
-			"Left join itemconlink ON (contributor.contributorid = itemconlink.contributorid) "+
-			"WHERE lcase(`contributor`.last_name) " + switchLike + " group by `contributor`.contributorid " +
-  			"ORDER BY  " + (sortCol.equals("last_name")?"last_name " + sortOrd + ", first_name":sortCol) + " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") + (sortCol.equals("last_name")?"":", last_name asc, first_name asc") + " limit " + ((pageno)*100) + ",101";  l_rs = m_db.runSQL (sqlString, stmt);      
+    sqlString = 	"SELECT contributor.`contributorid`,contributor.last_name name,contributor.first_name, "+
+    			" min(events.yyyyfirst_date)year,max(events.yyyylast_date),count(distinct events.eventid) num, "+
+    			" group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') function,"+
+    			" count(distinct itemconlink.itemid) total " +
+			" FROM contributor "+
+			" LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "+
+			" LEFT JOIN events ON (conevlink.eventid = events.eventid) "+
+			" Left JOIN contfunctlink ON (contributor.contributorid = contfunctlink.contributorid) "+ 
+			" Left JOIN contributorfunctpreferred ON (contfunctlink.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid)" +
+			" Left join itemconlink ON (contributor.contributorid = itemconlink.contributorid) "+
+			//" WHERE lcase(`contributor`.last_name) " + switchLike + " group by `contributor`.contributorid " +
+			" WHERE TRIM(leading ' ' from lcase(`contributor`.last_name)) " + switchLike + " group by `contributor`.contributorid " +
+  			" ORDER BY  " + (sortCol.equals("name")? ((letter.equals("0"))?"convert(":"")+ "last_name " + ((letter.equals("0"))?", decimal)":"")+ sortOrd + ", "+((letter.equals("0"))?"convert(":"")+"first_name"+((letter.equals("0"))?", decimal)":""):sortCol) 
+  			+ " " + sortOrd + (sortCol.equals("year")?", ifnull(max(events.yyyylast_date),min(events.yyyyfirst_date)) " + sortOrd:"") 
+  			+ (sortCol.equals("last_name")?"":", last_name asc, first_name asc") + " limit " + ((pageno)*100) + ",101"; 
+    l_rs = m_db.runSQL (sqlString, stmt);      
+    System.out.println(sqlString);
     int i = 0;
     while (l_rs.next())
     {

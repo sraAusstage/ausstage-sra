@@ -125,7 +125,37 @@
 							</tr>
 						<%
 						}
-
+						//COUNTRY OF ORIGIN
+						String countryOfOriginString = work.getLinkedCountryNames();
+						if (countryOfOriginString != null && !countryOfOriginString.equals("")){
+						%>
+							<tr>
+								<th class='record-label b-153'>Country of Origin</th>
+								
+								<td class='record-value'>
+								<ul><%
+									for (String country: countryOfOriginString.split(",")){
+									%>
+								<li><%=country%></li>
+								<%
+								}
+								%>
+								</ul>
+								</td>
+							</tr>
+						<%
+						}
+						//Date First Known
+						if (!formatDate(work.getDdDateFirstKnown(), work.getMmDateFirstKnown(), work.getYyyyDateFirstKnown()).equals("")) {
+						
+						%>
+							<tr>
+								<th class='record-label b-153'>Date First Known</th>
+								
+								<td class='record-value'><%=formatDate(work.getDdDateFirstKnown(), work.getMmDateFirstKnown(), work.getYyyyDateFirstKnown())%></td>
+							</tr>
+						<%
+						}
 						//Contributors
 						rset = work.getAssociatedEvents(Integer.parseInt(work_id), stmt);
 						if (rset != null && rset.isBeforeFirst()) {

@@ -325,15 +325,13 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 							%>
 							<li>
 									<%=(isParent)?relationLookup.getParentRelation():relationLookup.getChildRelation() %>
-									<a href="/pages/event/<%=assocEvent.getEventid()%>">       
-										<%=assocEvent.getEventName()+", "%>
-									</a><%=assocVenue.getVenueInfoForVenueDisplay(new Integer(assocEvent.getVenueid()).intValue(), stmt)%> 
-									<%=", "+assocEventDate%>
+									<%out.print("<a href=\"/pages/event/"+assocEvent.getEventid()+"\">"+assocEvent.getEventName()+"</a>");
+									%><%=", "+assocVenue.getVenueInfoForVenueDisplay(new Integer(assocEvent.getVenueid()).intValue(), stmt)+", "+assocEventDate+". "%> 
 									<% if (isParent){
-										if (!eventEventLink.getNotes().equals("")) out.print(" - "+eventEventLink.getNotes());
+										if (!eventEventLink.getNotes().equals("")) out.print(eventEventLink.getNotes());
 									   } 
 									   else {
-										if (!eventEventLink.getChildNotes().equals("")) out.print(" - "+eventEventLink.getChildNotes());									   
+										if (!eventEventLink.getChildNotes().equals("")) out.print(eventEventLink.getChildNotes());									   
 									   }
 									%>
 
@@ -562,7 +560,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 					<th class='record-label b-90'>Data Source</th>
 					
 					<td class='record-value'  colspan='2'>
-						<table  class='record-value' cellspacing="0">
+						<table  class='record-value-table' cellspacing="0">
 							<tr>
 								<th  class='record-value-table light nowrap'>Source</th>
 								

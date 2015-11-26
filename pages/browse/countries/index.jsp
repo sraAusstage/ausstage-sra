@@ -72,7 +72,7 @@
       <th width="20%" align="left" ><b><a href="#" onClick="reSortData('dates')">Event Dates</a></b></th>
       <th width="20%" align="right" ><b><a href="#" onClick="reSortData('orgcount')">Organisations</a></b></th>
       <th width="20%" align="right" ><b><a href="#" onClick="reSortData('venuecount')">Venues</a></b></th>
-      <th width="20%" align="right" ><b><a href="#" onClick="reSortData('workcount')">Works</a></b></th>
+     <!-- <th width="20%" align="right" ><b><a href="#" onClick="reSortData('workcount')">Works</a></b></th>-->
     </tr>
     </thead>
     <%
@@ -214,10 +214,10 @@
    	  out.write("");}else
    	  out.write(l_rs.getString("venuecount")); %>
    	</td>
-   	<td width="20%" align="right"><%if(l_rs.getString("workcount").equals("0")){
+   	<!--<td width="20%" align="right"><%if(l_rs.getString("workcount").equals("0")){
    	  out.write("");}else
    	  out.write(l_rs.getString("workcount")); %>
-   	</td>
+   	</td>-->
       </tr>
       <%
   	i += 1;

@@ -49,19 +49,19 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
 				<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
 				<input type="hidden" name="f_search_from" value="<%=table_to_search_from%>">
 			</form>
-			<%
+			
         
-			// DISPLAY HEADERS AND TITLES
-			out.println("      <thead>");          
-			out.println("      <tr>");
-			out.println("       <th width=\"40%\"><b><a href=\"#\" onClick=\"reSortData('work_title')\">Name</a></b></th>");
-            out.println("       <th width=\"20%\"><b><a href=\"#\" onClick=\"reSortData('contrib')\">Creators</a></b></th>");
-            out.println("       <th width=\"10%\"><b><a href=\"#\" onClick=\"reSortData('dates')\">Event Dates</a></b></th>");
-            out.println("       <th width=\"15%\" align=\"right\"><b><a href=\"#\" onClick=\"reSortData('events')\">Events</a></b></th>");
-            out.println("       <th width=\"15%\" align=\"right\"><b><a href=\"#\" onClick=\"reSortData('resources')\">Resources</a></b></th>");
-			out.println("      </thead>");
-			out.println("      </tr>");
-        
+			
+			<thead>          
+			<tr>
+			     <th width="40%"><b><a href="#" onClick="reSortData('work_title')">Name</a></b></th>
+		             <th width="20%"><b><a href="#" onClick="reSortData('contrib')">Creators</a></b></th>
+		             <th width="10%"><b><a href="#" onClick="reSortData('dates')">Event Dates</a></b></th>
+		             <th width="15%" align="right"><b><a href="#" onClick="reSortData('events')">Events</a></b></th>
+		             <th width="15%" align="right"><b><a href="#" onClick="reSortData('resources')">Resources</a></b></th>
+			</thead>
+			</tr>
+       			 <%
 			counter       = 0;
 			start_trigger = 0;
 			do_print = false;
@@ -81,21 +81,33 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
 						bgcolour = "class='b-184'";
 					else
 						bgcolour = "class='b-185'";          
-                    out.println("      <tr>");
-					out.println("<td width=\"40%\" " + bgcolour +  " valign=\"top\"><a href=\"/pages/work/" + crset.getString("workid") + "\" onmouseover=\"this.style.cursor='hand';\">" + crset.getString("work_title") + "</a></td>");
-                    out.println("<td width=\"20%\" " + bgcolour +  " valign=\"top\">" + crset.getString("contrib") + "</td>");
-					out.println("<td width=\"10%\" " + bgcolour +  " valign=\"top\">" + crset.getString("dates") + "</td>");
+                	%>
+                	<tr>
+				<td width="40%" <%=bgcolour%> valign="top"><a href="/pages/work/<%=crset.getString("workid")%>" onmouseover="this.style.cursor='hand';"><%= crset.getString("work_title")%></a></td>
+                    		<td width="20%" <%=bgcolour%> valign="top"><%=crset.getString("contrib")%></td>
+                    		<td width="10%" <%=bgcolour%> valign="top"><%=crset.getString("dates")%></td>
+			<%
 					if(crset.getString("events").equals("0")){
-						out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\"></td>");
+						%>
+				<td align="right" width="15%" <%=bgcolour%> valign="top"></td>
+						<%
 					}else{
-						out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\">" + crset.getString("events") + "</td>");
+						%>
+				<td align="right" width="15%" <%=bgcolour%> valign="top"><%=crset.getString("events")%></td>
+						<%
 					}
                     if(crset.getString("resources").equals("0")){
-						out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\"></td>");
+                    		%>
+				<td align="right" width="15%" <%=bgcolour%> valign="top"></td>
+				<%
 					}else{
-						out.println("<td align=\"right\" width=\"15%\" " + bgcolour +  " valign=\"top\">" + crset.getString("resources") + "</td>");
+				%>
+				<td align="right" width="15%" <%=bgcolour%> valign="top"><%=crset.getString("resources")%></td>
+				<%
 					}
-					out.println("</tr>");
+				%>
+				</tr>
+				<%
 					counter++;
 					if(counter == Integer.parseInt(resultsPerPage))
 						break;

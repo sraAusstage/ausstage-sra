@@ -63,7 +63,7 @@
    //added to account for numbers and non alphanumeric at the beginning of names
    String switchLike = "";
    if (letter.equals("0")) switchLike =  "REGEXP '^[[:digit:]]'";
-   else if (letter.equals("*")) switchLike =  "REGEXP '^[^[:alnum:]]'";
+   else if (letter.equals("*")) switchLike =  "REGEXP '^[^A-Za-z0-9]'";
    else switchLike = " LIKE '" + letter + "%' ";
 %>
 
@@ -156,9 +156,32 @@
       			"' ',IF(events.mmfirst_date = '', '01', if(events.mmfirst_date IS NULL, '01',events.mmfirst_date)),"+
       			"' ',IFNULL(events.yyyyfirst_date, '1800')), '%d %m %Y')"+
       			" as dat,count(distinct itemevlink.itemid) as total, country.countryname "+
-			"FROM events INNER JOIN venue ON (events.venueid = venue.venueid)   INNER JOIN states ON (venue.state = states.stateid) Left JOIN itemevlink on (events.eventid = itemevlink.`eventid`) " +
+			"FROM events INNER JOIN venue ON (events.venueid = venue.venueid)  "+
+			"INNER JOIN states ON (venue.state = states.stateid) Left JOIN itemevlink on (events.eventid = itemevlink.`eventid`) " +
 			"INNER JOIN country ON (venue.countryid = country.countryid)"+
-			"WHERE TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME)))) " + switchLike + " group by events.eventid Order by " + ((sortCol.equals("name") || sortCol.indexOf("'") > -1)?"TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME))))":(sortCol.equals("vname")?"vname " + sortOrd + ", suburb " + sortOrd + ", state":sortCol)) + " " + sortOrd + " limit " + ((pageno)*100) + ",101";
+			"WHERE TRIM(leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME))))) " + 
+				switchLike + " group by events.eventid Order by " + 
+				(
+				//IF sort col == name OR has a ' 
+				(sortCol.equals("name") || sortCol.indexOf("'") > -1)? 
+					//Then if letter == 0 
+					((letter.equals("0"))?
+						"convert(":
+						//else
+						""
+					)+"TRIM( leading ' ' from TRIM(leading 'a ' from TRIM(leading 'an ' from TRIM(leading 'the ' from LOWER(events.EVENT_NAME)))))"+ 
+					//if letter == 0 
+					((letter.equals("0"))?
+						", decimal)":
+						//else
+						"")
+					+sortOrd+", dat "
+				//else if sort col == vname
+				:(sortCol.equals("vname")?"vname " + 
+				sortOrd + ", suburb " + sortOrd + ", state":
+				//else 
+				sortCol)) + 
+				" " + sortOrd + " limit " + ((pageno)*100) + ",101";
   		
   			// IF(events.ddfirst_date = '', '01', if(events.ddfirst_date IS NULL, '01',events.ddfirst_date))
     l_rs = m_db.runSQL (sqlString, stmt);
