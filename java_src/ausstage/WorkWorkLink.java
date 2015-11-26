@@ -6,13 +6,16 @@ Company: SRA Information Technology
    File: WorkWorkLink.java
 
 Purpose: Provides Work to Work object functions.
-
+2015 migration to github
  ***************************************************/
 
 package ausstage;
 
 import java.util.Vector;
 import java.sql.Statement;
+
+import org.apache.commons.lang.StringEscapeUtils;
+
 import ausstage.Database;
 import admin.AppConstants;
 import admin.Common;

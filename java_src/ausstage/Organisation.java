@@ -7,7 +7,7 @@ Project: Centricminds
    File: Organisation.java
       
 Purpose: Provides Organisation object functions.
-
+2015 migration to github
  ***************************************************/
 
 package ausstage;
@@ -1242,6 +1242,43 @@ public class Organisation {
 		return (l_rs);
 	}
 
+	/*
+	 * Name : getOrganisationEvtDateRange
+	 * 
+	 * Purpose : Find date ranges of events for a particular organisation
+	 * 
+	 * Parameters : p_org_od - id of the organisation
+	 * 
+	 * Returns : String with the date range. 
+	 * 
+	 */
+	public String getOrganisationEvtDateRange(int p_org_id, Statement p_stmt) {
+		
+		String sqlString = "", retStr = "";
+		ResultSet l_rs = null;
+
+		try {
+
+			sqlString = "SELECT if(min(events.yyyyfirst_date) = greatest(max(events.yyyylast_date), max(events.yyyyfirst_date)),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', greatest(max(events.yyyylast_date),max(events.yyyyfirst_date)))) as OUTPUT "+
+						" FROM organisation LEFT JOIN orgevlink ON (orgevlink.organisationid = organisation.organisationid) "+ 
+						" LEFT JOIN events ON (orgevlink.eventid = events.eventid) "+  
+						" WHERE organisation.organisationid="+ p_org_id;
+
+			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);
+
+			if (l_rs.next()) retStr = l_rs.getString("OUTPUT");
+
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in Organisation.getOrganisationEvtDateRange().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+		return (retStr);
+	}
+	
 	void handleException(Exception p_e, String p_description) {
 		System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 		System.out.println("MESSAGE: " + p_e.getMessage());

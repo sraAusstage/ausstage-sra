@@ -7,7 +7,7 @@ Project: Centricminds
    File: PrimContentIndicatorEvLink.java
 
 Purpose: Provides PrimContentIndicatorEvLink object functions.
-
+2015 migration to github
  ***************************************************/
 
 package ausstage;
@@ -202,8 +202,12 @@ public class PrimContentIndicatorEvLink {
 
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-
-			sqlString = "SELECT * FROM PrimContentIndicatorEvLink WHERE eventId = " + eventId;
+			// addition to the select to order results alphabetically. 
+			sqlString = "SELECT * FROM PrimContentIndicatorEvLink "+
+						"RIGHT JOIN contentindicator ON primcontentindicatorid = contentindicatorid  "+
+						"WHERE eventId = " + eventId + 
+						" ORDER BY contentindicator";
+			
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
@@ -230,8 +234,10 @@ public class PrimContentIndicatorEvLink {
 	 */
 
 	public Vector getPrimContentIndicatorEvLinksForEvent(int eventId) {
+		
 		Vector allPrimContentIndicatorEvLinks = new Vector();
 		CachedRowSet rset = this.getPrimContentIndicatorEvLinks(eventId);
+		
 		PrimContentIndicatorEvLink primContentIndicatorEvLink = null;
 		String primContentIndicatorId = "0";
 		PrimaryContentInd primaryContentInd = null;
@@ -239,14 +245,11 @@ public class PrimContentIndicatorEvLink {
 			while (rset.next()) {
 				primContentIndicatorEvLink = new PrimContentIndicatorEvLink(m_db);
 				primaryContentInd = new PrimaryContentInd(m_db);
-				primContentIndicatorId = rset.getString("primContentIndicatorId");
-
+				primContentIndicatorId = rset.getString("primContentIndicatorId");				
 				primContentIndicatorEvLink.setPrimContentIndicatorId(primContentIndicatorId);
-				primContentIndicatorEvLink.setEventId(rset.getString("eventId"));
-
+				primContentIndicatorEvLink.setEventId(rset.getString("eventId"));								
 				primaryContentInd.load(Integer.parseInt(primContentIndicatorId));
 				primContentIndicatorEvLink.setPrimaryContentInd(primaryContentInd);
-
 				allPrimContentIndicatorEvLinks.add(primContentIndicatorEvLink);
 			}
 		} catch (Exception e) {

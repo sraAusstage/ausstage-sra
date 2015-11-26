@@ -7,7 +7,7 @@ Project: Centricminds
    File: Venue.java
 
 Purpose: Provides Venue object functions.
-
+2015 migration to github
  ***************************************************/
 
 package ausstage;
@@ -808,8 +808,11 @@ public class Venue {
 		try {
 
 			sqlString = "select venueid, venue_name, street , suburb ,states.state as state,country.countryname, "
-					+ "CONCAT_WS(', ',venue.venue_name,venue.street,venue.suburb,IF(states.state='O/S', country.countryname, states.state)) AS OUTPUT " + "from venue "
-					+ "LEFT Join states on (venue.state = states.stateid) " + "LEFT join country on (venue.countryid = country.countryid) " + "WHERE venueid=" + p_venue_id + " "
+					//+ "CONCAT_WS(', ',venue.venue_name,venue.street,venue.suburb,IF(states.state='O/S', country.countryname, states.state)) AS OUTPUT "
+					+ "CONCAT_WS(', ',venue.venue_name,venue.suburb,IF(states.state='O/S', country.countryname, states.state)) AS OUTPUT "
+					+ "from venue "
+					+ "LEFT Join states on (venue.state = states.stateid) " + "LEFT join country on (venue.countryid = country.countryid) " 
+					+ "WHERE venueid=" + p_venue_id + " "
 					+ "ORDER BY venue_name DESC";
 
 			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);
@@ -1087,4 +1090,31 @@ public class Venue {
 		return (l_rs);
 
 	}
+	
+public String getVenueEvtDateRange(int p_ven_id, Statement p_stmt) {
+		
+		String sqlString = "", retStr = "";
+		ResultSet l_rs = null;
+
+		try {
+
+			sqlString = "SELECT if(min(events.yyyyfirst_date) = greatest(max(events.yyyylast_date), max(events.yyyyfirst_date)),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', greatest(max(events.yyyylast_date),max(events.yyyyfirst_date)))) as OUTPUT "+ 
+						"FROM venue LEFT JOIN events ON (venue.venueid = events.venueid) "+ 
+						"WHERE venue.venueid = "+ p_ven_id;
+
+			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);
+
+			if (l_rs.next()) retStr = l_rs.getString("OUTPUT");
+
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in Venue.getVenueEvtDateRange().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+		return (retStr);
+	}
+	
 }

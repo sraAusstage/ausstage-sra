@@ -7,7 +7,7 @@ Project: Ausstage
    File: Search.java
 
 Purpose: Provides Search object functions.
-
+2015 migration to github
  ***************************************************/
 
 package ausstage;
@@ -72,30 +72,77 @@ public class Search {
 		p_db.m_conn = p_connection;
 		m_db = p_db;
 	}
-
-	private void buildSqlSearchString() {
+	
+	/*********
+	 * 
+	 * 
+	 */
+	private String getFormattedKeywords(){
+		StringBuffer returnKeywords = new StringBuffer("");
+		String updated_key_word = (m_key_word.equals("")||m_key_word == null)? "*" : m_key_word.toLowerCase().replace('%', '*');
+		
 		// ///////////////////////////////////
 		// KEYWORD(S)
 		// ///////////////////////////////////
 		if (m_key_word.indexOf(" ") != -1) { // multiple keywords
-			m_sql_string.append(getFormattedMultipleKeyWords(m_key_word.toLowerCase(), "combined_all"));
+			//m_sql_string.append(getFormattedMultipleKeyWords(m_key_word.toLowerCase(), "combined_all"));
+			returnKeywords.append(getFormattedMultipleKeyWords(updated_key_word, "combined_all"));
 
 			// /////////////////////////////////////////////////////////
 			// DEAL WITH NEW & OLD WHERE CLAUSE (search within result)
 			// /////////////////////////////////////////////////////////
 			if (m_search_within_result_str.equals(""))
-				m_search_within_result_str = getFormattedMultipleKeyWords(m_key_word.toLowerCase(), "combined_all");
+			//	m_search_within_result_str = getFormattedMultipleKeyWords(m_key_word.toLowerCase(), "combined_all");
+				m_search_within_result_str = getFormattedMultipleKeyWords(updated_key_word, "combined_all");
+			else
+				returnKeywords.append(" and " + m_search_within_result_str);
+
+		} else { // single keyword
+			//m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word).toLowerCase() + "')");
+			returnKeywords.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(updated_key_word).toLowerCase().replace('%', '*') + "' IN BOOLEAN MODE )");
+
+			// /////////////////////////////////////////////////////////
+			// DEAL WITH NEW & OLD WHERE CLAUSE (search within result)
+			// /////////////////////////////////////////////////////////
+			if (m_search_within_result_str.equals(""))
+				//m_search_within_result_str = m_key_word;
+				m_search_within_result_str = updated_key_word;
+			else
+				returnKeywords.append(" and MATCH (combined_all) AGAINST ('" + m_search_within_result_str.toLowerCase() + "')");
+		}
+		return returnKeywords.toString();
+	}
+	
+	private void buildSqlSearchString() {
+		//this creates the where clause for searches.
+		
+		String updated_key_word = m_key_word.toLowerCase().replace('%', '*');
+		// ///////////////////////////////////
+		// KEYWORD(S)
+		// ///////////////////////////////////
+		if (m_key_word.indexOf(" ") != -1) { // multiple keywords
+			//m_sql_string.append(getFormattedMultipleKeyWords(m_key_word.toLowerCase(), "combined_all"));
+			m_sql_string.append(getFormattedMultipleKeyWords(updated_key_word, "combined_all"));
+
+			// /////////////////////////////////////////////////////////
+			// DEAL WITH NEW & OLD WHERE CLAUSE (search within result)
+			// /////////////////////////////////////////////////////////
+			if (m_search_within_result_str.equals(""))
+			//	m_search_within_result_str = getFormattedMultipleKeyWords(m_key_word.toLowerCase(), "combined_all");
+				m_search_within_result_str = getFormattedMultipleKeyWords(updated_key_word, "combined_all");
 			else
 				m_sql_string.append(" and " + m_search_within_result_str);
 
 		} else { // single keyword
-			m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word).toLowerCase() + "')");
+			//m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word).toLowerCase() + "')");
+			m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(updated_key_word).toLowerCase().replace('%', '*') + "' IN BOOLEAN MODE )");
 
 			// /////////////////////////////////////////////////////////
 			// DEAL WITH NEW & OLD WHERE CLAUSE (search within result)
 			// /////////////////////////////////////////////////////////
 			if (m_search_within_result_str.equals(""))
-				m_search_within_result_str = m_key_word;
+				//m_search_within_result_str = m_key_word;
+				m_search_within_result_str = updated_key_word;
 			else
 				m_sql_string.append(" and MATCH (combined_all) AGAINST ('" + m_search_within_result_str.toLowerCase() + "')");
 		}
@@ -327,10 +374,11 @@ public class Search {
 		}
 	}
 
+	
+	
 	/*
 	 * This method only to be used in building the Resource Search String
-	 */
-
+	 */ 
 	private void buildResourceSqlSearchString() {
 
 		String subTypes = "";
@@ -727,6 +775,73 @@ public class Search {
 		return (m_rset);
 	}
 
+/*****************************************************
+ * getCountries()
+ * returns a list of countries with counts for venues 
+ * and organisations that match the search criteria  
+ * called in search_results_internation.jsp.
+ * slightly different approach to the usual searches due to the query required.
+ * returns CachedRowSet
+ */
+	public String getFormattedWhereClause(){
+		return getFormattedKeywords();
+	}
+	
+	public CachedRowSet getCountries() {
+
+		String keywords = getFormattedKeywords();
+		String sql_search_string = 	"SELECT * FROM ( "+
+									"SELECT c.countryid, c.countryname as countryname, "+
+									"COALESCE(org.orgCount,0) AS orgcount, "+
+									"COALESCE(ven.venCount,0) AS venuecount "+
+									"FROM country AS c "+
+									"	LEFT JOIN ( "+
+									"		SELECT COUNT(*) as orgCount, organisation.countryid, country.countryname "+ 
+									"		FROM search_organisation "+
+									"		LEFT JOIN organisation "+
+									"		ON organisation.organisationid = search_organisation.organisationid "+
+									"		LEFT JOIN country "+
+									"		ON organisation.countryid = country.countryid "+
+									//"		WHERE MATCH (combined_all) AGAINST ('"+keywords+"' in boolean mode) "+
+									"		WHERE "+ keywords +
+									"		GROUP BY country.countryid "+        
+									"	) AS org "+
+									"	ON org.countryid = c.countryid "+
+									"	LEFT JOIN ( "+
+									"		SELECT COUNT(*) as venCount, venue.countryid, country.countryname "+
+									"		FROM search_venue "+ 
+									"		LEFT JOIN venue "+
+									"		ON venue.venueid = search_venue.venueid "+
+									"		LEFT JOIN country "+
+									"		ON venue.countryid = country.countryid "+
+									//"		WHERE MATCH(combined_all) AGAINST ('"+keywords+"' IN BOOLEAN MODE) "+  
+									"		WHERE "+keywords+
+									"		GROUP BY country.countryid "+
+									"	) AS ven "+
+									"	ON ven.countryid = c.countryid "+
+									") res "+ 
+									"WHERE (orgcount > 0 OR venuecount > 0)" + (m_orderBy.equals("")?"":" order by "+m_orderBy);
+		
+		System.out.println("INTERNATIONAL SEARCH SQL ******");
+		System.out.println(sql_search_string);
+		try {
+			Statement l_stmt;
+			l_stmt = m_db.m_conn.createStatement();
+			m_rset = m_db.runSQL(sql_search_string, l_stmt);
+			l_stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in Search.getCountries()");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + m_sql_string.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+
+		// DEBUG SQL STATEMENT
+		// System.out.println("m_sql_string = " + m_sql_string.toString());
+		return (m_rset);
+	}	
 	/*
 	 * Query to do the Resources search
 	 */
@@ -868,7 +983,7 @@ public class Search {
 
 	public CachedRowSet getVenues() {
 
-		String m_sql_items = "search_venue.venueid, venue_name, street, suburb, venue_state, web_links, resource_flag, CONCAT_WS(' - '  ,min(events.yyyyfirst_date), max(events.yyyylast_date)) dates,count(distinct events.eventid) num, "
+		String m_sql_items = "search_venue.venueid, venue_name, street, suburb, venue_state, venue_country, web_links, resource_flag, CONCAT_WS(' - '  ,min(events.yyyyfirst_date), max(events.yyyylast_date)) dates,count(distinct events.eventid) num, "
 				+ " count(distinct itemvenuelink.itemid) as total";
 		m_sql_string.append("select distinct " + m_sql_items + " from search_venue " + "LEFT JOIN events ON (search_venue.venueid = events.venueid) "
 				+ "LEFT JOIN itemvenuelink ON (search_venue.venueid = itemvenuelink.venueid)where ");
@@ -1004,7 +1119,12 @@ public class Search {
 
 	public CachedRowSet getOrganisations() {
 
-		String m_sql_items = "search_organisation.organisationid, name, address, suburb, org_state, org_country, suburb_state_country, web_links, resource_flag,count(distinct events.eventid) num, COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total, CONCAT_WS(' - ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
+		String m_sql_items = 	"search_organisation.organisationid, name, address, suburb, "+
+								"org_state, org_country, suburb_state_country, web_links, "+
+								"resource_flag,count(distinct events.eventid) num, "+
+								"COUNT(distinct itemorglink.itemid) + COUNT(distinct item.itemid) as total, "+
+								"if (MIN(events.yyyyfirst_date) = greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)), MIN(events.yyyyfirst_date), concat_ws(' - ', MIN(events.yyyyfirst_date), greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)))) dates";
+								//"CONCAT_WS(' - ',min(events.yyyyfirst_date), max(events.yyyylast_date)) dates  ";
 		m_sql_string
 				.append("select distinct " + m_sql_items + "  from search_organisation  LEFT JOIN orgevlink ON (orgevlink.organisationid = search_organisation.organisationid) "
 						+ "LEFT JOIN events ON (orgevlink.eventid = events.eventid) "
@@ -1040,7 +1160,8 @@ public class Search {
 				+ "concat_ws(', ', GROUP_CONCAT(distinct if (CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME) = '', null, "
 				+ "CONCAT_WS(' ', CONTRIBUTOR.FIRST_NAME ,CONTRIBUTOR.LAST_NAME)) SEPARATOR ', '), group_concat(distinct organisation.name separator ', ')) contrib, "
 				+ "count(distinct events.eventid) events,  count(distinct itemworklink.itemid) as resources, "
-				+ "concat_ws('- ', MIN(events.yyyyfirst_date), MAX(events.yyyylast_date)) dates";
+				//+ "concat_ws(' - ', MIN(events.yyyyfirst_date), MAX(events.yyyylast_date)) dates";
+				+ "if (MIN(events.yyyyfirst_date) = greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)), MIN(events.yyyyfirst_date), concat_ws(' - ', MIN(events.yyyyfirst_date), greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)))) dates";
 		m_sql_string.append("select distinct " + m_sql_items + "  from search_work " + "LEFT  JOIN eventworklink ON (search_work.workid = eventworklink.workid) "
 				+ "LEFT  JOIN events ON (eventworklink.eventid = events.eventid) " + "LEFT  JOIN workconlink ON (search_work.workid = workconlink.workid) "
 				+ "LEFT  JOIN contributor ON (workconlink.contributorid = contributor.contributorid) "
