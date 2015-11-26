@@ -10,6 +10,8 @@ Purpose: Provides Articles object functions.
 
 21 May: BTW : added educational_institution_id variable. Relating to addition of a join 
 	      table between CONTRIBUTOR and ORGANISATION
+
+2015 : code moved to github
  ***************************************************/
 
 package ausstage;

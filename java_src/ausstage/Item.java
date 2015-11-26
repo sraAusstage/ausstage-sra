@@ -10,6 +10,7 @@ Update: 10/01/06
 Author: Brad Williams
 Purpose: Add item_url field & methods to the clafss.
 
+2015 migrated to github
 ***************************************************/
 
 package
@@ -29,10 +30,17 @@ import java.util.Date;
 import java.util.Calendar;
 import java.util.Vector;
 
+import java.security.cert.CertificateException;
 import java.sql.*;
 
+import java.net.MalformedURLException;
 import javax.imageio.ImageIO;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.security.cert.X509Certificate;
 import javax.servlet.http.HttpServletRequest;
+import javax.net.ssl.X509TrustManager;
 
 import java.util.GregorianCalendar;
 
@@ -44,6 +52,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+
 
 public class Item {
   private ausstage.Database m_db;
@@ -3669,14 +3679,81 @@ public class Item {
 			  url.toLowerCase().endsWith(".bmp")) {
 		  isImage = true;
 	  }
+	  System.out.println("checking image at "+url);
+	  System.out.println("is image is "+isImage);
 	  return isImage; 
+  }
+  
+  public String getThumbnailTEST (String path) {
+	  Image img = null;
+	  ImageType imageType = null;
+	  InputStream connection;
+	  try {
+		  int height = 0,width = 0;
+		  //if (isImageUrl(path) && path.toLowerCase().startsWith("http")) {
+		  if (isImageUrl(path) ) {
+			  //read the image from a URL
+			  URL url = new URL(path);
+			  System.out.println("1");
+			  
+			  //--------------------------
+			  //deal with http and https 
+			  if(path.indexOf("https://")!=-1){
+				  System.out.println("2");
+                  final SSLContext sc = SSLContext.getInstance("SSL");
+                  System.out.println("3");
+                  sc.init(null, getTrustingManager(), new java.security.SecureRandom());
+                  System.out.println("4");
+                  HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+                  System.out.println("5");
+                  connection = url.openStream();
+                  System.out.println("6");
+                  
+               }
+              else{
+                  connection = url.openStream();
+                  System.out.println("7");
+              }
+			  BufferedImage bufferedimage = ImageIO.read(connection);
+			  System.out.println("8");
+			  width          = bufferedimage.getWidth();
+			  System.out.println("9");
+              height         = bufferedimage.getHeight();
+              System.out.println("width="+width);
+              System.out.println("height="+height);
+			  
+              int idx = (url.getPath() == null ? -1 : url.getPath().lastIndexOf("."));
+			  if (idx != -1) {
+				 // imageType = ImageType.getType(url.getPath().substring(idx + 1));
+			  } else {
+				  //imageType = ImageType.UNKNOWN;
+				  return null;
+			  }
+			  //img = new Image(url.openStream(), imageType);
+			  //small thumbs
+	          //return squareIt(img, 100, 0.1, 0.95f, 0.08f);
+		  } else {
+			  System.out.println("Not a url");
+		  }
+	  } catch (IOException ioe) {
+		  ioe.printStackTrace();
+	  }
+	  catch (Exception e) {
+		  System.out.println("Exception Occurred  : "+e);
+	  }
+	  
+	  return null;
   }
   
   public String getThumbnail (String path) {
 	  Image img = null;
 	  ImageType imageType = null;
 	  try {
-		  if (isImageUrl(path) && path.toLowerCase().startsWith("http")) {
+		  if(!path.toLowerCase().startsWith("http")){
+			  path = "http://"+path;
+		  }
+		  //if (isImageUrl(path) && path.toLowerCase().startsWith("http")) {
+		  if (isImageUrl(path) ) {
 			  //read the image from a URL
 			  URL url = new URL(path);
 			  int idx = (url.getPath() == null ? -1 : url.getPath().lastIndexOf("."));
@@ -3715,6 +3792,40 @@ public class Item {
       return b64;
       
   }   
+
+
+private static TrustManager[] getTrustingManager() {
+	    TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+	
+	           @Override
+	           public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+	                 return null;
+	           }
+	
+	          // @Override
+	          // public void checkClientTrusted(X509Certificate[] certs, String authType) {
+	          // }
+	
+	          // @Override
+	          // public void checkServerTrusted(X509Certificate[] certs, String authType) {
+	          // }
+	
+			@Override
+			public void checkClientTrusted(
+					java.security.cert.X509Certificate[] arg0, String arg1)
+					throws CertificateException {
+				// TODO Auto-generated method stub
+				
+			}
+	
+			@Override
+			public void checkServerTrusted(
+					java.security.cert.X509Certificate[] arg0, String arg1)
+					throws CertificateException {
+				// TODO Auto-generated method stub
+				
+			}
+	    } };
+	    return trustAllCerts;
+	}
 }
-
-

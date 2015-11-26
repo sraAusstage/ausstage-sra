@@ -8,12 +8,13 @@ Project: Centricminds
 
 Purpose: Provides Contributor object functions.
 
+2015 migrated to github
  ***************************************************/
 
 package ausstage;
 
 import java.util.*;
-
+import org.apache.commons.lang.*;
 import ausstage.Database;
 import admin.AppConstants;
 import sun.jdbc.rowset.*;
@@ -97,7 +98,8 @@ public class Contributor {
 	public void load(int p_id) {
 		CachedRowSet l_rs;
 		String sqlString;
-
+		System.out.println("*******");
+		System.out.println("* Loading Contributor");
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
@@ -105,7 +107,7 @@ public class Contributor {
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
-
+			
 				m_id = p_id;
 				m_prefix = l_rs.getString("PREFIX");
 				m_name = l_rs.getString("FIRST_NAME");
@@ -138,7 +140,8 @@ public class Contributor {
 				m_entered_date = l_rs.getDate("entered_date");
 				m_updated_by_user = l_rs.getString("updated_by_user");
 				m_updated_date = l_rs.getDate("updated_date");
-
+				
+				System.out.println("* Contributor firstname : "+m_name);
 				loadOrganisationLinks();
 				loadLinkedContributors();
 
@@ -709,6 +712,36 @@ public class Contributor {
 		return (l_rs);
 	}
 
+	public String getContributorDateRange(String p_id){
+		CachedRowSet l_rs = null;
+		String sqlString = "";
+		String retStr = "";
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+			sqlString = " SELECT "+
+						" if (min(events.yyyyfirst_date) = greatest(max(events.yyyylast_date),max(events.yyyyfirst_date)),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', greatest(max(events.yyyylast_date),max(events.yyyyfirst_date)))) "+
+						" as output "+
+						" FROM contributor "+
+						" LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "+ 
+						" LEFT JOIN events ON (conevlink.eventid = events.eventid) "+ 
+						" WHERE contributor.contributorid= "+p_id;
+			System.out.println("SQL SELECT FOR DATE RANGE : "+sqlString);
+			l_rs = m_db.runSQL(sqlString, stmt);
+
+			if (l_rs.next()) retStr = l_rs.getString("output");
+
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in Contributor.getContributorDateRange().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
+		return (retStr);
+	}
+	
+	
 	public String getContFunctPreffTermByContributor(String p_id) {
 		CachedRowSet l_rs = null;
 		String sqlString, ret_str = "";
@@ -957,15 +990,15 @@ public class Contributor {
 	}
 
 	public String getName() {
-		return (m_name);
+		return (StringEscapeUtils.escapeHtml(m_name));
 	}
 
 	public String getMiddleName() {
-		return (m_m_name);
+		return (StringEscapeUtils.escapeHtml(m_m_name));
 	}
 
 	public String getLastName() {
-		return (m_l_name);
+		return (StringEscapeUtils.escapeHtml(m_l_name));
 	}
 
 	public String getSuffix() {
@@ -973,7 +1006,7 @@ public class Contributor {
 	}
 
 	public String getDisplayName() {
-		return (m_display_name);
+		return (StringEscapeUtils.escapeHtml(m_display_name));
 	}
 
 	public String getPlaceOfBirth() {
