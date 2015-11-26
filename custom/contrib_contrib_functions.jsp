@@ -97,18 +97,21 @@
       <td class="bodytext" colspan=3><b>Associated Contributor:</b> <%=tempContributor.getName() +" "+ tempContributor.getLastName()%></td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><br><b>Comments for </b>'<%=contributorObj.getDisplayName()%>' to '<%=tempContributor.getDisplayName()%>'
+      <td class="bodytext" colspan=3><br><b>Comments</b>
         <br>
         <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?contributorContributorLink.getNotes():contributorContributorLink.getChildNotes()%></textarea>
+        <input type='hidden' name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' value='<%=(isParent)?contributorContributorLink.getChildNotes():contributorContributorLink.getNotes()%>' ></input>
+         <br><br><br><hr><br><br>
       </td>
-    </tr>
-    <tr>
+    </tr>    
+<!--    <tr>
       <td class="bodytext" colspan=3><br><b>Comments for </b>'<%=tempContributor.getDisplayName()%>' to '<%=contributorObj.getDisplayName()%>'
         <br>
         <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?contributorContributorLink.getChildNotes():contributorContributorLink.getNotes()%></textarea>
         <br><br><br><hr><br><br>
       </td>
     </tr>
+    -->
 <%
   }
   out.println("</table>");

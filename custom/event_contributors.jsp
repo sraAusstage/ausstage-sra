@@ -59,6 +59,13 @@ Statement stmt = db_ausstage.m_conn.createStatement();
   boolean addedWhereClause  = false;
   boolean exactFirstName = false;
   boolean exactLastName  = false;
+  
+  if (request.getParameter ("exactFirstName") != null) {
+    exactFirstName = true;
+  }
+  if (request.getParameter ("exactLastName") != null) {
+    exactLastName = true;
+  }
 
   
   if(request.getParameter("isPreviewForEvent") != null){
@@ -285,6 +292,7 @@ selected_list_db_field_id_name = "contributorId";
 
     if (!filter_first_name.equals ("")) {
       if (exactFirstName) {
+        
         list_db_sql += "and LOWER(first_name) = '" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "' ";
       }
       else {
@@ -304,6 +312,7 @@ selected_list_db_field_id_name = "contributorId";
   
     list_db_sql += "Group by contributor.contributorid order by " + request.getParameter ("f_order_by");
   }
+  System.out.println(list_db_sql);
   // Need to do the following type of select of Oracle will not return the rows
   // in the correct order.
   list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.

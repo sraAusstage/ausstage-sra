@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8"%>
+
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
@@ -91,16 +91,18 @@
       <td class="bodytext" colspan=3><b>Associated Venue:</b> <%=tempVenue.getName()%></td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><br><b>Comments for </b> <%=venueObj.getName()%> to <%=tempVenue.getName()%> <br>
+      <td class="bodytext" colspan=3><br><b>Comments</b><br>
         <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?venueVenueLink.getNotes():venueVenueLink.getChildNotes()%></textarea>
+        <br><br><br><hr><br><br>
+        <input type='hidden' name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' value='<%=(isParent)?venueVenueLink.getChildNotes():venueVenueLink.getNotes()%>'></input>
       </td>
     </tr>
-     <tr>
+     <!--<tr>
       <td class="bodytext" colspan=3><br><b>Comments for </b> <%=tempVenue.getName()%> to <%=venueObj.getName()%><br>
         <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?venueVenueLink.getChildNotes():venueVenueLink.getNotes()%></textarea>
         <br><br><br><hr><br><br>
       </td>
-    </tr>
+    </tr>-->
 <%
   }
   out.println("</table>");

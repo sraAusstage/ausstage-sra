@@ -33,13 +33,7 @@
   String list_db_sql;
   String list_db_field_id_name;
   String filter_id, filter_name, filter_state, filter_suburb;
-  //String pob = request.getParameter("place_of_birth");
-  //String pod = request.getParameter("place_of_death");
-  //String birth_place = request.getParameter("f_place_of_birth_venue_name");
-  //String death_place = request.getParameter("f_place_of_death_venue_name");
- // System.out.println("-------------Value passed onto venue search page--------------");
-  //System.out.println("Birth:" +birth_place );
-  //System.out.println("Death:" +death_place );
+
 
   String action = request.getParameter("act");
   if (action == null) action = "";
@@ -62,13 +56,13 @@
   } else if (request.getParameter("place_of_demise") != null) {
     placeOfDemiseButton = true;    
   } else if (request.getParameter("f_eventid") != null || action.contains("ForEvent")) {
-    eventObj = (Event)session.getAttribute("eventObj"); // Get the Event object.
-    if (eventObj == null) {                              // Make sure it exists
-      eventObj = new Event(db_ausstage);
-      }
-    if (request.getParameter("f_event_name") != null) {
-      eventObj.setEventAttributes(request);               // Update it with the request data if there's data in the request.
-    }
+    	eventObj = (Event)session.getAttribute("eventObj"); // Get the Event object.
+	    if (eventObj == null) {                              // Make sure it exists
+	      eventObj = new Event(db_ausstage);
+	    }
+    	    if (request.getParameter("f_event_name") != null) {
+	      eventObj.setEventAttributes(request);               // Update it with the request data if there's data in the request.
+	    }
     session.setAttribute("eventObj", eventObj);         // And put it back into the session.
     finishButton = true;                                // Need a Finish Button for the user.
   } else {
@@ -140,7 +134,8 @@
   if (finishButton){
     buttons_actions.addElement ("Javascript:location.href='venue_addedit.jsp?act="+action+"&action=add'");
     buttons_actions.addElement ("Javascript:search_form.action='venue_addedit.jsp?act="+action+"&action=edit';search_form.submit();");  
-    buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
+    //buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp';search_form.submit();");
+    buttons_actions.addElement ("Javascript:search_form.action='venue_del_confirm.jsp?act="+action+"';search_form.submit();");
     buttons_actions.addElement ("Javascript:search_form.action='event_addedit.jsp';search_form.submit();");
   }
   else if (placeOfBirthButton){
@@ -189,18 +184,116 @@
     "from venue LEFT Join states on (venue.state = states.stateid) "+
     "LEFT join country on (venue.countryid = country.countryid) WHERE 1=1 ";
 
+    //SPECIAL HANDLING FOR THE VENUE_NAME FIELD. 
+    String venueNameWhere = "";
+    String venueOrderBy = "";
+    String remove = "a,and,the,an,i,it,if";
+    List<String> removeWords = new ArrayList<String>(Arrays.asList(remove.split(",")));
+    
+    //if venue_name is entered 
+    if (!filter_name.equals ("")){
+        List<String> terms = new ArrayList<String>(); // TO HOLD THE SEARCH TERMS - WILL BE BUILT WITHOUT removeWords
+	List<String> shortTerms = new ArrayList<String>();
+	
+    	// - remove [a, and, the, an, I, it, if] 
+	// - then split it.- [term111, term222, term333] etc
+    	for(String term : db_ausstage.plSqlSafeString(filter_name.toLowerCase()).split(" ") ){
+		if (term.length() > 2 && !removeWords.contains(term)){
+			terms.add(term);    	
+			if(term.length() > 4){
+				shortTerms.add(term.substring(0,5));
+			}
+			else shortTerms.add(term);
+		}
+    	}
+    	// - create a where clause where venue name contains 
+    	//   term1% OR term2% OR term3%
+	int i = 0;
+	venueNameWhere += "and ( ";
+    	for (String term : shortTerms){
+    		if (i != 0 ){ 
+    			venueNameWhere +=" OR ";
+    		}
+    		venueNameWhere +=" LOWER(venue_name) like '%" + term + "%' ";
+    		i++;
+    	}
+    	venueNameWhere += ")";
+    	
+    	//System.out.println("*******");
+    	//System.out.println(venueNameWhere);
+    	
+    	//then create an order by case - 	original string
+    	int relevance = 1;
+    	venueOrderBy = " CASE WHEN lower(venue.venue_name) like '"+db_ausstage.plSqlSafeString(filter_name.toLowerCase())+"' THEN "+relevance+" ELSE 1000 END, ";
+    	relevance++;
+    	//					%term111%term222%term333%
+	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '"+db_ausstage.plSqlSafeString(filter_name.toLowerCase()).replace(' ', '%')+"%' THEN "+relevance+" ELSE 1000 END, ";
+    	relevance++;
+    	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%"+db_ausstage.plSqlSafeString(filter_name.toLowerCase()).replace(' ', '%')+"%' THEN "+relevance+" ELSE 1000 END, ";
+    	relevance++;
+    	// 					term1%term2%term3%
+    	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '";
+    	for (String term : shortTerms){
+   		venueOrderBy += term + "%";
+    	}
+    	venueOrderBy += "' THEN "+relevance+" ELSE 1000 END, "; 
+    	relevance++;
+ 	// 					%term1%term2%term3%
+    	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%";
+    	for (String term : shortTerms){
+   		venueOrderBy += term + "%";
+    	}
+    	venueOrderBy += "' THEN "+relevance+" ELSE 1000 END, "; 
+    	relevance++;
+	//					term111%
+	//					term222%
+	//					term333%
+    	for (String term : terms){
+   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
+   		relevance++;
+    	}
+	//					%term111%
+	//					%term222%
+	//					%term333%
+    	for (String term : terms){
+   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
+   		relevance++;
+    	}
+    	// 					term1%
+    	// 					term2%
+    	// 					term3%
+    	for (String term : shortTerms){
+   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
+   		relevance++;
+    	}    	
+    	// 					%term1%
+    	// 					%term2%
+    	// 					%term3%
+    	for (String term : shortTerms){
+   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
+   		relevance++;
+    	}
+    	//System.out.println("ORDER BY --------------");
+    	//System.out.println(venueOrderBy);
+    }
+    //END SPECIAL HANDLING
+    
+   
     // Add the filters to the SQL
     if (filter_id != null && !filter_id.equals (""))
       list_db_sql += "and venueid=" + filter_id + " ";
-    if (filter_name!= null && !filter_name.equals (""))
-      list_db_sql += "and LOWER(venue_name) like '%" + db_ausstage.plSqlSafeString(filter_name.toLowerCase()) + "%' ";
+    if (filter_name!= null && !filter_name.equals ("")){
+      list_db_sql += venueNameWhere;
+    }
     if (filter_state!= null && !filter_state.equals (""))
       list_db_sql += "and LOWER(states.state) like '%" + db_ausstage.plSqlSafeString(filter_state.toLowerCase()) + "%' ";
     if (filter_suburb!= null && !filter_suburb.equals (""))
       list_db_sql += "and LOWER(suburb) like '%" + db_ausstage.plSqlSafeString(filter_suburb.toLowerCase()) + "%' ";
   
-    list_db_sql += " order by " + request.getParameter ("f_order_by");
+    
+    list_db_sql += " order by "+venueOrderBy+" " + request.getParameter ("f_order_by");
   }
+  //System.out.println(list_db_sql);
   //pageFormater.writeHelper(out, "Venue Maintenance","helpers_no1.gif");
    list_db_sql = list_db_sql + " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
   

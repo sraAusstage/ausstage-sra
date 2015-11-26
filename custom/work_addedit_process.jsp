@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
-<%@ page import = "java.sql.Statement, sun.jdbc.rowset.CachedRowSet, ausstage.Work"%>
+<%@ page import = "java.sql.Statement, sun.jdbc.rowset.CachedRowSet, ausstage.Work, ausstage.WorkCountryLink, java.util.Vector"%>
 <cms:include property="template" element="head" /><%@ include file="../admin/content_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
@@ -15,9 +15,12 @@
   boolean               error_occurred  = false;
   CachedRowSet          rset;
   String                workid;
+  String country_ids    = request.getParameter("delimited_country_ids");
+   
+  Vector countries	=new Vector();
   String                action          = request.getParameter("action");
   if (action == null) action = "";
-  
+
 
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
  
@@ -36,6 +39,19 @@
   
   workid = request.getParameter ("f_workid");
 
+  //using delimiter list of country ids make a Vector of country links.
+  /* for (String country: country_ids.split(",")){
+      	System.out.println("/**** at here **"+country+"++");
+   	if(country != null && !country.equals("") && !country.equals(" ") && !country.equals("[]")){
+   	System.out.println("/****** adding country");
+	   	WorkCountryLink workCountry = new WorkCountryLink(db_ausstage); 	
+		workCountry.setCountryId(country);
+		workCountry.setWorkId(workid);
+		countries.add(workCountry);
+	}
+      }
+*/	
+
   if (workid == null || workid.equals("0") || workid.equals("null")){
     //therefore adding a work, no id has been assigned yet.
     workid = "-1";
@@ -44,6 +60,8 @@
   session.setAttribute("work", work);
   work.setDatabaseConnection(db_ausstage); // Refresh connection
 
+
+  //work.setWorkCountries(countries);
   // adding a work
   if (workid.equals ("-1"))
   {
@@ -62,6 +80,7 @@
       error_occurred = !work.addWork();
     }
     else{
+      System.out.println("****Countries "+work.getAssociatedCountries());
       error_occurred = !work.updateWork();
       System.out.println("update work");
     }

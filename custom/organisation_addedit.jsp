@@ -397,6 +397,29 @@
 %>
 </form>
 <script language="javascript">
+
+//add listener to the country and state select lists
+$(document).ready(function(){
+	//if country selected is not australia set state to O/S
+	//if Australia and state is O/S set to [Unknown]
+	$("[name=f_country]").change(function(){
+		if ($("[name=f_country] option:selected").text() != 'Australia'){
+			//set state to O/S
+			$("[name=f_org_state_id] option:contains('O/S')").prop('selected', true);
+		}else {
+			//set state to unknown
+			$("[name=f_org_state_id] option:contains('[Unknown]')").prop('selected', true);
+		}
+	});
+	//if state selected is not O/S make country Australia
+	$("[name=f_org_state_id]").change(function(){
+		if ($("[name=f_org_state_id] option:selected").text() != 'O/S'){
+			//set Country to Australia
+			$("[name=f_country] option:contains('Australia')").prop('selected', true);
+		}	
+	});
+});
+
   function checkFields(){
     var msg = "";
     

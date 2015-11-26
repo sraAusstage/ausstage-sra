@@ -101,16 +101,19 @@
       <td class="bodytext" colspan=3><b>Associated Organisation:</b> <%=tempOrganisation.getName()%></td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><br><b>Comments for </b> '<%=organisationObj.getName()%>' to '<%=tempOrganisation.getName()%>'<br>
+      <td class="bodytext" colspan=3><br><b>Comments</b><br>
         <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent) ? orgOrgLink.getNotes() : orgOrgLink.getChildNotes()%></textarea>
+        <br><br><br><hr><br><br>
       </td>
+      <input type='hidden' name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' value='<%=(isParent)? orgOrgLink.getChildNotes() : orgOrgLink.getNotes()%>'></input>       
     </tr>
-    <tr>
+<!--    <tr>
       <td class="bodytext" colspan=3><br><b>Comments for </b> '<%=tempOrganisation.getName()%>' to '<%=organisationObj.getName()%>'<br>
         <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent)? orgOrgLink.getChildNotes() : orgOrgLink.getNotes()%></textarea>
         <br><br><br><hr><br><br>
       </td>
     </tr>
+    -->
 <%
   }
   out.println("</table>");

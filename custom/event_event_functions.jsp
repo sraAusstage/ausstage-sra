@@ -88,16 +88,19 @@
       <td class="bodytext" colspan=3><b>Associated Event:</b> <%=tempEvent.getEventName()%></td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><br><b>Comments for </b>'<%=eventObj.getEventName()%>' to '<%=tempEvent.getEventName()%>' relationship<br>
+      <td class="bodytext" colspan=3><br><b>Comments</b><br>
         <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?eventEventLink.getNotes():eventEventLink.getChildNotes()%></textarea>
+        <br><br><br><hr><br><br>
+         <input type='hidden' name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' value='<%=(isParent)?eventEventLink.getChildNotes():eventEventLink.getNotes()%>'></hidden>
       </td>
     </tr>
-    <tr>
+
+    <!--<tr>
       <td class="bodytext" colspan=3><br><b>Comments for </b>'<%=tempEvent.getEventName()%>' to '<%=eventObj.getEventName()%>' relationship<br>
         <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?eventEventLink.getChildNotes():eventEventLink.getNotes()%></textarea>
         <br><br><br><hr><br><br>
       </td>
-    </tr>
+    </tr>-->
 
 <%
   }

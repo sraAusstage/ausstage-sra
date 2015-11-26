@@ -41,16 +41,11 @@
 			linkEventId = request.getParameter("f_link_event_id_" + i);
 
 			String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
-
-			System.out.println(Arrays.toString(lookupAndPerspective));
 			relationLookupId = lookupAndPerspective[0];
-
-			System.out.println(relationLookupId);
-			isParent = lookupAndPerspective[1];
-
-			System.out.println(isParent);						
+			isParent = lookupAndPerspective[1];				
 			notes = request.getParameter("f_notes_" + i);
 			childNotes = request.getParameter("f_child_notes_" + i);
+			System.out.println("**** Child notes : "+childNotes);
 			
 			if (isParent.equals("parent")){ 
 				eventEventLink.setChildId(linkEventId);

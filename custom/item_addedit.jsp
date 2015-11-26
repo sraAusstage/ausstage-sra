@@ -507,7 +507,7 @@
   out.println("<table id='additional_url_span'>");
   out.println("<tr><td width='100%' ><input type='text' name='f_enter_additional_url' size='50' maxlength='2048' class='line250' onblur='addUrl($(this));' value=''" + readOnly + "></td><td><a href='#additional_url' onclick='addUrl($(\"input[name=f_enter_additional_url]\"))'> Add</a></td></tr>");
   for (int i = 0; i < m_additional_urls.size(); i++){
-  	out.println("<tr><td name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "></td><td><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a></td></tr>");
+  	out.println("<tr><td name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='validateUrl($(this));updateUrlList()' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "></td><td><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a></td></tr>");
   }
   out.println("</table>");
   pageFormater.writeTwoColTableFooter(out);
@@ -740,11 +740,8 @@
   }); 
    
   function addUrl(field_to_check){
-    console.log("add url called");
     if (field_to_check.val()!=""){
-      console.log("field has value :"+field_to_check.val());
       if (validateUrl(field_to_check)){
-        console.log("field is valid");
         $('#additional_url_span tr:last').after("<tr><td name='url_line_"+url_count+"'><input type='text' name='f_additional_url_"+url_count+"' size='50' maxlength='2048' class='line250' value="
         					+field_to_check.val()+" ></td><td><a href='#additional_url' onclick='removeUrl("+url_count+")'> Remove</a></td>");
         field_to_check.val("");
@@ -763,11 +760,13 @@
 
   
   function updateUrlList(){
+  console.log("updating url list");
     var delimited_list = "";
     $("input[name*='f_additional_url_']").each(function(index){ 
       if($(this).val()!="") {delimited_list += $(this).val()+",";} 
     });
     $("input[name='f_additional_urls']").val(delimited_list);
+    console.log(delimited_list);
 
   }
 

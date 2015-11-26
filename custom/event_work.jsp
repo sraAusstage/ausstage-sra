@@ -44,6 +44,7 @@
 
   String filter_id;
   String filter_work_title;
+  String  filter_first_name, filter_last_name, filter_org_name;
   String filter_box_selected;
   boolean fromEventPage = true;
   if (request.getParameter("fromEventPage") == null) {
@@ -86,10 +87,16 @@
   // when a user performs a search)
   filter_box_selected = request.getParameter ("f_box_selected");
   filter_id           = request.getParameter ("f_id");
-  filter_work_title         = request.getParameter ("f_work_title");
+  filter_work_title   = request.getParameter ("f_work_title");
+  filter_first_name = request.getParameter ("f_first_name");
+  filter_last_name = request.getParameter ("f_last_name");
+  filter_org_name = request.getParameter ("f_org_name");
 
   filter_display_names.addElement ("ID");
   filter_display_names.addElement ("Title");
+  filter_display_names.addElement ("Creator First Name");
+  filter_display_names.addElement ("Creator Last Name");
+  filter_display_names.addElement ("Organisation name");
   
                 
   order_display_names.addElement ("Title");
@@ -97,6 +104,9 @@
              
   filter_names.addElement ("f_id");
   filter_names.addElement ("f_work_title");
+  filter_names.addElement ("f_first_name");
+  filter_names.addElement ("f_last_name");
+  filter_names.addElement ("f_org_name");
 
   list_name             = "f_select_this_work_id";
   list_db_field_id_name = "WORKID";
@@ -143,12 +153,13 @@
    // if first time this form has been loaded
   if (filter_id == null)
   {
-  
-      list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, " +
-       "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output "+
+     list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, " +
+     "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output "+
 			"FROM work  " +
 			"LEFT JOIN workconlink ON work.workid = workconlink.workid " +
 			"LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid " +
+			"LEFT JOIN workorglink ON work.workid = workorglink.workid "+
+			"LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid "+
 			"GROUP BY work.workid " +
 			"ORDER BY LOWER(work_title)";
   }
@@ -156,23 +167,37 @@
   {
     // Not the first time this page has been loaded
     // i.e the user performed a search
-      list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, " +
-       "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output "+
+       list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, " +
+        "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output "+
 			"FROM work  " +
 			"LEFT JOIN workconlink ON work.workid = workconlink.workid " +
 			"LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid " +
+			"LEFT JOIN workorglink ON work.workid = workorglink.workid "+
+			"LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid "+
 			"WHERE ";
 
     // Add the filters to the SQL
     if ( !filter_id.equals (""))
       list_db_sql += " work.workid=" + filter_id + " and ";
+    
+    if ( !filter_first_name.equals ("")) {
+      list_db_sql += " LOWER(contributor.first_name) like '%" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "%' AND ";
+    } 
+    
+    if ( !filter_last_name.equals ("")) {
+      list_db_sql += " LOWER(contributor.last_name) like '%" + db_ausstage.plSqlSafeString(filter_last_name.toLowerCase()) + "%' AND ";
+    } 
+    
+    if ( !filter_org_name.equals ("")) {
+      list_db_sql += " LOWER(organisation.name) like '%" + db_ausstage.plSqlSafeString(filter_org_name.toLowerCase()) + "%' AND ";
+    } 
+    
     if ( !filter_work_title.equals ("")) {
       list_db_sql += " LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
       list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
     } else {
       list_db_sql += " 1=1 ";
-    }
- 
+    } 
     list_db_sql += "group by work.workid order by LOWER(" + request.getParameter ("f_order_by") + ")";
   }
 
