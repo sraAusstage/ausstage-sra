@@ -897,4 +897,42 @@ public class HtmlGenerator {
 		}
 		return (ret);
 	}
+	
+	/*
+	 * displayUrlThumbnail - takes a URL and returns HTML to display it as a thumbnail. 
+	 * currently handles images, PDF and web pages. 
+	 * Requires imageUrl, parentURL
+	 * */
+	public String displayUrlThumbnail(String imageUrl, String parentUrl){
+		String ret = "";
+		String width = "100px";
+		String height = "100px";
+		//is it an image?
+		if (imageUrl.toLowerCase().endsWith(".gif") ||imageUrl.toLowerCase().endsWith(".jpeg") ||
+			imageUrl.toLowerCase().endsWith(".jpg") ||imageUrl.toLowerCase().endsWith(".png") ||
+			imageUrl.toLowerCase().endsWith(".bmp")) {
+			ret = "<a target='_blank' href='"+parentUrl+"'>"
+				 +		"<div style='margin-right:5px; width:"+width+"; height:"+height+"; float:left; background-image: url("+imageUrl+"); background-size: cover;' >"													
+				 +		"</div>"													
+				 +"</a>";																			
+		}
+		//is it pdf?
+		else if (imageUrl.toLowerCase().endsWith(".pdf")){
+			ret = "<a target='_blank' href='"+parentUrl+"'>"
+				+		"<div style='margin-right:5px; width:100px; height:100px; float:left;' >"
+				+			"<iframe src='http://docs.google.com/gview?url="+imageUrl+"&embedded=true' style='width:"+width+"; height:"+height+";' frameborder='0'></iframe>"
+				+		"</div>"
+				+ "</a>";
+		}
+		//else display the page
+		else {
+			ret = "<div style='margin-right:5px; width:160px; height:"+height+"; float:left;' >"
+				+		"<div class='iframe-link'>"
+				+			"<iframe src='"+imageUrl+"' width='100%' height='500' frameborder='0' scrolling='no' seamless='seamless'></iframe>" 
+				+			"<a class='iframe-link' href='"+imageUrl+"' target='_blank'> &nbsp;</a>"
+				+		"</div>"
+				+ "</div>";
+		}
+		return ret;
+	}
 }

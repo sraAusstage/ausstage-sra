@@ -28,6 +28,7 @@
 						<%
 						ausstage.Database          db_ausstage_for_drill       = new ausstage.Database ();
 						db_ausstage_for_drill.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
+						ausstage.HtmlGenerator htmlGenerator = new ausstage.HtmlGenerator (db_ausstage_for_drill);
 						
 						List<String> groupNames = new ArrayList();	
 						if (session.getAttribute("userName")!= null) {
@@ -596,46 +597,43 @@
 						
 						//added extra table row for item url 21-02-06.
 						if (hasValue(item.getItemUrl())) {
-							String b64 =  item.getThumbnail(item.getItemUrl());
+							
+							boolean isImage = item.isImageUrl(item.getItemUrl());
 							Vector additionalUrls = item.getAdditionalUrls(); 
 						%>
-						<tr >
+							<tr >
 							<th class='record-label b-153'>Item URL</th>
 								<td class='record-value' colspan='2'>
 									<table width="<%=secTableWdth%>" border="0" cellpadding="0" cellspacing="0">
 										<tr>
 											<td valign="top">
 											<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
-													<%=item.getItemUrl()%></a><br>
-											<%if (b64 != null && additionalUrls.size() == 0){ %>
-%>												<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
-													<img src="data:image/jpg;base64, <%=b64%>" alt="Image not found" />
-												</a>
-											<% } %>												
+												<%=item.getItemUrl()%></a><br>
+											<%
+											if (additionalUrls.size() == 0){ 
+												out.println(htmlGenerator.displayUrlThumbnail(item.getItemUrl(),item.getItemUrl())	);
+											 } 
+											%>												
 											</td>
 										</tr>
 										<!--//additional urls-->
 										<tr>
 											<td>
-										 	<% 
-										 	for (int i = 0; i < additionalUrls.size(); i++) {
-										 	b64 = item.getThumbnail(additionalUrls.elementAt(i).toString());
-										 	if (b64 != null){
-										 	%>
-										 	<a target='_blank' href="<%=(!item.getItemUrl().toLowerCase().startsWith("http://"))?"http://":""%><%=item.getItemUrl()%>">
-										 	<img src="data:image/jpg;base64, <%=b64%>" alt="Image not found" />
-										 	</a>
-
+										 	
 										 	<%
-										 	}
+										 	 
+										 	for (int i = 0; i < additionalUrls.size(); i++) {
+												
+												out.println(htmlGenerator.displayUrlThumbnail(additionalUrls.elementAt(i).toString(), item.getItemUrl() )	);
+
 										 	}
 										 	%>
 											</td>
 										</tr>
-
 									</table>
 								</td>
 							</tr>
+							
 						<%
 						}
 						
@@ -1079,4 +1077,7 @@
 						<a class="addthis_counter addthis_pill_style"></a>
 					</div>-->
 </div>
+<script language="javascript">
+	
+</script>
 <cms:include property="template" element="foot" />
