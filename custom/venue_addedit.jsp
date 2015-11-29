@@ -103,7 +103,8 @@
  
   %>
   
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDG86QjLMzgi1z0l5ztQtiFlCwZfn5LjL0&sensor=false" type="text/javascript"></script>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDG86QjLMzgi1z0l5ztQtiFlCwZfn5LjL0" type="text/javascript"></script>
 <script type="text/javascript">
 
 //add listener to the country and state select lists
@@ -173,10 +174,14 @@ function showAddress() {
 	
 	geocoder.geocode({'address':address}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
+			
 			var point = results[0].geometry.location;
 			document.venue_addedit_form.f_latitude.value = Math.round(point.lat()*1000000)/1000000;
 			document.venue_addedit_form.f_longitude.value = Math.round(point.lng()*1000000)/1000000;
 			initializeMap();
+		}
+		else {
+			alert("An error occurred using the Google GeoCode API. Please report the following error code : "+status);
 		}
 	});
 	return false;
