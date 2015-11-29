@@ -62,7 +62,7 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
   				<input type="hidden" name="f_page_num" value="<%=page_num%>">
   				<input type="hidden" name="f_recset_count" value="<%=recset_count%>">
 				<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
-  				<input type="hidden" name="f_sort_by" value="<%=f_sort_by%>">
+  				<!--<input type="hidden" name="f_sort_by" value="">-->
   				<input type="hidden" name="f_date_clause" value="<%=f_date_clause%>">
   				<input type="hidden" name="f_search_within_search" value="<%=search_within_search_for_result%>">
 				<input type="hidden" name="inc_resources" value="<%=inc_resources%>">

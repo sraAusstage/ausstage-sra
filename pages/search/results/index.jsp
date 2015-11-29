@@ -45,7 +45,7 @@ Brad Williams - as part of changes for visualizing internationalisation of Ausst
   } else {
   // A different column was selected.
   document.form_searchSort_report.f_order_by.value = sortColumn;
-  document.form_searchSort_report.f_sort_by.value = "";
+  //document.form_searchSort_report.f_sort_by.value = "";
   document.form_searchSort_report.order.value = 'DESC';
   }
   // Submit the form.
@@ -73,7 +73,7 @@ ausstage.Database  	  db_ausstage_for_result       = new ausstage.Database ();
   String inc_resources			 = request.getParameter("inc_resources");
   String f_sql_switch			 = request.getParameter("f_sql_switch");
   String f_date_clause			 = request.getParameter("f_date_clause");
-  String f_sort_by			 = request.getParameter("f_sort_by");
+ // String f_sort_by			 = request.getParameter("f_sort_by");
   int l_int_page_num                     = 0;
   State state                            = new State(db_ausstage_for_result);
   SimpleDateFormat formatPattern         = new SimpleDateFormat("dd/MM/yyyy");
@@ -123,6 +123,9 @@ ausstage.Database  	  db_ausstage_for_result       = new ausstage.Database ();
   }
 
   //~~	SET ORDER BY CLAUSE
+  System.out.println(" ");
+  System.out.println("Sort By: "+orderBy);
+  System.out.println(" ");
   if(orderBy != null){
   	if (orderBy.equals("venue_name")){
   		search.setOrderBy ("venue_name "+sortOrd+ ", suburb " + sortOrd +" ," + (state.equals("state")?"state":"venue_state") + " " +sortOrd);
@@ -134,14 +137,22 @@ ausstage.Database  	  db_ausstage_for_result       = new ausstage.Database ();
   	//BW
   	else if (orderBy.equals("organisation_address")){
   		search.setOrderBy ("org_country "+sortOrd+", org_state "+ sortOrd + ", suburb "+ sortOrd);	
-  	}else search.setOrderBy(orderBy+" "+sortOrd);
+  	}else {
+  		System.out.println("###################");
+  		System.out.println(orderBy+" "+sortOrd);
+  		System.out.println("END");
+  		search.setOrderBy(orderBy+" "+sortOrd);
+  	}
   }
   
   //~~ SET SEARCH OBJECTS SORT BY CLAUSE  
-  if(request.getParameter("f_sort_by") != null){
-      search.setSortBy(request.getParameter("f_sort_by").toString());
-  }
-    
+  //if(request.getParameter("f_sort_by") != null){
+  //    search.setSortBy(request.getParameter("f_sort_by").toString());
+  //}
+  if(orderBy != null){
+      search.setSortBy(orderBy);
+  } 
+   
   // check if the search is search within a search
   if(!search_within_search_for_result.equals(""))
       search.setSearchWithinResults((String) session.getAttribute("sub_search_str"));

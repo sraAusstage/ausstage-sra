@@ -82,7 +82,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
   				<input type="hidden" name="f_page_num" value="<%=page_num%>">
   				<input type="hidden" name="f_recset_count" value="<%=recset_count%>">
 				<input type="hidden" name="f_sql_switch" value="<%=f_sql_switch%>">
-  				<input type="hidden" name="f_sort_by" value="<%=f_sort_by%>">
+  				<!--<input type="hidden" name="f_sort_by" value="">-->
   				<input type="hidden" name="f_date_clause" value="<%=f_date_clause%>">
   				<input type="hidden" name="f_search_within_search" value="<%=search_within_search_for_result%>">
 				<input type="hidden" name="inc_resources" value="<%=inc_resources%>">
@@ -225,7 +225,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
 							"&f_page_num=1" + 
 							"&f_recset_count=" + recset_count + 
 							"&f_sql_switch=" + request.getParameter("f_sql_switch") +
-							"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+							//"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
 							"&f_date_clause=" + request.getParameter("f_date_clause") + 
 							"&f_search_within_search=" + search_within_search_for_result +
 							"&inc_resources=" + m_inc_resource +
@@ -239,7 +239,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
 							"&f_page_num=" + (int_page_num - 1) + 
 							"&f_recset_count=" + recset_count + 
 							"&f_sql_switch=" + request.getParameter("f_sql_switch") +
-							"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+							//"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
 							"&f_date_clause=" + request.getParameter("f_date_clause") + 
 							"&f_search_within_search=" + search_within_search_for_result +
 							"&inc_resources=" + m_inc_resource +
@@ -265,7 +265,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
 							"&f_page_num=" + i + 
 							"&f_recset_count=" + recset_count + 
 							"&f_sql_switch=" + request.getParameter("f_sql_switch") +
-							"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+							//"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
 							"&f_date_clause=" + request.getParameter("f_date_clause") +    
 							"&f_search_within_search=" + search_within_search_for_result +
 							"&inc_resources=" + m_inc_resource +
@@ -287,7 +287,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
 							"&f_page_num=" + (int_page_num + 1) + 
 							"&f_recset_count=" + recset_count + 
 							"&f_sql_switch=" + request.getParameter("f_sql_switch") +
-							"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+							//"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
 							"&f_date_clause=" + request.getParameter("f_date_clause") + 
 							"&f_search_within_search=" + search_within_search_for_result +
 							"&inc_resources=" + m_inc_resource +
@@ -300,7 +300,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
 							"&f_page_num=" + rounded_num_pages + 
 							"&f_recset_count=" + recset_count + 
 							"&f_sql_switch=" + request.getParameter("f_sql_switch") +
-							"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+							//"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
 							"&f_date_clause=" + request.getParameter("f_date_clause") + 
 							"&f_search_within_search=" + search_within_search_for_result +
 							"&inc_resources=" + m_inc_resource +
@@ -317,7 +317,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
 							"&f_page_num=" + (int_page_num + 2) + 
 							"&f_recset_count=" + recset_count +
 							"&f_sql_switch=" + request.getParameter("f_sql_switch") +
-							"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+							//"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
 							"&f_date_clause=" + request.getParameter("f_date_clause") + 
 							"&f_search_within_search=" + search_within_search_for_result +
 							"&inc_resources=" + m_inc_resource +
@@ -331,7 +331,7 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
 							"&f_page_num=" + rounded_num_pages + 
 							"&f_recset_count=" + recset_count + 
 							"&f_sql_switch=" + request.getParameter("f_sql_switch") +
-							"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
+							//"&f_sort_by=" + (request.getParameter("f_sort_by")==null?orderBy:request.getParameter("f_sort_by")) +
 							"&f_date_clause=" + request.getParameter("f_date_clause") + 
 							"&f_search_within_search=" + search_within_search_for_result +
 							"&inc_resources=" + m_inc_resource +
@@ -350,3 +350,5 @@ if(request.getParameter("f_year") != null && !request.getParameter("f_year").equ
                     "your search criteria.</p>");
     	}
 %>
+
+
