@@ -164,7 +164,29 @@
 								
 							</td>
 						</tr>
-						
+						<!-- first and last dates -->
+						<%
+						if (!formatDate(venue.getDdfirstDate(), venue.getMmfirstDate(), venue.getYyyyfirstDate()).equals("")) {
+						%>
+							<tr>
+								<th class='record-label b-134'>First Date</th>
+					
+								<td class='record-value' colspan='2'><%=formatDate(venue.getDdfirstDate(), venue.getMmfirstDate(), venue.getYyyyfirstDate())%></td>
+							</tr>
+						<%
+						}
+						%>						<%
+						if (!formatDate(venue.getDdlastDate(), venue.getMmlastDate(), venue.getYyyylastDate()).equals("")) {
+						%>
+							<tr>
+								<th class='record-label b-134'>Last Date</th>
+					
+								<td class='record-value' colspan='2'><%=formatDate(venue.getDdlastDate(), venue.getMmlastDate(), venue.getYyyylastDate())%></td>
+							</tr>
+						<%
+						}
+						%>
+
 						<%
 						//website
 						if (hasValue(venue.getWebLinks())) {
@@ -217,10 +239,10 @@
 												<%=(isParent)?lookUpCode.getParentRelation():lookUpCode.getChildRelation() %>
 												<%
 												out.print("<a href=\"/pages/venue/"+assocVenue.getVenueId()+"\">"+assocVenue.getName()+"</a>");
-												String datesRange = assocVenue.getVenueEvtDateRange(Integer.parseInt(assocVenue.getVenueId()), stmt);
-												if (datesRange!=null && !datesRange.equals("")){
-													out.print(", "+datesRange);
-												}
+												//String datesRange = assocVenue.getVenueEvtDateRange(Integer.parseInt(assocVenue.getVenueId()), stmt);
+												//if (datesRange!=null && !datesRange.equals("")){
+												//	out.print(", "+datesRange);
+												//}
 												out.print(". ");;
 												if (isParent){
 													if (!venueVenueLink.getNotes().equals("")) out.print(venueVenueLink.getNotes());
