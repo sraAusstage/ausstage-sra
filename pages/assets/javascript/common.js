@@ -39,14 +39,17 @@ var mapIconography = { pointer:      '/pages/assets/images/iconography/pointer.p
                                            organisation: '/pages/assets/images/iconography/organisation.png',
                                            venue:        '/pages/assets/images/iconography/venue-arch.png',
                                            event:        '/pages/assets/images/iconography/event.png',
+                                           work:         '/pages/assets/images/iconography/work.png',                                           
                                            iconWidth:    '32',
                                            iconHeight:   '32',
                                            contributorColours:  ['b-112', 'b-113', 'b-114', 'b-115', 'b-116'],
                                            organisationColours: ['b-127', 'b-128', 'b-129', 'b-130', 'b-131'],
                                            venueColours:        ['b-142', 'b-143', 'b-144', 'b-145', 'b-146'],
                                            eventColours:        ['b-97', 'b-98', 'b-99', 'b-100', 'b-101'],
+                                           workColours:  	['b-157', 'b-158', 'b-159', 'b-160', 'b-161'],
                                            individualContributors:  ['b-50', 'b-49', 'b-48', 'b-47', 'b-46', 'b-45', 'b-44', 'b-43', 'b-42', 'b-41', 'b-40', 'b-39', 'b-86', 'b-85', 'b-84', 'b-83', 'b-82', 'b-81', 'b-80', 'b-79', 'b-78', 'b-77', 'b-76', 'b-75', 'b-74', 'b-73', 'b-72', 'b-71', 'b-70', 'b-69', 'b-68', 'b-67', 'b-66', 'b-65', 'b-64', 'b-63', 'b-62', 'b-61', 'b-60', 'b-59', 'b-58', 'b-57', 'b-56', 'b-55', 'b-54', 'b-53', 'b-52', 'b-51'],
-                                           individualOrganisations: ['b-66', 'b-67', 'b-68', 'b-69', 'b-70', 'b-71', 'b-72', 'b-73', 'b-74', 'b-75', 'b-76', 'b-77', 'b-78', 'b-79', 'b-80', 'b-81', 'b-82', 'b-83', 'b-84', 'b-85', 'b-86', 'b-60', 'b-61', 'b-62', 'b-63', 'b-64', 'b-65', 'b-59', 'b-58', 'b-57', 'b-56', 'b-55', 'b-54', 'b-53', 'b-52', 'b-51', 'b-50', 'b-49', 'b-48', 'b-47', 'b-46', 'b-45', 'b-44', 'b-43', 'b-42', 'b-41', 'b-40', 'b-39']
+                                           individualOrganisations: ['b-66', 'b-67', 'b-68', 'b-69', 'b-70', 'b-71', 'b-72', 'b-73', 'b-74', 'b-75', 'b-76', 'b-77', 'b-78', 'b-79', 'b-80', 'b-81', 'b-82', 'b-83', 'b-84', 'b-85', 'b-86', 'b-60', 'b-61', 'b-62', 'b-63', 'b-64', 'b-65', 'b-59', 'b-58', 'b-57', 'b-56', 'b-55', 'b-54', 'b-53', 'b-52', 'b-51', 'b-50', 'b-49', 'b-48', 'b-47', 'b-46', 'b-45', 'b-44', 'b-43', 'b-42', 'b-41', 'b-40', 'b-39'],
+                                           individualWorks:  	['b-73', 'b-74', 'b-75', 'b-76', 'b-77', 'b-78', 'b-79', 'b-80', 'b-81', 'b-82', 'b-83', 'b-84', 'b-85', 'b-86', 'b-39', 'b-40', 'b-41', 'b-42', 'b-43', 'b-44', 'b-45', 'b-46', 'b-47', 'b-48', 'b-49', 'b-50', 'b-51', 'b-52', 'b-53', 'b-54', 'b-55', 'b-56', 'b-57', 'b-58', 'b-59', 'b-60', 'b-61', 'b-62', 'b-63', 'b-64', 'b-65', 'b-66', 'b-67', 'b-68', 'b-69', 'b-70', 'b-71', 'b-72']
                                          };
 
 var clusterIconography = [{url: '/pages/assets/images/iconography/cluster.png',
@@ -241,10 +244,25 @@ function sortContributorArray(a, b) {
 
 // define a function used to sort an array of organisation objects on name
 function sortOrganisationArray(a, b) {
-
+        console.log("org a:");
+	console.log(a);
+	console.log("org b:");	
+	console.log(b);
         if(a.organisation.name == b.organisation.name) {
                 return 0;
         } else if(a.organisation.name < b.organisation.name) {
+                return -1;
+        } else {
+                return 1;
+        }
+}
+
+// define a function used to sort an array of work objects on name
+function sortWorkArray(a, b) {
+
+        if(a.name == b.name) {
+                return 0;
+        } else if(a.name < b.name) {
                 return -1;
         } else {
                 return 1;

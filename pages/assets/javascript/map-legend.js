@@ -309,7 +309,58 @@ MapLegendClass.prototype.updateLegend = function() {
                 $('#mapLegendOrganisations').empty();
                 $('#mapLegendOrganisationHeading').empty().append('Organisations (0)');
         }
-        
+                if(recordData.works.objects.length > 0) {
+                // add the organisations
+                objects = recordData.works.objects;
+                
+                // reset the tableData variable
+                tableData = '<table id="mapLegendWorks" class="mapLegendTable">';
+                
+                // loop through the list of objects
+                for(var i = 0; i < objects.length; i++) {
+                
+                        // colour the odd rows
+                        if(i % 2 == 1) {
+                                tableData += '<tr class="odd">'; 
+                        } else {
+                                tableData += '<tr>'; 
+                        }
+                        
+                        obj = objects[i];
+                        idx = $.inArray(obj.id, mappingObj.workColours.ids);
+                        
+                        // add the icon
+                        tableData += '<td class="mapLegendIcon"><span class="' + mappingObj.workColours.colours[idx] + ' mapLegendIconImg"><img src="' + mapIconography.work + '" width="' + mapIconography.iconWidth + '" height="' + mapIconography.iconHeight + '"/></span></td>';
+                        
+                        // add the name and functions
+                        tableData += '<td class="mapLegendInfo"><a href="' + obj.url + '" target="_ausstage">' + obj.name + '</a><br/>';
+                        
+                        // add the address
+                        tableData += mappingObj.buildAddressAlt(obj.suburb, obj.state, obj.country);
+                        
+                        // add the show/hide check box
+                        tableData += mapLegendObj.buildShowHide($.inArray(obj.id, mappingObj.hiddenMarkers.works), 'work', obj.id);
+                        
+                        // add the delete icon
+                        tableData += mapLegendObj.buildDelete('work', obj.id);
+                        
+                        // finsih the row
+                        tableData += '</tr>';           
+                }
+                
+                // finish the table and add it to the page
+                tableData += '</table>';
+                $('#mapLegendWorks').empty().append(tableData);
+                
+                if(objects.length > 0) {
+                        $('#mapLegendWorksHeading').empty().append('Works (' + objects.length +')');
+                }
+                
+        } else {
+                $('#mapLegendWorks').empty();
+                $('#mapLegendWorksHeading').empty().append('Works (0)');
+        }
+
         if(recordData.venues.objects.length > 0) {
                 // add the venues
                 objects = recordData.venues.objects;
@@ -444,6 +495,7 @@ MapLegendClass.prototype.buildRecordData = function() {
         var mapData = mappingObj.markerData.objects;
         var contributors;
         var organisations;
+        var works;
         var venues;
         var events;
         var idx;
@@ -452,6 +504,7 @@ MapLegendClass.prototype.buildRecordData = function() {
         var recordData = {contributors:  {ids: [], objects: []},
                                           organisations: {ids: [], objects: []},
                                           venues:        {ids: [], objects: []},
+                                          works:        {ids: [], objects: []},
                                           events:        {ids: [], objects: []}
                                          };
                                    
@@ -462,19 +515,23 @@ MapLegendClass.prototype.buildRecordData = function() {
                 mapLegendObj.createRecordDataArray(mapData[i].contributors,  recordData.contributors);
                 mapLegendObj.createRecordDataArray(mapData[i].organisations, recordData.organisations);
                 mapLegendObj.createRecordDataArray(mapData[i].venues,        recordData.venues);
+                mapLegendObj.createRecordDataArray(mapData[i].works,         recordData.works);
                 mapLegendObj.createRecordDataArray(mapData[i].events,        recordData.events);
+                
         }
         
         // sort the arrays
         recordData.contributors.objects.sort(sortContributorArrayAlt);
         recordData.organisations.objects.sort(sortOrganisationArrayAlt);
         recordData.venues.objects.sort(sortVenueArray);
+        recordData.works.objects.sort(sortWorkArray);
         recordData.events.objects.sort(sortEventArray);
         
         // update the id indexes
         mapLegendObj.reindexRecordDataArray(recordData.contributors);
         mapLegendObj.reindexRecordDataArray(recordData.organisations);
         mapLegendObj.reindexRecordDataArray(recordData.venues);
+        mapLegendObj.reindexRecordDataArray(recordData.works);
         mapLegendObj.reindexRecordDataArray(recordData.events);
         
         mapLegendObj.recordData = recordData;
@@ -646,7 +703,18 @@ MapLegendClass.prototype.deleteMarker = function() {
                                 i = mapData.length + 1;
                         }
                 }
-        } else {
+        } else if(id[1] == 'work') {
+                // work
+                id = id[2];
+                // loop through the marker data looking for this organisation
+                for (var i = 0; i < mapData.length; i++) {
+                        obj = mapLegendObj.findObjectById(mapData[i].works, id);
+                        
+                        if(obj != null) {
+                                i = mapData.length + 1;
+                        }
+                }
+        }else {
                 // event
                 id = id[2];
                 // loop through the marker data looking for this event
@@ -724,7 +792,23 @@ MapLegendClass.prototype.deleteMarker = function() {
                 // finalise the prompt
                 prompt += '</td></tr></table>';
         
-        } else {
+        } else if(id[1] == 'work') {
+        
+                idx = $.inArray(obj.id, mappingObj.workColours.ids);
+                        
+                // add the icon
+                prompt += '<td><span class="' + mappingObj.organisationColours.colours[idx] + ' mapLegendIconImg"><img src="' + mapIconography.work+ '" width="' + mapIconography.iconWidth + '" height="' + mapIconography.iconHeight + '"/></span></td>';
+                
+                // add the name and functions
+                prompt += '<td><a href="' + obj.url + '" target="_ausstage">' + obj.name + '</a><br/>';
+                
+                // add the address
+                prompt += mappingObj.buildAddressAlt(obj.suburb, obj.state, obj.country);
+                
+                // finalise the prompt
+                prompt += '</td></tr></table>';
+        
+        }else {
         
                 // add the icon
                 prompt += '<td><span class="' + mapIconography.eventColours[0] + ' mapLegendIconImg"><img id="mpz-event-' + obj.id + '" src="' + mapIconography.event + '" width="' + mapIconography.iconWidth + '" height="' + mapIconography.iconHeight + '"/></span></td>';
@@ -827,7 +911,17 @@ MapLegendClass.prototype.doDeleteMarker = function(param) {
                         mapLegendObj.doMarkerDeletion(mapData[i].venues, id);   
                 }
         }
-        
+        // find and delete the appropriate object
+        if(id[1] == 'work') {
+                // delete worksfrom the map
+                
+                id = id[2];
+                
+                // loop through the marker data
+                for (var i = 0; i < mapData.length; i++) {
+                        mapLegendObj.doMarkerDeletion(mapData[i].works, id);    
+                }
+        }
         // find and delete the appropriate object
         if(id[1] == 'event') {
                 // delete venues from the map
@@ -847,22 +941,24 @@ MapLegendClass.prototype.doDeleteMarker = function(param) {
                 if(mapData[i].contributors.length == 0) {
                         if(mapData[i].organisations.length == 0) {
                                 if(mapData[i].venues.length == 0) {
-                                        if(mapData[i].events.length == 0) {
+                                	if(mapData[i].works.length == 0) {
+                                        	if(mapData[i].events.length == 0) {
                                         
-                                                //get a hash of the latitude and longitude of this entry
-                                                hash = mappingObj.computeLatLngHash(mapData[i].latitude, mapData[i].longitude);
-                                                idx = $.inArray(hash, mappingObj.markerData.hashes);
+                                                	//get a hash of the latitude and longitude of this entry
+	                                                hash = mappingObj.computeLatLngHash(mapData[i].latitude, mapData[i].longitude);
+	                                                idx = $.inArray(hash, mappingObj.markerData.hashes);
                                                 
-                                                // tidy up the hash array
-                                                if(idx > -1) {
-                                                        mappingObj.markerData.hashes.splice(idx, 1);
-                                                }
+        	                                        // tidy up the hash array
+                	                                if(idx > -1) {
+                        	                                mappingObj.markerData.hashes.splice(idx, 1);
+                                	                }
                                         
-                                                // remove this entry from the array
-                                                mapData.splice(i, 1);
-                                                if(i > 0) {
-                                                        i--;
-                                                }
+                                        	        // remove this entry from the array
+	                                                mapData.splice(i, 1);
+        	                                        if(i > 0) {
+                	                                        i--;
+                        	                        }
+                        	                }
                                         }
                                 }
                         }
@@ -944,6 +1040,18 @@ MapLegendClass.prototype.showHideMarker = function() {
                 } else {
                         // hide this marker
                         mappingObj.hiddenMarkers.venues.push(id[2]);
+                }
+        }else if(id[1] == 'work') {
+                // show / hide work markers
+                if(checkbox.is(':checked') == true) {
+                        //un-hide this marker
+                        idx = $.inArray(id[2], mappingObj.hiddenMarkers.works);
+                        if(idx != -1) {
+                                mappingObj.hiddenMarkers.works.splice(idx, 1);
+                        }
+                } else {
+                        // hide this marker
+                        mappingObj.hiddenMarkers.works.push(id[2]);
                 }
         } else {
                 // show / hide an event marker

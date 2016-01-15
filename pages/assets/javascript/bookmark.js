@@ -23,7 +23,8 @@ function BookmarkClass() {
         this.data = { contributors:  [],
                                   organisations: [],
                                   venues:        [],
-                                  events:        []
+                                  events:        [],
+                                  works:	 []
                                 };
 }
 
@@ -109,6 +110,7 @@ BookmarkClass.prototype.buildBookmark = function() {
         uri += bookmarkObj.buildUriSegment("o", recordData.organisations.ids);
         uri += bookmarkObj.buildUriSegment("v", recordData.venues.ids);
         uri += bookmarkObj.buildUriSegment("e", recordData.events.ids);
+        uri += bookmarkObj.buildUriSegment("w", recordData.works.ids);
         
         // append the url to the link
         $("#map_bookmark_link").attr('href', uri);
@@ -131,7 +133,7 @@ BookmarkClass.prototype.buildUriSegment = function(ident, ids) {
 }
 
 // build a complex map from the link
-BookmarkClass.prototype.doComplexMapFromLink = function (c, o, v, e) {
+BookmarkClass.prototype.doComplexMapFromLink = function (c, o, v, e, w) {
 		// set tab to Map tab by default
 		var tabs = $('#tabs');
 		tabs.tabs('select', 2);
@@ -250,6 +252,30 @@ BookmarkClass.prototype.doComplexMapFromLink = function (c, o, v, e) {
                         });
                 }
         }
+        if(w != "") {
+                if(w.indexOf('-') != -1) {
+                        w = w.split('-');
+                
+                        for(var i = 0; i < w.length; i++) {
+        
+                                // build the url
+                                var url  = BASE_URL + 'markers?type=work&id=' + w[i];
+                
+                                ajaxQueue.add({
+                                        success: bookmarkObj.processAjaxData5,
+                                        url: url
+                                });
+                        }
+                } else {
+                        // build the url
+                        var url  = BASE_URL + 'markers?type=work&id=' + w;
+        
+                        ajaxQueue.add({
+                                success: bookmarkObj.processAjaxData5,
+                                url: url
+                        });
+                }
+        }
 }
 
 // functions to process the results of the ajax marker data lookups
@@ -272,6 +298,10 @@ BookmarkClass.prototype.processAjaxData4 = function(data) {
         bookmarkObj.data.events = bookmarkObj.data.events.concat(data);
 }
 
+BookmarkClass.prototype.processAjaxData5 = function(data) {
+        bookmarkObj.data.works = bookmarkObj.data.works.concat(data);
+}
+
 // function to add the data to the map
 BookmarkClass.prototype.addDataToMap = function() {
 
@@ -290,6 +320,11 @@ BookmarkClass.prototype.addDataToMap = function() {
         if(bookmarkObj.data.events.length > 0) {
         
                 mappingObj.addEventData(bookmarkObj.data.events, false);
+        }
+        
+        if(bookmarkObj.data.works.length > 0) {
+        
+                mappingObj.addWorkData(bookmarkObj.data.works, false);
         }
         
         // keep the user informed

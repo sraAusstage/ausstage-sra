@@ -27,6 +27,7 @@ function SearchTrackerClass() {
         this.organisation_count = 0;
         this.venue_count        = 0;
         this.event_count        = 0;
+        this.work_count 	= 0;
 }
 
 // define the search class
@@ -81,6 +82,8 @@ SearchClass.prototype.init = function() {
                                 $(this).text("Searching for venues...");
                         } else if(settings.url.indexOf("event", 0) != -1) {
                                 $(this).text("Searching for events...");
+                        } else if(settings.url.indexOf("work", 0) != -1) {
+                                $(this).text("Searching for works...");
                         }
                 }
         });
@@ -99,8 +102,10 @@ SearchClass.prototype.init = function() {
                                         $(this).text(AJAX_ERROR_MSG.replace('-', 'the venue search'));
                                 } else if(settings.url.indexOf("event", 0) != -1) {
                                         $(this).text(AJAX_ERROR_MSG.replace('-', 'the event search'));
-                                        searchObj.searching_underway_flag = false;
-                                }
+                                } else if(settings.url.indexOf("work", 0) != -1) {
+                                        $(this).text(AJAX_ERROR_MSG.replace('-', 'the work search'));
+                                         searchObj.searching_underway_flag = false;
+                                } 
                                 searchObj.error_condition = true;
                         } else {
                                 $(this).text(AJAX_ERROR_MSG.replace('-', 'multiple searches'));
@@ -209,6 +214,7 @@ SearchClass.prototype.init = function() {
                         // do a organisation search
                         url = base_search_url + "&task=organisation";
                         
+                        
                         // queue this request
                         ajaxQueue.add({
                                 success: searchObj.buildOrganisationResults,
@@ -217,6 +223,7 @@ SearchClass.prototype.init = function() {
                         
                         // do a venue search
                         url = base_search_url + "&task=venue";
+                        
                         
                         // queue this request
                         ajaxQueue.add({
@@ -227,9 +234,20 @@ SearchClass.prototype.init = function() {
                         // do an event search
                         url = base_search_url + "&task=event";
                         
+                        
                         // queue this request
                         ajaxQueue.add({
                                 success: searchObj.buildEventResults,
+                                url: url
+                        });
+                        
+                        // do a work search
+                        url = base_search_url + "&task=work";
+                        
+                        
+                        // queue this request
+                        ajaxQueue.add({
+                                success: searchObj.buildWorkResults,
                                 url: url
                         });
                         
@@ -282,12 +300,14 @@ SearchClass.prototype.clearAccordian = function() {
         $("#organisation_results").empty();
         $("#venue_results").empty();
         $("#event_results").empty();
+        $("#work_results").empty();
         
         // reset the headings
         $("#contributor_heading").empty().append("Contributors");
         $("#organisation_heading").empty().append("Organisations");
         $("#venue_heading").empty().append("Venues");
         $("#event_heading").empty().append("Events");
+        $("#work_heading").empty().append("Works");
 
         // reset the error div
         $("#error_message").hide();
@@ -565,11 +585,66 @@ SearchClass.prototype.buildEventResults = function (data) {
                 $("#event_heading").empty().append("Events (" + i + ")");
         }
         
-        // update the search underway flag
-        searchObj.searching_underway_flag = false;
+         // keep track of the number of search results
+        searchObj.trackerObj.event_count = i;
+        
+
+}
+
+/*-----------------------*/
+//define a method of the search class to build the contributor search results
+SearchClass.prototype.buildWorkResults = function(data) {
+
+        var list = '<table class="searchResults"><thead><tr><th style="text-align: center"><input type="checkbox" name="selectWorkSearchAll" id="selectWorkSearchAll" class="selectSearchAll" title="Tick / Un-Tick all"/></th><th>Work Title</th><th class="alignRight numeric">Mapped Events</th><th class="alignRight numeric">Total Events</th></tr></thead><tbody>';
+        
+        var i = 0;
+        
+        for(i; i < data.length; i++) {
+                
+                if(i % 2 == 1) {
+                        list += '<tr class="odd">'; 
+                } else {
+                        list += '<tr>'; 
+                }
+                
+                if(data[i].mapEventCount > 0) {
+                        list += '<td style="text-align: center"><input type="checkbox" name="searchWork" class="searchWork" value="' + data[i].id + '" title="Tick to add this contributor to the map"/></td>';
+                } else {
+                        list += '<td style="text-align: center"><input type="checkbox" disabled/></td>';
+                }
+                
+                list += '<td class="nowrap"><a href="' + data[i].url + '" title="View the record for ' + data[i].name + ' in AusStage" target="_ausstage">' + data[i].name + '</a></td>';
+                
+                /*if( data[i].eventDates != null){
+                  list += data[i].eventDates;
+                  }
+                 list += '</td><td>';*/
+                
+                list += '<td class="alignRight numeric">' + data[i].mapEventCount + '</td><td class="alignRight numeric">' + data[i].totalEventCount + '</td>';
+                
+                list += '</tr>';
+        }
+        
+        // add the button
+        list += '</tbody><tfoot><tr><td colspan="4" class="alignRight"><div id="searchAddWorkError" style="float: left"></div><button id="searchAddWorks" class="addSearchResult" disabled="disabled">Add to Map</button>' + ADD_VIEW_BTN_HELP + '</td></tr></tfoot></table>';
+        
+        if(i > 0) {
+                $("#work_results").append(list);
+                styleButtons();
+        }
+        
+        if(i == 25) {
+                $("#work_results").append(searchObj.LIMIT_REACHED_MSG);
+                $("#work_heading").empty().append("Works (25+)");
+        } else {
+                $("#work_heading").empty().append("Works (" + i + ")");
+        }
         
         // keep track of the number of search results
-        searchObj.trackerObj.event_count = i;
+        searchObj.trackerObj.work_count = i;
+        
+                // update the search underway flag
+        searchObj.searching_underway_flag = false;
         
         // add to the search history if necessary
         if(jQuery.inArray($("#query").val(), searchObj.trackerObj.history_log) == -1) {
@@ -591,7 +666,8 @@ SearchClass.prototype.buildEventResults = function (data) {
                 row += '<td class="alignRight">' + searchObj.trackerObj.contributor_count + '</td>';
                 row += '<td class="alignRight">' + searchObj.trackerObj.organisation_count + '</td>';
                 row += '<td class="alignRight">' + searchObj.trackerObj.venue_count + '</td>';
-                row += '<td class="alignRight">' + searchObj.trackerObj.event_count + '</td></tr>';
+                row += '<td class="alignRight">' + searchObj.trackerObj.event_count + '</td>';
+                row += '<td class="alignRight">' + searchObj.trackerObj.work_count + '</td></tr>';
                 
                 // insert the new row in the table
                 $(row).insertAfter('#search_history');
@@ -604,7 +680,9 @@ SearchClass.prototype.buildEventResults = function (data) {
         });
         
         $('#search_btn').button('option', 'disabled', false);
+
 }
+/*--------------------------------------------------*/
 
 // define a method of the search class to respond to the click event
 // of the select all check box
@@ -656,6 +734,17 @@ SearchClass.prototype.selectAllClickEvent = function(event) {
                                 $(this).attr('checked', true);
                         });
                 }
+        } else if(target.attr('id') == 'selectWorkSearchAll') {
+                
+                if(target.is(':checked') == false) {
+                        $(".searchWork:checkbox").each(function() {
+                                $(this).attr('checked', false);
+                        });
+                } else {
+                        $(".searchWork:checkbox").each(function() {
+                                $(this).attr('checked', true);
+                        });
+                }
         }
 }
 
@@ -684,6 +773,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                 if(venues.length == 0) {
                         $("#searchAddVenueError").append(buildInfoMsgBox('No items selected, nothing added to the map'));
                 } else {
+                	searchObj.disableButtons();
                         // add things to the map
                         $("#searchAddVenueError").append(buildInfoMsgBox('Adding items to the map...'));
                         searchObj.add_data_type = 'venue';
@@ -724,6 +814,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                         $("#searchAddContributorError").append(buildInfoMsgBox('No items selected, nothing added to the map'));
                         
                 } else {
+                	searchObj.disableButtons();
                         // add things to the map
                         $("#searchAddContributorError").append(buildInfoMsgBox('Adding items to the map...'));
                         searchObj.add_data_type = 'contributor';
@@ -764,6 +855,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                         $("#searchAddOrganisationError").append(buildInfoMsgBox('No items selected, nothing added to the map'));
                         
                 } else {
+                	searchObj.disableButtons();
                         // add things to the map
                         $("#searchAddOrganisationError").append(buildInfoMsgBox('Adding items to the map...'));
                         searchObj.add_data_type = 'organisation';
@@ -805,6 +897,7 @@ SearchClass.prototype.addResultsClick = function(event) {
                         $("#searchAddEventError").append(buildInfoMsgBox('No items selected, nothing added to the map'));
                         
                 } else {
+                	searchObj.disableButtons();
                         // add things to the map
                         $("#searchAddEventError").append(buildInfoMsgBox('Adding items to the map...'));
                         searchObj.add_data_type = 'events';
@@ -819,6 +912,47 @@ SearchClass.prototype.addResultsClick = function(event) {
                 
                                 // build the url
                                 var url  = BASE_URL + 'markers?type=event&id=' + events[i];
+                        console.log(url);
+                                ajaxQueue.add({
+                                        success: searchObj.processAjaxData,
+                                        url: url
+                                });
+                        }
+                }
+        } else if(id == 'searchAddWorks') {
+        console.log('adding works to map');
+                // clear away any existing error messages
+                $("#searchAddWorkError").empty();
+                
+                // get any of the selected works
+                var works = [];
+                
+                $('.searchWork:checkbox').each(function() {
+                        if($(this).is(':checked') == true) {
+                                works.push($(this).val());
+                        }
+                });
+                console.log(works);
+                
+                if(works.length == 0) {
+                        $("#searchAddWorkError").append(buildInfoMsgBox('No items selected, nothing added to the map'));
+                        
+                } else {
+                	searchObj.disableButtons();
+                        // add things to the map
+                        $("#searchAddWorkError").append(buildInfoMsgBox('Adding items to the map...'));
+                        searchObj.add_data_type = 'works';
+                        
+                        // create a queue
+                        var ajaxQueue = $.manageAjax.create("mappingSearchGatherDataAjaxQueue", {
+                                queue: true
+                        });
+                        
+                        // search for the data on each of the venues in turn
+                        for(var i = 0; i < works.length; i++) {
+                
+                                // build the url
+                                var url  = BASE_URL + 'markers?type=work&id=' + works[i];
                         console.log(url);
                                 ajaxQueue.add({
                                         success: searchObj.processAjaxData,
@@ -842,6 +976,8 @@ console.log('---------------------------');
 // function to add the data to the map
 SearchClass.prototype.addDataToMap = function() {
 console.log('add data to map');
+console.log(searchObj.add_data_type);
+console.log('****');
 
         // scroll to the top of thw window
         $(window).scrollTop(0);
@@ -858,5 +994,34 @@ console.log('add data to map');
         } else if(searchObj.add_data_type == 'events') {
                 mappingObj.addEventData(searchObj.markerData);
                 $('#searchAddEventError').empty();
+        } else if(searchObj.add_data_type == 'works') {
+        	console.log("Add Data To Map WORK");
+                mappingObj.addWorkData(searchObj.markerData);
+                console.log("Add Data To Map WORK completed");
+                $('#searchAddWorkError').empty();
         }
+        searchObj.enableButtons();
+}
+
+
+//disable all buttons - useful for when adding to map
+SearchClass.prototype.disableButtons = function(){
+        // disablethe buttons
+        $('.addSearchResult').each(function() {
+                //$(this).removeAttr('disabled');
+                $(this).button('option', 'disabled', true);
+        });
+        
+        $('#search_btn').button('option', 'disabled', true);
+}
+
+//enableall buttons - useful for when adding to map
+SearchClass.prototype.enableButtons = function(){
+        // enable the buttons
+        $('.addSearchResult').each(function() {
+                //$(this).removeAttr('disabled');
+                $(this).button('option', 'disabled', false);
+        });
+        
+        $('#search_btn').button('option', 'disabled', false);
 }

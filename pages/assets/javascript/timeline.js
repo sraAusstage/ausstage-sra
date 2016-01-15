@@ -61,6 +61,10 @@ TimelineClass.prototype.update = function() {
                         timelineObj.findDates(markers[i].organisations, 1);
                 }
                 
+                if(markers[i].works.length > 0) {
+                        timelineObj.findDates(markers[i].works, 1);
+                }
+                
                 if(markers[i].venues.length > 0) {
                         timelineObj.findDates(markers[i].venues, 2);
                 }

@@ -1,4 +1,5 @@
 /*
+ /*
  * This file is part of the AusStage Mapping Service
  *
  * The AusStage Mapping Service is free software: you can redistribute
@@ -65,7 +66,8 @@ DownloadClass.prototype.startDownload = function() {
         data += bookmarkObj.buildUriSegment("organisations", recordData.organisations.ids);
         data += bookmarkObj.buildUriSegment("venues", recordData.venues.ids);
         data += bookmarkObj.buildUriSegment("events", recordData.events.ids);
-        
+        data += bookmarkObj.buildUriSegment("works", recordData.works.ids);
+       
         data = data.substring(1, data.length);
         
         // start the download

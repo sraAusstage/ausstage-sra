@@ -103,6 +103,11 @@
 	      		<div id="mapLegendEvents" class="mapLegendInnerContainer">
 	      		</div>
 	    	</div>
+	    	<div class="accordion">
+	      		<h3><a href="#" id="mapLegendWorksHeading">Works</a></h3>
+	      		<div id="mapLegendWorks" class="mapLegendInnerContainer">
+	      		</div>
+	    	</div>
 	</div>
 </div>
 <div id='main1' class="main1 b-184 f-187">
@@ -163,6 +168,11 @@
 	  		<div id="event_results">
 	  		</div>
 		</div>
+		<div class="accordion">
+	  		<h3><a href="#" id="work_heading">Works</a></h3>
+	  		<div id="work_results">
+	  		</div>
+		</div>
 		<p>&nbsp;</p>
 		<div class="accordion">
 	  		<h3><a href="#" id="search_history_heading">Search History</a></h3>
@@ -175,6 +185,7 @@
 		  				<th class="alignRight">Organisations</th>
 		  				<th class="alignRight">Venues</th>
 		  				<th class="alignRight">Events</th>
+		  				<th class="alignRight">Works</th>
 					</tr>
 	      			</thead>
 	    			<tbody id="search_history"></tbody>

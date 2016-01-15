@@ -22,6 +22,7 @@ function MarkerData() {
         this.organisations = [];
         this.venues        = [];
         this.events        = [];
+		this.works		   = [];
         this.latitude      = null;
         this.longitude     = null;
 }
@@ -77,7 +78,8 @@ function MappingClass() {
         this.hiddenMarkers = { contributors:  [],
                                                    organisations: [],
                                                    venues:        [],
-                                                   events:        []
+                                                   events:        [],
+												   works:         []
                                                  };   
         
         // variables to hold a height / width constant for use in computing the height / width of the map
@@ -95,6 +97,9 @@ function MappingClass() {
         
         // variables to hold the colours of individual organisations
         this.organisationColours = {ids: [], colours:[]};
+		
+		// variables to hold the colours of individual works
+        this.workColours = {ids: [], colours:[]};
         
         // variable to hold data use to populate infoWindows
         this.infoWindowData = [];
@@ -167,6 +172,7 @@ MappingClass.prototype.init = function() {
         $("#tabs-3").bind('mappingMapGatherVenueInfo' + 'AjaxStop', mappingObj.buildVenueInfoWindow);
         $("#tabs-3").bind('mappingMapGatherContributorInfo' + 'AjaxStop', mappingObj.buildContributorInfoWindow);
         $("#tabs-3").bind('mappingMapGatherOrganisationInfo' + 'AjaxStop', mappingObj.buildOrganisationInfoWindow);
+		$("#tabs-3").bind('mappingMapGatherWorkInfo' + 'AjaxStop', mappingObj.buildWorkInfoWindow);
         
         // setup the live bind for scrolling in infoWindows
         $('.infoWindowHeaderItem').live('click', mappingObj.scrollInfoWindow);
@@ -309,6 +315,7 @@ MappingClass.prototype.updateMap = function() {
         mapLegendObj.showLegend();
         
         // update the timeline
+        console.log('update timeline called');
         timelineObj.update();
 }
 
@@ -391,6 +398,29 @@ MappingClass.prototype.buildIconography = function(data) {
         objArray = [];
         obj = null;
         
+		// make a copy of the works array
+        objArray = mappingObj.copyArrayExcludeHidden(data.works, mappingObj.hiddenMarkers.works);
+        
+        if(objArray.length > 0) {
+                // we need to add an work icon
+                if(objArray.length == 1) {
+                        //cellColour = mapIconography.organisationColours[0];
+                        obj = data.works[0];
+                        idx = $.inArray(obj.id, mappingObj.workColours.ids);
+                        cellColour = mappingObj.workColours.colours[idx];
+                } else {
+                        cellColour = mappingObj.lookupCellColour(objArray.length, mapIconography.workColours);
+                }
+                
+                cells += '<td class="' + cellColour + ' mapIconImg"><img class="mapIconImgImg" id="mapIcon-work-' + mappingObj.computeLatLngHash(data.latitude, data.longitude) +'" src="' + mapIconography.work + '" width="' + mapIconography.iconWidth + '" height="' + mapIconography.iconHeight + '"/></td>';
+                footerCells += '<td class="mapIconNum b-184">' + objArray.length + '</td>';
+                offset ++;
+        }
+        
+        // reset variables
+        objArray = [];
+        obj = null;
+		
         // make a copy of the events array,
         objArray = mappingObj.copyArrayExcludeHidden(data.events, mappingObj.hiddenMarkers.events);
         
@@ -747,8 +777,6 @@ MappingClass.prototype.addOrganisationData = function(data, display) {
 // function to update the list of events with data from the search interface
 MappingClass.prototype.addEventData = function(data, display) {
 
-
-
         // declare helper variables
         var hash  = null;
         var idx   = null;
@@ -812,6 +840,98 @@ MappingClass.prototype.addEventData = function(data, display) {
         }
 }
 
+/*****/
+// function to update the list of works with data from the search interface
+MappingClass.prototype.addWorkData = function(data, display) {
+		
+        // declare helper variables
+        var hash  = null;
+        var idx   = null;
+        var obj   = null;
+        var id    = null;
+        var found = false;
+        var work  = null;
+        var venues       = null;
+        var objCopy      = null;
+
+        // loop through the data
+        for(var i = 0; i < data.length; i++) {
+        
+                // get the contributor information and list of venes
+                work = data[i].extra[0];
+                venues       = data[i].venues;
+                
+                // have we assigned a colour to this contributor before?
+                idx = $.inArray(work.id, mappingObj.workColours.ids);
+                
+                if(idx == -1) {
+                        // no we haven't
+                        var count = mappingObj.workColours.ids.length;
+                        
+                        while(count > mapIconography.individualWorks.length) {
+                                count = count - mapIconography.individualWorks.length;
+                        }
+                        
+                        mappingObj.workColours.ids.push(work.id);
+                        mappingObj.workColours.colours.push(mapIconography.individualWorks[count]);
+                }
+                
+                // loop through the list of venues
+                for(var x = 0; x < venues.length; x++) {
+                        
+                        // compute a hash
+                        hash = mappingObj.computeLatLngHash(venues[x].latitude, venues[x].longitude);
+                        
+                        // check to see if we have this venue already
+                        idx = $.inArray(hash, mappingObj.markerData.hashes);
+                        
+                        if(idx == -1) {
+                                // not see this lat / lng before
+                                obj = new MarkerData();
+                                
+                                // make a copy of this contributor and add a venue
+                                objCopy = jQuery.extend(true, {}, work);
+                                objCopy.venue = venues[x].id;
+                                objCopy.venueObj = venues[x];
+                                
+                                obj.works.push(objCopy);
+                                obj.latitude  = venues[x].latitude;
+                                obj.longitude = venues[x].longitude
+                                
+                                mappingObj.markerData.hashes.push(hash);
+                                mappingObj.markerData.objects.push(obj);
+                        } else {
+                                // have seen this lat / lng before
+                                // check to see if the work has already been added
+                                obj   = mappingObj.markerData.objects[idx];
+                                id    = work.id;
+                                found = false;
+                                
+                                for(var y = 0; y < obj.works.length; y++) {
+                                        if(id == obj.works[y].id) {
+                                                found = true;
+                                                y = obj.works.length + 1;
+                                        }
+                                }
+                                
+                                if(found == false) {
+                                        // make a copy of this contributor and add a venue
+                                        objCopy = jQuery.extend(true, {}, work);
+                                        objCopy.venue = venues[x].id;
+                                        objCopy.venueObj = venues[x];
+                                
+                                        obj.works.push(objCopy);
+                                }
+                        }
+                }
+        }
+        
+        // switch to the map tab including an update
+        if(typeof(display) == "undefined") {
+                $('#tabs').tabs('select', 2);
+        }
+}
+/*****/
 
 // compute a LatLng hash
 MappingClass.prototype.computeLatLngHash = function(latitude, longitude) {
@@ -903,6 +1023,12 @@ MappingClass.prototype.buildIconographyHelp = function() {
         }
         $('#map_iconography_events').empty().append(row);
         
+		row = '<th scope="row">Works</th>';
+        for(var i = 0; i < mapIconography.workColours.length; i++) {
+                row += '<td class="' + mapIconography.workColours[i] + '"><img src="' + mapIconography.work +'"/></td>';
+        }
+        $('#map_iconography_works').empty().append(row);
+		
         // build the individual colour pallette
         var row = '';
         var rows = '';
@@ -1093,6 +1219,47 @@ MappingClass.prototype.iconClick = function(event) {
                                 url: url
                         });
                 }
+        } else if(tokens[1] == 'work') {
+                // this is a work icon
+                
+                // create a queue
+                var ajaxQueue = $.manageAjax.create("mappingMapGatherWorkInfo", {
+                        queue: true
+                });
+				
+                // define a basic marker                        
+                var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(data.latitude, data.longitude),
+                        map:      mappingObj.map,
+                        visible:  false
+                });
+                
+                // define placeholder content           
+                var content = '<div class="infoWindowContent">' + buildInfoMsgBox('Loading work information, please wait...') + '</div>';
+                
+                // build and so the infoWindow
+                mappingObj.infoWindowReference = new google.maps.InfoWindow({
+                        content:  content,
+                        maxWidth: mappingObj.INFO_WINDOW_MAX_WIDTH
+                });
+                
+                mappingObj.infoWindowReference.open(mappingObj.map, marker);
+                
+                // get a filtered data array
+                objArray = mappingObj.copyArrayExcludeHidden(data.works, mappingObj.hiddenMarkers.works);
+                
+                // use the queue to get the data
+                for(var i = 0; i < objArray.length; i++) {
+        
+                        // build the url
+                        var url  = BASE_URL + 'events?task=work&id=' + objArray[i].id +'&venue=' + objArray[i].venue;
+                
+                        ajaxQueue.add({
+                                success: mappingObj.processInfoWindowData,
+                                url: url
+                        });
+                }
+                
         } else {
                 // this is an event icon
 
@@ -1124,6 +1291,7 @@ MappingClass.prototype.iconClick = function(event) {
 
 // function to process the results of the ajax infoWindow data lookups
 MappingClass.prototype.processInfoWindowData = function(data) {
+
         mappingObj.infoWindowData = mappingObj.infoWindowData.concat(data);
 }
 
@@ -1337,6 +1505,109 @@ MappingClass.prototype.buildOrganisationInfoWindow = function() {
                 }
         });
 }
+
+/*****/
+// funtion to build the infoWindow for works
+MappingClass.prototype.buildWorkInfoWindow = function() {
+		
+        if(mappingObj.infoWindowData.length == 0) {
+                mappingObj.infoWindowReference.setContent('<div class="infoWindowContent">' + buildErrorMsgBox('the request for work information') + '</div>');
+                return;
+        }
+
+        // define a variable to store the infoWindow content
+        var content = '<div class="infoWindowContent">';
+        var header  = '<div class="infoWindowContentHeader b-187 f-184"><div class="infoWindowContentHeaderItems">';
+        var list    = '<div class="infoWindowContentList">';
+        var idx     = null;
+        var colour  = null;
+        
+        // sort the array
+        mappingObj.infoWindowData.sort(sortWorkArray);
+        
+        // build the content
+        for(var i = 0; i < mappingObj.infoWindowData.length; i++) {
+        
+                var data = mappingObj.infoWindowData[i];
+                
+                // add the venue to the header
+                header += '<span class="infoWindowHeaderItem clickable" id="infoWindowScroll-' + data.work.id + '">' + data.work.name.replace(/\s/g, '&nbsp;') + '</span> | ';
+                
+                list += '<div class="infoWindowListHeader b-186 f-184" id="infoWindowScrollTo-' + data.work.id + '">';
+                
+                idx = $.inArray(data.work.id, mappingObj.workColours.ids);
+                colour = mappingObj.workColours.colours[idx];
+                
+                list += '<table class="infoWindowListHeaderLayout"><tr><td class="mapLegendIcon"><span class="infoWindowListIcon ' + colour + '"><img src="'+ mapIconography.work + '" width="' + mapIconography.iconWidth + '" height="' + mapIconography.iconHeight + '"/></span></td>';
+                list += '<td><span class="infoWindowListTitle"><a href="' + data.work.url + '" target="_ausstage">' + data.work.name + '</a>';
+
+                if(i > 0) {
+                        list +=  ' <span class="infoWindowToTop clickable">[top]</span><br/>';
+                } else {
+                        list += '<br/>';
+                }
+                
+                // add the address
+                list += mappingObj.buildAddressAlt(data.work.suburb, data.work.state, data.work.country);
+                
+                // finalise the link and start of the content
+                list += '</span></td></tr></table></div><ul class="infoWindowEventList">';
+                
+                // add the events
+                for(var x = 0; x < data.events.length; x++) {
+					console.log("adding events. if filter date >= timeline first date && filter date <= last date");
+					console.log("data filterdate : "+ data.events[x].filterDate);
+					console.log("timeline firstdate : "+ timelineObj.selectedFirstDate);
+					console.log("timeline firstdate : "+ timelineObj.selectedLastDate);
+                        if(data.events[x].filterDate >= timelineObj.selectedFirstDate && data.events[x].filterDate <= timelineObj.selectedLastDate) {
+                                if(x % 2 == 1) {
+                                        list += '<li class="b-185">';
+                                } else {
+                                        list += '<li>';
+                                }
+                
+                                list += '<a href="' + data.events[x].url + '" target="_ausstage">' + data.events[x].name + '</a>, ';
+                                list += data.name + ', ' + mappingObj.buildAddressAlt(data.suburb, data.state, data.country);
+                                list += ', ' + data.events[x].firstDate.replace(/\s/g, '&nbsp;') + '</li>';
+                        }
+                }
+                
+                // finalise the list of events
+                list += '</ul>';
+                
+        }
+        
+        // finish the content
+        header = header.substr(0, header.length - 10);
+        header += '</span></div></div>';
+        list   += '</div>';
+        
+        if(mappingObj.infoWindowData.length > 1) {
+                content += header + list + '</div>';
+        } else {
+                content += list + '</div>';
+        }
+        
+        // replace the content of the infoWindow
+        mappingObj.infoWindowReference.setContent(content);
+        
+        // add a function to the domready event to adjust the infoWindow
+        google.maps.event.addListener(mappingObj.infoWindowReference, 'domready', function() {
+        
+                // check to see if scrollbars are present
+                var divOfInterest = $('.infoWindowContent').parent().parent();
+                
+                if(divOfInterest.get(0).scrollHeight > divOfInterest.height()) {
+                        // scroll bars are found so adjust
+                        divOfInterest.css("margin-top", "15px");
+                        var height = divOfInterest.height();
+                        height = height - 15;
+                        divOfInterest.height(height);
+                }
+        });
+		
+}
+/*****/
 
 // function to buld the infoWindow for venues
 MappingClass.prototype.buildVenueInfoWindow = function() {
@@ -1606,6 +1877,7 @@ MappingClass.prototype.doMapFromLink = function() {
                         var o = $.getUrlVar('o');
                         var v = $.getUrlVar('v');
                         var e = $.getUrlVar('e');
+                        var w = $.getUrlVar('w');
                         
                         if(typeof(c) == 'undefined') {
                                 c = null;
@@ -1623,9 +1895,11 @@ MappingClass.prototype.doMapFromLink = function() {
                                 e = null;
                         }
 
-                        
+                        if(typeof(w) == 'undefined') {
+                                w = null;
+                        }
                         // build the map
-                        bookmarkObj.doComplexMapFromLink(c, o, v, e);
+                        bookmarkObj.doComplexMapFromLink(c, o, v, e, w);
                 }
         }
 }
