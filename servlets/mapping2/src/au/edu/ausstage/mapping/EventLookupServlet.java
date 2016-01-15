@@ -36,7 +36,7 @@ public class EventLookupServlet extends HttpServlet {
 	private DbManager database;
 	
 	// declare private constants
-	private final String[] TASK_TYPES         = {"organisation", "contributor", "venue"};
+	private final String[] TASK_TYPES         = {"organisation", "contributor", "venue", "work"};
 	public static final String[] FORMAT_TYPES = {"json"};
 
 	/*
@@ -72,7 +72,7 @@ public class EventLookupServlet extends HttpServlet {
 		}
 		
 		// check on the other parameters
-		if(taskType.equals("organisation") == true || taskType.equals("contributor") == true) {
+		if(taskType.equals("organisation") == true || taskType.equals("contributor") == true || taskType.equals("work") == true) {
 			// check on the venue parameter
 			if(InputUtils.isValidInt(venueId) == false) {
 				throw new ServletException("Missing venue parameter, expected a valid integer");
@@ -119,6 +119,8 @@ public class EventLookupServlet extends HttpServlet {
 			results = lookup.getEventsByContributor(id, venueId, formatType);
 		} else if(taskType.equals("venue") == true) {
 			results = lookup.getEventsByVenue(id, formatType);
+		} else if(taskType.equals("work") == true) {
+			results = lookup.getEventsByWork(id, venueId, formatType);
 		}
 		
 		// check to see if this is a jsonp request

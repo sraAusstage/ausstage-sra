@@ -727,6 +727,117 @@ public class MarkerManager {
 		return buildVenueListMapJSONArray(venueListMap, "event").toString();
 	}
 	
+	/****
+	 *WORKS 
+	 ***/
+	/**
+	 * A public method to build marker data for a work or list of works
+	 *
+	 * @param workId the unique work ID or a list of work ids
+	 *
+	 * @return               json encoded data as a string
+	 */
+	public String getWorkMarkers(String workId) {
+	
+		// declare helper variables
+		String[] sqlParameters = null;
+	
+		// check the parameter
+		if(InputUtils.isValid(workId) == true) {
+			if(workId.indexOf(',') == -1) {
+				// a single id
+				if(InputUtils.isValidInt(workId) == false) {
+					throw new IllegalArgumentException("The id parameter must be a valid integer");
+				}
+			} else {
+				// multiple ids
+				sqlParameters = workId.split(",");
+			
+				if(InputUtils.isValidArrayInt(sqlParameters) == false) {
+					throw new IllegalArgumentException("The id parameter must contain a list of valid integers seperated by commas only");
+				}
+			}
+		} else {
+			throw new IllegalArgumentException("Missing id parameter.");
+		}
+		
+		// double check the parameters
+		if(sqlParameters == null) {
+			sqlParameters = new String[1];
+			sqlParameters[0] = workId;
+		}
+		
+		// build the SQL
+		String sql = null;
+		
+		if(sqlParameters.length == 1) {
+			sql = 	  " SELECT DISTINCT w.workid, v.venueid, v.venue_name, v.street, v.suburb, s.state, v.postcode, v.latitude, v.longitude, "
+					+ " wvd.min_date, wvd.max_date "
+					+ " FROM work w, eventworklink ewl, events e, venue v, states s, work_venue_min_max_event_dates wvd "
+					+ " WHERE w.workid = ? "
+					+ " AND w.workid = ewl.workid "
+					+ " AND ewl.eventid = e.eventid "
+					+ " AND e.venueid = v.venueid "
+					+ " AND v.state = s.stateid "
+					+ " AND latitude IS NOT NULL "
+					+ " AND w.workid = wvd.workid "
+					+ " AND v.venueid = wvd.venueid";
+		} else {
+		
+			sql =   " SELECT DISTINCT w.workid, v.venueid, v.venue_name, v.street, v.suburb, s.state, v.postcode, v.latitude, v.longitude, wvd.min_date, wvd.max_date "
+				+ " FROM work w, eventworklink ewl, events e, venue v, states s, work_venue_min_max_event_dates wvd "
+				+ " WHERE w.workid IN (";
+					   
+			// add sufficient place holders for all of the ids
+			for(int i = 0; i < sqlParameters.length; i++) {
+		
+				sql += "?,";
+			}
+		
+			// tidy up the sql
+			sql = sql.substring(0, sql.length() -1);
+		
+			// finalise the sql string
+			sql += ") "
+				+ " AND w.workid = ewl.workid "
+				+ " AND ewl.eventid = e.eventid "
+				+ " AND e.venueid = v.venueid "
+				+ " AND v.state = s.stateid "
+				+ " AND latitude IS NOT NULL "
+				+ " AND w.workid = wvd.workid "
+				+ " AND v.venueid = wvd.venueid "
+				+ " ORDER BY w.workid";
+		}
+		
+		// get the data
+		DbObjects results = database.executePreparedStatement(sql, sqlParameters);
+		
+		// check to see that data was returned
+		if(results == null) {
+		
+			return getEmptyArray();
+		}
+		
+		// build the dataset using internal objects
+		ResultSet resultSet = results.getResultSet();
+		HashMap<Integer, VenueList> venueListMap = buildVenueListMap(resultSet);
+		
+		
+		// play nice and tidy up
+		resultSet = null;
+		results.tidyUp();
+		results = null;	
+		
+		// check what was returned
+		if(venueListMap.size() == 0) {
+			return getEmptyArray();
+		}		
+		// return the list
+		return buildVenueListMapJSONArray(venueListMap, "work").toString();
+	}
+	
+	
+	
 	/**
 	 * A private method to build a venue list map given a resultset
 	 * Assumes the first column is the index to the map
@@ -880,6 +991,10 @@ public class MarkerManager {
 					object.put("extra", (JSONArray)obj);
 				} else if(extraData.equals("event") == true) {
 					lookupData = lookup.getEvent(Integer.toString(index));
+					obj = JSONValue.parse(lookupData);
+					object.put("extra", (JSONArray)obj);
+				}else if(extraData.equals("work") == true) {
+					lookupData = lookup.getWork(Integer.toString(index));
 					obj = JSONValue.parse(lookupData);
 					object.put("extra", (JSONArray)obj);
 				}

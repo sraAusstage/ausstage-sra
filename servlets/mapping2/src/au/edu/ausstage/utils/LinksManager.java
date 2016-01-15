@@ -41,6 +41,17 @@ public class LinksManager {
 	private static final String ORGANISATION_TEMPLATE = "http://www.ausstage.edu.au/pages/organisation/[org-id]";
 	private static final String ORGANISATION_TOKEN    = "[org-id]";
 	
+	/*
+	 *  work URLs
+	 *  any changes to this should also be made in SearchManager.java.
+	 *  I failed miserably as a programmer and hard coded the WORK url generation
+	 *	into SearchManager because I couldn't work out why I kept getting the following error.
+	 *  java.lang.NoSuchMethodError: au.edu.ausstage.utils.LinksManager.getWorkLink(Ljava/lang/String;)Ljava/lang/String;
+	 *  ROUGHLY line 1400 in SearchManager
+	 */
+	private static final String WORK_TEMPLATE = "http://www.ausstage.edu.au/pages/work/[work-id]";
+	private static final String WORK_TOKEN    = "[work-id]";
+	
 	// resource / item URLs
 	private static final String RESOURCE_TEMPLATE = "http://www.ausstage.edu.au/pages/resource/[item-id]";
 	private static final String RESOURCE_TOKEN    = "[item-id]";
@@ -106,6 +117,26 @@ public class LinksManager {
 			throw new IllegalArgumentException("The id parameter must be a valid integer");
 		} else {
 			return ORGANISATION_TEMPLATE.replace(ORGANISATION_TOKEN, id);
+		}
+	} // end the method
+	
+	/**
+	 * A method to build a work link
+	 *  This Method doesn't get called. It should but due to my incompetence it wouldn't work.- see the private variable declarations
+	 *  at the top of this class.
+	 *   
+	 * @param id the work id
+	 * @return   the persistent URL for this work
+	 */
+	public static String getWorkLink(String id) {
+		System.out.println("links manager [MAPPING] get work link id passed in :"+id);
+		// double check the parameter
+		if(InputUtils.isValidInt(id) == false) {
+			System.out.println("error");
+			throw new IllegalArgumentException("The id parameter must be a valid integer");
+		} else {
+			System.out.println("success!");
+			return WORK_TEMPLATE.replace(WORK_TOKEN, id);
 		}
 	} // end the method
 	

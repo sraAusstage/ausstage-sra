@@ -60,6 +60,7 @@ public class KmlDownloadServlet extends HttpServlet {
 		String[] organisations = new String[0];
 		String[] venues        = new String[0];
 		String[] events        = new String[0];
+		String[] works         = new String[0];
 
 		if(InputUtils.isValid(request.getParameter("contributors")) == true) {
 			contributors = request.getParameter("contributors").split("-");
@@ -75,6 +76,10 @@ public class KmlDownloadServlet extends HttpServlet {
 		
 		if(InputUtils.isValid(request.getParameter("events")) == true) {
 			events = request.getParameter("events").split("-");
+		}
+		
+		if(InputUtils.isValid(request.getParameter("works")) == true) {
+			works = request.getParameter("works").split("-");
 		}
 		
 		// instantiate a connection to the database
@@ -93,7 +98,7 @@ public class KmlDownloadServlet extends HttpServlet {
 		KmlDownloadManager download = new KmlDownloadManager(database);
 		
 		try {
-			download.prepare(contributors, organisations, venues, events);
+			download.prepare(contributors, organisations, venues, events, works);
 		} catch (KmlDownloadException e) {
 			throw new ServletException("Error in preparing KML for download", e);
 		}

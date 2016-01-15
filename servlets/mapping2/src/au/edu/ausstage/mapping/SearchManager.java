@@ -1270,6 +1270,325 @@ public class SearchManager {
 		// return the JSON encoded string
 		return list.toString();
 	}
+	/*
+	 * WORKS SEARCHING
+	 * 
+	 */
+	
+	/** 
+	 * A method to undertake a Work search
+	 *
+	 * @param searchType the type of search to undertake
+	 * @param query      the search query to use
+	 * @param formatType the type of data format for the results
+	 * @param sortType   the way in which to sort the results
+	 * @param limit      the number to limit the search results
+	 */
+	public String doWorkSearch(String searchType, String query, String formatType, String sortType, Integer limit) {
+	
+		// check on the parameters
+		if(InputUtils.isValid(searchType) == false || InputUtils.isValid(query) == false) {
+			throw new IllegalArgumentException("All of the parameters to this method are required");
+		}
+		
+		// double check the parameter
+		if(searchType.equals("id") != true) {
+			if(InputUtils.isValidInt(limit, SearchServlet.MIN_LIMIT, SearchServlet.MAX_LIMIT) == false) {
+				throw new IllegalArgumentException("Limit parameter must be between '" + SearchServlet.MIN_LIMIT + "' and '" + SearchServlet.MAX_LIMIT + "'");
+			}
+		}
+		
+		if(InputUtils.isValid(formatType) == false) {
+			formatType = "json";
+		} 
+		
+		if(InputUtils.isValid(sortType) == false) {
+			sortType = "id";
+		}
+		
+		// get the results of the search
+		String data = null;
+		
+		if(searchType.equals("id") == true) {
+			data = doWorkIdSearch(query, formatType);
+		} else {
+			data = doWorkNameSearch(query, formatType, sortType, limit);
+		}
+	
+		// return the data
+		return data;
+		
+	} 
+	
+	/**
+	 * A private method to undertake a work name search
+	 *
+	 * @param query      the search query to use
+	 * @param formatType the type of data format for theresults
+	 * @param sortType   the sort order for the results
+	 * @param limit      the maximum number of search results
+	 *
+	 * @return           the search results encoded in the requested format
+	 */
+	private String doWorkNameSearch(String query, String formatType, String sortType, Integer limit) {
+		// sanitise the search query
+		query = sanitiseQuery(query);
+		
+		// declare the sql variables
+		String sql =  " SELECT w.workid, w.work_title, " 
+					+ " COUNT(distinct e.eventid) AS total_events, COUNT(distinct e.eventid, v.latitude) as mapped_events "
+					+ " FROM work w "
+					+ " INNER JOIN search_work sw ON sw.workid = w.workid "  
+					+ " LEFT JOIN eventworklink ewl ON w.workid = ewl.workid "  
+					+ " LEFT JOIN events e ON ewl.eventid = e.eventid "
+					+ " LEFT JOIN venue v ON e.venueid = v.venueid " 
+					+ " WHERE MATCH(sw.combined_all) AGAINST (? IN BOOLEAN MODE) "  
+					+ " GROUP BY w.workid, w.work_title ";
+				   
+		// finalise the sql
+		if(sortType.equals("name") == true) {
+			sql += "ORDER BY w.work_title";
+		} else {
+			sql += "ORDER BY w.workid";
+		}
+				   
+		// define the paramaters
+		String[] sqlParameters = {query};
+		
+		// declare additional helper variables
+		WorkList list          		   = new WorkList();
+		Work		     work		   = null;
+		JSONArray        jsonList      = new JSONArray();
+		Integer          loopCount     = 0;
+		
+		// get the data
+		DbObjects results = database.executePreparedStatement(sql, sqlParameters);
+		// check to see that data was returned
+		if(results == null) {
+			// return an empty JSON Array
+			return jsonList.toString();
+		}
+		
+		// build the result data
+		ResultSet resultSet = results.getResultSet();
+		
+		// build the list of results
+		try {
+			
+			// loop through the resulset
+			while(resultSet.next() && loopCount < limit) {
+				
+				// build the work object
+				work = new Work(resultSet.getString(1));
+				
+				work.setName(resultSet.getString(2));
+				
+				/*
+				 * nasty little piece of hardcoding because for some reason I couldn't get the method LinksManager.getWorkLink 
+				 * to be recognised at runtime.
+				 * Kept getting the following error
+				 * java.lang.NoSuchMethodError: au.edu.ausstage.utils.LinksManager.getWorkLink(Ljava/lang/String;)Ljava/lang/String;
+				 */
+				
+				// double check the parameter
+				if(InputUtils.isValidInt(resultSet.getString(1)) == false) {
+					System.out.println("error");
+					throw new IllegalArgumentException("The id parameter must be a valid integer");
+				} else {
+					System.out.println("success!");
+					work.setUrl("http://www.ausstage.edu.au/pages/work/"+resultSet.getString(1));
+				}
+				//work.setUrl(LinksManager.getWorkLink(resultSet.getString(1)));
+				
+				work.setEventCount(resultSet.getString(3));
+				work.setMappedEventCount(resultSet.getString(4));
+				// add the work to the list
+				list.addWork(work);
+				
+				// increment the loop count
+				loopCount++;
+			}
+		
+		} catch (java.sql.SQLException ex) {
+			// return an empty JSON Array
+			return jsonList.toString();
+		}
+		
+		// play nice and tidy up
+		resultSet = null;
+		results.tidyUp();
+		results = null;
+		
+		
+		// determine how to format the result
+		String data = null;		
+		if(formatType.equals("json") == true) {
+			if(sortType.equals("name") == true) {
+				data = createJSONOutput(list, WorkList.WORK_NAME_SORT);
+			} else {
+				data = createJSONOutput(list, null);
+			}
+		}
+		
+		// return the data
+		return data;
+	}
+	
+	/**
+	 * A private method to undertake a Work id search
+	 *
+	 * @param query      the search query to use
+	 * @param formatType the type of data format for the results
+	 *
+	 * @return           the results of the search
+	 */
+	private String doWorkIdSearch(String query, String formatType) {
+
+		// declare the SQL variables
+		String sql = " SELECT w.workid, w.work_title, " 
+			+ " COUNT(distinct e.eventid) AS total_events, COUNT(distinct e.eventid, v.latitude) as mapped_events "
+			+ " FROM work w "
+			+ " INNER JOIN search_work sw ON sw.workid = w.workid "  
+			+ " LEFT JOIN eventworklink ewl ON w.workid = ewl.workid "  
+			+ " LEFT JOIN events e ON ewl.eventid = e.eventid "
+			+ " LEFT JOIN venue v ON e.venueid = v.venueid " 
+			+ " WHERE w.workid = ? "  
+			+ " GROUP BY w.workid, w.work_title ";
+				   
+		// define the paramaters
+		String[] sqlParameters = {query};
+		
+		// declare additional helper variables
+		WorkList list          		     = new WorkList();
+		Work		     		work     = null;
+		JSONArray        		jsonList = new JSONArray();
+		
+		// get the data
+		DbObjects results = database.executePreparedStatement(sql, sqlParameters);
+		
+		// check to see that data was returned
+		if(results == null) {
+			// return an empty JSON Array
+			return jsonList.toString();
+		}
+		
+		// build the result data
+		ResultSet resultSet = results.getResultSet();
+		
+		try {
+		
+			// move to the result record
+			resultSet.next();
+			
+			// build the work object
+			work = new Work(resultSet.getString(1));
+			work.setName(resultSet.getString(2));
+			/*
+			 * nasty little piece of hardcoding because for some reason I couldn't get the method LinksManager.getWorkLink 
+			 * to be recognised at runtime.
+			 * Kept getting the following error
+			 * java.lang.NoSuchMethodError: au.edu.ausstage.utils.LinksManager.getWorkLink(Ljava/lang/String;)Ljava/lang/String;
+			 */
+			
+			// double check the parameter
+			if(InputUtils.isValidInt(resultSet.getString(1)) == false) {
+				System.out.println("error");
+				throw new IllegalArgumentException("The id parameter must be a valid integer");
+			} else {
+				System.out.println("success!");
+				work.setUrl("http://www.ausstage.edu.au/pages/work/"+resultSet.getString(1));
+			}
+			//work.setUrl(LinksManager.getWorkLink(resultSet.getString(1)));
+			
+			//work.setUrl(LinksManager.getWorkLink(resultSet.getString(1)));
+			work.setEventCount(resultSet.getString(3));
+			work.setMappedEventCount(resultSet.getString(4));			
+		
+			// add the work to the list
+			list.addWork(work);
+		
+		} catch (java.sql.SQLException ex) {
+			// return an empty JSON Array
+			return jsonList.toString();
+		}
+		 
+		// play nice and tidy up
+		resultSet = null;
+		results.tidyUp();
+		results = null;
+		
+		
+		// determine how to format the result
+		String data = null;		
+		if(formatType.equals("json") == true) {
+			data = createJSONOutput(list, null);
+		}
+		
+		// return the data
+		return data;
+			
+	} 
+	
+	/**
+	 * A method to take a group of collaborators and output JSON encoded text
+	 *
+	 * @param collaborators the list of organisations
+	 * @param sortOrder     the order to sort the list of organisations as defined in the OrganisationList class
+	 * @return              the JSON encoded string
+	 */
+	@SuppressWarnings("unchecked")
+	private String createJSONOutput(WorkList workList, Integer sortOrder) {
+	
+		Set<Work> works = null;
+		
+		if(sortOrder != null) {
+			if(InputUtils.isValidInt(sortOrder, WorkList.WORK_ID_SORT, WorkList.WORK_NAME_SORT) != false) {
+				if(sortOrder == WorkList.WORK_ID_SORT) {
+					works = workList.getSortedWorks(WorkList.WORK_ID_SORT);
+				} else {
+					works = workList.getSortedWorks(WorkList.WORK_NAME_SORT);
+				}
+			} else {
+				works = workList.getWorks();
+			}
+		} else {
+			works = workList.getWorks();
+		}		
+	
+		// assume that all sorting and ordering has already been carried out
+		// loop through the list of organisations and add them to the new JSON objects
+		Iterator iterator = works.iterator();
+		
+		// declare helper variables
+		JSONArray  list = new JSONArray();
+		JSONObject object = null;
+		Work work = null;
+		
+		while(iterator.hasNext()) {
+		
+			// get the work
+			work = (Work)iterator.next();
+			
+			// start a new JSON object
+			object = new JSONObject();
+			
+			// build the object
+			object.put("id", work.getId());
+			object.put("url", work.getUrl());
+			object.put("name", work.getName());
+			object.put("totalEventCount", new Integer(work.getEventCount()));
+			object.put("mapEventCount", new Integer(work.getMappedEventCount()));
+			
+			// add the new object to the array
+			list.add(object);		
+		}
+		
+		// return the JSON encoded string
+		return list.toString();
+			
+	} 
+	
+	
 	
 	/**
 	 * A private method to sanitise the search query by:

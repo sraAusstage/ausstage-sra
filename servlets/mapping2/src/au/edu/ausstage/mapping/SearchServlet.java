@@ -32,7 +32,7 @@ public class SearchServlet extends HttpServlet {
 	private ServletConfig servletConfig;
 	
 	// declare private class constants
-	private final String[] TASK_TYPES    = {"organisation", "contributor", "venue", "event"};
+	private final String[] TASK_TYPES    = {"organisation", "contributor", "venue", "event", "work"};
 	private final String[] SEARCH_TYPES  = {"name", "id"};
 	private final String[] FORMAT_TYPES  = {"json"};
 	private final String[] SORT_TYPES    = {"name", "id"};
@@ -164,7 +164,10 @@ public class SearchServlet extends HttpServlet {
 			data = manager.doVenueSearch(searchType, query, formatType, sortType, limit);
 		} else if(taskType.equals("event") == true) {
 			data = manager.doEventSearch(searchType, query, formatType, sortType, limit);
+		} else if(taskType.equals("work") == true) {
+			data = manager.doWorkSearch(searchType, query, formatType, sortType, limit);
 		}
+		
 		
 		
 		// check to see if this is a jsonp request

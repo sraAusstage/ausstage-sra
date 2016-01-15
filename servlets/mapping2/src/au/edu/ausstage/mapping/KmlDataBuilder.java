@@ -60,6 +60,12 @@ public class KmlDataBuilder {
 	public static final String[] ORG_ICON_COLOUR_CODES = {"66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "60", "61", "62", "63", "64", "65", "59", "58", "57", "56", "55", "54", "53", "52", "51", "50", "49", "48", "47", "46", "45", "44", "43", "42", "41", "40", "39"};
 	
 	/**
+	 * icon colour codes for works
+	 */
+	public static final String[] WORK_ICON_COLOUR_CODES = {"73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72" };
+	
+	
+	/**
 	 * colour codes for use in the style of icons in the balloon content
 	 */
 	public static final String[] COLOUR_CODES = {"#276abd", "#317db9", "#3b91b5", "#44a4b1", "#4eb8ad", "#3b9d8f", "#278271", "#146853", "#004d35", "#1a6b3a", "#33893e", "#4da743", "#66c547", "#8cc43d", "#b3c333", "#d9d121", "#ffe010", "#ffd117", "#ffc11f", "#ffb320", "#ffa521", "#ff9821", "#ff8a22", "#fc792c", "#f96835", "#f6573f", "#f34648", "#dc3738", "#c52829", "#af1819", "#980909", "#a31d34", "#ad315f", "#b7458a", "#c259b5", "#b556b6", "#a754b7", "#9951b7", "#8c4eb8", "#7758c0", "#6262c7", "#4d6bcf", "#3875d7", "#2a5fd4", "#1c48d1", "#0e31cf", "#001bcc", "#1442c4", "#afc8ef", "#88ace7", "#ffcd4c"};
@@ -957,6 +963,241 @@ public class KmlDataBuilder {
 		}
 	}
 	
+	/**
+	 * Add a section to the KML that includes work information
+	 * 
+	 * @param list the list of works
+	 * 
+	 * @throws KmlDownloadException if something bad happens
+	 */
+	public void addWorks(WorkList list) {
+	
+		if(list == null) {
+			throw new IllegalArgumentException("The works parameter must be a valid object");
+		}
+		
+		Set<Work> works = list.getSortedWorks(WorkList.WORK_NAME_SORT);
+		
+		if(works.isEmpty() == true) {
+			throw new IllegalArgumentException("There must be at least one work in the supplied list");
+		}
+			
+		Element folder = addFolder("Works", null);
+		Element childFolder;
+		Element document;
+		
+		Element placemark;
+		Element elem;
+		Element subElem;
+		CDATASection cdata;
+		
+		String content;
+		
+		Iterator iterator = works.iterator();
+		Work work;
+		Event       event;
+		
+		KmlVenue kmlVenue;
+		HashMap<Integer, KmlVenue> kmlVenues;
+		
+		int colourIndex = -1;
+		int contentCount = 0;
+		
+		// loop through and add the placemarks
+		while(iterator.hasNext()) {
+		
+			work = (Work)iterator.next();
+			
+			if(work.getKmlVenueCount() == 0) {
+				throw new KmlDownloadException("there were no events associated with work '" + work.getId() + "'");
+			}
+			
+			childFolder = addFolder(folder, work.getName(), null);
+			
+			document = addDocument(childFolder, "Markers");
+
+			// determine which style to use
+			if(colourIndex ==  WORK_ICON_COLOUR_CODES.length) {
+				colourIndex = 0;
+			} else {
+				colourIndex++;
+			}
+			
+			kmlVenues = work.getKmlVenues();
+			
+			Set<KmlVenue> venues = new TreeSet<KmlVenue>(new KmlVenueComparator());
+			venues.addAll(kmlVenues.values());
+			Iterator venueIterator = venues.iterator();
+			
+			while(venueIterator.hasNext()) {
+			
+				kmlVenue = (KmlVenue)venueIterator.next();
+				
+				placemark = xmlDoc.createElement("Placemark");
+				elem = xmlDoc.createElement("name");
+				elem.setTextContent(kmlVenue.getName());
+				placemark.appendChild(elem);
+				
+				elem = xmlDoc.createElement("atom:link");
+				elem.setAttribute("href", kmlVenue.getAtomLink());
+				placemark.appendChild(elem);
+				
+				elem = xmlDoc.createElement("snippet");
+				elem.setTextContent(kmlVenue.getShortAddress());
+				placemark.appendChild(elem);
+				
+				elem = xmlDoc.createElement("description");
+				
+				content = "<table><tr><th><span class=\"icon\"><img src=\"" + ALT_ICON_BASE_URL + "work.png\" width=\"32\" height=\"32\"></span>";
+				
+				content += " <a href=\"" + work.getUrl() + "\">" + work.getName() + "</a><br/>" + kmlVenue.getShortAddress() + "</th></tr>";
+				contentCount = 0;
+				
+				/*
+				Set<Event> events = kmlVenue.getEvents();
+				Iterator eventIterator = events.iterator();
+				*/
+			
+				TreeSet<Event> events = new TreeSet<Event>(new EventDateComparator(true));
+				events.addAll(kmlVenue.getEvents());
+				Iterator eventIterator = events.iterator();
+				
+				while(eventIterator.hasNext()) {
+					event = (Event)eventIterator.next();
+					
+					// check if content count is odd or not
+					if (contentCount % 2 != 0) {
+						content += "<tr class=\"odd\">";
+					} else {
+						content += "<tr>";
+					} 
+					
+					content += "<td><a href=\"" + event.getUrl() + "\">" + event.getName() + "</a>, " + kmlVenue.getName() + ", " + kmlVenue.getShortAddress() + ", " + event.getFirstDisplayDate() + "</td></tr>";
+					
+					contentCount++;
+				}
+				
+				content += "</table>";
+				
+				elem.appendChild(xmlDoc.createCDATASection(content));
+				placemark.appendChild(elem);
+				
+				String[] timespanValues = kmlVenue.getTimespanValues();
+
+				elem = xmlDoc.createElement("TimeSpan");
+				
+				subElem = xmlDoc.createElement("begin");
+				subElem.setTextContent(timespanValues[0]);
+				elem.appendChild(subElem);
+				
+				subElem = xmlDoc.createElement("end");
+				subElem.setTextContent(timespanValues[1]);
+				elem.appendChild(subElem);
+				
+				placemark.appendChild(elem);
+
+				elem = xmlDoc.createElement("styleUrl");
+				elem.setTextContent("#w-" + WORK_ICON_COLOUR_CODES[colourIndex]);
+				placemark.appendChild(elem);
+				
+				elem = xmlDoc.createElement("Point");
+				subElem = xmlDoc.createElement("coordinates");
+				subElem.setTextContent(kmlVenue.getLongitude() + "," + kmlVenue.getLatitude());
+				elem.appendChild(subElem);
+				placemark.appendChild(elem);
+				
+				document.appendChild(placemark);
+			}
+			
+			// add the trajectory
+			document = addDocument(childFolder, "Trajectories");
+			
+			Set<Event> sortedEvents = new TreeSet<Event>(new EventDateComparator());
+			
+			//rest the iterator
+			venueIterator = venues.iterator();
+			
+			// add all of the events
+			while(venueIterator.hasNext()) {
+			
+				kmlVenue = (KmlVenue)venueIterator.next();
+				
+				sortedEvents.addAll(kmlVenue.getEvents());
+			}
+			
+			// add all of the trajectory lines
+			Iterator sortedIterator = sortedEvents.iterator();
+			
+			// define additional helper variables
+			Event previousEvent  = null;
+			KmlVenue startVenue  = null;
+			KmlVenue finishVenue = null;
+			
+			while(sortedIterator.hasNext()) {
+			
+				// get the event
+				event = (Event)sortedIterator.next();
+				
+				if(previousEvent == null) {
+					previousEvent = event;
+					continue;
+				}
+				
+				startVenue = previousEvent.getKmlVenue();
+				finishVenue = event.getKmlVenue();
+				
+				// add a trajectory
+				placemark = xmlDoc.createElement("Placemark");
+				
+				elem = xmlDoc.createElement("description");
+				
+				content = "<table><tr><th><span class=\"icon\"><img src=\"" + ALT_ICON_BASE_URL + "work.png\" width=\"32\" height=\"32\"></span>";
+				
+				content += " <a href=\"" + work.getUrl() + "\">" + work.getName() + "</a></th></tr>";
+				
+				content += "<tr><td><a href=\"" + event.getUrl() + "\">" + event.getName() + "</a>, " + startVenue.getName() + ", " + startVenue.getShortAddress() + ", " + event.getFirstDisplayDate() + "</td></tr>";
+				content += "<tr class=\"odd\"><td><a href=\"" + previousEvent.getUrl() + "\">" + previousEvent.getName() + "</a>, " + finishVenue.getName() + ", " + finishVenue.getShortAddress() + ", " + previousEvent.getFirstDisplayDate() + "</td></tr>";
+				content += "</table>";
+				
+				elem.appendChild(xmlDoc.createCDATASection(content));
+				placemark.appendChild(elem);
+				
+				elem = xmlDoc.createElement("TimeSpan");
+				placemark.appendChild(elem);
+				
+				subElem = xmlDoc.createElement("begin");
+				subElem.setTextContent(event.getSortFirstDate());
+				elem.appendChild(subElem);
+				
+				subElem = xmlDoc.createElement("end");
+				subElem.setTextContent(event.getSortLastDate());
+				elem.appendChild(subElem);
+				
+				placemark.appendChild(elem);
+				
+				// add style
+				elem = xmlDoc.createElement("styleUrl");
+				elem.setTextContent("#w-" + WORK_ICON_COLOUR_CODES[colourIndex]);
+				placemark.appendChild(elem);
+				
+				elem = xmlDoc.createElement("LineString");
+				placemark.appendChild(elem);
+				
+				subElem = xmlDoc.createElement("tessellate");
+				subElem.setTextContent("1");
+				elem.appendChild(subElem);
+				
+				subElem = xmlDoc.createElement("coordinates");
+				subElem.setTextContent(startVenue.getLongitude() + "," + startVenue.getLatitude() + " " + finishVenue.getLongitude() + "," + finishVenue.getLatitude());
+				elem.appendChild(subElem);
+				
+				document.appendChild(placemark);
+				
+				previousEvent = event;				
+			}			
+		}
+	}
+	
 	// private method to add the style information
 	private void addStyleInformation() {
 	
@@ -1002,7 +1243,7 @@ public class KmlDataBuilder {
 		// add informative comment to the KML
 		rootDocument.appendChild(xmlDoc.createComment("Shared Styles for Organisation icons"));
 		
-		// loop through and add all of the contributor styles
+		// loop through and add all of the organisation styles
 		for(int i = start; i <= finish; i++) {
 			
 			// create the main style element
@@ -1075,6 +1316,38 @@ public class KmlDataBuilder {
 		style.appendChild(createLabelStyle());
 		style.appendChild(createBalloonStyle(88));
 		rootDocument.appendChild(style);
+		
+		
+		// add informative comment to the KML
+		rootDocument.appendChild(xmlDoc.createComment("Shared Styles for Work icons"));
+		
+		// loop through and add all of the work styles
+		
+		for(int i = start; i <= finish; i++) {
+			
+			// create the main style element
+			style = xmlDoc.createElement("Style");
+			
+			// set the id to the right identifier
+			style.setAttribute("id", "w-" + i);
+			
+			// build the iconStyle elements
+			iconStyle = xmlDoc.createElement("IconStyle");
+			icon = xmlDoc.createElement("Icon");
+			iconStyle.appendChild(icon);
+			
+			// build the href
+			href = xmlDoc.createElement("href");
+			href.setTextContent(ICON_BASE_URL + "kml-w-" + i + ".png");
+			icon.appendChild(href);
+		
+			// add the icon style and style to the document
+			style.appendChild(iconStyle);
+			style.appendChild(createLabelStyle());
+			style.appendChild(createLineStyle(i));
+			style.appendChild(createBalloonStyle(i));
+			rootDocument.appendChild(style);
+		}
 		
 	}
 	
