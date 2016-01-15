@@ -98,8 +98,8 @@ public class Contributor {
 	public void load(int p_id) {
 		CachedRowSet l_rs;
 		String sqlString;
-		System.out.println("*******");
-		System.out.println("* Loading Contributor");
+		//System.out.println("*******");
+		//System.out.println("* Loading Contributor");
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
@@ -141,7 +141,7 @@ public class Contributor {
 				m_updated_by_user = l_rs.getString("updated_by_user");
 				m_updated_date = l_rs.getDate("updated_date");
 				
-				System.out.println("* Contributor firstname : "+m_name);
+				//System.out.println("* Contributor firstname : "+m_name);
 				loadOrganisationLinks();
 				loadLinkedContributors();
 
@@ -552,7 +552,7 @@ public class Contributor {
 
 			modifyConOrgLinks();
 			modifyContribContribLinks(UPDATE);
-			System.out.println("In UPDATE 3");
+			//System.out.println("In UPDATE 3");
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");

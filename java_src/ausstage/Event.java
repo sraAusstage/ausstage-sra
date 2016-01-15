@@ -2144,7 +2144,7 @@ public class Event {
 
 		this.m_world_premier = Common.convertYesNoToBool(request.getParameter("f_world_premier"));
 		this.m_review = Common.convertYesNoToBool(request.getParameter("f_review"));
-		System.out.println("request.getParameter:" + request.getParameter("f_review"));
+		//System.out.println("request.getParameter:" + request.getParameter("f_review"));
 		// this.m_int_perf_history =
 		// Common.convertYesNoToBool(request.getParameter("f_int_perf_history"));
 		this.m_status = request.getParameter("f_status");
