@@ -12,7 +12,7 @@ public String concatFields(Vector fields, String token) {
         }
         ret += fields.elementAt(i);
     }
-  } 
+  }
   return (ret);
 }
 
@@ -145,8 +145,8 @@ public void displayUpdateForm(String                p_id,
 
 	  p_out.println("  if (ret) {");
 	  p_out.println("    window.open(\"about:blank\", \"public_comments\", \"status=false,toolbar=false,location=false,menubar=false,height=120px,width=320px\");");
-	  p_out.println("    $('#UpdateFormDiv').dialog('close');");	
-	  p_out.println("    document.getElementById('f_text_c').value='xg1VF38_';");  
+	  p_out.println("    $('#UpdateFormDiv').dialog('close');");
+	  p_out.println("    document.getElementById('f_text_c').value='xg1VF38_';");	  
 	  p_out.println("    document.UpdateForm.submit();");
 	  p_out.println("  }");
 	  p_out.println("}");
@@ -158,19 +158,23 @@ public void displayUpdateForm(String                p_id,
     p_out.println("  <tr align='left' ><td align='left' nowrap ><a href='csv.jsp?id=" + p_request.getParameter("id") + "' align='left' >Export</a> | <a style=\"cursor:pointer\" onclick=\"$('#UpdateFormDiv').dialog('open');\">Feedback</a> | ");
    
     if (p_type != null && (p_type.equals("Event"))){
-    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=&v=&e=" + p_request.getParameter("id") + "' align='left' >Map</a> | <a href='/pages/network/?task=event-centric&rs=3&id=" + p_request.getParameter("id") + "' align='left' >Network</a> | ");
+    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=&v=&e=" + p_request.getParameter("id") + "&w=' align='left' >Map</a> | <a href='/pages/network/?task=event-centric&rs=3&id=" + p_request.getParameter("id") + "' align='left' >Network</a> | ");
     	
     }
     if (p_type != null && (p_type.equals("Contributor"))){
-    	p_out.println("<a href='/pages/map/?complex-map=true&c=" + p_request.getParameter("id") + "&o=&v=&e=' align='left' >Map</a> | <a href='/pages/network/?task=ego-centric&id=" + p_request.getParameter("id") + "' align='left' >Network</a> | ");
+    	p_out.println("<a href='/pages/map/?complex-map=true&c=" + p_request.getParameter("id") + "&o=&v=&e=&w=' align='left' >Map</a> | <a href='/pages/network/?task=ego-centric&id=" + p_request.getParameter("id") + "' align='left' >Network</a> | ");
     	
     }
     if (p_type != null && (p_type.equals("Organisation"))){
-    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=" + p_request.getParameter("id") + "&v=&e=' align='left' >Map</a> | ");
+    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=" + p_request.getParameter("id") + "&v=&e=&w=' align='left' >Map</a> | ");
     	
     }
     if (p_type != null && (p_type.equals("Venue"))){
-    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=&v=" + p_request.getParameter("id") + "&e=' align='left' >Map</a> | ");
+    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=&v=" + p_request.getParameter("id") + "&e=&w=' align='left' >Map</a> | ");
+    	
+    }
+      if (p_type != null && (p_type.equals("Work"))){
+    	p_out.println("<a href='/pages/map/?complex-map=true&c=&o=&v=&e=&w=" + p_request.getParameter("id") + "' align='left' >Map</a> | ");
     	
     }
     p_out.println("<a href='#' align='left' onclick='window.print();return false;'>Print</a></td></tr>");
@@ -186,7 +190,6 @@ public void displayUpdateForm(String                p_id,
    // p_out.println("   <table align=\"center\" cellpadding=\"0\" cellspacing=\"0\">");
    // p_out.println("   <tr>");
    // p_out.println("   <td>");
-    p_out.println("<input type='text' id='' style='position: absolute;top: -500px;' />");
     p_out.println("     <table width='100%' border='0' cellpadding='2' cellspacing='0'>");
 
     if (p_type != null && p_type.equals("Resource")) {
@@ -195,6 +198,7 @@ public void displayUpdateForm(String                p_id,
     else {
      // p_type += "&nbsp;Name";
     }
+    
     p_out.println("     <tr>");
     p_out.println("       <td  align='right'  class='general_heading_light' valign='top'>&nbsp;" + p_type + "</td>");
     p_out.println("       <td width='0%'>&nbsp;</td>");
@@ -230,13 +234,14 @@ public void displayUpdateForm(String                p_id,
     p_out.println("       <td>&nbsp;</td>");
     p_out.println("       <td  valign='top'><input type='text' name='f_public_users_email' id='f_public_users_email' maxlength=80 size='50'></td>");
     p_out.println("     </tr>");
+        
+    p_out.println("     <tr class='text-veri'>");
+    p_out.println("       <td  align='right'  class='general_heading_light' valign='top'><label for='f_text_veri'>Leave this field blank</lable></td>");
+    p_out.println("       <td width='0%'>&nbsp;</td>");
+    p_out.println("       <td  align='left' valign='top'><input type='text' name='f_text_veri' id='f_text_veri' />");
+    p_out.println("       	<input type='hidden' name='f_text_c' id='f_text_c' /></td>");
+    p_out.println("     </tr>");
     
-	p_out.println("     <tr class='text-veri'>");
-	p_out.println("       <td  align='right'  class='general_heading_light' valign='top'><label>Leave this field blank</lable></td>");
-	p_out.println("       <td width='0%'>&nbsp;</td>");
-	p_out.println("       <td  align='left' valign='top'><input type='text' name='f_text_veri' id='f_text_veri' /><input type='hidden' name='f_text_c' id='f_text_c' /></td>");
-	p_out.println("     </tr>");
-	    
     p_out.println("     <tr>");
     p_out.println("       <td  align='right' class='general_heading_light' valign='top'></td>");
     p_out.println("       <td>&nbsp;</td>");
