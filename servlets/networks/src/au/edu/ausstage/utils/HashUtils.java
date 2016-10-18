@@ -45,7 +45,7 @@ public class HashUtils {
 		}
 		
 		// return the hashed value
-		return DigestUtils.sha256Hex(data);
+		return DigestUtils.shaHex(data);
 		
 	} // end hashValue method
 	

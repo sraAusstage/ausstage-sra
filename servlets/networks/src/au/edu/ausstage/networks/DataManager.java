@@ -25,9 +25,10 @@ package au.edu.ausstage.networks;
 // servlets
 import javax.servlet.ServletConfig;
 
-// Jena & TDB related packages
+// Jena & TDB related packages 
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.tdb.TDBFactory;
+
 
 // import the AusStage vocabularies package
 import au.edu.ausstage.vocabularies.*;
