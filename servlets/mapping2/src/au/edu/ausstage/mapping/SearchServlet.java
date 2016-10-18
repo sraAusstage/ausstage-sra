@@ -38,7 +38,7 @@ public class SearchServlet extends HttpServlet {
 	private final String[] SORT_TYPES    = {"name", "id"};
 	public static final int      DEFAULT_LIMIT = 5;
 	public static final int      MIN_LIMIT     = 5;
-	public static final int      MAX_LIMIT     = 25;
+	public static final int      MAX_LIMIT     = 100;
 	public static final int      MIN_QUERY_LENGTH = 4;
 	
 	/*

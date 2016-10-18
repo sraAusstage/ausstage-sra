@@ -671,7 +671,7 @@ public class SearchManager {
 	 * @param limit      the number to limit the search results
 	 */
 	public String doVenueSearch(String searchType, String query, String formatType, String sortType, Integer limit) {
-	
+	    
 		// check on the parameters
 		if(InputUtils.isValid(searchType) == false || InputUtils.isValid(query) == false) {
 			throw new IllegalArgumentException("All of the parameters to this method are required");
@@ -680,7 +680,7 @@ public class SearchManager {
 		// double check the parameter
 		if(searchType.equals("id") != true) {
 			if(InputUtils.isValidInt(limit, SearchServlet.MIN_LIMIT, SearchServlet.MAX_LIMIT) == false) {
-				throw new IllegalArgumentException("Limit parameter must be between '" + SearchServlet.MIN_LIMIT + "' and '" + SearchServlet.MAX_LIMIT + "'");
+				throw new IllegalArgumentException("Limit parameter BLAH must be between '" + SearchServlet.MIN_LIMIT + "' and '" + SearchServlet.MAX_LIMIT + "'");
 			}
 		}
 		
@@ -1069,7 +1069,7 @@ public class SearchManager {
 		} catch (java.sql.SQLException ex) {
 			// return an empty JSON Array
 			//debug code
-			System.out.println("####");
+			
 			return jsonList.toString();
 		}
 		 
@@ -1250,7 +1250,7 @@ public class SearchManager {
 				object.put("venue", objArray.get(0));
 			}
 			catch(Exception pe){
-				System.out.println("Event getvenue= " + event.getVenue());
+				
 				
 				object.put("venue", null);
 			}			
@@ -1335,7 +1335,7 @@ public class SearchManager {
 		query = sanitiseQuery(query);
 		
 		// declare the sql variables
-		String sql =  " SELECT w.workid, w.work_title, " 
+		/*String sql =  " SELECT w.workid, w.work_title, " 
 					+ " COUNT(distinct e.eventid) AS total_events, COUNT(distinct e.eventid, v.latitude) as mapped_events "
 					+ " FROM work w "
 					+ " INNER JOIN search_work sw ON sw.workid = w.workid "  
@@ -1343,7 +1343,16 @@ public class SearchManager {
 					+ " LEFT JOIN events e ON ewl.eventid = e.eventid "
 					+ " LEFT JOIN venue v ON e.venueid = v.venueid " 
 					+ " WHERE MATCH(sw.combined_all) AGAINST (? IN BOOLEAN MODE) "  
-					+ " GROUP BY w.workid, w.work_title ";
+					+ " GROUP BY w.workid, w.work_title ";*/
+		String sql =  " SELECT w.workid, w.work_title, " 
+			+ " COUNT(distinct e.eventid) AS total_events, COUNT(distinct e.eventid, v.latitude) as mapped_events "
+			+ " FROM work w "			  
+			+ " LEFT JOIN eventworklink ewl ON w.workid = ewl.workid "  
+			+ " LEFT JOIN events e ON ewl.eventid = e.eventid "
+			+ " LEFT JOIN venue v ON e.venueid = v.venueid " 
+			+ " WHERE work_title like ? "
+			+ " OR alter_work_title like ?"
+			+ " GROUP BY w.workid, w.work_title ";
 				   
 		// finalise the sql
 		if(sortType.equals("name") == true) {
@@ -1353,13 +1362,20 @@ public class SearchManager {
 		}
 				   
 		// define the paramaters
-		String[] sqlParameters = {query};
+			query = "%"+query+"%";	
+
+		String[] sqlParameters = {query, query};
+		
+		
+		//if query starts and ends with " then do nothing 
+		//else put %
 		
 		// declare additional helper variables
 		WorkList list          		   = new WorkList();
 		Work		     work		   = null;
 		JSONArray        jsonList      = new JSONArray();
 		Integer          loopCount     = 0;
+		
 		
 		// get the data
 		DbObjects results = database.executePreparedStatement(sql, sqlParameters);
@@ -1392,10 +1408,10 @@ public class SearchManager {
 				
 				// double check the parameter
 				if(InputUtils.isValidInt(resultSet.getString(1)) == false) {
-					System.out.println("error");
+					
 					throw new IllegalArgumentException("The id parameter must be a valid integer");
 				} else {
-					System.out.println("success!");
+					
 					work.setUrl("http://www.ausstage.edu.au/pages/work/"+resultSet.getString(1));
 				}
 				//work.setUrl(LinksManager.getWorkLink(resultSet.getString(1)));
@@ -1492,10 +1508,10 @@ public class SearchManager {
 			
 			// double check the parameter
 			if(InputUtils.isValidInt(resultSet.getString(1)) == false) {
-				System.out.println("error");
+				
 				throw new IllegalArgumentException("The id parameter must be a valid integer");
 			} else {
-				System.out.println("success!");
+				
 				work.setUrl("http://www.ausstage.edu.au/pages/work/"+resultSet.getString(1));
 			}
 			//work.setUrl(LinksManager.getWorkLink(resultSet.getString(1)));
