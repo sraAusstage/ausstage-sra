@@ -885,6 +885,18 @@ public class Item {
 
   public void setIsInCopyMode(boolean p_is_in_copy_mode) {
     m_is_copy = p_is_in_copy_mode;
+    //clear the id from the item item links so that on add, the new records id will be inserted.
+    //also clear the notes as it is a new association.
+    for (ItemItemLink iil : m_item_itemlinks){
+      iil.setNotes("");
+      iil.setChildNotes("");
+  	  if (iil.getChildId().equals(m_itemid)){
+  		  iil.setChildId("0");
+  	  }
+  	  if (iil.getItemId().equals(m_itemid)){
+  		  iil.setItemId("0");
+  	  }
+    }
   }
 
 
@@ -3679,8 +3691,7 @@ public class Item {
 			  url.toLowerCase().endsWith(".bmp")) {
 		  isImage = true;
 	  }
-	  System.out.println("checking image at "+url);
-	  System.out.println("is image is "+isImage);
+	
 	  return isImage; 
   }
   
@@ -3694,33 +3705,21 @@ public class Item {
 		  if (isImageUrl(path) ) {
 			  //read the image from a URL
 			  URL url = new URL(path);
-			  System.out.println("1");
 			  
 			  //--------------------------
 			  //deal with http and https 
 			  if(path.indexOf("https://")!=-1){
-				  System.out.println("2");
                   final SSLContext sc = SSLContext.getInstance("SSL");
-                  System.out.println("3");
                   sc.init(null, getTrustingManager(), new java.security.SecureRandom());
-                  System.out.println("4");
                   HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-                  System.out.println("5");
                   connection = url.openStream();
-                  System.out.println("6");
-                  
                }
               else{
                   connection = url.openStream();
-                  System.out.println("7");
               }
 			  BufferedImage bufferedimage = ImageIO.read(connection);
-			  System.out.println("8");
 			  width          = bufferedimage.getWidth();
-			  System.out.println("9");
               height         = bufferedimage.getHeight();
-              System.out.println("width="+width);
-              System.out.println("height="+height);
 			  
               int idx = (url.getPath() == null ? -1 : url.getPath().lastIndexOf("."));
 			  if (idx != -1) {
@@ -3729,12 +3728,8 @@ public class Item {
 				  //imageType = ImageType.UNKNOWN;
 				  return null;
 			  }
-			  //img = new Image(url.openStream(), imageType);
-			  //small thumbs
-	          //return squareIt(img, 100, 0.1, 0.95f, 0.08f);
-		  } else {
-			  System.out.println("Not a url");
-		  }
+			
+		  } 
 	  } catch (IOException ioe) {
 		  ioe.printStackTrace();
 	  }
@@ -3766,8 +3761,6 @@ public class Item {
 			  img = new Image(url.openStream(), imageType);
 			  //small thumbs
 	          return squareIt(img, 100, 0.1, 0.95f, 0.08f);
-		  } else {
-			  System.out.println("Not a url");
 		  }
 	  } catch (IOException ioe) {
 		  ioe.printStackTrace();

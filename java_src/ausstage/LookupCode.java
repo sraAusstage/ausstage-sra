@@ -281,44 +281,7 @@ public class LookupCode {
 		}
 	}
 
-	/*
-	 * Name: checkInUse ()
-	 * 
-	 * Purpose: Checks to see if the specified Lookup code is in use in the
-	 * database.
-	 * 
-	 * Parameters: p_id : id of the record
-	 * 
-	 * Returns: True if the country is in use, else false
-	 *//*
-		 * public boolean checkInUse(int p_id) { CachedRowSet l_rs; String
-		 * sqlString; boolean ret = false;
-		 * 
-		 * try { Statement stmt = m_db.m_conn.createStatement ();
-		 * 
-		 * // Venue sqlString = "SELECT * FROM venue WHERE " + "countryid=" +
-		 * p_id; l_rs = m_db.runSQL (sqlString, stmt);
-		 * 
-		 * if (l_rs.next()) ret = true; l_rs.close();
-		 * 
-		 * // Organisation sqlString = "SELECT * FROM organisation WHERE " +
-		 * "countryid=" + p_id; l_rs = m_db.runSQL (sqlString, stmt);
-		 * 
-		 * if (l_rs.next()) ret = true; l_rs.close();
-		 * 
-		 * // Contributor sqlString = "SELECT * FROM contributor WHERE " +
-		 * "countryid=" + p_id; l_rs = m_db.runSQL (sqlString, stmt);
-		 * 
-		 * if (l_rs.next()) ret = true; l_rs.close();
-		 * 
-		 * stmt.close(); return (ret); } catch (Exception e) {
-		 * System.out.println(">>>>>>>> EXCEPTION <<<<<<<<"); System.out.println
-		 * ("An Exception occured in checkInUse().");
-		 * System.out.println("MESSAGE: " + e.getMessage());
-		 * System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
-		 * System.out.println("CLASS.TOSTRING: " + e.toString());
-		 * System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<"); return (ret); } }
-		 */
+	
 	/*
 	 * Name: validateObjectForDB ()
 	 * 

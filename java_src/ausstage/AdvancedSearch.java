@@ -781,8 +781,8 @@ public class AdvancedSearch {
 		try {
 			Statement l_stmt = m_db.m_conn.createStatement();
 			m_crset = m_db.runSQL(m_sqlString, l_stmt);
-			System.out.println(m_sqlString.toString());
-			System.out.println(m_sqlWhereString.toString());
+			//System.out.println(m_sqlString.toString());
+			//System.out.println(m_sqlWhereString.toString());
 			l_stmt.close();
 
 		} catch (Exception e) {

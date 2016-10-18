@@ -62,8 +62,6 @@ public class BSServiceTest
             //String ret = (String) call.invoke( new Object[] { args[0],args[1],args[2],args[3],args[4]} );
             String ret = (String) call.invoke( new Object[] { "hamlet","1997","alphab_frwd","and","all"} );
             
-            System.out.println("Results");
-            System.out.println("" + ret);
         } catch (Exception e) {
             System.err.println(e.toString());
             System.err.println(((org.apache.axis.AxisFault)e).getFaultReason());

@@ -18,6 +18,8 @@ import java.sql.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import ausstage.Database;
 import sun.jdbc.rowset.*;
 
@@ -274,7 +276,7 @@ public class Organisation {
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
-				System.out.println("In add 2");
+				
 				// As the notes is a text area, need to limit characters
 				if (m_notes.length() >= 300) m_notes = m_notes.substring(0, 299);
 				sqlString = "INSERT INTO organisation (name, other_names1, other_names2, " + "other_names3, address, suburb, state, contact, postcode, phone1, phone2, phone3, "
@@ -352,7 +354,7 @@ public class Organisation {
 			}
 			modifyOrgOrgLinks(INSERT);
 			stmt.close();
-			System.out.println("In add 4");
+			
 			return (ret);
 		} catch (Exception e) {
 
@@ -715,19 +717,23 @@ public class Organisation {
 	}
 
 	public String getName() {
-		return (m_organisation_name);
+		//return (m_organisation_name);
+		return StringEscapeUtils.escapeHtml(m_organisation_name);
 	}
 
 	public String getOtherNames1() {
-		return (m_other_names1);
+		//return (m_other_names1);
+		return StringEscapeUtils.escapeHtml(m_other_names1);
 	}
 
 	public String getOtherNames2() {
-		return (m_other_names2);
+		//return (m_other_names2);
+		return StringEscapeUtils.escapeHtml(m_other_names2);
 	}
 
 	public String getOtherNames3() {
-		return (m_other_names3);
+		//return (m_other_names3);
+		return StringEscapeUtils.escapeHtml(m_other_names3);
 	}
 
 	public String getAddress() {

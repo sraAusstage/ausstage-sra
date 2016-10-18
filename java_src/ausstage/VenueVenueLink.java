@@ -178,7 +178,6 @@ public class VenueVenueLink {
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			
-			System.out.println("VenueVenueLinks DELETED");
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 			System.out.println("An Exception occured in deleteVenueVenueLinksForVenue().");

@@ -37,7 +37,6 @@ public class Image {
      * @throws IOException
      */
     Image(InputStream input, ImageType sourceType) throws IOException {
-    	System.out.println("using input stream");
         img = ImageIO.read(input);
         input.close();
         this.sourceType = (sourceType == null ? ImageType.UNKNOWN : sourceType);

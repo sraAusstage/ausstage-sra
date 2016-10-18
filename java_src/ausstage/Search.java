@@ -228,7 +228,7 @@ public class Search {
 				m_sql_string.append(" group by eventid order by " + m_orderBy + " " + m_sort_Ord);
 			else
 				m_sql_string.append(" group by eventid order by event_name, first_date asc");
-			System.out.println("Order BY: " + m_orderBy);
+			//System.out.println("Order BY: " + m_orderBy);
 
 		} else if (m_search_for.equals("venue")) {
 
@@ -618,7 +618,7 @@ public class Search {
 		}
 
 		// DEBUG SQL STATEMENT
-		System.out.println("m_sql_string = " + m_sql_string.toString());
+		//System.out.println("m_sql_string = " + m_sql_string.toString());
 
 		return (l_crset);
 	}
@@ -633,7 +633,7 @@ public class Search {
 
 		if (calling_from_BSService) {
 
-			System.out.println("Executing method Search.getAll(calling_from_BSService)");
+			//System.out.println("Executing method Search.getAll(calling_from_BSService)");
 			String m_sql_items = "eventid, event_name, venue_name, suburb, venue_state, first_date, resource_flag";
 			m_sql_string.append("select distinct " + m_sql_items + " from search_all ");
 			m_sql_string.append("where ");
@@ -652,7 +652,7 @@ public class Search {
 
 				l_crset = m_db.runSQL(altered_query, l_stmt);
 				l_stmt.close();
-				System.out.println("SQL STRING: " + altered_query);
+				//System.out.println("SQL STRING: " + altered_query);
 
 			} catch (Exception e) {
 				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -720,7 +720,7 @@ public class Search {
 		m_rset = null;
 		if (calling_from_BSService) {
 
-			System.out.println("Executing method Search.getEvents(calling_from_BSService)");
+			//System.out.println("Executing method Search.getEvents(calling_from_BSService)");
 			String m_sql_items = "eventid, event_name, venue_name, suburb, venue_state, first_date,  resource_flag ";
 			m_sql_string.append("select distinct " + m_sql_items + "  from search_event where ");
 			buildSqlSearchString();
@@ -736,7 +736,7 @@ public class Search {
 				Statement l_stmt;
 				l_stmt = m_db.m_conn.createStatement();
 				m_rset = m_db.runSQL(altered_query, l_stmt);
-				System.out.println("SQL STRING(events): " + altered_query);
+				//System.out.println("SQL STRING(events): " + altered_query);
 				l_stmt.close();
 			} catch (Exception e) {
 				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -759,7 +759,7 @@ public class Search {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			System.out.println("SQL STRING(events): " + m_sql_string.toString());
+			//System.out.println("SQL STRING(events): " + m_sql_string.toString());
 			l_stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -822,8 +822,8 @@ public class Search {
 									") res "+ 
 									"WHERE (orgcount > 0 OR venuecount > 0)" + (m_orderBy.equals("")?"":" order by "+m_orderBy);
 		
-		System.out.println("INTERNATIONAL SEARCH SQL ******");
-		System.out.println(sql_search_string);
+		//System.out.println("INTERNATIONAL SEARCH SQL ******");
+		//System.out.println(sql_search_string);
 		try {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
@@ -847,13 +847,12 @@ public class Search {
 	 */
 
 	public CachedRowSet getResources() {
-		System.out.println("get resources called");
+		
 		// just select the fields that will be good for the distinct
 		String m_sql_items = "search_resource.itemid, search_resource.item_sub_type_lov_id,search_resource.item_sub_type,"
 				+ "  search_resource.copyright_date,  search_resource.issued_date, search_resource.accessioned_date,  search_resource.citation_date,"
 				+ " search_resource.source_citation,search_resource.citation,search_resource.title" + ", if(ITEM_URL is null,' ','ONLINE') resource_flag";
 		m_sql_string.append("select distinct " + m_sql_items + " from search_resource where ");
-		System.out.println("calling build resource sql search string");
 		
 		buildResourceSqlSearchString();
 
@@ -862,7 +861,7 @@ public class Search {
 			l_stmt = m_db.m_conn.createStatement();
 
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			System.out.println("SQL STRING(resources): " + m_sql_string.toString());
+			//System.out.println("SQL STRING(resources): " + m_sql_string.toString());
 			l_stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -886,7 +885,6 @@ public class Search {
 		m_rset = null;
 		if (calling_from_BSService) {
 
-			System.out.println("Executing method Search.getResources(calling_from_BSService)");
 			// just select the fields that will be good for the distinct
 			String m_sql_items = "itemid, item_sub_type_lov_id,item_sub_type," + "  copyright_date,  issued_date, accessioned_date,  citation_date,"
 					+ " source_citation,citation,title" + ", ITEM_URL";
@@ -904,7 +902,7 @@ public class Search {
 				Statement l_stmt;
 				l_stmt = m_db.m_conn.createStatement();
 				m_rset = m_db.runSQL(altered_query, l_stmt);
-				System.out.println("SQL STRING(resources): " + altered_query);
+				//System.out.println("SQL STRING(resources): " + altered_query);
 				l_stmt.close();
 			} catch (Exception e) {
 				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -951,7 +949,6 @@ public class Search {
 		m_rset = null;
 		if (calling_from_BSService) {
 
-			System.out.println("Executing method Search.getVenues(calling_from_BSService)");
 			String m_sql_items = "venueid, venue_name, street, suburb, venue_state, web_links, resource_flag";
 			m_sql_string.append("select distinct " + m_sql_items + " from search_venue where ");
 			buildSqlSearchString();
@@ -967,7 +964,7 @@ public class Search {
 				Statement l_stmt;
 				l_stmt = m_db.m_conn.createStatement();
 				m_rset = m_db.runSQL(altered_query, l_stmt);
-				System.out.println("SQL STRING(venues): " + altered_query);
+				//System.out.println("SQL STRING(venues): " + altered_query);
 				l_stmt.close();
 			} catch (Exception e) {
 				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -983,7 +980,11 @@ public class Search {
 
 	public CachedRowSet getVenues() {
 
-		String m_sql_items = "search_venue.venueid, venue_name, street, suburb, venue_state, venue_country, web_links, resource_flag, CONCAT_WS(' - '  ,min(events.yyyyfirst_date), max(events.yyyylast_date)) dates,count(distinct events.eventid) num, "
+		String m_sql_items = "search_venue.venueid, venue_name, street, suburb, venue_state, venue_country, "
+			    + " web_links, resource_flag, "
+			    + "if (MIN(events.yyyyfirst_date) = greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)), MIN(events.yyyyfirst_date), concat_ws(' - ', MIN(events.yyyyfirst_date), greatest(max(events.yyyyfirst_date), max(events.yyyylast_date)))) dates, "
+			    //+ " CONCAT_WS(' - '  ,min(events.yyyyfirst_date), max(events.yyyylast_date)) dates, "
+			    + " count(distinct events.eventid) num, "
 				+ " count(distinct itemvenuelink.itemid) as total";
 		m_sql_string.append("select distinct " + m_sql_items + " from search_venue " + "LEFT JOIN events ON (search_venue.venueid = events.venueid) "
 				+ "LEFT JOIN itemvenuelink ON (search_venue.venueid = itemvenuelink.venueid)where ");
@@ -993,7 +994,7 @@ public class Search {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			System.out.println("SQL STRING(venues): " + m_sql_string.toString());
+			//System.out.println("SQL STRING(venues): " + m_sql_string.toString());
 			l_stmt.close();
 
 		} catch (Exception e) {
@@ -1024,7 +1025,7 @@ public class Search {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			System.out.println("SQL STRING(contributors): " + m_sql_string.toString());
+			//System.out.println("SQL STRING(contributors): " + m_sql_string.toString());
 			l_stmt.close();
 
 		} catch (Exception e) {
@@ -1047,7 +1048,6 @@ public class Search {
 
 		if (calling_from_BSService) {
 
-			System.out.println("Executing method Search.getContributors(calling_from_BSService)");
 			// String m_sql_items =
 			// "contributorid, contrib_name, last_name, first_name, contrib_gender, nationality, date_of_birth_str as date_of_birth, contrib_state, event_dates, DATE_OF_DEATH_STR, DATE_OF_BIRTH_STR, resource_flag";
 			String m_sql_items = "contributorid, contrib_name, last_name, first_name, contrib_gender, nationality, date_of_birth, contrib_state, event_dates, DATE_OF_DEATH_STR, DATE_OF_BIRTH_STR, resource_flag";
@@ -1065,7 +1065,7 @@ public class Search {
 				Statement l_stmt;
 				l_stmt = m_db.m_conn.createStatement();
 				m_rset = m_db.runSQL(altered_query, l_stmt);
-				System.out.println("SQL STRING(contributors): " + altered_query);
+				//System.out.println("SQL STRING(contributors): " + altered_query);
 				l_stmt.close();
 			} catch (Exception e) {
 				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -1086,8 +1086,6 @@ public class Search {
 	public CachedRowSet getOrganisations(boolean calling_from_BSService) {
 		m_rset = null;
 		if (calling_from_BSService) {
-
-			System.out.println("Executing method Search.getOrganisations(calling_from_BSService)");
 			String m_sql_items = "organisationid, name, address, suburb, org_state, org_country, suburb_state_country, web_links, resource_flag";
 			m_sql_string.append("select distinct " + m_sql_items + "  from search_organisation where ");
 			buildSqlSearchString();
@@ -1103,7 +1101,7 @@ public class Search {
 				Statement l_stmt;
 				l_stmt = m_db.m_conn.createStatement();
 				m_rset = m_db.runSQL(altered_query, l_stmt);
-				System.out.println("SQL STRING(organisations): " + altered_query);
+				//System.out.println("SQL STRING(organisations): " + altered_query);
 				l_stmt.close();
 			} catch (Exception e) {
 				System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -1137,7 +1135,7 @@ public class Search {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			System.out.println("SQL STRING(organisations): " + m_sql_string.toString());
+			//System.out.println("SQL STRING(organisations): " + m_sql_string.toString());
 			l_stmt.close();
 
 		} catch (Exception e) {
@@ -1174,7 +1172,7 @@ public class Search {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			System.out.println("SQL STRING(works): " + m_sql_string.toString());
+			//System.out.println("SQL STRING(works): " + m_sql_string.toString());
 			l_stmt.close();
 
 		} catch (Exception e) {
@@ -1226,9 +1224,7 @@ public class Search {
 
 	public void setKeyWord(String p_key_word) {
 		m_key_word = p_key_word.trim();
-		System.out.println("*********************************************");
-		System.out.println("search term is "+m_key_word);
-		System.out.println("*********************************************");
+		
 	}
 
 	public void setSqlSwitch(String p_sql_switch) {

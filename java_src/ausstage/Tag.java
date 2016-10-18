@@ -61,7 +61,6 @@ public class Tag {
 			// {
 			sqlString = "INSERT INTO tag (tag, tag_type, id) VALUES (" + "'" + m_db.plSqlSafeString(tagName) + "'," + "'" + m_db.plSqlSafeString(objectType) + "'," + "'"
 					+ m_db.plSqlSafeString(objectId) + "')";
-			System.out.println(sqlString);
 			m_db.runSQL(sqlString, stmt);
 
 			// Get the inserted index

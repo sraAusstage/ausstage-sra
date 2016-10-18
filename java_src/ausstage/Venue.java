@@ -22,6 +22,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 public class Venue {
@@ -278,7 +279,6 @@ public class Venue {
 			} else {
 				strCapacity = Integer.toString(Integer.parseInt(m_capacity));
 			}
-			// System.out.println("In insert:");
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
@@ -307,15 +307,13 @@ public class Venue {
 				if (!m_latitude.equals("")) sqlString += ",'" + m_latitude + "'";
 				if (!m_radius.equals("")) sqlString += ",'" + m_radius + "'";
 				if (!m_elevation.equals("")) sqlString += ",'" + m_elevation + "'";
-				// System.out.println("SQL completed: "+ sqlString);
 
 				sqlString += ")";
 				m_db.runSQL(sqlString, stmt);
 
 				// Get the inserted index
 				m_venue_id = m_db.getInsertedIndexValue(stmt, "venueid_seq");
-				// System.out.println("Venue ID inserted:" + m_venue_id);
-				// m_eventid = m_db.getInsertedIndexValue(stmt, "eventid_seq");
+				
 				ret = true;
 
 				modifyVenueVenueLinks(INSERT);
@@ -323,7 +321,7 @@ public class Venue {
 			stmt.close();
 			return (ret);
 		} catch (Exception e) {
-			// System.out.println("Insert exception");
+			
 			m_error_string = "Unable to add the venue. The data may be invalid.";
 			return (false);
 		}
@@ -343,7 +341,6 @@ public class Venue {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			boolean l_ret = false;
-			// System.out.println("In update");
 
 			// Check to make sure that the user has entered in all of the
 			// required fields
@@ -491,7 +488,6 @@ public class Venue {
 
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			// System.out.println("1");
 			// Must have a name
 			if (m_venue_name != null && m_venue_name.equals("")) {
 				m_error_string = "Venue name is required.";
@@ -502,7 +498,6 @@ public class Venue {
 			 * admin.Common.checkIfNumber(m_postcode)){ m_error_string =
 			 * "Postcode must be a number."; l_ret = false; }
 			 */
-			// System.out.println("2");
 			// Default
 			if (m_capacity.equals("")) m_capacity = "null";
 
@@ -512,9 +507,8 @@ public class Venue {
 						+ "' and state=" + m_state_id 
 						+ " and suburb='" + m_db.plSqlSafeString(m_suburb) 
 						+ "' and venueid!=" + (m_venue_id.equals("") ? "0" : m_venue_id);
-			System.out.println(sqlString);
+			//System.out.println(sqlString);
 			l_rs = m_db.runSQL(sqlString, stmt);
-			// System.out.println("3 Query executed");
 			if (l_rs.next()) {
 				m_error_string = "A venue with that name and suburb in that state already exists.";
 				l_ret = false;
@@ -659,19 +653,23 @@ public class Venue {
 	// ////////Get Functions//////////////////
 
 	public String getName() {
-		return (m_venue_name);
+		//return (m_venue_name);
+		return StringEscapeUtils.escapeHtml(m_venue_name);
 	}
 	
 	public String getOtherNames1() {
-		return (m_other_names1);
+		//return (m_other_names1);
+		return StringEscapeUtils.escapeHtml(m_other_names1);
 	}
 	
 	public String getOtherNames2() {
-		return (m_other_names2);
+		//return (m_other_names2);
+		return StringEscapeUtils.escapeHtml(m_other_names2);
 	}
 	
 	public String getOtherNames3() {
-		return (m_other_names3);
+		//return (m_other_names3);
+		return StringEscapeUtils.escapeHtml(m_other_names3);
 	}
 
 	public String getStreet() {
@@ -807,9 +805,10 @@ public class Venue {
 		ResultSet l_rs = null;
 		try {
 
-			sqlString = "select venueid, venue_name, street , suburb ,states.state as state,country.countryname, "
+			sqlString = "select venueid, venue_name, street , suburb ,states.state as state, country.countryname, "
 					//+ "CONCAT_WS(', ',venue.venue_name,venue.street,venue.suburb,IF(states.state='O/S', country.countryname, states.state)) AS OUTPUT "
-					+ "CONCAT_WS(', ',venue.venue_name,venue.suburb,IF(states.state='O/S', country.countryname, states.state)) AS OUTPUT "
+					+ "CONCAT_WS(', ',venue.venue_name, IF(venue.suburb IS NULL OR venue.suburb = '', null, venue.suburb), "
+					+ "IF(states.state='O/S', country.countryname, IF(states.state='[Unknown]', null, states.state))) AS OUTPUT "
 					+ "from venue "
 					+ "LEFT Join states on (venue.state = states.stateid) " + "LEFT join country on (venue.countryid = country.countryid) " 
 					+ "WHERE venueid=" + p_venue_id + " "

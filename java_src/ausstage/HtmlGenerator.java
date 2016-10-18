@@ -918,18 +918,18 @@ public class HtmlGenerator {
 		}
 		//is it pdf?
 		else if (imageUrl.toLowerCase().endsWith(".pdf")){
-			ret = "<a target='_blank' href='"+parentUrl+"'>"
+		/*	ret = "<a target='_blank' href='"+parentUrl+"'>"
 				+		"<div style='margin-right:5px; width:100px; height:100px; float:left;' >"
 				+			"<iframe src='http://docs.google.com/gview?url="+imageUrl+"&embedded=true' style='width:"+width+"; height:"+height+";' frameborder='0'></iframe>"
 				+		"</div>"
-				+ "</a>";
+				+ "</a>";*/
 		}
 		//else display the page
 		else {
 			ret = "<div style='margin-right:5px; width:160px; height:"+height+"; float:left;' >"
 				+		"<div class='iframe-link'>"
 				+			"<iframe src='"+imageUrl+"' width='100%' height='500' frameborder='0' scrolling='no' seamless='seamless'></iframe>" 
-				+			"<a class='iframe-link' href='"+imageUrl+"' target='_blank'> &nbsp;</a>"
+				+			"<a class='iframe-link' href='"+parentUrl+"' target='_blank'> &nbsp;</a>"
 				+		"</div>"
 				+ "</div>";
 		}

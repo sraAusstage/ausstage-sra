@@ -408,7 +408,7 @@ import java.util.GregorianCalendar;
   		m_key_word = p_key_word.trim();
   		m_key_word = m_key_word.replaceAll(" ","% %");
   		m_key_word = "%"+m_key_word.toLowerCase()+"%";
-  		System.out.println("search term is "+m_key_word);
+  		//System.out.println("search term is "+m_key_word);
   	}
   	
   	// return a formatted search count with commas

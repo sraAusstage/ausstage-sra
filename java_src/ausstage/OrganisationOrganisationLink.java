@@ -131,7 +131,7 @@ public class OrganisationOrganisationLink {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			boolean l_ret = false;
-			System.out.println("In update");
+			//System.out.println("In update");
 			sqlString = "DELETE FROM OrgOrgLink where " + "organisationId=" + p_organisationId;
 			m_db.runSQL(sqlString, stmt);
 			sqlString = "DELETE FROM OrgOrgLink where " + "childId=" + p_organisationId;

@@ -137,21 +137,16 @@ public class EventEventLink {
 	 * Returns: True if successful, else false
 	 */
 	public boolean update(String p_eventId, Vector<EventEventLink> p_links) {
-		// System.out.println("In update:" + p_childLinks + ", Event Id:"+
-		// p_eventId);
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			boolean l_ret = false;
 
-			System.out.println("In update");
 			sqlString = "DELETE FROM EventEventLink where " + "eventId=" + p_eventId;
 			m_db.runSQL(sqlString, stmt);
 			sqlString = "DELETE FROM EventEventLink where " + "childId=" + p_eventId;
 			m_db.runSQL(sqlString, stmt);
 			if (p_links != null) {
-				// System.out.println("Event:" + p_childLinks + ", Event Id:"+
-				// p_eventId);
 				for (int i = 0; i < p_links.size(); i++) {
 					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, relationlookupid, notes, childnotes) " 
 								+ "VALUES (" + p_links.get(i).getEventId() 

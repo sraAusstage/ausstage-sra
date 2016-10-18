@@ -245,14 +245,14 @@ public class Work {
 
 	
 	public String getLinkedOrganisationNames() {
-		System.out.println("getLinkedOrganisations function -----");
+		//System.out.println("getLinkedOrganisations function -----");
 		String orgNames = "";
 		ResultSet l_rs = null;
 		String l_sql = "";
 		try {
-			System.out.print("work.java 1");
+			//System.out.print("work.java 1");
 			Statement stmt = m_db.m_conn.createStatement();
-			System.out.print("work.java 2");
+			//System.out.print("work.java 2");
 			l_sql = (new StringBuilder("SELECT DISTINCT organisation.organisationid, organisation.name"
 					+ " FROM organisation, workorglink WHERE "
 					+ " workorglink.organisationid = organisation.organisationid AND workorglink.workid=")).append(m_workid).append(" ").append("ORDER BY organisation.name ")
@@ -654,7 +654,6 @@ public class Work {
 					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0" + cons + ")) = 0" +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid in (0" + orgs + ")) = " + orgCount +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid not in (0" + orgs + ")) = 0"; 
-			System.out.println("Work check SQL: " + l_sql);
 			
 			m_workid = m_db.getInsertedIndexValue(stmt, "workid_seq");
 			ResultSet l_rs = m_db.runSQLResultSet(l_sql, stmt);
@@ -750,7 +749,6 @@ public class Work {
 					" and (select count(*) from workconlink where workid = work.workid and contributorid not in (0" + cons + ")) = 0" +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid in (0" + orgs + ")) = " + orgCount +
 					" and (select count(*) from workorglink where workid = work.workid and organisationid not in (0" + orgs + ")) = 0"; 
-			System.out.println("Work check (update) SQL: " + l_sql);
 			
 			ResultSet l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			if (!l_rs.next()) {

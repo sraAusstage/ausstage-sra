@@ -98,8 +98,6 @@ public class Contributor {
 	public void load(int p_id) {
 		CachedRowSet l_rs;
 		String sqlString;
-		//System.out.println("*******");
-		//System.out.println("* Loading Contributor");
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
@@ -141,7 +139,6 @@ public class Contributor {
 				m_updated_by_user = l_rs.getString("updated_by_user");
 				m_updated_date = l_rs.getDate("updated_date");
 				
-				//System.out.println("* Contributor firstname : "+m_name);
 				loadOrganisationLinks();
 				loadLinkedContributors();
 
@@ -552,7 +549,6 @@ public class Contributor {
 
 			modifyConOrgLinks();
 			modifyContribContribLinks(UPDATE);
-			//System.out.println("In UPDATE 3");
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -719,13 +715,26 @@ public class Contributor {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			sqlString = " SELECT "+
-						" if (min(events.yyyyfirst_date) = greatest(max(events.yyyylast_date),max(events.yyyyfirst_date)),min(events.yyyyfirst_date),concat(min(events.yyyyfirst_date),' - ', greatest(max(events.yyyylast_date),max(events.yyyyfirst_date)))) "+
-						" as output "+
-						" FROM contributor "+
+						" if (min(events.yyyyfirst_date) = " +
+						"	greatest(" +
+						"		IF (max(events.yyyylast_date) IS NULL, max(events.yyyyfirst_date), max(events.yyyylast_date)" +
+						" 		), " +
+						"		max(events.yyyyfirst_date)" +
+						"	), "+
+						" 	min(events.yyyyfirst_date), "+
+						" 	concat(min(events.yyyyfirst_date),' - ', " +
+						" 	greatest(IF " +
+						"		(max(events.yyyylast_date) IS NULL, " +
+						"		max(events.yyyyfirst_date), max(events.yyyylast_date)),max(events.yyyyfirst_date)" +
+						"		)" +
+						"	)" +
+						" )" + 
+						" as output "+ 
+						" FROM contributor "+ 
 						" LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "+ 
 						" LEFT JOIN events ON (conevlink.eventid = events.eventid) "+ 
-						" WHERE contributor.contributorid= "+p_id;
-			System.out.println("SQL SELECT FOR DATE RANGE : "+sqlString);
+						"WHERE contributor.contributorid="+p_id;
+			
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) retStr = l_rs.getString("output");

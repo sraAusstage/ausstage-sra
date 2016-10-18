@@ -970,8 +970,6 @@ public class Event {
 					modifyPlayOrigins(UPDATE);
 					modifyProductionOrigins(UPDATE);
 
-					System.out.println("Update events:" + sqlString);
-
 					// Update the item link table
 					// Delete the current links, then for each item id in the
 					// vector
@@ -991,8 +989,7 @@ public class Event {
 			stmt.close();
 			return (l_ret);
 		} catch (Exception e) {
-			// System.out.println(e);
-			// System.out.println("sqlString = " + sqlString);
+			
 			m_error_string = "Unable to update the Event. The data may be invalid.";
 			return (false);
 		}
@@ -2144,20 +2141,11 @@ public class Event {
 
 		this.m_world_premier = Common.convertYesNoToBool(request.getParameter("f_world_premier"));
 		this.m_review = Common.convertYesNoToBool(request.getParameter("f_review"));
-		//System.out.println("request.getParameter:" + request.getParameter("f_review"));
-		// this.m_int_perf_history =
-		// Common.convertYesNoToBool(request.getParameter("f_int_perf_history"));
 		this.m_status = request.getParameter("f_status");
 		this.m_venueid = request.getParameter("f_venueid");
 		this.m_primary_genre = request.getParameter("f_primary_genre");
 		this.m_further_information = request.getParameter("f_further_information");
 		this.m_description_source = request.getParameter("f_description_source");
-		// this.m_est_first_date =
-		// Common.convertYesNoToBool(request.getParameter("f_est_first_date"));
-		// this.m_est_last_date =
-		// Common.convertYesNoToBool(request.getParameter("f_est_last_date"));
-		// this.m_est_open_date =
-		// Common.convertYesNoToBool(request.getParameter("f_est_open_date"));
 		this.m_part_of_a_tour =
 		Common.convertYesNoToBool(request.getParameter("f_part_of_a_tour"));
 
@@ -2397,10 +2385,7 @@ public class Event {
 
 			stmt.close();
 
-			// DEBUG LINE
-			// System.out.println ("SQL String in Event.existInEvents() is\n" +
-			// l_sqlStr);
-
+		
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
 			System.out.println("An Exception occured in Event.existInEvents().");
@@ -2658,7 +2643,7 @@ public class Event {
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();
-			// System.out.println("loadLinkedEvents");
+			
 			while (l_rs.next()) {
 				EventEventLink eel = new EventEventLink(m_db);
 				eel.load(l_rs.getString("eventeventlinkid"));
