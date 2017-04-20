@@ -247,8 +247,15 @@
 										// use the contribId to load a new contributor each time:
 										contributorCreator.load(new Integer(contribId).intValue());
 										contribId = "" + contributorCreator.getId();
-										name = contributorCreator.getName() + " " + contributorCreator.getLastName();
-										
+										name = contributorCreator.getLastName();
+										if(
+												contributorCreator.getLastName() != null && 
+												!"".equals(contributorCreator.getLastName()) &&
+												contributorCreator.getName() != null && 
+												!"".equals(contributorCreator.getName()) ) {
+											name += ", ";
+										}
+										name += contributorCreator.getName();
 										%>	
 										<tr>
 											<td width="<%=secCol1Wdth%>" valign="top">
