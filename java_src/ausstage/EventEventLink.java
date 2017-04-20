@@ -29,6 +29,7 @@ public class EventEventLink {
 	private String relationLookupId;
 	private String notes;
 	private String childNotes;
+	private String orderby;
 	private String m_error_string;
 	
 	/*
@@ -61,6 +62,7 @@ public class EventEventLink {
 		relationLookupId = "0";
 		notes = "";
 		childNotes = "";
+		orderby = "0";
 		m_error_string = "";
 	}
 
@@ -95,6 +97,7 @@ public class EventEventLink {
 				relationLookupId = l_rs.getString("relationlookupid");
 				notes = l_rs.getString("notes");
 				childNotes = l_rs.getString("childnotes");
+				orderby = l_rs.getString("orderby");
 
 				if (notes == null) notes = "";
 				if (childNotes == null) childNotes = "";
@@ -148,12 +151,13 @@ public class EventEventLink {
 			m_db.runSQL(sqlString, stmt);
 			if (p_links != null) {
 				for (int i = 0; i < p_links.size(); i++) {
-					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, relationlookupid, notes, childnotes) " 
+					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, relationlookupid, notes, childnotes, orderby) " 
 								+ "VALUES (" + p_links.get(i).getEventId() 
 								+ ", " + p_links.get(i).getChildId() 
 								+ ", " + p_links.get(i).getRelationLookupId()
 								+ ", '" + m_db.plSqlSafeString(p_links.get(i).getNotes())+ "' "
-								+ ", '" + m_db.plSqlSafeString(p_links.get(i).getChildNotes())+ "' )";
+								+ ", '" + m_db.plSqlSafeString(p_links.get(i).getChildNotes())+ "' "
+								+ ", " + p_links.get(i).getOrderby() + ")";
 					
 					m_db.runSQL(sqlString, stmt);
 				}
@@ -265,6 +269,7 @@ public class EventEventLink {
 				eventEventLink.setRelationLookupId(rset.getString("relationlookupid"));
 				eventEventLink.setNotes(rset.getString("notes"));
 				eventEventLink.setChildNotes(rset.getString("childnotes"));
+				eventEventLink.setOrderby(rset.getString("orderby"));
 
 				allEventEventLinks.add(eventEventLink);
 			}
@@ -307,6 +312,10 @@ public class EventEventLink {
 		if (childNotes.length() > 500) childNotes = childNotes.substring(0, 499);
 	}
 	
+	public void setOrderby (String s) {
+		orderby = s;
+	}
+	
 	public String getEventId() {
 		return (eventId);
 	}
@@ -325,6 +334,10 @@ public class EventEventLink {
 
 	public String getChildNotes() {
 		return (childNotes);
+	}
+	
+	public String getOrderby () {
+		return orderby;
 	}
 	
 	public String getError() {

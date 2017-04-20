@@ -27,6 +27,7 @@ public class WorkEvLink {
 	// All of the record information
 	private String eventId;
 	private String workId;
+	private String orderby;
 	private String m_error_string;
 
 	// private Work work;
@@ -57,6 +58,7 @@ public class WorkEvLink {
 	public void initialise() {
 		eventId = "0";
 		workId = "0";
+		orderby = "0";
 
 		m_error_string = "";
 	}
@@ -64,26 +66,51 @@ public class WorkEvLink {
 	/*
 	 * Name: load ()
 	 * 
-	 * Purpose: Sets the class to a contain the OrgEvLink information for the
-	 * specified OrgEvLink id.
+	 * Purpose: Sets the class to a contain the WorkEvLink information for the
+	 * specified WorkEvLink id.
 	 * 
-	 * Parameters: p_id : id of the Organisation record e_id : id of the Event
+	 * Parameters: w_id : id of the work record e_id : id of the Event
 	 * record Note: There is no unique key for this table.
 	 * 
 	 * Returns: None
 	 */
-	public void load(String p_id, String e_id) {
+	public void load(String w_id, String e_id) {
 		CachedRowSet l_rs;
 		String sqlString;
 
 		// Reset the object
 		initialise();
 
-		workId = p_id;
+		workId = w_id;
 		eventId = e_id;
+		
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+
+			sqlString = " SELECT *"
+						+ "From eventworklink " 
+						+ " WHERE workId = "+ w_id 
+						+ " AND eventId = " + e_id;
+			
+			l_rs = m_db.runSQL(sqlString, stmt);
+
+			if (l_rs.next()) {
+				orderby = l_rs.getString("orderby");
+			}
+			l_rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in WorkEvLink: load().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+		}
 
 	}
-
+	
+	
 	/*
 	 * Name: add ()
 	 * 
@@ -94,8 +121,8 @@ public class WorkEvLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	public boolean add(String eventId, Vector orgEvLinks) {
-		return update(eventId, orgEvLinks);
+	public boolean add(String eventId, Vector workEvLinks) {
+		return update(eventId, workEvLinks);
 	}
 
 	/*
@@ -109,7 +136,7 @@ public class WorkEvLink {
 	 * 
 	 * Returns: True if successful, else false
 	 */
-	public boolean update(String eventId, Vector work) {
+	public boolean update(String eventId, Vector workEvLinks) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
@@ -118,9 +145,10 @@ public class WorkEvLink {
 			sqlString = "DELETE FROM EventWorkLink where " + "eventId=" + eventId;
 			m_db.runSQL(sqlString, stmt);
 
-			for (int i = 0; work != null && i < work.size(); i++) {
-
-				sqlString = "INSERT INTO EventWorkLink " + "(eventId, workid) " + "VALUES (" + eventId + ", " + work.elementAt(i) + ")";
+			for (int i = 0; workEvLinks != null && i < workEvLinks.size(); i++) {
+				WorkEvLink workEvLink = (WorkEvLink)workEvLinks.get(i);
+				
+				sqlString = "INSERT INTO EventWorkLink " + "(eventId, workid, orderby) " + "VALUES (" + eventId + ", " + workEvLink.getWorkId() + ","+workEvLink.getOrderby()+")";
 				m_db.runSQL(sqlString, stmt);
 
 			}
@@ -135,9 +163,9 @@ public class WorkEvLink {
 	}
 
 	/*
-	 * Name: deleteOrgEvLinksForEvent ()
+	 * Name: deleteWorkEvLinksForEvent ()
 	 * 
-	 * Purpose: Deletes all OrgEvLink records for the specified Event Id.
+	 * Purpose: Deletes all WorkEvLink records for the specified Event Id.
 	 * 
 	 * Parameters: Event Id
 	 * 
@@ -176,11 +204,59 @@ public class WorkEvLink {
 		CachedRowSet l_rs;
 		String sqlString;
 		String l_ret;
+		Vector allWorkEvLinks = new Vector();
+		try {
+			Statement stmt = m_db.m_conn.createStatement();
+
+			//sqlString = " SELECT * FROM EVENTWORKLINK " + " WHERE eventId  = " + eventId;
+			sqlString = "SELECT *, work.work_title FROM EVENTWORKLINK ewl, work " 
+						+" WHERE ewl.eventId  = "+eventId 
+						+" AND ewl.workid = work.workid "
+						+" ORDER BY ewl.orderby, work.work_title " ;
+			
+			l_rs = m_db.runSQL(sqlString, stmt);
+
+			while (l_rs.next()) {
+			   WorkEvLink workEvLink = new WorkEvLink(m_db);
+			   workEvLink.setEventId(Integer.toString(eventId));
+			   workEvLink.setWorkId(l_rs.getString("workId"));
+			   workEvLink.setOrderby(l_rs.getString("orderby"));
+				
+			   allWorkEvLinks.add(workEvLink);
+
+			}
+
+			l_rs.close();
+			stmt.close();
+
+			return (allWorkEvLinks);
+
+		} catch (Exception e) {
+			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
+			System.out.println("An Exception occured in getWorkEvLinks().");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
+			return (null);
+		}
+	}
+
+	
+	public Vector getWorkEvLinksOLD(int eventId) {
+		CachedRowSet l_rs;
+		String sqlString;
+		String l_ret;
 		Vector l_work = new Vector();
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM EVENTWORKLINK " + " WHERE eventId  = " + eventId;
+			//sqlString = " SELECT * FROM EVENTWORKLINK " + " WHERE eventId  = " + eventId;
+			sqlString = "SELECT *, work.work_title FROM EVENTWORKLINK ewl, work " 
+						+" WHERE ewl.eventId  = "+eventId 
+						+" AND ewl.workid = work.workid "
+						+" ORDER BY work.work_title " ;
+			
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			while (l_rs.next()) {
@@ -212,6 +288,10 @@ public class WorkEvLink {
 	public void setWorkId(String s) {
 		workId = s;
 	}
+	
+	public void setOrderby(String s){
+		orderby = s;
+	}
 
 	public String getEventId() {
 		return (eventId);
@@ -220,9 +300,23 @@ public class WorkEvLink {
 	public String getWorkId() {
 		return (workId);
 	}
-
+	
+	public String getOrderby (){
+		return (orderby);	
+	}
+	
 	public String getError() {
 		return (m_error_string);
+	}
+	
+	public boolean equals(WorkEvLink w) {
+		if (w == null) return false;
+		if (w.toString().equals(this.toString())) return true;
+		return false;
+	}
+	
+	public String toString() {
+		return eventId + " " + workId;
 	}
 
 }

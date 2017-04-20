@@ -851,7 +851,10 @@ public class Organisation {
 	public String getNLA() {
 		return (m_nla);
 	}
-
+	
+	
+	
+	
 	/*
 	 * Name: loadLinkedVenues ()
 	 * 
