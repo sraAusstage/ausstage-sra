@@ -613,10 +613,7 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			/*l_sql = "SELECT DISTINCT eventeventlinkid  " 
-					+ " FROM eventeventlink el" 
-					+ " WHERE (el.eventid=" + m_eventid + " OR el.childid = "+ m_eventid + ")";*/
-			l_sql = "SELECT DISTINCT eventeventlinkid "
+/*			l_sql = "SELECT DISTINCT eventeventlinkid "
 				 + "FROM eventeventlink eel, events e, events child, relation_lookup rl " 
 				 + "WHERE (eel.eventid =  "+ m_eventid +"  || eel.childid = "+ m_eventid +") " 
 				 + "AND eel.eventid = e.eventid " 
@@ -624,6 +621,18 @@ public class Event {
 				 + "AND eel.relationlookupid = rl.relationlookupid " 
 				 + "ORDER BY CASE WHEN eel.childid = "+ m_eventid +" THEN rl.child_relation ELSE rl.parent_relation END, " 
 				 + "CASE WHEN eel.childid = "+ m_eventid +" THEN e.event_name ELSE child.event_name END";
+	*/		
+			l_sql = "SELECT el.eventeventlinkid, el.eventid, el.childid, el.orderby, "
+				+"STR_TO_DATE(CONCAT(IF(events.ddfirst_date = '', '01', if(events.ddfirst_date IS NULL, '01', events.ddfirst_date)), "
+				+"' ', IF(events.mmfirst_date = '', '01', if(events.mmfirst_date IS NULL, '01', events.mmfirst_date)), " 
+				+"' ', IFNULL(events.yyyyfirst_date, '1800')), '%d %m %Y') "
+				+"as dat "
+				+"FROM eventeventlink el, events "
+				+"WHERE (childid = "+ m_eventid +" or el.eventid = "+ m_eventid +") "
+				+"AND ((el.eventid = events.eventid AND el.eventid != "+ m_eventid +") " 
+				+"	OR (el.childid = events.eventid AND el.childid != "+ m_eventid +")) "
+				+"ORDER BY orderby ASC, dat ASC";
+		
 			
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
@@ -1166,19 +1175,25 @@ public class Event {
 							+ "')";
 
 					m_db.runSQL(sqlString, stmt);
-					// assign the newly created id to this bean
+					//for the original id if this was a copied event
+					String oldId = "";
+					if (m_is_in_copy_mode){
+						oldId = m_eventid;
+					}
+					// assign the newly created id to this bean					
 					m_eventid = m_db.getInsertedIndexValue(stmt, "eventid_seq");
-
+					
 					modifyDatasources(INSERT);
 					modifySecGenreEvLinks(INSERT);
 					modifyPrimContentIndicatorEvLinks(INSERT);
 					// modifySecContentIndicatorEvLinks(INSERT);
 					modifyConEvLinks(INSERT);
 					modifyOrgEvLinks(INSERT);
-					modifyEventEventLinks(INSERT);
 					modifyWorkEvLinks(INSERT);
 					modifyPlayOrigins(INSERT);
 					modifyProductionOrigins(INSERT);
+					modifyEventEventLinks(INSERT, oldId);
+					
 
 					// Insert into the item link table
 					for (int i = 0; i < m_res_evlinks.size(); i++) {
@@ -1447,7 +1462,6 @@ public class Event {
 	 * 
 	 * Returns: None
 	 */
-
 	private void modifyEventEventLinks(int modifyType) {
 		try {
 			EventEventLink temp_object = new EventEventLink(m_db);
@@ -1480,6 +1494,35 @@ public class Event {
 			System.out.println("CLASS.TOSTRING: " + e.toString());
 			System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
 		}
+	}
+	
+	/* BW 02/17 SR902 ---- 
+	 * Name: modifyEventEventLinks ()
+	 * 
+	 * OVERLOADED METHOD
+	 * Purpose: Handles copied events before duplicating joins.
+	 * 
+	 * Parameters: modifyType - Update, Delete or Insert
+	 * 			   oldId - string
+	 * 
+	 * Returns: None
+	 */
+	private void modifyEventEventLinks(int modifyType, String oldId) {
+		if (m_is_in_copy_mode){
+			switch (modifyType){
+				case INSERT: 
+					for (EventEventLink eel : m_event_eventlinks){
+						if (eel.getChildId().equals(oldId)){
+							eel.setChildId(m_eventid);
+						}
+						if (eel.getEventId().equals(oldId)){
+							eel.setEventId(m_eventid);
+						}
+					}
+					break;
+			}
+		}
+		modifyEventEventLinks(modifyType);
 	}
 
 	/*
@@ -2603,7 +2646,8 @@ public class Event {
 	      l_sql = "SELECT events.eventid, work.work_title, work.workid " 
 	          + "FROM events INNER JOIN eventworklink ON (events.eventid = eventworklink.eventid) "
 	          + "INNER JOIN work ON (eventworklink.workid = work.workid) " 
-	          + "WHERE events.eventid=" + p_event_id ;
+	          + "WHERE events.eventid=" + p_event_id 
+	          + " ORDER BY  eventworklink.orderby, work.work_title";
 
 	      l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 
@@ -2640,6 +2684,8 @@ public class Event {
 			l_sql = "SELECT eventeventlinkid  " 
 					+ " FROM eventeventlink el" 
 					+ " WHERE (eventid=" + m_eventid + " OR childid = " + m_eventid + " )";
+			
+			
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_event_eventlinks.removeAllElements();
@@ -2653,7 +2699,7 @@ public class Event {
 			stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
-			System.out.println("An Exception occured in loadLinkedEvents().");
+			System.out.println("An Exception occured in 	().");
 			System.out.println("MESSAGE: " + e.getMessage());
 			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
 			System.out.println("CLASS.TOSTRING: " + e.toString());
