@@ -35,7 +35,6 @@ import java.util.*;
 import au.edu.ausstage.vocabularies.*;
 import au.edu.ausstage.utils.*;
 import au.edu.ausstage.networks.types.*;
-import au.edu.ausstage.networks.types.Event;
 
 /**
  * A class to manage the export of information
@@ -87,6 +86,7 @@ public class ProtovisEgoCentricManager {
 	@SuppressWarnings("unchecked")
 	public String getData(String id, int radius) {
 	
+		System.out.println("ProtovisEgoCentricManager : getData "+id+" "+radius);
 		// check on the parameters
 		if(InputUtils.isValidInt(id) == false) {
 			throw new IllegalArgumentException("Error: the id parameter is required");
@@ -98,6 +98,7 @@ public class ProtovisEgoCentricManager {
 		
 		// determine how to build the export
 		if(radius == 1) {
+			System.out.println("getting alternate data - radius is 1");
 			// use the alternate method for an export with a radius of 1
 			return alternateData(id);
 		} 
@@ -776,6 +777,7 @@ public class ProtovisEgoCentricManager {
 	@SuppressWarnings("unchecked")
 	private String alternateData(String id) {
 	
+		System.out.println("EgoCentricManager : getalternateData");
 		// instantiate a connection to the database
 		DbManager database = new DbManager(getConnectionString());
 		
@@ -804,9 +806,11 @@ public class ProtovisEgoCentricManager {
 		// define the paramaters
 		String[] sqlParameters = {id, id};
 
+		System.out.println("EgoCentricManager : getalternateData - executing sql statement");
 		// get the data
 		DbObjects results = database.executePreparedStatement(sql, sqlParameters);
 		
+		System.out.println("EgoCentricManager : getalternateData - results retrieved");
 		// check to see that data was returned
 		if(results == null) {
 			// return an empty JSON Array
@@ -871,6 +875,7 @@ public class ProtovisEgoCentricManager {
 		results.tidyUp();
 		results = null;
 		
+		System.out.println("EgoCentricManager : getalternateData - edges have been created ");
 		// get the rest of the information about the nodes
 		
 		// redefine the sql variables
@@ -884,9 +889,15 @@ public class ProtovisEgoCentricManager {
 		
 		// loop through the list of contributors
 		Iterator iterator = nodesToGet.iterator();
-		
+		System.out.println("EgoCentricManager : getalternateData - collecting node information");
+		int i = 0;
+		System.out.println("hello");
+		System.out.println(iterator.hasNext());
+		System.out.println(iterator.toString());
 		while(iterator.hasNext() == true) {
 			
+			System.out.println("EgoCentricManager : getalternateData - iterator "+i);
+			i++;
 			// reuse one of the integer variables
 			source = (Integer)iterator.next();			
 			sqlParameters[0] = source.toString();
@@ -898,6 +909,7 @@ public class ProtovisEgoCentricManager {
 		
 			// check to see that data was returned
 			if(results == null) {
+				System.out.println("null results - returning empty json");
 				// return an empty JSON Array
 				return new JSONArray().toString();
 			}
@@ -933,8 +945,12 @@ public class ProtovisEgoCentricManager {
 				}
 				
 			} catch (java.sql.SQLException ex) {
+				System.out.println("EgoCentricManager : getalternateData - exception occurred ");
+				System.out.println("EgoCentricManager : getalternateData - "+ex.toString());
 				// return an empty JSON Array
 				return new JSONArray().toString();
+				
+				
 			}
 			
 			// play nice and tidy up
@@ -955,10 +971,10 @@ public class ProtovisEgoCentricManager {
 		nodesIndex.remove(nodesIndex.indexOf(source));
 		nodes.add(node);
 		nodesIndex.add(source);
-		
+		System.out.println("EgoCentricManager : getalternateData - list of nodes completed");
 		//reindex the edges
 		iterator = edges.iterator();
-		
+		System.out.println("EgoCentricManager : getalternateData - reindexing the edges");
 		while(iterator.hasNext() == true) {
 
 			edge = (Edge)iterator.next();
@@ -979,9 +995,11 @@ public class ProtovisEgoCentricManager {
 		JSONArray  nodesList  = new JSONArray();
 		JSONArray  edgesList  = new JSONArray();
 		
+		System.out.println("EgoCentricManager : getalternateData - add nodes to json list");
 		// add the list of nodes to the list
 		nodesList.addAll(nodes);
 		
+		System.out.println("EgoCentricManager : getalternateData - add edges to the json list");
 		// add the list of edges to the list
 		edgesList.addAll(edges);
 		
@@ -989,6 +1007,7 @@ public class ProtovisEgoCentricManager {
 		object.put("nodes", nodesList);
 		object.put("edges", edgesList);
 		
+		System.out.println("EgoCentricManager : getalternateData - build the final object");
 		// return the JSON string
 		return object.toString();	
 	}

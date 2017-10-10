@@ -106,7 +106,10 @@ public class ProtovisServlet extends HttpServlet {
 		}
 		
 		if(taskType.equals("ego-centric-network") == true) {
-		
+			
+			
+			System.out.println(" ProtovisServlet.java : ego centric network requested for "+id);
+			
 			// instantiate a manger object
 			ProtovisEgoCentricManager manager = new ProtovisEgoCentricManager(RdfDatabase);
 		
@@ -125,6 +128,7 @@ public class ProtovisServlet extends HttpServlet {
 		
 				// output the results of the export
 				PrintWriter out = response.getWriter();
+				System.out.println(" ProtovisServlet.java : getting Data...");
 				JSONPManager.wrapJSON(manager.getData(id, radius), request.getParameter("callback"), out);
 			}
 		} else if(taskType.equals("event-centric-network") == true) {
