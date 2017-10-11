@@ -189,8 +189,8 @@
     } 
     
     if ( !filter_work_title.equals ("")) {
-      list_db_sql += " LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
-      list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
+      list_db_sql += " ( LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
+      list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ) ";
     } else {
       list_db_sql += " 1=1 ";
     } 

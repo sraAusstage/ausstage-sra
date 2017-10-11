@@ -41,9 +41,7 @@
 
   //using delimiter list of country ids make a Vector of country links.
   /* for (String country: country_ids.split(",")){
-      	System.out.println("/**** at here **"+country+"++");
    	if(country != null && !country.equals("") && !country.equals(" ") && !country.equals("[]")){
-   	System.out.println("/****** adding country");
 	   	WorkCountryLink workCountry = new WorkCountryLink(db_ausstage); 	
 		workCountry.setCountryId(country);
 		workCountry.setWorkId(workid);
@@ -65,24 +63,19 @@
   // adding a work
   if (workid.equals ("-1"))
   {
-    System.out.println("adding work");
     error_occurred = !work.addWork();
   }
   //deleting a work
   else if(action != null && !action.equals("") && action.equals("delete")){
-    System.out.println("deleting work");
     error_occurred = !work.deleteWork();
   }
   else // Editing a work
   {
     if(action != null && !action.equals("") && action.equals("copy")){
-      System.out.println("copy work");
       error_occurred = !work.addWork();
     }
     else{
-      System.out.println("****Countries "+work.getAssociatedCountries());
       error_occurred = !work.updateWork();
-      System.out.println("update work");
     }
   }
 

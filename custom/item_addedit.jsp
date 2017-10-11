@@ -14,10 +14,7 @@
 	<script type="text/javascript" src="../pages/assets/javascript/libraries/jquery.validate-1.7.min.js"></script>
 
 <%
-  System.out.println("---------------");
-  System.out.println("- ITEM ADD EDIT LOAD PAGE");
-  System.out.println("- ");
-  
+   
   admin.ValidateLogin     login                = (admin.ValidateLogin) session.getAttribute("login");
   admin.FormatPage        pageFormater         = (admin.FormatPage) session.getAttribute("pageFormater");
   ausstage.Database          db_ausstage          = new ausstage.Database ();
@@ -56,10 +53,7 @@
   String readOnly = "";
   String disabled = "";
   boolean preview = false;
-  
-  System.out.println("- action ="+action);
-  System.out.println("- f_itemid = "+itemid);
-  System.out.println("- f_catalogue_id = "+catalogueID);
+ 
   
   if(action != null && action.equals("preview")){
     readOnly = "readonly";
@@ -72,20 +66,16 @@
   if(catalogueID == null) catalogueID = "";
   // use a new Item object that is not from the session.
   if(action != null && action.equals("add")){
-    System.out.println("- action is ADD. item id set to 0");
     action = "add";
     itemid = "0";
   }
   else if (action != null && action.equals("edit")){ //editing existing Item
-    System.out.println("- action is EDIT");
     if (itemid != null && !itemid.equals("")) {  // try the item id first
-      System.out.println(" - item ID is not NULL. loading ITEM based on item id.");
       item.load(Integer.parseInt(itemid));
     }
     else { //try the catalogue ID next
       item.load(catalogueID);
       itemid  = item.getItemId();
-      System.out.println(" - catalogue ID is not NULL. loading ITEM based on Catalogue id.");
       //if someone selects a catalogue  id that doesn't exist
       //we still want this to be displayed so that they do not have to type it in again
       //when creating the new item
@@ -94,12 +84,10 @@
       }
   }
   else if (action != null && action.equals("copy")){
-    System.out.println("- action is COPY");
     item.load(catalogueID);
     itemid  = item.getItemId();
   }
   else if (action != null && action.equals("preview")){
-    System.out.println("- action is PREVIEW");
     if (request.getParameter("f_select_this_child_id") != null) {
       item.load(Integer.parseInt(request.getParameter("f_select_this_child_id")));
     }
@@ -109,7 +97,6 @@
     itemid  = item.getItemId();
   }
   else{ //use the item object from the session.
-    System.out.println("- no other options available. using session object...");
     item = (Item)session.getAttribute("item");
     itemid  = item.getItemId();
   }
@@ -121,17 +108,14 @@
   m_item_evlinks            = item.getAssociatedEvents();
   m_item_secgenrelinks      = item.getAssociatedSecGenres();
   m_item_itemlinks          = item.getItemItemLinks();
-  System.out.println("get associated organisation links");
   m_item_orglinks           = item.getAssociatedOrganisations();
   m_item_creator_orglinks   = item.getAssociatedCreatorOrganisations();
   m_item_venuelinks         = item.getAssociatedVenues();
   m_item_conlinks           = item.getAssociatedContributors();
   m_item_creator_conlinks   = item.getAssociatedCreatorContributors();
   m_item_contentindlinks    = item.getAssociatedContentIndicators();
-  System.out.println("get associated work links");
   m_item_worklinks          = item.getAssociatedWorks();
   m_additional_urls	    = item.getAdditionalUrls();
-      System.out.println("- creators :"+m_item_creator_conlinks.toString());
   
   out.println("<form name='item_addedit_form' id='item_addedit_form' action='item_addedit_process.jsp' method='post' onsubmit='return checkManditoryFields();'>");
   out.println("<input type='hidden' name='f_itemid' value='" + itemid + "'>");
@@ -486,7 +470,7 @@
   ****************************/
   pageFormater.writeHelper(out, "Identifiers", "helpers_no8.gif");
   pageFormater.writeTwoColTableHeader(out, "Resource URL");
-  out.println("<input type='text' name='f_item_url' size='60' maxlength='2048' class='line250' onblur='validateUrl($(this));' value='" + item.getItemUrl() + "'" + readOnly + ">");
+  out.println("<input type='text' id='f_item_url' name='f_item_url' size='60' maxlength='2048' class='line250' value='" + item.getItemUrl() + "'" + readOnly + ">");
   pageFormater.writeTwoColTableFooter(out);
 
   //BW additional URLs
@@ -496,18 +480,22 @@
   out.println("<input type='hidden' name='f_additional_urls' size='60' value=''>");  
   out.println("<span width='100%' name='additional_url_span'><input type='text' name='f_enter_additional_url' size='50' maxlength='2048' class='line250' onblur='addUrl($(this));' value=''" + readOnly + "><a href='#additional_url' onclick='addUrl($(\"input[name=f_enter_additional_url]\"))'> Add</a></span>");
   for (int i = 0; i < m_additional_urls.size(); i++){
-  	out.println("<span name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a></span>");
+  	out.println("<span name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a>  </span>");
   }
   pageFormater.writeTwoColTableFooter(out);
 **********************************************/  
 
   pageFormater.writeTwoColTableHeader(out, "Additional URLs", 600); 
-
+  
   out.println("<input type='hidden' name='f_additional_urls' size='60' value=''>");    
   out.println("<table id='additional_url_span'>");
+  out.println("<tr><td width='100%' > URL to additional websites or images - full URL must be provided</td></tr>");
   out.println("<tr><td width='100%' ><input type='text' name='f_enter_additional_url' size='50' maxlength='2048' class='line250' onblur='addUrl($(this));' value=''" + readOnly + "></td><td><a href='#additional_url' onclick='addUrl($(\"input[name=f_enter_additional_url]\"))'> Add</a></td></tr>");
   for (int i = 0; i < m_additional_urls.size(); i++){
-  	out.println("<tr><td name='url_line_"+i+"'><input type='text' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250' onblur='validateUrl($(this));updateUrlList()' value='" + m_additional_urls.elementAt(i) + "'" + readOnly + "></td><td><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a></td></tr>");
+  	out.println("<tr><td name='url_line_"+i+"'>"+
+  	"<input type='text' id='f_additional_url_"+i+"' name='f_additional_url_"+i+"' size='50' maxlength='2048' class='line250 additional-urls' onblur='updateUrlList()' value='" + m_additional_urls.elementAt(i).toString().replaceAll("'", "&apos;") + "'" + readOnly + "></td>"+
+  	"<td><a href='#additional_url' onclick='removeUrl("+i+")'> Remove</a> </td>"+
+  	"</tr>");
   }
   out.println("</table>");
   pageFormater.writeTwoColTableFooter(out);
@@ -742,7 +730,7 @@
   function addUrl(field_to_check){
     if (field_to_check.val()!=""){
       if (validateUrl(field_to_check)){
-        $('#additional_url_span tr:last').after("<tr><td name='url_line_"+url_count+"'><input type='text' name='f_additional_url_"+url_count+"' size='50' maxlength='2048' class='line250' value="
+        $('#additional_url_span tr:last').after("<tr><td name='url_line_"+url_count+"'><input type='text' id='f_additional_url_"+url_count+"' name='f_additional_url_"+url_count+"' size='50' maxlength='2048' class='line250 additional-urls' value="
         					+field_to_check.val()+" ></td><td><a href='#additional_url' onclick='removeUrl("+url_count+")'> Remove</a></td>");
         field_to_check.val("");
         url_count++;
@@ -770,7 +758,10 @@
 
   }
 
+
   function checkManditoryFields(){
+  	var validated = true;
+  	
     if(document.item_addedit_form.f_item_type.value == null ||
        document.item_addedit_form.f_item_type.value == "" || 
        document.item_addedit_form.f_item_sub_type.value == null ||
@@ -780,21 +771,27 @@
        document.item_addedit_form.f_title.value == null ||
        document.item_addedit_form.f_title.value == "") {
 
-      alert("Please make sure all mandatory fields (*) are filled in");
-      return false;
+       alert("Please make sure all mandatory fields (*) are filled in");
+       validated = false;
     }
-    else{
-      // adding or editing
-      if (checkCharacterDates ()) {
-        return true;
+    // adding or editing
+    if (!checkCharacterDates ()) {
+       validated = false;
       }
-      else {
-        return false;
-      }
+    if (!validateUrl($('#f_item_url'))){
+       validated = false;
+    }  
+    var additionalUrls = $('.additional-urls');
+    for (var i = 0; i < additionalUrls.length; i++){
+      var urlId = additionalUrls[i].id;
+      if (!validateUrl($('#'+urlId))){
+       validated = false;
+      }    
     }
-
+    return validated;
   }
 
+  
 
   
   function checkCharacterDates() {

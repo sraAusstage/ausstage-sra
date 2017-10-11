@@ -1,4 +1,4 @@
-
+<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
@@ -16,7 +16,6 @@
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
   Venue		venueObj        = (Venue)session.getAttribute("venueObj");
   String 	venueid		= venueObj.getVenueId();
-  //System.out.println("Venue Id:"+venueid);
   Vector<VenueVenueLink> venueVenueLinks = venueObj.getVenueVenueLinks();
   String functionId   = "";
   String functionDesc = "";

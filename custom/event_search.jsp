@@ -116,133 +116,32 @@
                         "INNER JOIN states ON (venue.state = states.stateid) "+
                         "INNER JOIN country ON (venue.countryid = country.countryid) "+
                    	"WHERE events.venueid = venue.venueid ";
-
-    //SPECIAL HANDLING FOR THE EVENT_NAME FIELD. 
-    String eventNameWhere = "";
-    String eventOrderBy = "";
-    String remove = "a,and,the,an,i,it,if";
-    List<String> removeWords = new ArrayList<String>(Arrays.asList(remove.split(",")));
-    //if event_name is entered 
-    if (!filter_event_name.equals ("")){
-        List<String> terms = new ArrayList<String>(); // TO HOLD THE SEARCH TERMS - WILL BE BUILT WITHOUT removeWords
-	List<String> shortTerms = new ArrayList<String>();
-	
-    	// - remove [a, and, the, an, I, it, if] 
-	// - then split it.- [term111, term222, term333] etc
-    	for(String term : db_ausstage.plSqlSafeString(filter_event_name.toLowerCase()).split(" ") ){
-		if (term.length() > 2 && !removeWords.contains(term)){
-			terms.add(term);    	
-			if(term.length() > 4){
-				shortTerms.add(term.substring(0,5));
-			}
-			else shortTerms.add(term);
-		}
-    	}
-    	// - create a where clause where event name contains 
-    	//   term1% OR term2% OR term3%
-	int i = 0;
-	eventNameWhere += "and ( ";
-    	for (String term : shortTerms){
-    		if (i != 0 ){ 
-    			eventNameWhere +=" OR ";
-    		}
-    		eventNameWhere +=" LOWER(events.event_name) like '%" + term + "%' ";
-    		i++;
-    	}
-    	eventNameWhere += ")";
-    	
-    	//System.out.println("*******");
-    	//System.out.println(eventNameWhere);
-    	
-    	//then create an order by case - 	original string
-    	int relevance = 1;
-    	eventOrderBy = " CASE WHEN lower(events.event_name) like '"+db_ausstage.plSqlSafeString(filter_event_name.toLowerCase())+"' THEN "+relevance+" ELSE 1000 END, ";
-    	relevance++;
-    	//					%term111%term222%term333%
-	eventOrderBy += " CASE WHEN lower(events.event_name) like '"+db_ausstage.plSqlSafeString(filter_event_name.toLowerCase()).replace(' ', '%')+"%' THEN "+relevance+" ELSE 1000 END, ";
-    	relevance++;
-    	eventOrderBy += " CASE WHEN lower(events.event_name) like '%"+db_ausstage.plSqlSafeString(filter_event_name.toLowerCase()).replace(' ', '%')+"%' THEN "+relevance+" ELSE 1000 END, ";
-    	relevance++;
-    	// 					term1%term2%term3%
-    	eventOrderBy += " CASE WHEN lower(events.event_name) like '";
-    	for (String term : shortTerms){
-   		eventOrderBy += term + "%";
-    	}
-    	eventOrderBy += "' THEN "+relevance+" ELSE 1000 END, "; 
-    	relevance++;
- 	// 					%term1%term2%term3%
-    	eventOrderBy += " CASE WHEN lower(events.event_name) like '%";
-    	for (String term : shortTerms){
-   		eventOrderBy += term + "%";
-    	}
-    	eventOrderBy += "' THEN "+relevance+" ELSE 1000 END, "; 
-    	relevance++;
-	//					term111%
-	//					term222%
-	//					term333%
-    	for (String term : terms){
-   		eventOrderBy += " CASE WHEN lower(events.event_name) like '"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}
-	//					%term111%
-	//					%term222%
-	//					%term333%
-    	for (String term : terms){
-   		eventOrderBy += " CASE WHEN lower(events.event_name) like '%"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}
-    	// 					term1%
-    	// 					term2%
-    	// 					term3%
-    	for (String term : shortTerms){
-   		eventOrderBy += " CASE WHEN lower(events.event_name) like '"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}    	
-    	// 					%term1%
-    	// 					%term2%
-    	// 					%term3%
-    	for (String term : shortTerms){
-   		eventOrderBy += " CASE WHEN lower(events.event_name) like '%"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}
-    	//System.out.println("ORDER BY --------------");
-    	//System.out.println(eventOrderBy);
-    }
-
-    
-    // Add the filters to the SQL
-    //ID SEARCH TERMS
+     
+     // Add the filters to the SQL
     if (!filter_id.equals (""))
       list_db_sql += "and events.eventid=" + filter_id + " ";
-    //EVENT NAME SEARCH TERMS
-    if (!filter_event_name.equals ("")){
-      	list_db_sql += eventNameWhere;
-      }
-    //VENUE NAME SEARCH TERMS
+    if (!filter_event_name.equals (""))
+      list_db_sql += "and LOWER(events.event_name) like '%" +
+                      db_ausstage.plSqlSafeString(filter_event_name.toLowerCase()) + "%' ";
     if (!filter_venue_name.equals (""))
       list_db_sql += "and LOWER(venue.venue_name) like '%" +
                       db_ausstage.plSqlSafeString(filter_venue_name.toLowerCase()) + "%' ";
-    //DAY SEARCH
     if (!filter_day.equals (""))
       list_db_sql += "and events.ddfirst_date like '%" +
                       db_ausstage.plSqlSafeString(filter_day) + "%' ";
-    //MONTH SEARCH
     if (!filter_month.equals (""))
       list_db_sql += "and events.mmfirst_date like '%" +
                       db_ausstage.plSqlSafeString(filter_month) + "%' ";
-    //YEAR SEARCH
     if (!filter_year.equals (""))
       list_db_sql += "and events.yyyyfirst_date like '%" +
                       db_ausstage.plSqlSafeString(filter_year) + "%' ";
-   	
+  	
     if(request.getParameter("f_order_by").equals("venue_name")) {
-    	list_db_sql += "order by "+eventOrderBy+" venue." + request.getParameter ("f_order_by");
+    	list_db_sql += "order by venue." + request.getParameter ("f_order_by");
     } else {
-       	list_db_sql += "order by "+eventOrderBy+" events." + request.getParameter ("f_order_by");
+       	list_db_sql += "order by events." + request.getParameter ("f_order_by");
     }
   }
- 
-  //System.out.println(list_db_sql);	
   // Need to do the following type of select of Oracle will not return the rows
   // in the correct order.
   // pageFormater.writeHelper(out,"Event Name","helpers_no1.gif");

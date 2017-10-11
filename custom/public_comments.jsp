@@ -20,6 +20,8 @@
   String userName     = request.getParameter("f_public_users_name");
   String userEmail    = request.getParameter("f_public_users_email");
   String userComments = request.getParameter("f_public_users_comments");
+
+  //System.out.println("****"+publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
   
   SendMail mailer = new SendMail ();
   String body_text;
@@ -32,7 +34,8 @@
               "Comments:\n" + userComments + "\n";
 
   mailer.sendEmail(publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS, "Public Comment from User " + userName, body_text, publicCommentsConst.EMAIL_FORM_SENDER_ADDRESS);
-  //mailer.sendEmail("jbrown@sra.com.au", "Public Comment from User " + userName, body_text, "mark@sra.com.au");
+
+  //mailer.sendEmail("sirbrad@hotmail.com", "Public Comment from User " + userName, body_text, "sirbrad@hotmail.com");
 %>
 <p class="general_heading"><br>Thank you for submitting you comments to the Ausstage administrator.<BR>You will be contacted shortly.</p>
 <a href="#" onclick="Javascript:window.close();">Close Window</a>

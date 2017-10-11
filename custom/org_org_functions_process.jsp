@@ -16,10 +16,8 @@
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
   Organisation   organisationObj       = (Organisation)session.getAttribute("organisationObj");
-  //System.out.println("Organisation Object:" + organisationObj);
   //String organisationId        =request.getParameter("f_organisation_id");
   String organisationId        = Integer.toString(organisationObj.getId());
-  //System.out.println("Organisation Id:" + organisationId);
   Vector<OrganisationOrganisationLink> organisationOrganisationLinks = organisationObj.getOrganisationOrganisationLinks();
   Vector<OrganisationOrganisationLink> tempOrganisationOrganisationLinks = new Vector<OrganisationOrganisationLink>();
   String error_msg   		= "";

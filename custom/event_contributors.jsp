@@ -184,7 +184,7 @@ Statement stmt = db_ausstage.m_conn.createStatement();
   Vector conEvLinks = eventObj.getConEvLinks();
 
   if (f_select_this_contributor_id != null)
-  {
+  {  	
     conEvLink = new ConEvLink(db_ausstage);
     conEvLink.load(f_select_this_contributor_id, f_eventid);
     conEvLinks.add(conEvLink);
@@ -192,6 +192,7 @@ Statement stmt = db_ausstage.m_conn.createStatement();
 
   if (f_unselect_this_contributor_id != null)
   {
+  
     ConEvLink savedEvLink = null;
     conEvLink = new ConEvLink(db_ausstage);
     conEvLink.load(f_unselect_this_contributor_id, Integer.toString(eventId));
@@ -310,7 +311,7 @@ selected_list_db_field_id_name = "contributorId";
     }
       
   
-    list_db_sql += "Group by contributor.contributorid order by " + request.getParameter ("f_order_by");
+    list_db_sql += "Group by contributor.contributorid order by " + request.getParameter ("f_order_by") + ", last_name";
   }
   System.out.println(list_db_sql);
   // Need to do the following type of select of Oracle will not return the rows

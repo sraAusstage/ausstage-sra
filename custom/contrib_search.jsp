@@ -174,7 +174,7 @@
       }
     }
       
-    list_db_sql += "Group by contributor.contributorid order by " + request.getParameter ("f_order_by");
+    list_db_sql += "Group by contributor.contributorid order by " + request.getParameter ("f_order_by") + ", last_name" ;
     
     //list_db_sql += "Group by contributor.contributorid order by " 
 		// first - John Smith

@@ -179,6 +179,9 @@
   pageFormater.writeFooter(out);
 %>
   </form>
+  <!-- hidden image used to keep the session alive - see keepMeAlive below-->
+  <img id="keepAliveIMG" width="1" height="1" src="/resources/images/ausstage-logo-admin.png?123" />
+  
 <script type="text/javascript">
 <!--
   function updatePreferredTerm(p_anchor_name)
@@ -188,6 +191,20 @@
     document.functions_form.action = 'event_contributor_functions.jsp' + p_anchor_name ;
     document.functions_form.submit();
   }
+
+  // to stop the server timing out when entering large amounts of textbox data.... 
+  // every ten minutes requests a image from the server. 
+  function keepAlive(imgName) {
+   myImg = document.getElementById(imgName);
+   if (myImg) {
+   	myImg.src = myImg.src.substring(0, myImg.src.indexOf('?')) + '?' + Math.random();
+   	console.log(myImg.src);
+   }
+  }
+  
+  window.setInterval("keepAlive('keepAliveIMG')", 600000);
+  
+
 //-->
 </script>
 

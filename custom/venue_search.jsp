@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8"%> 
+<%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
@@ -71,7 +71,7 @@
     //  finishButton = true;
   }
   String contributor_id = request.getParameter("f_contrib_id");
-  //System.out.println("Contributor Id:"+contributor_id);
+
   if (request.getParameter("f_contrib_id") != null) {
     contribObj = (Contributor)session.getAttribute("contributor"); // Get the contributor object.
     if (contribObj == null)                               // Make sure it exists
@@ -81,7 +81,6 @@
   }
   
   String organisation_id = request.getParameter("f_org_id");
- // System.out.println("Organisation Id:"+organisation_id);
   if (request.getParameter("f_org_id") != null) {
     organisationObj = (Organisation)session.getAttribute("organisationObj"); // Get the organisation object.
     if (organisationObj == null)                               // Make sure it exists
@@ -183,117 +182,19 @@
     "CONCAT_WS(', ',venue.venue_name,venue.street,venue.suburb,IF(states.state='O/S', country.countryname, states.state)) AS OUTPUT "+ 
     "from venue LEFT Join states on (venue.state = states.stateid) "+
     "LEFT join country on (venue.countryid = country.countryid) WHERE 1=1 ";
-
-    //SPECIAL HANDLING FOR THE VENUE_NAME FIELD. 
-    String venueNameWhere = "";
-    String venueOrderBy = "";
-    String remove = "a,and,the,an,i,it,if";
-    List<String> removeWords = new ArrayList<String>(Arrays.asList(remove.split(",")));
     
-    //if venue_name is entered 
-    if (!filter_name.equals ("")){
-        List<String> terms = new ArrayList<String>(); // TO HOLD THE SEARCH TERMS - WILL BE BUILT WITHOUT removeWords
-	List<String> shortTerms = new ArrayList<String>();
-	
-    	// - remove [a, and, the, an, I, it, if] 
-	// - then split it.- [term111, term222, term333] etc
-    	for(String term : db_ausstage.plSqlSafeString(filter_name.toLowerCase()).split(" ") ){
-		if (term.length() > 2 && !removeWords.contains(term)){
-			terms.add(term);    	
-			if(term.length() > 4){
-				shortTerms.add(term.substring(0,5));
-			}
-			else shortTerms.add(term);
-		}
-    	}
-    	// - create a where clause where venue name contains 
-    	//   term1% OR term2% OR term3%
-	int i = 0;
-	venueNameWhere += "and ( ";
-    	for (String term : shortTerms){
-    		if (i != 0 ){ 
-    			venueNameWhere +=" OR ";
-    		}
-    		venueNameWhere +=" LOWER(venue_name) like '%" + term + "%' ";
-    		i++;
-    	}
-    	venueNameWhere += ")";
-    	
-    	//System.out.println("*******");
-    	//System.out.println(venueNameWhere);
-    	
-    	//then create an order by case - 	original string
-    	int relevance = 1;
-    	venueOrderBy = " CASE WHEN lower(venue.venue_name) like '"+db_ausstage.plSqlSafeString(filter_name.toLowerCase())+"' THEN "+relevance+" ELSE 1000 END, ";
-    	relevance++;
-    	//					%term111%term222%term333%
-	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '"+db_ausstage.plSqlSafeString(filter_name.toLowerCase()).replace(' ', '%')+"%' THEN "+relevance+" ELSE 1000 END, ";
-    	relevance++;
-    	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%"+db_ausstage.plSqlSafeString(filter_name.toLowerCase()).replace(' ', '%')+"%' THEN "+relevance+" ELSE 1000 END, ";
-    	relevance++;
-    	// 					term1%term2%term3%
-    	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '";
-    	for (String term : shortTerms){
-   		venueOrderBy += term + "%";
-    	}
-    	venueOrderBy += "' THEN "+relevance+" ELSE 1000 END, "; 
-    	relevance++;
- 	// 					%term1%term2%term3%
-    	venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%";
-    	for (String term : shortTerms){
-   		venueOrderBy += term + "%";
-    	}
-    	venueOrderBy += "' THEN "+relevance+" ELSE 1000 END, "; 
-    	relevance++;
-	//					term111%
-	//					term222%
-	//					term333%
-    	for (String term : terms){
-   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}
-	//					%term111%
-	//					%term222%
-	//					%term333%
-    	for (String term : terms){
-   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}
-    	// 					term1%
-    	// 					term2%
-    	// 					term3%
-    	for (String term : shortTerms){
-   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}    	
-    	// 					%term1%
-    	// 					%term2%
-    	// 					%term3%
-    	for (String term : shortTerms){
-   		venueOrderBy += " CASE WHEN lower(venue.venue_name) like '%"+term+"%' THEN "+relevance+" ELSE 1000 END, ";
-   		relevance++;
-    	}
-    	//System.out.println("ORDER BY --------------");
-    	//System.out.println(venueOrderBy);
-    }
-    //END SPECIAL HANDLING
-    
-   
-    // Add the filters to the SQL
+   // Add the filters to the SQL
     if (filter_id != null && !filter_id.equals (""))
       list_db_sql += "and venueid=" + filter_id + " ";
-    if (filter_name!= null && !filter_name.equals ("")){
-      list_db_sql += venueNameWhere;
-    }
+    if (filter_name!= null && !filter_name.equals (""))
+      list_db_sql += "and LOWER(venue_name) like '%" + db_ausstage.plSqlSafeString(filter_name.toLowerCase()) + "%' ";
     if (filter_state!= null && !filter_state.equals (""))
       list_db_sql += "and LOWER(states.state) like '%" + db_ausstage.plSqlSafeString(filter_state.toLowerCase()) + "%' ";
     if (filter_suburb!= null && !filter_suburb.equals (""))
       list_db_sql += "and LOWER(suburb) like '%" + db_ausstage.plSqlSafeString(filter_suburb.toLowerCase()) + "%' ";
   
-    
-    list_db_sql += " order by "+venueOrderBy+" " + request.getParameter ("f_order_by");
+    list_db_sql += " order by " + request.getParameter ("f_order_by");
   }
-  //System.out.println(list_db_sql);
   //pageFormater.writeHelper(out, "Venue Maintenance","helpers_no1.gif");
    list_db_sql = list_db_sql + " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
   

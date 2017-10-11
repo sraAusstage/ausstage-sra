@@ -99,7 +99,7 @@
   //object in the session.
 
   Vector<EventEventLink> eventEventLinks = event.getEventEventLinks();
- //System.out.println(eventeventLinks.toString());
+
 //add the selected event to the event
   if (f_select_this_event_id != null) {
 	EventEventLink eel = new EventEventLink(db_ausstage);

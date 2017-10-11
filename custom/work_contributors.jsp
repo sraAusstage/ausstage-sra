@@ -42,6 +42,7 @@
   String isPreviewForItemWork  = request.getParameter("isPreviewForItemWork");
   String isPreviewForEventWork  = request.getParameter("isPreviewForEventWork");
   
+    
   if (isPreviewForItemWork == null || isPreviewForItemWork.equals("null")) {
     isPreviewForItemWork = "";
   }

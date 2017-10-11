@@ -5,6 +5,7 @@
 <%@ page import = "java.sql.Statement, sun.jdbc.rowset.CachedRowSet, java.util.*"%>
 <%@ page import = "ausstage.Event"%>
 <%@ page import = "ausstage.Work"%>
+<%@ page import = "ausstage.WorkEvLink"%>
 <cms:include property="template" element="head" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ include file="ausstage_common.jsp"%>
@@ -62,22 +63,40 @@
   String f_select_this_work_id    = request.getParameter("f_select_this_work_id");
   String f_unselect_this_work_id = request.getParameter("f_unselect_this_work_id");
 
-  Vector eventWorkLinks = new Vector();
-  eventWorkLinks = event.getWorks();
+  WorkEvLink workEvLink = null;
+  Vector workEventLinks = event.getWorks();
   
   if (f_select_this_work_id != null)
   {
-    eventWorkLinks.add(f_select_this_work_id);
-    event.setWorks(eventWorkLinks);        
+    workEvLink = new WorkEvLink(db_ausstage);
+    workEvLink.load(f_select_this_work_id, event.getEventid());
+    workEventLinks.add(workEvLink);
+    //eventWorkLinks.add(f_select_this_work_id);
+    //event.setWorks(eventWorkLinks);        
     
   }
   //remove work from the event
   if (f_unselect_this_work_id != null)
   {
-    eventWorkLinks.remove(f_unselect_this_work_id);
-    event.setWorks(eventWorkLinks);   
+   // eventWorkLinks.remove(f_unselect_this_work_id);
+   // event.setWorks(eventWorkLinks);   
+    WorkEvLink savedEvLink = null;
+    workEvLink = new WorkEvLink(db_ausstage);
+    workEvLink.load(f_unselect_this_work_id, event.getEventid());
+
+    // Can't use the remove() method as the beans won't be exactly the same (due to the database connection)
+    for (int i=0; i < workEventLinks.size(); i++)
+    {
+      savedEvLink = (WorkEvLink)workEventLinks.get(i);
+      if (savedEvLink.equals(workEvLink))
+      {
+        workEventLinks.remove(i);
+        break;
+      }
+    }
   }
 
+  event.setWorks(workEventLinks);
   session.setAttribute("eventObj", event);
   
   
@@ -125,12 +144,14 @@
   buttons_actions.addElement ("Javascript:search_form.action='event_work.jsp';search_form.submit();");
   buttons_actions.addElement ("Javascript:search_form.action='work_addedit.jsp?action=ForEvent';search_form.submit();");
   buttons_actions.addElement ("Javascript:search_form.action='work_addedit.jsp?action=ForEvent';search_form.submit();");
-  buttons_actions.addElement ("Javascript:search_form.action='event_addedit.jsp#event_work_link';search_form.submit();");
+  //buttons_actions.addElement ("Javascript:search_form.action='event_addedit.jsp#event_work_link';search_form.submit();");
+  buttons_actions.addElement ("Javascript:search_form.action='event_work_functions.jsp';search_form.submit();");    
   
   selected_db_sql       = "";
   Vector selectedWorks = new Vector();
   Vector temp_vector    = new Vector();
   String temp_string    = "";       
+  
   selectedWorks = event.getWorks();
 
   //because the vector that gets returned contains only linked
@@ -140,12 +161,19 @@
   //i.e. "4455, Luke Sullivan".
 
   //for each event id get name and add the id and the name to a temp vector.
+  
   for(int i = 0; i < selectedWorks.size(); i ++){
+
     if (i > 0) selected_db_sql += ", ";
-    temp_string = work.getWorkInfoForDisplay(Integer.parseInt((String)selectedWorks.get(i)), stmt);
-    temp_vector.add(selectedWorks.get(i));//add the id to the temp vector.
-    temp_vector.add(temp_string);//add the event name to the temp_vector.
-    selected_db_sql   += selectedWorks.get(i);
+      WorkEvLink tempWorkEvLink = (WorkEvLink) selectedWorks.get(i);     
+      temp_string = work.getWorkInfoForDisplay(Integer.parseInt(tempWorkEvLink.getWorkId()), stmt);
+      temp_vector.add(tempWorkEvLink.getWorkId());//add the id to the temp vector.      
+      temp_vector.add(temp_string);//add the event name to the temp_vector.      
+      selected_db_sql   += tempWorkEvLink.getWorkId();
+//    temp_string = work.getWorkInfoForDisplay(Integer.parseInt((String)selectedWorks.get(i)), stmt);
+//    temp_vector.add(selectedWorks.get(i));//add the id to the temp vector.
+//    temp_vector.add(temp_string);//add the event name to the temp_vector.
+//    selected_db_sql   += selectedWorks.get(i);
   }
   selectedWorks = temp_vector;
   stmt.close();
@@ -193,8 +221,8 @@
     } 
     
     if ( !filter_work_title.equals ("")) {
-      list_db_sql += " LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
-      list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
+      list_db_sql += " ( LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
+      list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ) ";
     } else {
       list_db_sql += " 1=1 ";
     } 
@@ -204,6 +232,8 @@
   
   
   list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
+  //System.out.println("EVENT WORK SEARCH");
+  //System.out.println(list_db_sql);
   out.println (htmlGenerator.displaySearchFilterAndSelector (
                   request, "Select Work",
                   "Selected Work", filter_display_names,

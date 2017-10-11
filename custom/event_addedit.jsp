@@ -10,7 +10,9 @@
 <%@ page import = "ausstage.State"%>
 <%@ page import = "ausstage.Country"%>
 <%@ page import = "ausstage.LookupCode"%>
+<%@ page import = "ausstage.RelationLookup"%>
 <%@ page import = "ausstage.Work"%>
+<%@ page import = "ausstage.WorkEvLink"%>
 <%@ page import = "ausstage.PrimContentIndicatorEvLink, ausstage.SecContentIndicatorEvLink"%>
 <%@ page import = "ausstage.Venue, ausstage.ConEvLink,ausstage.EventEventLink, ausstage.Contributor, ausstage.WorkWorkLink"%>
 <%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Item"%>
@@ -20,8 +22,7 @@
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
 
 <%
-  System.out.println("-----------------------");
-  System.out.println("event_addedit message : loading page...");
+
   admin.ValidateLogin   login                = (admin.ValidateLogin) session.getAttribute("login");
   admin.FormatPage      pageFormater         = (admin.FormatPage)    session.getAttribute("pageFormater");
   ausstage.Database     db_ausstage          = new ausstage.Database ();
@@ -53,7 +54,7 @@
   Vector primary_content_ind_vec    	= new Vector();
   Vector secondary_content_link_vec 	= new Vector();
   Vector secondary_content_pref_vec 	= new Vector();
-  Vector work_vec                   	= new Vector();
+ // Vector work_vec                   	= new Vector();
   Vector work_name_vec              	= new Vector();
   Vector work_link_vec              	= new Vector();
   Vector articles_link_vec          	= new Vector();
@@ -85,33 +86,25 @@
 
   // Are we editting, adding, or coming back from editting child records?
   mode = request.getParameter ("mode");
-  System.out.println("");
-  System.out.println("event_addedit message : mode recieved = "+mode);
+
   if (mode == null) { // Have come back from editing child records
     mode     = (String)session.getAttribute("eventMode");
     eventObj = (Event)session.getAttribute("eventObj");
     eventid  = eventObj.getEventid ();
     eventObj.setEventName(common.ReplaceStrWithStr(eventObj.getEventName(),"\"","&quot;"));
-    /////debug statements
-    System.out.println("Returned from editing CHILD records");
-    System.out.println("mode = "+mode);
-    System.out.println("eventid = "+eventObj.getEventid() );
     
   }
   else {
     // first time to this page
     eventid = request.getParameter ("f_eventid");
 
-    System.out.println("event_addedit message : first time to this page - mode is not null. Event id set to "+eventid);
     // if editing
     if (eventid == null) {
-	System.out.println("event_addedit message : ADDING EVENT eventis is null");
       eventid = "0";
       mode = "add"; // Mode is really "add" if no event id was selected.
       eventObj = new Event(db_ausstage);
     }
     else {
-     System.out.println("event_addedit message : EDITING EVENT event id supplied. Assume editing event = "+eventid);
       eventidInt = Integer.parseInt(eventid);
       mode = "edit";
       eventObj.load(eventidInt);
@@ -125,7 +118,6 @@
   for (int i=0; i < second_genres_link_vec.size(); i++) {
     secGenreEvLink = (SecGenreEvLink)second_genres_link_vec.get(i);
     second_genres_vec.add(secGenreEvLink.getSecondaryGenre());
-   // System.out.println("Genre:"+ second_genres_vec.add(secGenreEvLink.getSecondaryGenre()));
   }
     
   primary_content_link_vec = eventObj.getPrimContentIndicatorEvLinks();
@@ -143,32 +135,44 @@
   }
   
   work_link_vec = eventObj.getWorks();
+
   for (int i=0; i < work_link_vec.size(); i++) {
+    
+    WorkEvLink workEvLink = (WorkEvLink) work_link_vec.get(i);
     Work work = new Work(db_ausstage);
-    work.load(Integer.parseInt(work_link_vec .get(i)+""));
+    work.load(workEvLink.getWorkId());
+    
     String contributorsToAdd = work.getLinkedContributorNames();
     String orgsToAdd = work.getLinkedOrganisationNames();
     String workToAdd = (contributorsToAdd == null || contributorsToAdd.equals("") ? "" : ", " + contributorsToAdd) + (orgsToAdd == null || orgsToAdd.equals("") ? "" : " (" + orgsToAdd + ")");
     work_name_vec.add(work.getWorkTitle() + workToAdd);
      // To display Contributor Last Name First Name, Notes on Contributor Link and The Contributor Preferred Description
-   // work_name_vec.add(work.getWorkTitle());
   }
-
-  LookupCode lc = new LookupCode(db_ausstage);
   event_link_vec	        = eventObj.getEventEventLinks();
   Event event 			= null;
-  System.out.println("loading linked events:");
+  //***************
+  //BW reciprocal relations
+  RelationLookup rl = new RelationLookup(db_ausstage);
+  boolean isParent = true;
   for(int i=0; i < event_link_vec.size(); i++ ){
+  	  isParent = true;
 	  event = new Event(db_ausstage);
-	  event.load(Integer.parseInt(event_link_vec.get(i).getChildId()));
-	  if (event_link_vec.get(i).getFunctionId() != null) {
-		  lc.load(Integer.parseInt(event_link_vec.get(i).getFunctionId()));
-		  event_name_vec.add(event.getEventName() + " (" + lc.getDescription() + ")");
+	  if (eventid.equals(event_link_vec.get(i).getChildId())){
+	  	  isParent = false;
+		  event.load(Integer.parseInt(event_link_vec.get(i).getEventId()));	
+	  }else{ 
+		  event.load(Integer.parseInt(event_link_vec.get(i).getChildId()));
+	  }
+	  if (event_link_vec.get(i).getRelationLookupId() != null) {
+		  rl.load(Integer.parseInt(event_link_vec.get(i).getRelationLookupId()));
+		  if (isParent){
+			  event_name_vec.add(event.getEventName() + " (" + rl.getParentRelation() + ")");
+		  } else {event_name_vec.add(event.getEventName() + " (" + rl.getChildRelation() + ")");}
 	  } else {
 		  event_name_vec.add(event.getEventName());
 	  }
-	  System.out.println("link event : "+event.getEventName()+" loaded");
   }
+  //***************
   
   for (int i=0; i < resource_link_vec.size(); i++) {
     Item tempItem = new Item(db_ausstage);
@@ -569,6 +573,8 @@
                                                "Works", 
                                                work_name_vec,
                                                1000));
+                                               
+                                             
   ///////////////////////////////////
   // RESOURCES
   ///////////////////////////////////                                           
@@ -656,7 +662,6 @@ if (groupNames.contains("Administrators") || groupNames.contains("Reviewers")) {
   if (eventObj.getUpdatedByUser() != null && !eventObj.getUpdatedByUser().equals("")) {
     pageFormater.writeTwoColTableHeader(out, "Updated By User:");
     out.print(eventObj.getUpdatedByUser());
-    System.out.println(" Updating User:" + eventObj.getUpdatedByUser());
     pageFormater.writeTwoColTableFooter(out);
     
     pageFormater.writeTwoColTableHeader(out, "Date Updated:");
@@ -672,8 +677,6 @@ if (groupNames.contains("Administrators") || groupNames.contains("Reviewers")) {
 
   // reset/set the state of the EVENT object
   session.setAttribute("eventObj",eventObj);
-  System.out.println("end page load");
-    System.out.println("-----------------------");
 %>
 </form>
 <script language="javascript">

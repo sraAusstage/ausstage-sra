@@ -13,11 +13,12 @@
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
 
 <%
+
 	admin.ValidateLogin login = (admin.ValidateLogin) session.getAttribute("login");
 	admin.FormatPage pageFormater = (admin.FormatPage) session.getAttribute("pageFormater");
 	ausstage.Database db_ausstage = new ausstage.Database();
 	int MAX_RESULTS_RETURNED = 1000;
-
+	
 	String sqlString;
 	db_ausstage.connDatabase(AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 	Statement stmt = db_ausstage.m_conn.createStatement();
@@ -42,15 +43,14 @@
 	String selected_list_db_field_id_name;
 	Vector selected_list_db_display_fields = new Vector();
 	String comeFromWorkAddeditPage = request.getParameter("f_from_work_add_edit_page");
-	String filter_id;
-	String filter_work_title;
+	//filter variables. 
+	String filter_id, filter_work_title, filter_first_name, filter_last_name, filter_org_name;
 	String filter_box_selected;
 	Work w;
 	String isPreviewForEventWork = request.getParameter("isPreviewForEventWork");
 	if (isPreviewForEventWork == null){isPreviewForEventWork = "false";}
 	String isPreviewForItemWork = request.getParameter("isPreviewForItemWork");
 	if (isPreviewForItemWork == null){isPreviewForItemWork = "false";}
-	
 
 	Hashtable hidden_fields = new Hashtable();
 	Work work = (Work) session.getAttribute("work");
@@ -70,7 +70,6 @@
 		String title = request.getParameter("f_select_work_title");
 		String alternate_title = request.getParameter("f_alter_work_title");
 	}
-
 	if (request.getParameter("fromWorkPage") == null) fromWorkPage = false;
 
 	if (fromWorkPage) work.setWorkAttributes(request);
@@ -85,7 +84,6 @@
 	String orderBy = request.getParameter("f_order_by");
 	//get me all the works from the current list
 	//object in the session.
-
 	Vector <WorkWorkLink> workWorkLinks = work.getWorkWorkLinks();
 	//add the selected work to the work  
 	if (f_select_this_work_id != null) {
@@ -111,6 +109,7 @@
     			}
 		}
 		work.setWorkWorkLinks(workWorkLinks);
+		
 	}
 
 	// Get the form parameters that are used to create the SQL that determines what
@@ -119,11 +118,21 @@
 	filter_box_selected = request.getParameter("f_box_selected");
 	filter_id = request.getParameter("f_search_id");
 	filter_work_title = request.getParameter("f_search_work_title");
-
+	filter_first_name = request.getParameter("f_search_first_name");
+	filter_last_name = request.getParameter("f_search_last_name");
+	filter_org_name = request.getParameter("f_search_org_name");
+	
+	//add the fields
 	filter_display_names.addElement("ID");
 	filter_display_names.addElement("Title");
+	filter_display_names.addElement("Creator First Name");
+	filter_display_names.addElement("Creator Last Name");
+	filter_display_names.addElement("Organisation Name");	
 	filter_names.addElement("f_search_id");
 	filter_names.addElement("f_search_work_title");
+	filter_names.addElement("f_search_first_name");
+	filter_names.addElement("f_search_last_name");
+	filter_names.addElement("f_search_org_name");
 
 	order_display_names.addElement("Title");
 	order_names.addElement("WORK_TITLE");
@@ -162,31 +171,48 @@
 	//for each Work id get name and add the id and the name to a temp vector.
 	for (int i = 0; i < selectedWorks.size(); i++) {
 		boolean isParent = f_workid.equals(selectedWorks.get(i).getWorkId());
-
 		temp_string = work.getWorkInfoForDisplay(Integer.parseInt((isParent) ? selectedWorks.get(i).getChildId() : selectedWorks.get(i).getWorkId()), stmt);
+				System.out.println("work_work 14");
 		temp_vector.add((isParent) ? selectedWorks.get(i).getChildId() : selectedWorks.get(i).getWorkId());//add the id to the temp vector.
 		temp_vector.add(temp_string);//add the Work name to the temp_vector.
 	}
 	selectedWorks = temp_vector;
-	stmt.close();
+	//stmt.close();
 
 	// if first time this form has been loaded
 	if (filter_id == null) {
 
 		list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, "
-				+ "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output " + "FROM work  "
-				+ "LEFT JOIN workconlink ON work.workid = workconlink.workid " + "LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid "
+				+ "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output " 
+				+ "FROM work  "
+				+ "LEFT JOIN workconlink ON work.workid = workconlink.workid " 
+				+ "LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid "
 				+ "GROUP BY work.workid " + "ORDER BY LOWER(work_title)";
 	} else {
 		// Not the first time this page has been loaded
 		// i.e the user performed a search
 		list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, "
-				+ "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output " + "FROM work  "
-				+ "LEFT JOIN workconlink ON work.workid = workconlink.workid " + "LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid "
+				+ "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output " 
+				+ "FROM work  "
+				+ "LEFT JOIN workconlink ON work.workid = workconlink.workid " 
+				+ "LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid "
+				+ "LEFT JOIN workorglink ON work.workid = workorglink.workid "
+				+ "LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid " 
 				+ "WHERE ";
 
 		// Add the filters to the SQL
-		if (!filter_id.equals("")) list_db_sql += " work.workid=" + filter_id + " and ";
+		if (!filter_id.equals("")) {
+			list_db_sql += " work.workid=" + filter_id + " and ";
+		}
+		if (!filter_first_name.equals("")){
+			list_db_sql += " LOWER(contributor.first_name) like '%" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "%' AND "; 
+		}
+		if ( !filter_last_name.equals ("")) {
+      			list_db_sql += " LOWER(contributor.last_name) like '%" + db_ausstage.plSqlSafeString(filter_last_name.toLowerCase()) + "%' AND ";
+    		} 
+	    	if ( !filter_org_name.equals ("")) {
+		      list_db_sql += " LOWER(organisation.name) like '%" + db_ausstage.plSqlSafeString(filter_org_name.toLowerCase()) + "%' AND ";
+		} 
 		if (!filter_work_title.equals("")) {
 			list_db_sql += " LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
 			list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
@@ -198,10 +224,24 @@
 	}
 	hidden_fields.put("isPreviewForItemWork", isPreviewForItemWork );
 	list_db_sql += " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
-	out.println(htmlGenerator.displaySearchFilterAndSelector(request, "Select Work", "Selected Work", filter_display_names, filter_names, order_display_names, order_names,
-			list_name, list_db_sql, list_db_field_id_name, textarea_db_display_fields, selected_list_name, selectedWorks, selected_list_db_field_id_name, buttons_names,
-			buttons_actions, hidden_fields, false, MAX_RESULTS_RETURNED));
-
+	out.println(htmlGenerator.displaySearchFilterAndSelector(request, "Select Work", 
+								"Selected Work", 
+								filter_display_names, 
+								filter_names, 
+								order_display_names, 
+								order_names,
+								list_name, 
+								list_db_sql, 
+								list_db_field_id_name, 
+								textarea_db_display_fields, 
+								selected_list_name, 
+								selectedWorks, 
+								selected_list_db_field_id_name, 
+								buttons_names,
+								buttons_actions, 
+								hidden_fields, 
+								false, 
+								MAX_RESULTS_RETURNED));
 	db_ausstage.disconnectDatabase();
 	pageFormater.writePageTableFooter(out);
 	pageFormater.writeFooter(out);

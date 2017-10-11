@@ -27,39 +27,40 @@
 	String linkEventId = "";
 	String relationLookupId = "";
 	String isParent = "";
+	String orderby = "";
 	
 	pageFormater.writeHeader(out);
 	pageFormater.writePageTableHeader(out, "", ausstage_main_page_link);
-	System.out.println("");
-	System.out.println("loading event_event_functions_process...");
+
 	try {
 		for (int i=0; i < eventEventLinks.size(); i++) {
 			EventEventLink eventEventLink = new EventEventLink(db_ausstage);
 			// get data from the request object
 			childEventId = request.getParameter("f_child_event_id_" + i);
-						
+			orderby = request.getParameter("f_orderby_" + i);							
 			linkEventId = request.getParameter("f_link_event_id_" + i);
 
 			String [] lookupAndPerspective = request.getParameter("f_relation_lookup_id_" + i).split("_", 2);
 			relationLookupId = lookupAndPerspective[0];
 			isParent = lookupAndPerspective[1];				
 			notes = request.getParameter("f_notes_" + i);
-			childNotes = request.getParameter("f_child_notes_" + i);
-			System.out.println("**** Child notes : "+childNotes);
-			
+			childNotes = request.getParameter("f_child_notes_" + i);			
 			if (isParent.equals("parent")){ 
 				eventEventLink.setChildId(linkEventId);
 				eventEventLink.setEventId(eventId);
 				eventEventLink.setNotes(notes);
 				eventEventLink.setChildNotes(childNotes);
+
 			} 
 			else {	eventEventLink.setEventId(linkEventId);
 				eventEventLink.setChildId(eventId);
 				eventEventLink.setNotes(childNotes);
 				eventEventLink.setChildNotes(notes);				
+
 			}
 			
 			eventEventLink.setRelationLookupId(relationLookupId);
+			eventEventLink.setOrderby(orderby);
 			//eventEventLink.setNotes(notes);
 			
 			tempEventEventLinks.insertElementAt(eventEventLink, i);
@@ -69,7 +70,6 @@
 	}
 
 	if (error_msg.equals("")) {
-		System.out.println("event_event_functions_process message : event object event id = "+eventObj.getEventid());
 		eventObj.setEventEventLinks(tempEventEventLinks);
 		session.setAttribute("eventObj", eventObj);
 		pageFormater.writeText(out, "Event to event process successful.");

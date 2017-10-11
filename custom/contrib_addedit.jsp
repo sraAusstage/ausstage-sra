@@ -39,13 +39,13 @@
   String action       = request.getParameter("act");
   String process_type = request.getParameter("process_type");
   String isForItem    = request.getParameter("isForItem");
-    System.out.println("");
-  System.out.println("contrib_addedit message : loading page...");
+//    System.out.println("");
+//  System.out.println("contrib_addedit message : loading page...");
 
   if (action == null) {
     action = "";
   }
-  System.out.println("contrib_addedit message : action = "+ action);  
+//  System.out.println("contrib_addedit message : action = "+ action);  
 
   String contrib_id = "";
 
@@ -58,7 +58,7 @@
   else
     contrib_id = request.getParameter("f_contributor_id");
 
-    System.out.println("contrib_addedit message : contributor id = "+ contrib_id);
+    //System.out.println("contrib_addedit message : contributor id = "+ contrib_id);
   String contrib_prefix          = "";
   String contrib_fname           = "";
   String contrib_mname           = "";
@@ -164,12 +164,12 @@
              !contrib_id.equals("") &&
              !contrib_id.equals ("0") && !action.equals("")) { // means we are editing contributor that is not part of the event that is stored in the session 
       contributor.load(Integer.parseInt(contrib_id));
-          System.out.println("contrib_addedit message : contributor loaded using id = "+contrib_id);
+          //System.out.println("contrib_addedit message : contributor loaded using id = "+contrib_id);
     }
     else if (request.getParameter("isReturn") != null || action.equals("")) {
     	//have returned from editing child records {
       contributor = (Contributor)session.getAttribute("contributor");
-          System.out.println("contrib_addedit message : contributor loaded from session");
+          //System.out.println("contrib_addedit message : contributor loaded from session");
 
     }
 
@@ -179,6 +179,7 @@
   
     contrib_prefix      = contributor.getPrefix();
     contrib_fname       = contributor.getName();
+    //System.out.println("* JSP name = "+contrib_fname);
     contrib_mname       = contributor.getMiddleName();
     contrib_lname       = contributor.getLastName();
     contrib_suffix      = contributor.getSuffix();
@@ -239,19 +240,19 @@
 
 	//***************
 	  //BW reciprocal relations
-	System.out.println("***************");
+	//System.out.println("***************");
 	RelationLookup rl = new RelationLookup(db_ausstage);
 	boolean isParent = true;
 	for(int i=0; i < contributor_link_vec.size(); i++ ){
-	System.out.println("********"+i);
+	//System.out.println("********"+i);
   	  isParent = true;
 	  Contributor contributorTemp = new Contributor(db_ausstage);
 	  if (contrib_id.equals(contributor_link_vec.get(i).getChildId())){
 	  	  isParent = false;
-	  	  System.out.println(contributor_link_vec.get(i).getContributorId()+"----");
+	  	  //System.out.println(contributor_link_vec.get(i).getContributorId()+"----");
 		  contributorTemp.load(Integer.parseInt(contributor_link_vec.get(i).getContributorId()));	
 	  }else{ 
-		  System.out.println(contributor_link_vec.get(i).getChildId()+"----");
+		  //System.out.println(contributor_link_vec.get(i).getChildId()+"----");
 		  contributorTemp.load(Integer.parseInt(contributor_link_vec.get(i).getChildId()));
 	  }
 	  if (contributor_link_vec.get(i).getRelationLookupId() != null) {
@@ -262,7 +263,7 @@
 	  } else {
 		  contributor_name_vec.add(contributorTemp.getDisplayName());
 	  }
-	  System.out.println("link event : "+contributorTemp.getDisplayName()+" loaded");
+	  //System.out.println("link event : "+contributorTemp.getDisplayName()+" loaded");
   }
   //***************
     
@@ -323,7 +324,7 @@
   <%
     pageFormater.writeTwoColTableFooter (out); 
     pageFormater.writeTwoColTableHeader (out, "Family Name *");
-    System.out.println("set contributor object = "+contributor.getId());
+    //System.out.println("set contributor object = "+contributor.getId());
   %>
     <input class="line200" type="text" name="f_l_name" size="40" maxlength="40" value="<%=contrib_lname%>">
   <%
@@ -576,7 +577,7 @@
 	        contributor_name_vec,
 	        1000));
 	       
-  System.out.println("contributor_name_vec:" + contributor_name_vec);	       
+  //System.out.println("contributor_name_vec:" + contributor_name_vec);	       
     
   /***************************
        Data Entry Information

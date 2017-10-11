@@ -25,7 +25,7 @@
   String              venue_id = request.getParameter ("f_selected_venue_id");
   String              countryLeadingSubString = "", countryTrailingSubString = "";
   String              stateLeadingSubString = "", stateTrailingSubString = "";
-  Vector                  temp_display_info;
+  Vector              temp_display_info;
   CachedRowSet        rset;
   String              action1       = request.getParameter("action");
   if (action1 == null) action1 = "";
@@ -77,7 +77,6 @@
   if(venue_id == null) venue_id = "";
   //use a new Venue object that is not from the session.
   if(action1 != null && (action1.equals("add") || action1.equals("AddForItem") )){
-		 //System.out.println("Insert");
 	    venue_id = "";	    
   }
   else if (action1 != null && action1.equals("edit")|| action1.equals("EditForItem")){ //editing existing Venue
@@ -252,7 +251,7 @@ document.body.onload=function(){load();};
   	out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?place_of_demise=1' method='post'>");
   }      
   else{
-      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp' method='post' onsubmit='return checkMandatoryFields();'>");
+      out.println("<form name='venue_addedit_form' id='venue_addedit_form' action='venue_addedit_process.jsp?act="+action+"' method='post' onsubmit='return checkMandatoryFields();'>");
   }
   
   

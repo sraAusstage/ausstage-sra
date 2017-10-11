@@ -17,9 +17,7 @@
   db_ausstage.connDatabase (AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 
   Item   itemObj       = (Item)session.getAttribute("item");
-  System.out.println("Item Object:" + itemObj);
   String itemId        = itemObj.getItemId();
-  System.out.println("Item Id:" + itemId);
 	Vector<ItemItemLink> itemItemLinks = itemObj.getItemItemLinks();
   String error_msg   = "";
   String relationLookupId   = "";

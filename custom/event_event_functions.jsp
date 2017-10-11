@@ -89,10 +89,23 @@
     </tr>
     <tr>
       <td class="bodytext" colspan=3><br><b>Comments</b><br>
-        <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?eventEventLink.getNotes():eventEventLink.getChildNotes()%></textarea>
-        <br><br><br><hr><br><br>
+        <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)?eventEventLink.getNotes():eventEventLink.getChildNotes()%></textarea>       
          <input type='hidden' name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' value='<%=(isParent)?eventEventLink.getChildNotes():eventEventLink.getNotes()%>'></hidden>
+         <br>
       </td>
+    </tr>
+
+    <tr>
+    	<td><b>Order By :</b></td>
+    	<td><input type="text" name="f_orderby_<%=i%>" size="10" value="<%=eventEventLink.getOrderby()%>"></td>
+    </tr>
+
+    <tr>
+    	<td colspan="3">
+    	 <br>
+    	 <hr>
+    	 <br>
+    	</td>
     </tr>
 
     <!--<tr>

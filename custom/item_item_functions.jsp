@@ -20,7 +20,6 @@
 
   Item          itemObj       = (Item)session.getAttribute("item");
   String        itemid        = itemObj.getItemId();
-  System.out.println("Item Id:"+itemid        );
 
   Vector<ItemItemLink> itemItemLinks = itemObj.getItemItemLinks();
   
@@ -56,7 +55,7 @@
     
     %>
     <tr>
-      <td class="bodytext" colspan=3><b>Editing Resource:</b> <%=itemObj.getCitation()%><br><br></td>
+      <td class="bodytext" colspan=3><b>Editing Resource:</b> <%=itemObj.getTitle()%><br><br></td>
     </tr>
     <tr>
       <td class="bodytext" colspan=3><%
@@ -91,19 +90,20 @@
     </td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><b>Associated Resource:</b> <%=tempItem.getCitation()%></td>
+      <td class="bodytext" colspan=3><b>Associated Resource:</b> <%=tempItem.getTitle()%></td>
     </tr>
     <tr>
-      <td class="bodytext" colspan=3><br><b>Comments for</b> <%=itemObj.getCitation()%> to <%=tempItem.getCitation()%><br>
+      <td class="bodytext" colspan=3><br><b>Comments for</b> <%=itemObj.getTitle()%> to <%=tempItem.getTitle()%><br>
         <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%= (isParent) ? itemItemLink.getNotes() : itemItemLink.getChildNotes()%></textarea>
+        <input type='hidden' name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' value='<%=(isParent)?itemItemLink.getChildNotes():itemItemLink.getNotes()%>' ></input>
       </td>
     </tr>
-     <tr>
+<!--     <tr>
       <td class="bodytext" colspan=3><br><b>Comments for</b>  <%=tempItem.getCitation()%> to <%=itemObj.getCitation()%><br>
         <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent) ? itemItemLink.getChildNotes() : itemItemLink.getNotes()%></textarea>
         <br><br><br><hr><br><br>
       </td>
-    </tr>
+    </tr>-->
 <%
   }
   out.println("</table>");

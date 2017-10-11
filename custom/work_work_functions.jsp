@@ -92,14 +92,13 @@
     <tr>
       <td class="bodytext" colspan=3><br><b>Comments for </b> <%=workObj.getName()%> to <%=tempWork.getName()%><br>
         <textarea name='f_notes_<%=i%>' id='f_notes_<%=i%>' rows='3' cols='40'><%=(isParent)? workWorkLink.getNotes() : workWorkLink.getChildNotes()%></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td class="bodytext" colspan=3><br><b>Comments for </b> <%=tempWork.getName()%> to <%=workObj.getName()%><br>
-        <textarea name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' rows='3' cols='40'><%=(isParent)? workWorkLink.getChildNotes() : workWorkLink.getNotes()%></textarea>
+        <input type="hidden" name='f_child_notes_<%=i%>' id='f_child_notes_<%=i%>' value="<%=(isParent)? workWorkLink.getChildNotes() : workWorkLink.getNotes()%>"></input>
         <br><br><br><hr><br><br>
       </td>
-    </tr>
+    </tr>  
+
+    
+   
 
 <%
   }

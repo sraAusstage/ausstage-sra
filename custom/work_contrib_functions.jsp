@@ -25,6 +25,11 @@
   if (isPreviewForItemWork == null || isPreviewForItemWork.equals("null")) {
     isPreviewForItemWork = "";
   }
+  
+  
+  
+  
+  
   if (isPreviewForEventWork == null || isPreviewForEventWork.equals("null")) {
     isPreviewForEventWork = "";
   }

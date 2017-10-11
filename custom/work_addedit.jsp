@@ -28,7 +28,6 @@
   	}
   }
   
-  
   Statement               stmt                 	= db_ausstage.m_conn.createStatement ();
   ausstage.HtmlGenerator  htmlGenerator        	= new ausstage.HtmlGenerator (db_ausstage);
   ausstage.Datasource     datasource           	= new ausstage.Datasource (db_ausstage);
@@ -256,9 +255,6 @@
     ausstage.Country count = new ausstage.Country(db_ausstage);
     String country_ids_string = "";
     for (WorkCountryLink countryId : country_ids){
-    	System.out.println();
-    	System.out.println(countryId);
-    	System.out.println(countryId.getCountryId());    	
         count.load(Integer.parseInt(countryId.getCountryId()));
 	country_ids_string += country_ids_string.equals("")? countryId.getCountryId():","+countryId.getCountryId();
         out.println("\t\t<option value='" + count.getId() + "'>" +   count.getName() +"</option>\n");     	
@@ -473,17 +469,6 @@ console.log('2');
       alert(errorMessage + "If year is blank then month must be blank.");
       return false;
     }
-
-    if(day != "")
-    {
-      if (!checkValidDate(day, month, year))
-      {
-        alert(errorMessage + "Not a valid date. ");
-        return false;
-      }
-      else
-        return true;
-    }
     
     if(month != "")
     {
@@ -496,17 +481,29 @@ console.log('2');
         return false;
       }
     }
-    
-    if(year != "")
+   
+     if(year != "")
     {
+
       if (!isInteger (year))
         return false;
         
-      if (year > 3000 || year < 1700)
+      if (year > 3000 || year < 1300)
       {
         alert(errorMessage + "Not a valid year.");
         return false;
       }
+    }
+    
+    if(day != "")
+    {
+      if (!checkValidDate(day, month, year))
+      {
+        alert(errorMessage + "Not a valid date. ");
+        return false;
+      }
+      else
+        return true;
     }
     return true;
   }

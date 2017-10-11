@@ -85,7 +85,7 @@
   
   
   String f_organisation_id = Integer.toString(organisation.getId());
-  //System.out.println("f_organisation_id: "+f_organisation_id);
+
   int    organisationId   = Integer.parseInt(f_organisation_id);
   hidden_fields.put("f_organisation_id", f_organisation_id);
   
@@ -94,7 +94,7 @@
   String orderBy = request.getParameter ("f_order_by");
   
   Vector<OrganisationOrganisationLink> OrgOrgLinks = organisation.getOrganisationOrganisationLinks();
-  //System.out.println(OrgOrgLinks.toString());
+
   //add the selected venue to the venue
   if (f_select_this_org_id != null) {
 	  OrganisationOrganisationLink ool = new OrganisationOrganisationLink(db_ausstage);

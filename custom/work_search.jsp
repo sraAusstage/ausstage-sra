@@ -77,55 +77,63 @@
   */
   buttons_actions.addElement ("Javascript:search_form.action='work_del_confirm.jsp';search_form.submit();");
   
+  //BW 
+  String where_one = "";
+  String where_two = "";
+  String orderby = "";
+  
+  list_db_sql = 
+  "SELECT w.workid, w.work_title, w.output FROM ( "+
+  	"SELECT work.workid, work_title, "+
+	  	"group_concat( concat_ws(' ',  contributor.first_name, contributor.last_name)separator ', ') as contribname, "+
+   		"concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output, "+
+   		"group_concat( contributor.last_name separator ', ') as last_names, "+
+           	"group_concat( contributor.first_name separator ', ') as first_names "+ 
+	"FROM work "+
+	"LEFT JOIN workconlink ON work.workid = workconlink.workid "+
+	"LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid "+
+	"WHERE <WHERE_ONE> 1=1 "+ 
+        "group by work.workid "+
+  ") AS w "+
+  "LEFT JOIN workorglink ON w.workid = workorglink.workid "+
+  "LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid "+
+  "WHERE <WHERE_TWO> 1=1 "+
+  "group by workid order by <ORDERBY>";
   // if first time this form has been loaded
   if (filter_work_id == null)
   {
-     list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, " +
-     "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output "+
-			"FROM work  " +
-			"LEFT JOIN workconlink ON work.workid = workconlink.workid " +
-			"LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid " +
-			"LEFT JOIN workorglink ON work.workid = workorglink.workid "+
-			"LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid "+
-			"GROUP BY work.workid " +
-			"ORDER BY LOWER(work_title)";
+     list_db_sql = list_db_sql.replace("<WHERE_ONE>", where_one);
+     list_db_sql = list_db_sql.replace("<WHERE_TWO>", where_two);
+     list_db_sql = list_db_sql.replace("<ORDERBY>", "LOWER(work_title)");
+
   }
   else
   {
-    // Not the first time this page has been loaded
-    // i.e the user performed a search
-       list_db_sql = "SELECT work.workid, work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ') contribname, " +
-        "concat_ws(', ',work.work_title, group_concat(concat_ws(' ', contributor.first_name, contributor.last_name) separator ', ')) as output "+
-			"FROM work  " +
-			"LEFT JOIN workconlink ON work.workid = workconlink.workid " +
-			"LEFT JOIN contributor ON workconlink.contributorid = contributor.contributorid " +
-			"LEFT JOIN workorglink ON work.workid = workorglink.workid "+
-			"LEFT JOIN organisation ON workorglink.organisationid = organisation.organisationid "+
-			"WHERE ";
-
     // Add the filters to the SQL
     if ( !filter_work_id.equals (""))
-      list_db_sql += " work.workid=" + filter_work_id + " and ";
+      where_one += " work.workid=" + filter_work_id + " and ";
     
     if ( !filter_first_name.equals ("")) {
-      list_db_sql += " LOWER(contributor.first_name) like '%" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "%' AND ";
+      where_two += " LOWER(w.first_names) like '%" + db_ausstage.plSqlSafeString(filter_first_name.toLowerCase()) + "%' AND ";
     } 
     
     if ( !filter_last_name.equals ("")) {
-      list_db_sql += " LOWER(contributor.last_name) like '%" + db_ausstage.plSqlSafeString(filter_last_name.toLowerCase()) + "%' AND ";
+      where_two += " LOWER(w.last_names) like '%" + db_ausstage.plSqlSafeString(filter_last_name.toLowerCase()) + "%' AND ";
     } 
     
     if ( !filter_org_name.equals ("")) {
-      list_db_sql += " LOWER(organisation.name) like '%" + db_ausstage.plSqlSafeString(filter_org_name.toLowerCase()) + "%' AND ";
+      where_two += " LOWER(organisation.name) like '%" + db_ausstage.plSqlSafeString(filter_org_name.toLowerCase()) + "%' AND ";
     } 
     
     if ( !filter_work_title.equals ("")) {
-      list_db_sql += " LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
-      list_db_sql += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
-    } else {
-      list_db_sql += " 1=1 ";
-    } 
-    list_db_sql += "group by work.workid order by LOWER(" + request.getParameter ("f_order_by") + ")";
+      where_one += " ( LOWER(work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ";
+      where_one += " OR LOWER(alter_work_title) like '%" + db_ausstage.plSqlSafeString(filter_work_title.toLowerCase()) + "%' ) AND ";
+    }  
+    orderby += "LOWER(" + request.getParameter ("f_order_by") + ")";
+    
+     list_db_sql = list_db_sql.replace("<WHERE_ONE>", where_one);
+     list_db_sql = list_db_sql.replace("<WHERE_TWO>", where_two);
+     list_db_sql = list_db_sql.replace("<ORDERBY>", orderby);
   }
 
   // Need to do the following type of select of Oracle will not return the rows
@@ -133,7 +141,8 @@
   
   //pageFormater.writeHelper(out, "Works Maintenance","helpers_no1.gif");
   list_db_sql = list_db_sql + " limit " + (MAX_RESULTS_RETURNED + 5) + " "; // Make sure we are able to return more than what we can display so that we will know to display a waring to the user.
-
+	System.out.println("**********************************");
+	System.out.println(list_db_sql);
   out.println (htmlGenerator.displaySearchFilter (request, "Select Work",
                                         filter_display_names,
                                         filter_names,
