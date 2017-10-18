@@ -235,7 +235,10 @@ public class AppConstants implements DatabaseType {
 				// FileTools fileTools = new FileTools();
 				IniFile iniFile = new IniFile();
 
-				iniFile.readIni("/home1/ausstage/cmjava.ini");
+				iniFile.readIni("C:/Ausstage/cmjava.ini");
+				//this will be important for PROD???
+				//iniFile.readIni("/home1/ausstage/cmjava.ini");
+				
 				iniFile.setHeader("GENERAL");
 				SITE_NAME = iniFile.getItem("SITE_NAME");
 				ROOT_PAGE = Integer.parseInt(iniFile.getItem("ROOT_PAGE"));
