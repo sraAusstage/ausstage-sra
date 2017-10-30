@@ -2,8 +2,8 @@ delimiter $$
 
 CREATE TABLE `item_article` (
   `ITEMARTICLEID` int(11) NOT NULL AUTO_INCREMENT,
-  `BODY` blob,
+  `BODY` text,
   PRIMARY KEY (`ITEMARTICLEID`),
   CONSTRAINT `ITEM_ARTICLE_ITEM_FK` FOREIGN KEY (`ITEMARTICLEID`) REFERENCES `item` (`itemid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='New table created for Full text article request.'$$
+) ENGINE=InnoDB AUTO_INCREMENT=244 DEFAULT CHARSET=utf8 COMMENT='New table created for Full text article request.'$$
 
