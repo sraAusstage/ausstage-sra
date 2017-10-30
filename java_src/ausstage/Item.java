@@ -24,6 +24,7 @@ import ausstage.Contributor;
 import ausstage.Event;
 import ausstage.Organisation;
 import ausstage.Venue;
+import ausstage.ItemArticle; //BW full text article
 
 import java.util.Arrays;
 import java.util.Date;
@@ -89,6 +90,8 @@ public class Item {
   private String m_action;
   private String m_error_string;
   private boolean m_is_copy;
+  private String m_item_article; //Added Oct 2017 for full text articles. BW
+  
   // Derived Objects
   private Vector m_item_evlinks;
   private Vector m_item_contentindlinks;
@@ -104,6 +107,7 @@ public class Item {
   
   // ADDED BY BW FOR ADDITIONAL ITEM URLs
   private Vector m_additional_urls;
+  
 
   // CR0001
   private String m_ddCreate_date;
@@ -140,6 +144,7 @@ public class Item {
   private String m_citation;
   private String m_source_citation;
   private String m_ident_isbn;
+  private String m_ident_isbn_13;
   private String m_ident_ismn;
   private String m_ident_issn;
   private String m_ident_sici;
@@ -161,12 +166,9 @@ public class Item {
 
   /**
   Name: item ()
-
   Purpose: Constructor.
-
   Parameters:
     p_db       : The database object
-
   Returns:
      None
 
@@ -178,15 +180,11 @@ public class Item {
 
   /*
   Name: initialise ()
-
   Purpose: Resets the object to point to no record.
-
   Parameters:
     None
-
   Returns:
      None
-
   */
 
   public void initialise() {
@@ -215,6 +213,8 @@ public class Item {
     m_error_string = "";
     m_is_copy = false;
     m_item_url = "";
+    m_item_article = ""; //BW full text
+    
     // Derived Objects
     m_item_evlinks = new Vector();
     m_item_contentindlinks = new Vector();
@@ -227,7 +227,7 @@ public class Item {
     m_item_secgenrelinks = new Vector();
     m_item_workslinks = new Vector();
     m_additional_urls = new Vector(); //BW ADDITIONAL ITEM URLS
-
+   
     // CR0001
     m_ddCreate_date = "";
     m_mmCreate_date = "";
@@ -262,6 +262,7 @@ public class Item {
     m_citation = "";
     m_source_citation = "";
     m_ident_isbn = "";
+    m_ident_isbn_13 = "";
     m_ident_ismn = "";
     m_ident_issn = "";
     m_ident_sici = "";
@@ -302,8 +303,7 @@ public class Item {
   /*
   Name: load ()
 
-  Purpose: Sets the memeber variables of the class based on an item or catalogue id.
-
+  Purpose: Sets the member variables of the class based on an item or catalogue id.
   Parameters:
     p_id      : The item or catalogue id of the item record we are loading.
    p_isItemId : Determine if the item or catalogue id is to be used.
@@ -315,17 +315,17 @@ public class Item {
   public void load(String p_id, boolean p_isItemId) {
     ResultSet l_rs;
     ResultSet l_rs2;
+    ResultSet l_rs3;
     String sqlString = "";
 
     try {
       Statement stmt = m_db.m_conn.createStatement();
-
       if (p_isItemId) {
         sqlString = 
-            "SELECT * " + "FROM item " + "WHERE itemid = '" + p_id + "'";
+            "SELECT * FROM item WHERE itemid = '" + p_id + "'";
       } else {
         sqlString = 
-            "SELECT * " + "FROM item " + "WHERE catalogueid = '" + p_id + "'";
+            "SELECT * FROM item WHERE catalogueid = '" + p_id + "'";
       }
       l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -386,6 +386,7 @@ public class Item {
         m_format = l_rs.getString("format");
         m_citation = l_rs.getString("citation");
         m_ident_isbn = l_rs.getString("ident_isbn");
+        m_ident_isbn_13 = l_rs.getString("ident_isbn_13");
         m_ident_ismn = l_rs.getString("ident_ismn");
         m_ident_issn = l_rs.getString("ident_issn");
         m_ident_sici = l_rs.getString("ident_sici");
@@ -462,6 +463,8 @@ public class Item {
           m_citation = "";
         if (m_ident_isbn == null)
           m_ident_isbn = "";
+        if (m_ident_isbn_13 == null)
+            m_ident_isbn_13 = "";
         if (m_ident_ismn == null)
           m_ident_ismn = "";
         if (m_ident_issn == null)
@@ -540,7 +543,6 @@ public class Item {
         loadLinkedContentInd();
         loadLinkedWork();
         loadAdditionalUrls(); //BW -additional URLS
-
         // Load the source citation
         if (m_sourceid != null && !m_sourceid.equals("")) {
           l_rs2 = 
@@ -553,6 +555,16 @@ public class Item {
           l_rs2.close();
         }
       }
+      //load full text article if it exists
+      /*l_rs3 = m_db.runSQLResultSet("SELECT body FROM item_article where itemarticleid = " + p_id, stmt);
+      if (l_rs3.next()) {
+        m_item_article = escapeHtml(l_rs3.getString("body"));
+      }*/
+      
+      /*l_rs3.close();*/
+      ItemArticle itemArticle = new ItemArticle(m_db);
+      itemArticle.load(p_id);
+      m_item_article = itemArticle.getBody();
       l_rs.close();
       stmt.close();
     } catch (Exception e) {
@@ -649,6 +661,10 @@ public class Item {
   public String getItemUrl() {
     return m_item_url;
   }
+  
+  public String getItemArticle() {
+	    return m_item_article;
+	  }
 
   public String getError() {
     return m_error_string;
@@ -683,6 +699,9 @@ public class Item {
   public String getIdentIsbn() {
     return m_ident_isbn;
   }
+  public String getIdentIsbn13() {
+	    return m_ident_isbn_13;
+	  }
 
   public String getIdentIsmn() {
     return m_ident_ismn;
@@ -882,6 +901,7 @@ public class Item {
   public String getPage() {
     return m_page;
   }
+  
 
   public void setIsInCopyMode(boolean p_is_in_copy_mode) {
     m_is_copy = p_is_in_copy_mode;
@@ -974,6 +994,8 @@ public class Item {
           m_format = m_format.substring(0, 59);
         if (m_ident_isbn.length() > 60)
           m_ident_isbn = m_ident_isbn.substring(0, 59);
+        if (m_ident_isbn_13.length() > 60)
+            m_ident_isbn_13 = m_ident_isbn_13.substring(0, 59);
         if (m_ident_ismn.length() > 60)
           m_ident_ismn = m_ident_ismn.substring(0, 59);
         if (m_ident_issn.length() > 60)
@@ -1204,6 +1226,7 @@ public class Item {
             m_db.plSqlSafeString(m_format_mimetype) + "' " + ", '" + 
             m_db.plSqlSafeString(m_format) + "' " + ", '" + 
             m_db.plSqlSafeString(m_ident_isbn) + "' " + ", '" + 
+            m_db.plSqlSafeString(m_ident_isbn_13) + "' " + ", '" +
             m_db.plSqlSafeString(m_ident_ismn) + "' " + ", '" + 
             m_db.plSqlSafeString(m_ident_issn) + "' " + ", '" + 
             m_db.plSqlSafeString(m_ident_sici) + "' " + ", '" + 
@@ -1361,7 +1384,13 @@ public class Item {
           }
         }
 
-        // Update the citation field LAST
+        //BW full text article. 
+        //if field is not empty then add to the database.
+        if (m_item_article != ""){
+        	ItemArticle itemArticle = new ItemArticle(m_db);
+        	itemArticle.add(l_item_id, m_item_article);
+        }
+        
         m_citation = this.getNewCitation(l_item_id);
 
         l_sql = 
@@ -1463,6 +1492,8 @@ public class Item {
           m_format = m_format.substring(0, 59);
         if (m_ident_isbn.length() > 60)
           m_ident_isbn = m_ident_isbn.substring(0, 59);
+        if (m_ident_isbn_13.length() > 60)
+            m_ident_isbn_13 = m_ident_isbn_13.substring(0, 59);
         if (m_ident_ismn.length() > 60)
           m_ident_ismn = m_ident_ismn.substring(0, 59);
         if (m_ident_issn.length() > 60)
@@ -1693,6 +1724,8 @@ public class Item {
           l_sql += "format='" + m_db.plSqlSafeString(m_format) + "',";
         if (m_ident_isbn != null)
           l_sql += "ident_isbn='" + m_db.plSqlSafeString(m_ident_isbn) + "',";
+        if (m_ident_isbn_13 != null)
+            l_sql += "ident_isbn_13='" + m_db.plSqlSafeString(m_ident_isbn_13) + "',";
         if (m_ident_ismn != null)
           l_sql += "ident_ismn='" + m_db.plSqlSafeString(m_ident_ismn) + "',";
         if (m_ident_issn != null)
@@ -1909,6 +1942,17 @@ public class Item {
           m_db.runSQLResultSet(l_sql, stmt);
         }
 
+        // Deal with the full text article(item_article).
+        //if empty then delete any matches
+        // else update
+        ItemArticle itemArticle = new ItemArticle(m_db);
+        if (m_item_article != ""){
+        	itemArticle.update(m_itemid, m_item_article);
+        }
+        else{
+        	itemArticle.delete(m_itemid);
+        }
+        
         // Update the citation field LAST
         m_citation = this.getNewCitation(m_itemid);
 
@@ -1935,7 +1979,7 @@ public class Item {
       System.out.println("sqlString: " + l_sql);
       System.out.println(">>>>>>>>>>>>>-<<<<<<<<<<<<<");
       l_ret = false;
-      setErrorMessage("Unable to update the resource.");
+      setErrorMessage("Unable to update the resource. "+e.getMessage() + " "+ e.getLocalizedMessage()+" "+e.toString());
     }
     return l_ret;
   }
@@ -2023,6 +2067,11 @@ public class Item {
 
       l_sql = "DELETE FROM item WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
+      
+      ItemArticle itemArticle = new ItemArticle(m_db);
+      itemArticle.delete(m_itemid);
+      
+      
 
       stmt.close();
       l_ret = true;
@@ -3107,7 +3156,10 @@ public class Item {
   public void setIdentIsbn(String s) {
     m_ident_isbn = s;
   }
-
+  
+  public void setIdentIsbn13(String s) {
+	    m_ident_isbn_13 = s;
+  }
   public void setIdentIsmn(String s) {
     m_ident_ismn = s;
   }
@@ -3249,6 +3301,10 @@ public class Item {
   public void setPage(String s) {
     m_page = s;
   }
+  
+  public void setItemArticle (String s) {
+	  m_item_article = s;
+  }
 
 
   /*
@@ -3353,6 +3409,9 @@ public class Item {
     this.m_ident_isbn = request.getParameter("f_ident_isbn");
     if (m_ident_isbn == null)
       m_ident_isbn = "";
+    this.m_ident_isbn_13 = request.getParameter("f_ident_isbn_13");
+    if (m_ident_isbn_13 == null)
+      m_ident_isbn_13 = "";
     this.m_ident_ismn = request.getParameter("f_ident_ismn");
     if (m_ident_ismn == null)
       m_ident_ismn = "";
@@ -3401,8 +3460,11 @@ public class Item {
     this.m_page = request.getParameter("f_page");
     if (m_page == null)
       m_page = "";
-
-
+    this.m_item_article = request.getParameter("f_item_article");
+    
+    if (m_item_article == null){
+    	m_item_article = "";
+    }
     // Set m_create_date
     day = request.getParameter("f_create_date_day");
     month = request.getParameter("f_create_date_month");
