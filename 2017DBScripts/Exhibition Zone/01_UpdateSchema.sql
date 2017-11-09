@@ -18,52 +18,31 @@ CREATE  TABLE IF NOT EXISTS `ausstage_schema`.`exhibition` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-CREATE  TABLE IF NOT EXISTS `ausstage_schema`.`exhibition_section` (
-  `exhibition_sectionid` INT NOT NULL AUTO_INCREMENT ,
-  `heading` VARCHAR(250) NULL ,
-  `text` VARCHAR(4000) NULL ,
-  `exhibitionid` INT NULL ,
-  `itemid` INT(11) NULL ,
-  `organisationid` INT(11) NULL ,
-  `eventid` INT(11) NULL ,
-  `venueid` INT(11) NULL ,
-  `contributorid` INT(11) NULL ,
-  PRIMARY KEY (`exhibition_sectionid`) ,
-  INDEX `fk_exhibition_section_exhibition1_idx` (`exhibitionid` ASC) ,
-  INDEX `fk_exhibition_section_item1_idx` (`itemid` ASC) ,
-  INDEX `fk_exhibition_section_organisation1_idx` (`organisationid` ASC) ,
-  INDEX `fk_exhibition_section_events1_idx` (`eventid` ASC) ,
-  INDEX `fk_exhibition_section_venue1_idx` (`venueid` ASC) ,
-  INDEX `fk_exhibition_section_contributor1_idx` (`contributorid` ASC) ,
-  CONSTRAINT `fk_exhibition_section_exhibition1`
-    FOREIGN KEY (`exhibitionid` )
-    REFERENCES `ausstage_schema`.`exhibition` (`exhibitionid` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_exhibition_section_item1`
-    FOREIGN KEY (`itemid` )
-    REFERENCES `ausstage_schema`.`item` (`itemid` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_exhibition_section_organisation1`
-    FOREIGN KEY (`organisationid` )
-    REFERENCES `ausstage_schema`.`organisation` (`organisationid` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_exhibition_section_events1`
-    FOREIGN KEY (`eventid` )
-    REFERENCES `ausstage_schema`.`events` (`eventid` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_exhibition_section_venue1`
-    FOREIGN KEY (`venueid` )
-    REFERENCES `ausstage_schema`.`venue` (`venueid` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_exhibition_section_contributor1`
-    FOREIGN KEY (`contributorid` )
-    REFERENCES `ausstage_schema`.`contributor` (`contributorid` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+CREATE  TABLE IF NOT EXISTS `exhibition_section` (
+  `exhibition_sectionid` int(11) NOT NULL AUTO_INCREMENT,
+  `heading` varchar(250) DEFAULT NULL,
+  `text` varchar(4000) DEFAULT NULL,
+  `sequencenumber` int(11) DEFAULT NULL,
+  `exhibitionid` int(11) DEFAULT NULL,
+  `itemid` int(11) DEFAULT NULL,
+  `organisationid` int(11) DEFAULT NULL,
+  `eventid` int(11) DEFAULT NULL,
+  `venueid` int(11) DEFAULT NULL,
+  `contributorid` int(11) DEFAULT NULL,
+  `workid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`exhibition_sectionid`),
+  KEY `fk_exhibition_section_exhibition1_idx` (`exhibitionid`),
+  KEY `fk_exhibition_section_item1_idx` (`itemid`),
+  KEY `fk_exhibition_section_organisation1_idx` (`organisationid`),
+  KEY `fk_exhibition_section_events1_idx` (`eventid`),
+  KEY `fk_exhibition_section_venue1_idx` (`venueid`),
+  KEY `fk_exhibition_section_contributor1_idx` (`contributorid`),
+  KEY `fk_exhibition_section_work1_idx` (`workid`),
+  CONSTRAINT `fk_exhibition_section_work1` FOREIGN KEY (`workid`) REFERENCES `work` (`workid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_exhibition_section_contributor1` FOREIGN KEY (`contributorid`) REFERENCES `contributor` (`contributorid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_exhibition_section_events1` FOREIGN KEY (`eventid`) REFERENCES `events` (`eventid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_exhibition_section_exhibition1` FOREIGN KEY (`exhibitionid`) REFERENCES `exhibition` (`exhibitionid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_exhibition_section_item1` FOREIGN KEY (`itemid`) REFERENCES `item` (`itemid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_exhibition_section_organisation1` FOREIGN KEY (`organisationid`) REFERENCES `organisation` (`organisationid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_exhibition_section_venue1` FOREIGN KEY (`venueid`) REFERENCES `venue` (`venueid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
