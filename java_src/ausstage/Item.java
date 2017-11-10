@@ -1185,7 +1185,7 @@ public class Item {
             "DONATED_PURCHASED, AQUIRED_FROM, STORAGE, PROVENANCE, " + 
             "SIGNIFICANCE, COMMENTS, ENTERED_BY_USER, ENTERED_DATE, ITEM_URL, " + 
             "description_abstract, format_extent, format_medium, format_mimetype, " + 
-            "format, ident_isbn, ident_ismn, ident_issn, " + 
+            "format, ident_isbn, ident_isbn_13, ident_ismn, ident_issn, " + 
             "ident_sici, publisher, rights_access_rights, rights, rights_holder, " + 
             "title, title_alternative, dc_creator, " + 
             "ddcreated_date, mmcreated_date, yyyycreated_date, created_date, " + 
@@ -1193,7 +1193,7 @@ public class Item {
             "ddissued_date, mmissued_date, yyyyissued_date, issued_date, " + 
             "ddaccessioned_date, mmaccessioned_date, yyyyaccessioned_date, accessioned_date, " + 
             "ddterminated_date, mmterminated_date, yyyyterminated_date, terminated_date, " +
-            " sourceid,date_notes,publisher_location,volume,issue,page" + 
+            " sourceid, date_notes, publisher_location, volume, issue, page" + 
             ") " + "VALUES (";
         if (m_is_copy == true) {
           m_title = "Copy of " + m_title;
