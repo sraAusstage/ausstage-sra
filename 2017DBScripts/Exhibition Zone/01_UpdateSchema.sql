@@ -18,6 +18,7 @@ CREATE  TABLE IF NOT EXISTS `ausstage_schema`.`exhibition` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+
 CREATE  TABLE IF NOT EXISTS `exhibition_section` (
   `exhibition_sectionid` int(11) NOT NULL AUTO_INCREMENT,
   `heading` varchar(250) DEFAULT NULL,

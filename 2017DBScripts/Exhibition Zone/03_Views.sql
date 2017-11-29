@@ -9,3 +9,4 @@ VIEW ausstage_schema.exhibitions AS
 	from ausstage_schema.exhibition e
 	
 	
+	
