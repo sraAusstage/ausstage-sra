@@ -2064,12 +2064,14 @@ public class Item {
       //BW ADDITIONAL URL
       l_sql = "DELETE FROM ITEM_URL WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
-
+      //delete the item_article
+      ItemArticle itemArticle = new ItemArticle(m_db);
+      itemArticle.delete(m_itemid);
+      
       l_sql = "DELETE FROM item WHERE itemid=" + m_itemid;
       m_db.runSQLResultSet(l_sql, stmt);
       
-      ItemArticle itemArticle = new ItemArticle(m_db);
-      itemArticle.delete(m_itemid);
+
       
       
 
