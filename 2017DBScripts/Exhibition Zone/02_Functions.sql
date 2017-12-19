@@ -1,16 +1,13 @@
--- --------------------------------------------------------------------------------
--- Routine DDL
--- Note: comments before and after the routine body will not be stored by the server
--- --------------------------------------------------------------------------------
-DELIMITER $$
+delimiter $$
 
-CREATE DEFINER=`root`@`%` FUNCTION `fn_get_group_concat_contributor`(l_exhibitionid_id long) RETURNS varchar(200) CHARSET utf8
+CREATE FUNCTION `fn_get_group_concat_contributor`(l_exhibitionid_id long) RETURNS varchar(200) CHARSET utf8
+READS SQL DATA
+DETERMINISTIC
 BEGIN
 	declare l_DISPLAY_NAME varchar(500) default '';
 
-	select GROUP_CONCAT(display_name) from ausstage_schema.contributor into l_DISPLAY_NAME
-	where contributorid in (select contributorid from ausstage_schema.exhibition_section where exhibitionid = l_exhibitionid_id);
+	select GROUP_CONCAT(display_name) from contributor 
+	where contributorid in (select contributorid from exhibition_section where exhibitionid = l_exhibitionid_id) into l_DISPLAY_NAME;
 	
 	return l_DISPLAY_NAME;
-END
-
+END$$

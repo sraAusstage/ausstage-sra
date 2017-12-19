@@ -1,10 +1,10 @@
 
 
-DROP TABLE IF EXISTS `ausstage_schema`.`exhibition_section`;
+DROP TABLE IF EXISTS `exhibition_section`;
 
-DROP TABLE IF EXISTS `ausstage_schema`.`exhibition`;
+DROP TABLE IF EXISTS `exhibition`;
 
-CREATE  TABLE IF NOT EXISTS `ausstage_schema`.`exhibition` (
+CREATE  TABLE IF NOT EXISTS `exhibition` (
   `exhibitionid` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(250) NULL ,
   `description` VARCHAR(1000) NULL ,
@@ -15,8 +15,7 @@ CREATE  TABLE IF NOT EXISTS `ausstage_schema`.`exhibition` (
   `updated_by_user` VARCHAR(40) NULL ,
   `updated_date` DATE NULL ,
   PRIMARY KEY (`exhibitionid`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+
 
 
 CREATE  TABLE IF NOT EXISTS `exhibition_section` (
@@ -46,4 +45,4 @@ CREATE  TABLE IF NOT EXISTS `exhibition_section` (
   CONSTRAINT `fk_exhibition_section_item1` FOREIGN KEY (`itemid`) REFERENCES `item` (`itemid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_exhibition_section_organisation1` FOREIGN KEY (`organisationid`) REFERENCES `organisation` (`organisationid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_exhibition_section_venue1` FOREIGN KEY (`venueid`) REFERENCES `venue` (`venueid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) 
