@@ -393,7 +393,9 @@ public class LookupCode {
 		ResultSet l_rs = null;
 
 		try {
-			l_sql = "SELECT DISTINCT item.citation, item.itemid FROM item " + "INNER JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
+			l_sql = "SELECT DISTINCT item.citation, item.itemid, item_article.body FROM item " 
+					+ "INNER JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
+					+ "LEFT OUTER JOIN item_article ON (item.itemid = item_article.itemarticleid) "
 					+ "WHERE lookup_codes.`code_type`='RESOURCE_SUB_TYPE' and lookup_codes.code_lov_id = " + itemTypeLovId + " order by item.citation";
 			l_rs = m_db.runSQLResultSet(l_sql, p_stmt);
 

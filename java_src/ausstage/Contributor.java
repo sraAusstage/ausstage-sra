@@ -1388,7 +1388,7 @@ public class Contributor {
 		try {
 
 			l_sql = "SELECT distinct contributor.last_name,contributor.first_name, contributor.contributorid,"
-					+" item.itemid,item.citation, lookup_codes.description, item_article.body " 
+					+" item.itemid, item.citation, lookup_codes.description, item_article.body " 
 					+ " FROM item "
 					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
 					+ " INNER JOIN itemconlink ON (item.itemid = itemconlink.itemid) "
