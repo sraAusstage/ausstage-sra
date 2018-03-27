@@ -72,6 +72,7 @@ public class Venue {
 	private String m_other_names3;
 
 	private Vector<VenueVenueLink> m_venue_venuelinks;
+	private Vector m_exhibitions;
 
 	/*
 	 * Name: Venue ()
@@ -130,6 +131,7 @@ public class Venue {
 		m_other_names1 = "";
 		m_other_names2 = "";
 		m_other_names3 = "";
+		 m_exhibitions = new Vector<Exhibition>();
 	}
 
 	/*
@@ -221,6 +223,7 @@ public class Venue {
 				if (m_other_names3 == null) m_other_names3 = "";
 				
 				loadLinkedVenues();
+				m_exhibitions = Exhibition.getExhibitionsForEntity(m_db, "venue", m_venue_id);
 			}
 
 			l_rs.close();
@@ -235,6 +238,10 @@ public class Venue {
 		}
 	}
 
+	public Vector getExhibitions(){
+		  return m_exhibitions;
+	  }
+	
 	public void setDb(ausstage.Database p_db) {
 		m_db = p_db;
 	}

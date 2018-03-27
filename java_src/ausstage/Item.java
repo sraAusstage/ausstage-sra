@@ -107,7 +107,7 @@ public class Item {
   
   // ADDED BY BW FOR ADDITIONAL ITEM URLs
   private Vector m_additional_urls;
-  
+  private Vector m_exhibitions;
 
   // CR0001
   private String m_ddCreate_date;
@@ -227,6 +227,7 @@ public class Item {
     m_item_secgenrelinks = new Vector();
     m_item_workslinks = new Vector();
     m_additional_urls = new Vector(); //BW ADDITIONAL ITEM URLS
+    m_exhibitions = new Vector<Exhibition>();
    
     // CR0001
     m_ddCreate_date = "";
@@ -532,6 +533,7 @@ public class Item {
         if (m_page == null)
           m_page = "";
 
+        
         loadLinkedEvents();
         loadLinkedItems();
         loadLinkedSecGenre();
@@ -543,6 +545,9 @@ public class Item {
         loadLinkedContentInd();
         loadLinkedWork();
         loadAdditionalUrls(); //BW -additional URLS
+        m_exhibitions = Exhibition.getExhibitionsForEntity(m_db, "item", m_itemid);
+        
+        
         // Load the source citation
         if (m_sourceid != null && !m_sourceid.equals("")) {
           l_rs2 = 
@@ -878,6 +883,10 @@ public class Item {
 
   public Vector getAssociatedCreatorContributors() {
     return m_item_creator_conlinks;
+  }
+  
+  public Vector getExhibitions(){
+	  return m_exhibitions;
   }
 
   //TIR032

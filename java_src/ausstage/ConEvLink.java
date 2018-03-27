@@ -74,7 +74,7 @@ public class ConEvLink {
 		contributorBean = null;
 		m_error_string = "";
 	}
-
+	
 	/*
 	 * Name: load ()
 	 * 
@@ -134,6 +134,11 @@ public class ConEvLink {
 		}
 	}
 
+	public void refresh(ausstage.Database p_db){
+		contributorBean = new Contributor(p_db);
+		contributorBean.load(Integer.parseInt(contributorId));
+		
+	}
 	/*
 	 * Name: add ()
 	 * 

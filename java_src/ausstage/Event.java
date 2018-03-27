@@ -98,6 +98,7 @@ public class Event {
 	private Vector m_play_origins;
 	private Vector m_production_origins;
 	private Vector m_res_evlinks;
+	private Vector m_exhibitions;
 
 	/**
 	 * Name: Event ()
@@ -315,6 +316,7 @@ public class Event {
 		m_play_origins = new Vector();
 		m_production_origins = new Vector();
 		m_res_evlinks = new Vector();
+		 m_exhibitions = new Vector<Exhibition>();
 	}
 
 	/*
@@ -400,6 +402,8 @@ public class Event {
 				loadPlayOrigins();
 				loadProductionOrigins();
 				loadResourceEvLinks();
+				m_exhibitions = Exhibition.getExhibitionsForEntity(m_db, "event", m_eventid);
+		        
 
 				if (m_event_name == null) m_event_name = "";
 				if (m_umbrella == null) m_umbrella = "";
@@ -1854,6 +1858,7 @@ public class Event {
 		return (event_name);
 	}
 
+	
 	public String getEventStatus(String status_id) {
 		String status_name = "";
 		CachedRowSet rset;
@@ -2121,6 +2126,19 @@ public class Event {
 
 	public void setConEvLinks(Vector v) {
 		m_con_evlinks = v;
+	}
+	
+	//Response to JIRA AUS-5 changes to the database joined objects were being overwritten due to older copies of the objects being 
+	// held in the parent object and then saved to the database. Given there was originally a reason for the code being like this I decided this 
+	// may be the least disruptive approach. 
+	public void refresh(ausstage.Database p_db){
+		for (int i = 0; m_con_evlinks != null && i < m_con_evlinks.size(); i++) {
+			((ConEvLink) m_con_evlinks.get(i)).refresh(p_db);
+		}
+		for (int i = 0; m_org_evlinks != null && i < m_org_evlinks.size(); i++) {
+			((OrgEvLink) m_org_evlinks.get(i)).refresh(p_db);
+		}
+		
 	}
 
 	public void setEventEventLinks(Vector<EventEventLink> v) {
@@ -2668,7 +2686,9 @@ public class Event {
 	    return (l_rs);
 
 	 }
-
+	 public Vector getExhibitions(){
+		  return m_exhibitions;
+	  }
 	/*
 	 * Name: loadLinkedEvents ()
 	 * 

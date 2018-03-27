@@ -120,6 +120,11 @@ public class OrgEvLink {
 		}
 	}
 
+	public void refresh(ausstage.Database p_db){
+		organisationBean = new Organisation(p_db);
+		organisationBean.load(Integer.parseInt(organisationId));
+		
+	}
 	/*
 	 * Name: add ()
 	 * 

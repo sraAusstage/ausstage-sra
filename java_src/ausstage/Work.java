@@ -43,6 +43,7 @@ public class Work {
 	private Date m_entered_date;
 	private String m_updated_by_user;
 	private Date m_updated_date;
+	private Vector m_exhibitions;
 
 	public Work(Database m_db2) {
 		AppConstants = new AppConstants();
@@ -65,6 +66,7 @@ public class Work {
 		m_work_worklinks = new Vector<WorkWorkLink>();
 		m_entered_by_user = "";
 		m_updated_by_user = "";
+		 m_exhibitions = new Vector<Exhibition>();
 	}
 
 	public void load(int p_work_id) {
@@ -130,6 +132,7 @@ public class Work {
 				loadLinkedContributors();
 				loadLinkedCountries();
 				loadLinkedWorks();
+				m_exhibitions = Exhibition.getExhibitionsForEntity(m_db, "work", m_workid);
 			}
 			l_rs.close();
 			stmt.close();
@@ -149,6 +152,9 @@ public class Work {
 	 * GETTER METHODS
 	 * 
 	 */
+	public Vector getExhibitions(){
+		  return m_exhibitions;
+	  }
 	
 	public String getId() {
 		return m_workid;

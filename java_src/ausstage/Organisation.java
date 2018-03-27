@@ -71,6 +71,7 @@ public class Organisation {
 	private String m_place_of_origin;
 	private String m_place_of_demise;
 	private String m_nla;
+	private Vector m_exhibitions;
 
 	/*
 	 * Name: Organisation ()
@@ -129,7 +130,7 @@ public class Organisation {
 		m_place_of_origin = "";
 		m_place_of_demise = "";
 		m_nla = "";
-
+		 m_exhibitions = new Vector<Exhibition>();
 		m_first_date = new Date();
 	}
 
@@ -243,7 +244,7 @@ public class Organisation {
 				}
 			}
 			loadLinkedOrganisations();
-
+			m_exhibitions = Exhibition.getExhibitionsForEntity(m_db, "organisation", m_organisation_id+"");
 			if (l_rs != null) l_rs.close();
 			if (l_sub_rs != null) l_sub_rs.close();
 
@@ -256,6 +257,10 @@ public class Organisation {
 	public Vector<OrganisationOrganisationLink> getOrganisationOrganisationLinks() {
 		return m_org_orglinks;
 	}
+	
+	public Vector getExhibitions(){
+		  return m_exhibitions;
+	  }
 
 	/*
 	 * Name: add ()

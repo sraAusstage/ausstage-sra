@@ -14,6 +14,7 @@ Purpose: Provides Contributor object functions.
 package ausstage;
 
 import java.util.*;
+
 import org.apache.commons.lang.*;
 import ausstage.Database;
 import admin.AppConstants;
@@ -71,6 +72,7 @@ public class Contributor {
 	// Derived Objects
 	private Vector m_conOrgLinks = new Vector();
 	private Vector<ContributorContributorLink> m_contrib_contriblinks = new Vector<ContributorContributorLink>();
+	private Vector<Exhibition> m_exhibitions = new Vector<Exhibition>();
 
 	/*
 	 * Name: Contributor ()
@@ -141,6 +143,7 @@ public class Contributor {
 				
 				loadOrganisationLinks();
 				loadLinkedContributors();
+				m_exhibitions = Exhibition.getExhibitionsForEntity(m_db, "contributor", m_id+"");
 
 				// set the contributor function ids
 				sqlString = "select CONTRIBUTORFUNCTPREFERREDID from " + "CONTFUNCTLINK where CONTRIBUTORID=" + p_id;
@@ -271,6 +274,9 @@ public class Contributor {
 	public Vector<ContributorContributorLink> getContributorContributorLinks() {
 		return m_contrib_contriblinks;
 	}
+	public Vector getExhibitions(){
+		  return m_exhibitions;
+	  }
 
 	/*
 	 * Name: loadOrganisations ()
@@ -467,7 +473,7 @@ public class Contributor {
 	 */
 	public boolean update() {
 		boolean l_ret = true;
-
+		
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
@@ -523,6 +529,7 @@ public class Contributor {
 					+ "COUNTRYID= " + m_country_id + " " 
 					+ "WHERE CONTRIBUTORID = " + m_id;
 
+			
 			m_db.runSQL(sqlString, stmt);
 
 			if (!m_contfunct_ids.equals("")) {
