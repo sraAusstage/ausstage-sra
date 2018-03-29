@@ -216,10 +216,10 @@ public class Search {
 				m_sql_string.append(" group by eventid order by first_date desc, event_name asc");
 			else if (m_sort_by.equals("id"))
 				m_sql_string.append(" group by eventid order by eventid asc, event_name asc");
-			else if (m_sort_by.equals("state"))
-				m_sql_string.append(" group by eventid order by venue_state asc, event_name asc");
 			else if (m_sort_by.equals("venue"))
 				m_sql_string.append(" group by eventid order by venue_name asc, first_date desc");
+			else if (m_sort_by.equals("state"))
+				m_sql_string.append(" group by eventid order by venue_state asc, event_name asc");
 			else if (m_sort_by.equals("alphab_rvrs"))
 				m_sql_string.append(" group by eventid order by event_name desc, first_date asc");
 			else if (m_sort_by.equals("alphab_frwd"))
@@ -242,7 +242,7 @@ public class Search {
 				m_sql_string.append(" group by venueid order by " + m_orderBy);
 			else
 				// default to alphab_frwrd
-				m_sql_string.append(" group by venueid order by venue_name asc, venue_state asc");
+				m_sql_string.append(" group by venueid order by venue_name asc, suburb asc, venue_state asc");
 
 		} else if (m_search_for.equals("contributor")) {
 

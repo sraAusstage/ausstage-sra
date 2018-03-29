@@ -1,0 +1,40 @@
+<project name="AusStage Mapping Service" default="Local Dev Build" basedir=".">
+
+	<property name="src" location="java_src"/>
+  	<property name="build" location="classes"/>
+	<property name="inifile" value="C:/cmjava.ini" />
+	<property name="target-server" value="10.0.0.235" />
+	<property name="server-tomcat-path" value="\\${target-server}\Ausstage2\Ausstage\apache-tomcat-6.0.32" />
+	<property name="libs" value="C:\development\flinders\ausstageGIThub\au.edu.flinders.ausstage\lib" />
+
+	<path id="project-classpath">
+		<fileset dir="${libs}" includes="*.jar" />		
+ 	</path>
+ 	
+	<target name="Local Dev Build" description="create jar for local dev" >
+		
+		<javac srcdir="src" destdir="build\WEB-INF\classes" classpathref="project-classpath"/>
+		
+		<mkdir dir="C:\Ausstage\test" />
+		<jar destfile="C:\Ausstage\test\networks.jar" basedir="build\WEB-INF\classes"/>
+		
+	 <copy file="C:\Ausstage\test\networks.jar" tofile="${server-tomcat-path}\lib\networks.jar" overwrite="true" />
+		 <antcall target="restart local dev" />
+	</target>
+
+	<target name="restart local dev" description="restart the local VM">
+		<get src="http://${target-server}:8080/reload.jsp" dest="blank" />
+		<delete file="blank" />
+		
+		<echo message="Please wait for Tomcat to restart..." />
+		<sleep seconds="45" />
+		<echo message="Tomcat has been restarted. Don't forget to re-login to OpenCMS if you haven't published JSP changes." />
+	</target>
+
+	<target name="Titan Build" description="create jar for titan" >
+		<javac srcdir="src" destdir="build\WEB-INF\classes" classpathref="project-classpath"/>
+		<mkdir dir="C:\Ausstage\titan" />
+		<jar destfile="C:\Ausstage\titan\networks.jar" basedir="build\WEB-INF\classes"/>
+	</target>
+
+</project>
