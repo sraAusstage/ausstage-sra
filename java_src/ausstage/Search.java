@@ -566,8 +566,7 @@ public class Search {
 		if (field.equals("combined_all")) {
 			// If the switch is "and" then add a plus to each word
 			for (int i = 0; i < words.length; i++) {
-				//test
-				l_retString += (m_sql_switch.equals("and") ? " +" : " ") + words[i];
+				l_retString += ((m_sql_switch.equals("and")&& i >0) ? " +" : " ") + words[i];
 			}
 
 			// Add quotes around the string if it's an exact phrase
