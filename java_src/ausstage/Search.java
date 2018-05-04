@@ -99,8 +99,7 @@ public class Search {
 
 		} else { // single keyword
 			//m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word).toLowerCase() + "')");
-			returnKeywords.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(updated_key_word).toLowerCase().replace('%', '*') + "' IN BOOLEAN MODE )");
-
+			returnKeywords.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(updated_key_word).toLowerCase().replace('%', '*') + "' IN BOOLEAN MODE )");			
 			// /////////////////////////////////////////////////////////
 			// DEAL WITH NEW & OLD WHERE CLAUSE (search within result)
 			// /////////////////////////////////////////////////////////
@@ -134,6 +133,13 @@ public class Search {
 				m_sql_string.append(" and " + m_search_within_result_str);
 
 		} else { // single keyword
+			
+			// This function checks the presence of ' in a keyword and updates the code in this format '+"word\'s"'
+			if(updated_key_word.contains("'"))
+			{
+				updated_key_word = "+\""+updated_key_word+"\"";
+				System.out.println("change I made"+updated_key_word);
+			}
 			//m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word).toLowerCase() + "')");
 			m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(updated_key_word).toLowerCase().replace('%', '*') + "' IN BOOLEAN MODE )");
 
@@ -144,7 +150,7 @@ public class Search {
 				//m_search_within_result_str = m_key_word;
 				m_search_within_result_str = updated_key_word;
 			else
-				m_sql_string.append(" and MATCH (combined_all) AGAINST ('" + m_search_within_result_str.toLowerCase() + "')");
+				m_sql_string.append(" and MATCH (combined_all) AGAINST ('" + m_search_within_result_str.toLowerCase() + "')");			
 		}
 		// //////////////
 		// ///////////////////
@@ -566,7 +572,7 @@ public class Search {
 		if (field.equals("combined_all")) {
 			// If the switch is "and" then add a plus to each word
 			for (int i = 0; i < words.length; i++) {
-				l_retString += ((m_sql_switch.equals("and")&& i >0) ? " +" : " ") + words[i];
+				l_retString += (m_sql_switch.equals("and") ? " +" : " ") + words[i];
 			}
 
 			// Add quotes around the string if it's an exact phrase
@@ -722,7 +728,7 @@ public class Search {
 
 			//System.out.println("Executing method Search.getEvents(calling_from_BSService)");
 			String m_sql_items = "eventid, event_name, venue_name, suburb, venue_state, first_date,  resource_flag ";
-			m_sql_string.append("select distinct " + m_sql_items + "  from search_event where ");
+			m_sql_string.append("select distinct " + m_sql_items + "  from search_event where ");			
 			buildSqlSearchString();
 
 			// lets alter search query for BSService
