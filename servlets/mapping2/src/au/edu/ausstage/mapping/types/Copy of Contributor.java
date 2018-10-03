@@ -320,7 +320,8 @@ public class Contributor implements Comparable<Contributor>{
 	}
 	
 	public void setLastName(String value) {
-		if(InputUtils.isValid(value) == false) {
+		//if(InputUtils.isValid(value) == false) {
+		if(value == null) {
 			throw new IllegalArgumentException("The value cannot be null or empty");
 		}
 		
