@@ -20,7 +20,7 @@ import java.sql.Date;
 import ausstage.Database;
 import sun.jdbc.rowset.*;
 
-public class Exhibition {
+public class AAExhibition {
 	private ausstage.Database m_db;
 	private admin.AppConstants AppConstants = new admin.AppConstants();
 	private admin.Common Common = new admin.Common();
@@ -46,7 +46,7 @@ public class Exhibition {
 	 * 
 	 * Returns: None
 	 */
-	public Exhibition(ausstage.Database p_db) {
+	public AAExhibition(ausstage.Database p_db) {
 		m_db = p_db;
 		initialise();
 	}
@@ -76,17 +76,17 @@ public class Exhibition {
 	/*
 	 * Name: getExhibitions ()
 	 * 
-	 * Purpose: Returns a record set with all of the Event information in it.
+	 * Purpose: Returns a record set with all of the Exhibition information in it.
 	 * 
 	 * Parameters: p_stmt : Database statement, string entity, string entity_id
 	 * 
 	 * Returns: A record set.
 	 */
-	public static Vector<Exhibition> getExhibitionsForEntity(ausstage.Database p_db, String p_entity, String p_entity_id ) {
+	public static Vector<AAExhibition> getExhibitionsForEntity(ausstage.Database p_db, String p_entity, String p_entity_id ) {
 		CachedRowSet l_rs;
 		String sqlString;
 		String where = "";
-		Vector<Exhibition> returnExhibitions = new Vector(); 
+		Vector<AAExhibition> returnExhibitions = new Vector(); 
 		// set the where clause based on the entity
 		
 		if(p_entity.equals("item")){
@@ -111,7 +111,7 @@ public class Exhibition {
 		sqlString = "SELECT * FROM exhibition e "+
 					"LEFT JOIN exhibition_section es "+
 					"ON es.exhibitionid = e.exhibitionid "+
-					"WHERE "+where;
+					"WHERE e.published_flag = 'Y' AND "+where;
 
 		try {
 			Statement stmt = p_db.m_conn.createStatement();
@@ -119,7 +119,7 @@ public class Exhibition {
 			l_rs = p_db.runSQL(sqlString, stmt);
 			stmt.close();
 			while(l_rs.next()){
-				Exhibition newEx = new Exhibition(p_db);
+				AAExhibition newEx = new AAExhibition(p_db);
 				newEx.setExhibitionId(l_rs.getInt("exhibitionid"));
 				newEx.setName(l_rs.getString("name"));
 				newEx.setDescription(l_rs.getString("description"));

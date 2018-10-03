@@ -56,7 +56,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class Item {
+public class AAItem {
   private ausstage.Database m_db;
   private admin.AppConstants AppConstants = new admin.AppConstants();
   private admin.Common Common = new admin.Common();
@@ -173,7 +173,7 @@ public class Item {
      None
 
    */
-  public Item(ausstage.Database p_db) {
+  public AAItem(ausstage.Database p_db) {
     m_db = p_db;
     initialise();
   }
@@ -851,10 +851,10 @@ public class Item {
 	    return m_additional_urls;
   }
   
-  public Vector<Item> getAssociatedItems() {
-	Vector<Item> items = new Vector<Item>();
+  public Vector<AAItem> getAssociatedItems() {
+	Vector<AAItem> items = new Vector<AAItem>();
 	for (ItemItemLink iil : m_item_itemlinks) {
-		Item item = new Item(m_db);
+		AAItem item = new AAItem(m_db);
 		item.load(Integer.parseInt(iil.getChildId()));
 		items.add(item);
 	}
@@ -2932,7 +2932,7 @@ public class Item {
       }
       if (p_id_type.equals("item")) {
         boolean isParent = m_itemid.equals(m_item_itemlinks.elementAt(i).getItemId());
-    	Item childItem = new Item(m_db);
+    	AAItem childItem = new AAItem(m_db);
         int childItemId = 
         	Integer.parseInt((isParent)?((ItemItemLink)m_item_itemlinks.elementAt(i)).getChildId() : ((ItemItemLink)m_item_itemlinks.elementAt(i)).getItemId());
         l_info_to_add = 
@@ -3314,7 +3314,8 @@ public class Item {
   }
   
   public void setItemArticle (String s) {
-	  m_item_article = s;
+	  m_item_article = fixSpecialCharacters(s);
+	  
   }
 
 
@@ -3471,7 +3472,7 @@ public class Item {
     this.m_page = request.getParameter("f_page");
     if (m_page == null)
       m_page = "";
-    this.m_item_article = request.getParameter("f_item_article");
+    this.m_item_article = fixSpecialCharacters(request.getParameter("f_item_article"));
     
     if (m_item_article == null){
     	m_item_article = "";
@@ -3894,4 +3895,14 @@ private static TrustManager[] getTrustingManager() {
 	    } };
 	    return trustAllCerts;
 	}
+
+/*this can most likely be extracted to a utility class?? or it's good here to specifically handle the issue of storing and displaying HTML*/
+/*the escapeHTML util doesnt work because it escapes all HTML tags. For the Wysiwyg editor we annoyingly need to keep all the tags but escape the quotes */
+public static String fixSpecialCharacters(String s){
+	String returnString = s.replaceAll("'", "&#39;");//replace all the single quotes
+	//returnString = returnString.replaceAll("\"", "&#34;");//replace all the double quotes
+	
+	return returnString;
+	
+}
 }

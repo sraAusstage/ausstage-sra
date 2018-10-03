@@ -23,7 +23,7 @@ import sun.jdbc.rowset.CachedRowSet;
 import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
 
-public class HtmlGenerator {
+public class AAHtmlGenerator {
 	private Database m_db;
 	public admin.AppConstants Constants = new admin.AppConstants();
 	private String f_id;
@@ -37,7 +37,7 @@ public class HtmlGenerator {
 	 * 
 	 * Returns: None
 	 */
-	public HtmlGenerator(ausstage.Database p_db) {
+	public AAHtmlGenerator(ausstage.Database p_db) {
 		m_db = p_db;
 	}
 
@@ -510,7 +510,7 @@ public class HtmlGenerator {
 			// Submit Buttons
 			for (int i = 0; i < p_buttons_names.size(); i++) {
 				if (p_buttons_names.elementAt(i).toString().toLowerCase().equals("add")) {
-					if ((f_id != null && !f_id.equals("")) || (sqlString.toLowerCase().indexOf("like") != -1)) // we
+					if ((f_id != null && !f_id.equals("")) || (sqlString.toLowerCase().indexOf("like") != -1) ) // we
 																												// performed
 																												// a
 																												// search

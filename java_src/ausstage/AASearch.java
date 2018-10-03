@@ -21,8 +21,9 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.GregorianCalendar;
 
-public class Search {
+public class AASearch {
 	private Database m_db;
+
 	private String m_id = "";
 	private String m_orderBy = "";
 	private String m_collectingInstitution = "";
@@ -62,12 +63,12 @@ public class Search {
 	private String[] m_secondary_genre;
 	private admin.Common common = new admin.Common();
 
-	public Search(Database p_db) {
+	public AASearch(Database p_db) {
 		m_db = p_db;
 	}
 
 	// pw changed following
-	public Search(Database p_db, java.sql.Connection p_connection) {
+	public AASearch(Database p_db, java.sql.Connection p_connection) {
 		// m_db = p_db;
 		p_db.m_conn = p_connection;
 		m_db = p_db;
@@ -135,10 +136,12 @@ public class Search {
 		} else { // single keyword
 			
 			// This function checks the presence of ' in a keyword and updates the code in this format '+"word\'s"'
-			if(updated_key_word.contains("'"))
+			// edit: bw. - but this is useless if someone also wants to use a wildcard.
+			//so, only wrap it in "" if no wildcard exists. 
+			if(updated_key_word.contains("'") && !updated_key_word.contains("*"))
 			{
 				updated_key_word = "+\""+updated_key_word+"\"";
-				System.out.println("change I made"+updated_key_word);
+			//	System.out.println("change I made"+updated_key_word);
 			}
 			//m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(m_key_word).toLowerCase() + "')");
 			m_sql_string.append("MATCH (combined_all) AGAINST ('" + m_db.plSqlSafeString(updated_key_word).toLowerCase().replace('%', '*') + "' IN BOOLEAN MODE )");
@@ -150,7 +153,9 @@ public class Search {
 				//m_search_within_result_str = m_key_word;
 				m_search_within_result_str = updated_key_word;
 			else
-				m_sql_string.append(" and MATCH (combined_all) AGAINST ('" + m_search_within_result_str.toLowerCase() + "')");			
+				m_sql_string.append(" and MATCH (combined_all) AGAINST ('" + m_search_within_result_str.toLowerCase() + "')");		
+			
+			//System.out.println(m_sql_string);
 		}
 		// //////////////
 		// ///////////////////
@@ -386,7 +391,6 @@ public class Search {
 	 * This method only to be used in building the Resource Search String
 	 */ 
 	private void buildResourceSqlSearchString() {
-
 		String subTypes = "";
 		String secGenre = "";
 
@@ -456,7 +460,7 @@ public class Search {
 		// ///////////////////////////////////
 		// SubType - only do if selected
 		// ///////////////////////////////////
-		if (m_sub_Type_lov_id != null && m_sub_Type_lov_id.length > 0) {
+		if (m_sub_Type_lov_id != null && m_sub_Type_lov_id.length > 0 && !m_sub_Type_lov_id.equals("")) {
 			for (int i = 0; i < m_sub_Type_lov_id.length; i++) {
 				if (i == 0) {
 					subTypes = m_sub_Type_lov_id[i];
@@ -765,7 +769,7 @@ public class Search {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			//System.out.println("SQL STRING(events): " + m_sql_string.toString());
+			System.out.println("SQL STRING(events): " + m_sql_string.toString());
 			l_stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");
@@ -861,13 +865,13 @@ public class Search {
 		m_sql_string.append("select distinct " + m_sql_items + " from search_resource where ");
 		
 		buildResourceSqlSearchString();
-
+		
 		try {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
 
 			m_rset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);
-			//System.out.println("SQL STRING(resources): " + m_sql_string.toString());
+			System.out.println("SQL STRING(resources): " + m_sql_string.toString());
 			l_stmt.close();
 		} catch (Exception e) {
 			System.out.println(">>>>>>>> EXCEPTION <<<<<<<<");

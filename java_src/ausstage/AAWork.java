@@ -19,7 +19,7 @@ import sun.jdbc.rowset.CachedRowSet;
 //            Database, WorkContribLink, WorkOrganLink, WorkWorkLink, 
 //            Contributor, Organisation
 
-public class Work {
+public class AAWork {
 
 	private Database m_db;
 	private AppConstants AppConstants;
@@ -45,7 +45,7 @@ public class Work {
 	private Date m_updated_date;
 	private Vector m_exhibitions;
 
-	public Work(Database m_db2) {
+	public AAWork(Database m_db2) {
 		AppConstants = new AppConstants();
 		Common = new Common();
 		m_db = m_db2;
@@ -227,7 +227,7 @@ public class Work {
 	public Vector getAssociatedCountries() {
 		return m_work_countrylinks;
 	}
-	public Vector<Work> getAssociatedWorks() {
+	public Vector<AAWork> getAssociatedWorks() {
 		return getWorks();
 	}
 
@@ -235,10 +235,10 @@ public class Work {
 		return m_error_string;
 	}
 
-	public Vector<Work> getWorks() {
-		Vector<Work> works = new Vector<Work>();
+	public Vector<AAWork> getWorks() {
+		Vector<AAWork> works = new Vector<AAWork>();
 		for (WorkWorkLink wwl : m_work_worklinks) {
-			Work work = new Work(m_db);
+			AAWork work = new AAWork(m_db);
 			work.load(Integer.parseInt(wwl.getChildId()));
 			works.add(work);
 		}
@@ -287,6 +287,11 @@ public class Work {
 		}
 	}
 
+	//BW : WHY THE HELL is this called getAssociatedEvents? I dont think it is being used... but who can tell?
+	// it gets the associated contributors? can we delete this?
+	// also I don't undertand why the left outer join to conevlink. This makes no sense.
+	// but I am going to leave it as I have no idea where its used. (it was originally used on work/index.jsp - but I will modify the order by clause in 
+	// loadLinkedContributors instead and use that in the page. just for giggles. 
 	public ResultSet getAssociatedEvents(int p_id, Statement p_stmt) {
 		String l_sql = "";
 		ResultSet l_rs = null;
@@ -364,7 +369,8 @@ public class Work {
 		String l_sql = "";
 		ResultSet l_rs = null;
 		try {
-			l_sql = (new StringBuilder("SELECT DISTINCT item.ITEMID,item.citation,work.WORKID, lookup_codes.description FROM item "
+			l_sql = (new StringBuilder("SELECT DISTINCT item.ITEMID, item.citation, work.WORKID, lookup_codes.description, item_article.body FROM item "
+					+ " LEFT OUTER JOIN item_article ON (item.itemid = item_article.itemarticleid)"
 					+ " LEFT JOIN lookup_codes ON (item.item_sub_type_lov_id = lookup_codes.code_lov_id) "
 					+ " INNER JOIN itemworklink ON (item.ITEMID = itemworklink.ITEMID)  INNER JOIN work ON (itemworklink" + ".WORKID = work.WORKID) WHERE  work.workid=")).append(p_id)
 					.append(" order by lookup_codes.description, item.citation").toString();
@@ -491,7 +497,7 @@ public class Work {
 				retStr = (new StringBuilder(String.valueOf(retStr))).append(l_rs.getString("contribname")).toString();
 			}
 			if(l_rs.getString("workid") != null && !l_rs.getString("workid").equals("")){
-				Work work = new Work(m_db);
+				AAWork work = new AAWork(m_db);
 			    work.load(Integer.parseInt(l_rs.getString("workid")+""));
 			    if(work.getLinkedOrganisationNames() != null && !work.getLinkedOrganisationNames().equals("")){
 			    	retStr = (new StringBuilder(String.valueOf(retStr))).append(" (" + work.getLinkedOrganisationNames() + ")").toString();
@@ -987,6 +993,10 @@ public class Work {
 		}
 	}
 	
+	//JIRA AUS64 -BW edited this function 07/05/2018 to add order by last name and first name after order by. 
+	// this was for the drill down page - and this function wasn't used for the drill down page, - instead there was a function further down 
+	// getAssociatedEvents that was being used.... which is weird in itself, but it basically just did what this does way more ineffectually. 
+	// So hopefully this will help reduce the number of functions that do sort of the same thing ;)
 	private void loadLinkedContributors() {
 		ResultSet l_rs = null;
 		String l_sql = "";
@@ -994,7 +1004,7 @@ public class Work {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql = (new StringBuilder("SELECT DISTINCT WORKCONLINKID, workconlink.ORDER_BY FROM contributor, workconlin"
 					+ "k, work WHERE work.workid = workconlink.workid AND workconlink.contributorid = c" + "ontributor.contributorid AND work.workid=")).append(m_workid)
-					.append(" ").append("ORDER BY workconlink.ORDER_BY ").toString();
+					.append(" ").append("ORDER BY workconlink.ORDER_BY, contributor.last_name, contributor.first_name ").toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			m_work_conlinks.removeAllElements();
 			WorkContribLink workContribLink;
@@ -1059,7 +1069,7 @@ public class Work {
 				l_display_info.add(l_info_to_add);
 			}
 			if (p_id_type.equals("work")) {
-				Work childWork = new Work(m_db);
+				AAWork childWork = new AAWork(m_db);
 				int childWorkId = Integer.parseInt(((WorkWorkLink) m_work_worklinks.elementAt(i)).getChildId());
 				l_info_to_add = childWork.getWorkInfoForWorkDisplay(childWorkId, p_stmt);
 				l_display_info.add(l_info_to_add);
@@ -1086,7 +1096,7 @@ public class Work {
 				l_display_info.add(l_info_to_add);
 			}
 			if (p_id_type.equals("work")) {
-				Work childWork = new Work(m_db);
+				AAWork childWork = new AAWork(m_db);
 				int childWorkId = Integer.parseInt(((WorkWorkLink) m_work_worklinks.elementAt(i)).getChildId());
 				l_info_to_add = childWork.getWorkInfoForWorkDisplay(childWorkId, p_stmt);
 				l_display_info.add(l_info_to_add);
@@ -1105,3 +1115,4 @@ public class Work {
 
 	
 }
+
