@@ -23,7 +23,7 @@ import sun.jdbc.rowset.CachedRowSet;
 import java.sql.Statement;
 import javax.servlet.http.HttpServletRequest;
 
-public class AAHtmlGenerator {
+public class HtmlGenerator {
 	private Database m_db;
 	public admin.AppConstants Constants = new admin.AppConstants();
 	private String f_id;
@@ -37,7 +37,7 @@ public class AAHtmlGenerator {
 	 * 
 	 * Returns: None
 	 */
-	public AAHtmlGenerator(ausstage.Database p_db) {
+	public HtmlGenerator(ausstage.Database p_db) {
 		m_db = p_db;
 	}
 

@@ -56,7 +56,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class AAItem {
+public class Item {
   private ausstage.Database m_db;
   private admin.AppConstants AppConstants = new admin.AppConstants();
   private admin.Common Common = new admin.Common();
@@ -173,7 +173,7 @@ public class AAItem {
      None
 
    */
-  public AAItem(ausstage.Database p_db) {
+  public Item(ausstage.Database p_db) {
     m_db = p_db;
     initialise();
   }
@@ -851,10 +851,10 @@ public class AAItem {
 	    return m_additional_urls;
   }
   
-  public Vector<AAItem> getAssociatedItems() {
-	Vector<AAItem> items = new Vector<AAItem>();
+  public Vector<Item> getAssociatedItems() {
+	Vector<Item> items = new Vector<Item>();
 	for (ItemItemLink iil : m_item_itemlinks) {
-		AAItem item = new AAItem(m_db);
+		Item item = new Item(m_db);
 		item.load(Integer.parseInt(iil.getChildId()));
 		items.add(item);
 	}
@@ -2932,7 +2932,7 @@ public class AAItem {
       }
       if (p_id_type.equals("item")) {
         boolean isParent = m_itemid.equals(m_item_itemlinks.elementAt(i).getItemId());
-    	AAItem childItem = new AAItem(m_db);
+    	Item childItem = new Item(m_db);
         int childItemId = 
         	Integer.parseInt((isParent)?((ItemItemLink)m_item_itemlinks.elementAt(i)).getChildId() : ((ItemItemLink)m_item_itemlinks.elementAt(i)).getItemId());
         l_info_to_add = 

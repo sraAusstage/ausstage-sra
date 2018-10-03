@@ -19,7 +19,7 @@ package ausstage;
 import java.util.*;
 import java.text.*;
 
-public class AAAusstageCommon {
+public class AusstageCommon {
 
 	public static final String AUSSTAGE_DB_USER_NAME = "root";
 	public static final String AUSSTAGE_DB_PASSWORD = "srasra";
@@ -40,7 +40,7 @@ public class AAAusstageCommon {
 	public static final String EDUCATIONAL_INSTITUTION_ID = "3";
 	public static final String DATE_FORMAT_STRING = "dd MMM yyyy";
 
-	public AAAusstageCommon() {
+	public AusstageCommon() {
 	}
 
 	public String formatDate(Date p_date, java.lang.String strDateFormat) {

@@ -21,7 +21,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.GregorianCalendar;
 
-public class AASearch {
+public class Search {
 	private Database m_db;
 
 	private String m_id = "";
@@ -63,12 +63,12 @@ public class AASearch {
 	private String[] m_secondary_genre;
 	private admin.Common common = new admin.Common();
 
-	public AASearch(Database p_db) {
+	public Search(Database p_db) {
 		m_db = p_db;
 	}
 
 	// pw changed following
-	public AASearch(Database p_db, java.sql.Connection p_connection) {
+	public Search(Database p_db, java.sql.Connection p_connection) {
 		// m_db = p_db;
 		p_db.m_conn = p_connection;
 		m_db = p_db;

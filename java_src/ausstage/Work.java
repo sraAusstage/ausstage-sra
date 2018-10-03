@@ -19,7 +19,7 @@ import sun.jdbc.rowset.CachedRowSet;
 //            Database, WorkContribLink, WorkOrganLink, WorkWorkLink, 
 //            Contributor, Organisation
 
-public class AAWork {
+public class Work {
 
 	private Database m_db;
 	private AppConstants AppConstants;
@@ -45,7 +45,7 @@ public class AAWork {
 	private Date m_updated_date;
 	private Vector m_exhibitions;
 
-	public AAWork(Database m_db2) {
+	public Work(Database m_db2) {
 		AppConstants = new AppConstants();
 		Common = new Common();
 		m_db = m_db2;
@@ -227,7 +227,7 @@ public class AAWork {
 	public Vector getAssociatedCountries() {
 		return m_work_countrylinks;
 	}
-	public Vector<AAWork> getAssociatedWorks() {
+	public Vector<Work> getAssociatedWorks() {
 		return getWorks();
 	}
 
@@ -235,10 +235,10 @@ public class AAWork {
 		return m_error_string;
 	}
 
-	public Vector<AAWork> getWorks() {
-		Vector<AAWork> works = new Vector<AAWork>();
+	public Vector<Work> getWorks() {
+		Vector<Work> works = new Vector<Work>();
 		for (WorkWorkLink wwl : m_work_worklinks) {
-			AAWork work = new AAWork(m_db);
+			Work work = new Work(m_db);
 			work.load(Integer.parseInt(wwl.getChildId()));
 			works.add(work);
 		}
@@ -497,7 +497,7 @@ public class AAWork {
 				retStr = (new StringBuilder(String.valueOf(retStr))).append(l_rs.getString("contribname")).toString();
 			}
 			if(l_rs.getString("workid") != null && !l_rs.getString("workid").equals("")){
-				AAWork work = new AAWork(m_db);
+				Work work = new Work(m_db);
 			    work.load(Integer.parseInt(l_rs.getString("workid")+""));
 			    if(work.getLinkedOrganisationNames() != null && !work.getLinkedOrganisationNames().equals("")){
 			    	retStr = (new StringBuilder(String.valueOf(retStr))).append(" (" + work.getLinkedOrganisationNames() + ")").toString();
@@ -1069,7 +1069,7 @@ public class AAWork {
 				l_display_info.add(l_info_to_add);
 			}
 			if (p_id_type.equals("work")) {
-				AAWork childWork = new AAWork(m_db);
+				Work childWork = new Work(m_db);
 				int childWorkId = Integer.parseInt(((WorkWorkLink) m_work_worklinks.elementAt(i)).getChildId());
 				l_info_to_add = childWork.getWorkInfoForWorkDisplay(childWorkId, p_stmt);
 				l_display_info.add(l_info_to_add);
@@ -1096,7 +1096,7 @@ public class AAWork {
 				l_display_info.add(l_info_to_add);
 			}
 			if (p_id_type.equals("work")) {
-				AAWork childWork = new AAWork(m_db);
+				Work childWork = new Work(m_db);
 				int childWorkId = Integer.parseInt(((WorkWorkLink) m_work_worklinks.elementAt(i)).getChildId());
 				l_info_to_add = childWork.getWorkInfoForWorkDisplay(childWorkId, p_stmt);
 				l_display_info.add(l_info_to_add);

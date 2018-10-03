@@ -20,7 +20,7 @@ import java.sql.Date;
 import ausstage.Database;
 import sun.jdbc.rowset.*;
 
-public class AAExhibition {
+public class Exhibition {
 	private ausstage.Database m_db;
 	private admin.AppConstants AppConstants = new admin.AppConstants();
 	private admin.Common Common = new admin.Common();
@@ -46,7 +46,7 @@ public class AAExhibition {
 	 * 
 	 * Returns: None
 	 */
-	public AAExhibition(ausstage.Database p_db) {
+	public Exhibition(ausstage.Database p_db) {
 		m_db = p_db;
 		initialise();
 	}
@@ -82,11 +82,11 @@ public class AAExhibition {
 	 * 
 	 * Returns: A record set.
 	 */
-	public static Vector<AAExhibition> getExhibitionsForEntity(ausstage.Database p_db, String p_entity, String p_entity_id ) {
+	public static Vector<Exhibition> getExhibitionsForEntity(ausstage.Database p_db, String p_entity, String p_entity_id ) {
 		CachedRowSet l_rs;
 		String sqlString;
 		String where = "";
-		Vector<AAExhibition> returnExhibitions = new Vector(); 
+		Vector<Exhibition> returnExhibitions = new Vector(); 
 		// set the where clause based on the entity
 		
 		if(p_entity.equals("item")){
@@ -119,7 +119,7 @@ public class AAExhibition {
 			l_rs = p_db.runSQL(sqlString, stmt);
 			stmt.close();
 			while(l_rs.next()){
-				AAExhibition newEx = new AAExhibition(p_db);
+				Exhibition newEx = new Exhibition(p_db);
 				newEx.setExhibitionId(l_rs.getInt("exhibitionid"));
 				newEx.setName(l_rs.getString("name"));
 				newEx.setDescription(l_rs.getString("description"));
