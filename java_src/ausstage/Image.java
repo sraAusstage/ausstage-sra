@@ -2,9 +2,9 @@ package ausstage;
 
 import com.mortennobel.imagescaling.AdvancedResizeOp;
 import com.mortennobel.imagescaling.MultiStepRescaleOp;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGEncodeParam;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.awt.AlphaComposite;
@@ -16,8 +16,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
+
+//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This is a utility class for performing basic functions on an image,
@@ -270,7 +276,7 @@ public class Image {
 
 
     /**
-     * Writes to JPG using Sun's JPEGCodec
+     * Writes to JPG using ImageIO
      * @param file File to write image to
      * @param quality The image quality
      * @throws IOException
@@ -279,14 +285,24 @@ public class Image {
         FileOutputStream out = new FileOutputStream(file);
 
         // Encodes image as a JPEG data stream
-        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+        ImageWriter imageWriter = ImageIO.getImageWritersBySuffix("jpeg").next();
+        ImageOutputStream ios = ImageIO.createImageOutputStream(out);
+        imageWriter.setOutput(ios);
+        JPEGImageWriteParam param = (JPEGImageWriteParam) imageWriter.getDefaultWriteParam();
+        param.setCompressionQuality(quality);
+        
+        imageWriter.write(null, new IIOImage(img, null, null), param);
+        ios.close();
+        imageWriter.dispose();
+        
+//        JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
 
-        JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(img);
+//        JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(img);
 
-        param.setQuality(quality, true);
+//        param.setQuality(quality, true);
 
-        encoder.setJPEGEncodeParam(param);
-        encoder.encode(img);
+//        encoder.setJPEGEncodeParam(param);
+//        encoder.encode(img);
     }
 
     /**

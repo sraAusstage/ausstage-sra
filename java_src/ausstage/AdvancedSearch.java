@@ -591,11 +591,11 @@ public class AdvancedSearch {
 				if (p_columnTypes.elementAt(counter).equals("string") || p_columnTypes.elementAt(counter).equals("stringNoLike")) {
 					if (l_column_name.equals("orgfunction") && m_orgContFunctTableUsed == true) {
 						m_sqlWhereString += " (upper(" + l_column_name + ") like '%" + m_db.plSqlSafeString(l_column_value.toUpperCase()).trim() + "%' "
-								+ " and orgfunctmenu.orgfunctionid = orgevlink.function and orgevlink.eventid = events.eventid ";
+								+ " and orgfunctmenu.orgfunctionid = orgevlink.`function` and orgevlink.eventid = events.eventid ";
 					} else if (l_column_name.equals("contfunction") && m_orgContFunctTableUsed == true) {
 						m_sqlWhereString +=
 
-						" and orgfunctmenu.orgfunctionid = orgevlink.function and orgevlink.eventid = events.eventid )";
+						" and orgfunctmenu.orgfunctionid = orgevlink.`function` and orgevlink.eventid = events.eventid )";
 					}
 					/*
 					 * else if(l_column_name.equals("combined_all") &&
@@ -695,14 +695,14 @@ public class AdvancedSearch {
 		if (m_orgContFunctTableUsed == true) { // for search for organisation
 												// functions and contributor
 												// functions in one go
-			m_sqlFromString += "inner join orgevlink on (orgevlink.eventid=events.eventid) " + "inner join orgfunctmenu on orgfunctmenu.orgfunctionid = orgevlink.function ";
+			m_sqlFromString += "inner join orgevlink on (orgevlink.eventid=events.eventid) " + "inner join orgfunctmenu on orgfunctmenu.orgfunctionid = orgevlink.`function` ";
 		}
 		if (m_contFuntTableUsed == true) { // for contributor function search
 			m_sqlFromString += "inner join contfunct on contfunct.contfunctionid = orgevlink.artistic_function ";
 		}
 		if (m_contributorFunctPreferredTableUsed == true) {
 			m_sqlFromString += "inner join conevlink conevlinkfunctpref on conevlinkfunctpref.eventid = events.eventid "
-					+ "inner join contributorfunctpreferred on conevlinkfunctpref.function = contributorfunctpreferred.contributorfunctpreferredid ";
+					+ "inner join contributorfunctpreferred on conevlinkfunctpref.`function` = contributorfunctpreferred.contributorfunctpreferredid ";
 		}
 		if (m_priGenreClassTableUsed == true) { // for primary genre search
 			m_sqlFromString += "inner join prigenreclass on events.primary_genre = prigenreclass.genreclassid ";

@@ -561,7 +561,7 @@ public class Organisation {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = "SELECT distinct orgfunctmenu.orgfunction " + "FROM orgfunctmenu, orgevlink, organisation " + "WHERE organisation.organisationid=" + p_id + " "
-					+ "AND organisation.organisationid = orgevlink.organisationid " + "AND orgevlink.function = orgfunctmenu.orgfunctionid " + "ORDER BY orgfunction ASC";
+					+ "AND organisation.organisationid = orgevlink.organisationid " + "AND orgevlink.`function` = orgfunctmenu.orgfunctionid " + "ORDER BY orgfunction ASC";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			m_FunctionList = "";
 			while (l_rs.next()) {
@@ -1151,7 +1151,7 @@ public class Organisation {
 
 			sqlString = "SELECT DISTINCT organisation.organisationid, organisation.name " + "FROM organisation, itemorglink, orgevlink, orgfunctmenu "
 					+ "WHERE itemorglink.organisationid=" + p_organisation_id + " " + "AND itemorglink.organisationid = organisation.organisationid "
-					+ "AND organisation.organisationid = orgevlink.organisationid " + "AND orgevlink.function = orgfunctmenu.orgfunctionid ";// +
+					+ "AND organisation.organisationid = orgevlink.organisationid " + "AND orgevlink.`function` = orgfunctmenu.orgfunctionid ";// +
 			// "ORDER BY itemorglink.orderby ASC";
 
 			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);

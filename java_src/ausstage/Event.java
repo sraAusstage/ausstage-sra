@@ -1888,7 +1888,7 @@ public class Event {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = " SELECT PreferredTerm FROM ConEvLink, ContributorFunctPreferred, events" + " WHERE contributorId = " + p_id + " AND   ConEvLink.eventId = events.eventid "
-					+ " AND   function      = ContributorFunctPreferredId ";
+					+ " AND   `function`      = ContributorFunctPreferredId ";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {

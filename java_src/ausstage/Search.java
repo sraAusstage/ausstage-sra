@@ -469,7 +469,10 @@ public class Search {
 				}
 
 			}
+			if(subTypes!=null && !subTypes.isEmpty()&&!subTypes.equals("")){
+				System.out.println("M printing types"+subTypes);
 			m_sql_string.append(" and item_sub_type_lov_id in (" + subTypes + ")");
+			}
 		}
 
 		/*
@@ -824,7 +827,7 @@ public class Search {
 									"		ON venue.venueid = search_venue.venueid "+
 									"		LEFT JOIN country "+
 									"		ON venue.countryid = country.countryid "+
-									//"		WHERE MATCH(combined_all) AGAINST ('"+keywords+"' IN BOOLEAN MODE) "+  
+									//"		WHERE MATCH5(combined_all) AGAINST ('"+keywords+"' IN BOOLEAN MODE) "+  
 									"		WHERE "+keywords+
 									"		GROUP BY country.countryid "+
 									"	) AS ven "+
@@ -832,8 +835,8 @@ public class Search {
 									") res "+ 
 									"WHERE (orgcount > 0 OR venuecount > 0)" + (m_orderBy.equals("")?"":" order by "+m_orderBy);
 		
-		//System.out.println("INTERNATIONAL SEARCH SQL ******");
-		//System.out.println(sql_search_string);
+		System.out.println("INTERNATIONAL SEARCH SQL ******");
+		System.out.println(sql_search_string);
 		try {
 			Statement l_stmt;
 			l_stmt = m_db.m_conn.createStatement();
@@ -860,7 +863,7 @@ public class Search {
 		
 		// just select the fields that will be good for the distinct
 		String m_sql_items = "search_resource.itemid, search_resource.item_sub_type_lov_id,search_resource.item_sub_type,"
-				+ "  search_resource.copyright_date,  search_resource.issued_date, search_resource.accessioned_date,  search_resource.citation_date,"
+				+ "  search_resource.copyright_date,  search_resource.issued_date, search_resource.accessioned_date,  cast(search_resource.citation_date as char),"
 				+ " search_resource.source_citation,search_resource.citation,search_resource.title" + ", if(ITEM_URL is null,' ','ONLINE') resource_flag";
 		m_sql_string.append("select distinct " + m_sql_items + " from search_resource where ");
 		
@@ -1024,7 +1027,7 @@ public class Search {
 	public CachedRowSet getContributors() {
 
 		String m_sql_items = "search_contributor.contributorid, contrib_name, last_name, first_name, contrib_gender, nationality, date_of_birth_str as date_of_birth, contrib_state, event_dates, DATE_OF_DEATH_STR, DATE_OF_BIRTH_STR, resource_flag,count(distinct itemconlink.itemid) total, count(distinct events.eventid) num, "
-				+ " group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') function ";
+				+ " group_concat(distinct contributorfunctpreferred.preferredterm separator ', ') `function` ";
 		m_sql_string.append("select distinct " + m_sql_items + " from search_contributor LEFT JOIN conevlink ON (search_contributor.contributorid = conevlink.contributorid) "
 				+ "LEFT JOIN events ON (conevlink.eventid = events.eventid) " + "Left JOIN contfunctlink ON (search_contributor.contributorid = contfunctlink.contributorid) "
 				+ "Left JOIN contributorfunctpreferred ON (contfunctlink.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid) "

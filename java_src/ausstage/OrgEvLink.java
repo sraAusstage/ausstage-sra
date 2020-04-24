@@ -171,7 +171,7 @@ public class OrgEvLink {
 
 				if (l_artisticFunction != null && l_artisticFunction.equals("0")) l_artisticFunction = null;
 
-				sqlString = "INSERT INTO OrgEvLink " + "(eventId, organisationId, function, artistic_function) " + "VALUES (" + eventId + ", " + orgEvLink.getOrganisationId()
+				sqlString = "INSERT INTO OrgEvLink " + "(eventId, organisationId, `function`, artistic_function) " + "VALUES (" + eventId + ", " + orgEvLink.getOrganisationId()
 						+ ", " + l_function + ", " + l_artisticFunction + ")";
 				m_db.runSQL(sqlString, stmt);
 

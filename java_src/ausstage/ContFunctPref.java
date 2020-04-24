@@ -114,13 +114,13 @@ public class ContFunctPref {
 					"FROM contfunctlink  " +
 					"INNER JOIN contributorfunctpreferred ON (contfunctlink.contributorfunctpreferredid = contributorfunctpreferred.contributorfunctpreferredid)  " +
 					"INNER JOIN contributor ON (contfunctlink.contributorid = contributor.contributorid) " +
-					"INNER JOIN (SELECT conel.contributorid, conel.function, " +
+					"INNER JOIN (SELECT conel.contributorid, conel.`function`, " +
 					"			min(e.yyyyfirst_date) as min_first_date, max(e.yyyylast_date) as max_last_date, max(e.yyyyfirst_date) as max_first_date " +
 					"			FROM events e " +
 					"			INNER JOIN conevlink conel on (e.eventid = conel.eventid) " +
 					"			WHERE conel.contributorid is not null " +
-					"			GROUP BY conel.contributorid, conel.function) event_dates  " +
-					"on (contfunctlink.contributorid = event_dates.contributorid AND contfunctlink.contributorfunctpreferredid = event_dates.function) " +
+					"			GROUP BY conel.contributorid, conel.`function`) event_dates  " +
+					"on (contfunctlink.contributorid = event_dates.contributorid AND contfunctlink.contributorfunctpreferredid = event_dates.`function`) " +
 					"WHERE contributorfunctpreferred.contributorfunctpreferredid=  " + p_id + " " +
 					"Order by contributor.last_name, contributor.first_name;";
 

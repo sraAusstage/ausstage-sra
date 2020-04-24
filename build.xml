@@ -1,10 +1,11 @@
 <project name="TMS" default="Local Dev Build" basedir=".">
 	<property name="src" location="java_src"/>
   	<property name="build" location="classes"/>
-	<property name="inifile" value="C:/Ausstage/cmjava.ini" />
-	<property name="target-server" value="localhost" />
-	<property name="server-tomcat-path" value="\\${target-server}\Ausstage\apache-tomcat-6.0.32" />
-	<property name="libs" value="C:\Ausstage\workspace\au.edu.flinders.ausstage\lib" />
+	<property name="inifile" value="C:/AusstageUpgrade/cmjava.ini" />
+	<property name="target-server" value="AUSSTAGE-FLND" />
+	<property name="server-tomcat-path" value="C:\AusstageUpgrade\apache-tomcat-9.0.31" />
+	<!-- <property name="server-tomcat-path" value="\\${target-server}\Ausstage\apache-tomcat-6.0.32" />-->
+	<property name="libs" value="C:\AusstageUpgrade\workspace\au.edu.flinders.ausstage\lib" />
 
 	<path id="project-classpath">
 		<fileset dir="${libs}" includes="*.jar" />		
@@ -25,14 +26,14 @@
 		<delete dir="classes/ausstage"></delete>
 		<delete dir="classes/form"></delete>
 		
-		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath">
+		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath" includeantruntime="false">
                <compilerarg value="-XDignore.symbol.file" />
 	    </javac>
 		
-		<mkdir dir="C:\Ausstage\jars" />
-		<jar destfile="C:\Ausstage\jars\ausstage_custom.jar" basedir="classes"/>
+		<mkdir dir="C:\AusstageUpgrade\jars" />
+		<jar destfile="C:\AusstageUpgrade\jars\ausstage_custom.jar" basedir="classes"/>
 		
-		<copy file="C:\Ausstage\jars\ausstage_custom.jar" tofile="${server-tomcat-path}\lib\ausstage_custom.jar" overwrite="true" />
+		<copy file="C:\AusstageUpgrade\jars\ausstage_custom.jar" tofile="${server-tomcat-path}\lib\ausstage_custom.jar" overwrite="true" />
 		<!-- <antcall target="restart local dev" /> -->
 	</target>
 	
@@ -57,7 +58,7 @@
 			replace='iniFile.readIni("/home1/ausstage/cmjava.ini");' byline="true" />
 		
 		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
-		<mkdir dir="C:\Ausstage\titan" />
-		<jar destfile="C:\Ausstage\titan\ausstage_custom.jar" basedir="classes"/>
+		<mkdir dir="C:\AusstageUpgrade\titan" />
+		<jar destfile="C:\AusstageUpgrade\titan\ausstage_custom.jar" basedir="classes"/>
 	</target>
 </project>

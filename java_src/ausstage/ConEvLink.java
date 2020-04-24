@@ -176,7 +176,7 @@ public class ConEvLink {
 
 			for (int i = 0; conEvLinks != null && i < conEvLinks.size(); i++) {
 				conEvLink = (ConEvLink) conEvLinks.get(i);
-				sqlString = "INSERT INTO ConEvLink " + "(eventId, contributorId, function, notes) " + "VALUES (" + eventId + ", " + conEvLink.getContributorId() + ", "
+				sqlString = "INSERT INTO ConEvLink " + "(eventId, contributorId, `function`, notes) " + "VALUES (" + eventId + ", " + conEvLink.getContributorId() + ", "
 						+ m_db.plSqlSafeString(conEvLink.getFunction()) + ", '" + m_db.plSqlSafeString(conEvLink.getNotes()) + "')";
 				m_db.runSQL(sqlString, stmt);
 
@@ -244,7 +244,7 @@ public class ConEvLink {
 
 			sqlString = "SELECT ConEvLink.*, ContributorFunctPreferred.* " + 
 						"FROM ConEvLink " +
-						"left join ContributorFunctPreferred on ConEvLink.function = ContributorFunctPreferredId " +
+						"left join ContributorFunctPreferred on ConEvLink.`function` = ContributorFunctPreferredId " +
 						"inner join contributor on ConEvLink.CONTRIBUTORID = contributor.CONTRIBUTORID " +
 						"WHERE ConEvLink.eventId  = " + eventId + " " + 
 						"ORDER BY if(preferredterm is null,1,0), PREFERREDTERM, contributor.LAST_NAME, contributor.FIRST_NAME";
