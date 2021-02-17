@@ -78,7 +78,7 @@ public class WorkCountryLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM WORKCOUNTRYLINK" + " WHERE WORKCOUNTRYLINKID = " + p_WORKCOUNTRYLINKID;
+			sqlString = " SELECT * FROM WORKCOUNTRYLINK" + " WHERE WORKCOUNTRYLINKID = " + m_db.plSqlSafeString(p_WORKCOUNTRYLINKID);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -130,12 +130,12 @@ public class WorkCountryLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM WORKCOUNTRYLINK where " + "workid=" + p_workId;
+			sqlString = "DELETE FROM WORKCOUNTRYLINK where " + "workid=" + m_db.plSqlSafeString(p_workId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; p_countryLinks != null && i < p_countryLinks.size(); i++) {
 				workCountryLink = (WorkCountryLink) p_countryLinks.get(i);
-				sqlString = "INSERT INTO WORKCOUNTRYLINK " + "(workid, COUNTRYID) " + "VALUES (" + p_workId + ", " + workCountryLink.getCountryId() + ")";
+				sqlString = "INSERT INTO WORKCOUNTRYLINK " + "(workid, COUNTRYID) " + "VALUES (" + m_db.plSqlSafeString(p_workId) + ", " + workCountryLink.getCountryId() + ")";
 				m_db.runSQL(sqlString, stmt);
 			}
 			l_ret = true;

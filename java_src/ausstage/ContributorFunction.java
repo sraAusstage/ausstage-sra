@@ -223,12 +223,12 @@ public class ContributorFunction extends AusstageInputOutput {
 				if (l_rs.next()) {
 					String contribfunctprefid = l_rs.getString("CONTRIBUTORFUNCTPREFERREDID");
 
-					sqlString = "SELECT count(*) as counter " + "FROM CONTFUNCT " + "WHERE CONTRIBUTORFUNCTPREFERREDID = " + contribfunctprefid;
+					sqlString = "SELECT count(*) as counter " + "FROM CONTFUNCT " + "WHERE CONTRIBUTORFUNCTPREFERREDID = " + m_db.plSqlSafeString(contribfunctprefid);
 					l_rs = m_db.runSQL(sqlString, stmt);
 
 					if (l_rs.next() && l_rs.getInt("counter") == 1) {
 						// del the preferred term
-						sqlString = "DELETE FROM CONTRIBUTORFUNCTPREFERRED " + "WHERE CONTRIBUTORFUNCTPREFERREDID = " + contribfunctprefid;
+						sqlString = "DELETE FROM CONTRIBUTORFUNCTPREFERRED " + "WHERE CONTRIBUTORFUNCTPREFERREDID = " + m_db.plSqlSafeString(contribfunctprefid);
 						m_db.runSQL(sqlString, stmt);
 					}
 				}
@@ -274,7 +274,7 @@ public class ContributorFunction extends AusstageInputOutput {
 			if (l_rs.next()) {
 				l_contributorfunctpreferredid = l_rs.getString("CONTRIBUTORFUNCTPREFERREDID");
 
-				sqlString = "select count(*) as counter from CONTFUNCT " + "where CONTRIBUTORFUNCTPREFERREDID=" + l_contributorfunctpreferredid;
+				sqlString = "select count(*) as counter from CONTFUNCT " + "where CONTRIBUTORFUNCTPREFERREDID=" + m_db.plSqlSafeString(l_contributorfunctpreferredid);
 				l_rs = m_db.runSQL(sqlString, stmt);
 				l_rs.next();
 				counter = l_rs.getInt("counter");
@@ -283,7 +283,7 @@ public class ContributorFunction extends AusstageInputOutput {
 					// this is the last contfunct that is related to the
 					// preferred term
 					// now check if preferred term is in use
-					sqlString = "select count(*) as counter from CONTFUNCTLINK where " + "CONTRIBUTORFUNCTPREFERREDID=" + l_contributorfunctpreferredid;
+					sqlString = "select count(*) as counter from CONTFUNCTLINK where " + "CONTRIBUTORFUNCTPREFERREDID=" + m_db.plSqlSafeString(l_contributorfunctpreferredid);
 					l_rs = m_db.runSQL(sqlString, stmt);
 					l_rs.next();
 					counter = l_rs.getInt("counter");

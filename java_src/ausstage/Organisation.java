@@ -301,7 +301,7 @@ public class Organisation {
 						+ "','"
 						+ m_db.plSqlSafeString(m_suburb)
 						+ "',"
-						+ m_state_id
+						+ m_db.plSqlSafeString(m_state_id)
 						+ ",'"
 						+ m_db.plSqlSafeString(m_contact)
 						+ "','"
@@ -324,7 +324,7 @@ public class Organisation {
 						+ "','"
 						+ m_db.plSqlSafeString(m_notes)
 						+ "',"
-						+ m_country
+						+ m_db.plSqlSafeString(m_country)
 						+ ", "
 						+ m_db.plSqlSafeString(m_organisation_type.equals("") ? "null" : m_organisation_type)
 						+ ", "
@@ -403,15 +403,15 @@ public class Organisation {
 				sqlString = "UPDATE organisation set name='" + m_db.plSqlSafeString(m_organisation_name) + "', " + (m_updated_by_user!=null && !m_updated_by_user.equals("")? " updated_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user)
 						+ "'" + ", updated_DATE =  now(),  ":"") + "other_names1='" + m_db.plSqlSafeString(m_other_names1) + "', " + "other_names2='"
 						+ m_db.plSqlSafeString(m_other_names2) + "', " + "other_names3='" + m_db.plSqlSafeString(m_other_names3) + "', " + "address='"
-						+ m_db.plSqlSafeString(m_address) + "', " + "SUBURB='" + m_db.plSqlSafeString(m_suburb) + "', " + "state=" + m_state_id + ", " + "contact='"
+						+ m_db.plSqlSafeString(m_address) + "', " + "SUBURB='" + m_db.plSqlSafeString(m_suburb) + "', " + "state=" + m_db.plSqlSafeString(m_state_id) + ", " + "contact='"
 						+ m_db.plSqlSafeString(m_contact) + "', " + "postcode='" + m_db.plSqlSafeString(m_postcode) + "', " + "phone1='"
 						+ m_db.plSqlSafeString(m_phone1) + "'," + "phone2='" + m_db.plSqlSafeString(m_phone2) + "'," + "phone3='" + m_db.plSqlSafeString(m_phone3) + "'," + "fax='"
 						+ m_db.plSqlSafeString(m_fax) + "', " + "email='" + m_db.plSqlSafeString(m_email) + "', " + "web_links='" + m_db.plSqlSafeString(m_web_links) + "', "
-						+ "notes='" + m_db.plSqlSafeString(m_notes) + "', countryid=" + m_country + ", " + "organisation_type_id=" + m_organisation_type + ", " + "ddfirst_date= '"
+						+ "notes='" + m_db.plSqlSafeString(m_notes) + "', countryid=" + m_db.plSqlSafeString(m_country) + ", " + "organisation_type_id=" + m_db.plSqlSafeString(m_organisation_type) + ", " + "ddfirst_date= '"
 						+ m_db.plSqlSafeString(m_ddfirst_date) + "'," + "mmfirst_date= '" + m_db.plSqlSafeString(m_mmfirst_date) + "'," + "yyyyfirst_date= '"
 						+ m_db.plSqlSafeString(m_yyyyfirst_date) + "'," + "ddlast_date= '" + m_db.plSqlSafeString(m_ddlast_date) + "'," + "mmlast_date= '"
 						+ m_db.plSqlSafeString(m_mmlast_date) + "'," + "yyyylast_date=     '" + m_db.plSqlSafeString(m_yyyylast_date) + "'," + "PLACE_OF_Origin= "
-						+ m_place_of_origin + "," + "PLACE_OF_Demise= " + m_place_of_demise + "," + "NLA= '" + m_db.plSqlSafeString(m_nla) + "'" + " where organisationid="
+						+ m_db.plSqlSafeString(m_place_of_origin) + "," + "PLACE_OF_Demise= " + m_db.plSqlSafeString(m_place_of_demise) + "," + "NLA= '" + m_db.plSqlSafeString(m_nla) + "'" + " where organisationid="
 						+ m_organisation_id;
 				m_db.runSQL(sqlString, stmt);
 				l_ret = true;
@@ -519,7 +519,7 @@ public class Organisation {
 
 			// Check to see if a Organisation record exists (same name and
 			// state)
-			sqlString = "select organisationid from organisation where name='" + m_db.plSqlSafeString(m_organisation_name) + "' and state=" + m_state_id
+			sqlString = "select organisationid from organisation where name='" + m_db.plSqlSafeString(m_organisation_name) + "' and state=" + m_db.plSqlSafeString(m_state_id)
 					+ " and not organisationid=" + m_organisation_id;
 			l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -1130,7 +1130,7 @@ public class Organisation {
 
 		try {
 
-			sqlString = "SELECT type as display_info " + "FROM organisation_type " + "WHERE ORGANISATION_TYPE_ID =" + p_org_type_id + " " + "";
+			sqlString = "SELECT type as display_info " + "FROM organisation_type " + "WHERE ORGANISATION_TYPE_ID =" + m_db.plSqlSafeString(p_org_type_id) + " " + "";
 
 			l_rs = m_db.runSQLResultSet(sqlString, p_stmt);
 
@@ -1177,7 +1177,7 @@ public class Organisation {
 		String sqlString;
 
 		try {
-			sqlString = "SELECT * FROM organisation " + " WHERE organisation_type_id = " + p_org_type + " order by name";
+			sqlString = "SELECT * FROM organisation " + " WHERE organisation_type_id = " + m_db.plSqlSafeString(p_org_type) + " order by name";
 			l_rs = m_db.runSQL(sqlString, p_stmt);
 			return (l_rs);
 		} catch (Exception e) {

@@ -78,8 +78,8 @@ public class SecGenreEvLink {
 		// Reset the object
 		initialise();
 
-		secGenrePreferredId = p_id;
-		eventId = e_id;
+		secGenrePreferredId = m_db.plSqlSafeString(p_id);
+		eventId = m_db.plSqlSafeString(e_id);
 		secondaryGenre.loadLinkedProperties(Integer.parseInt(secGenrePreferredId));
 
 		try {
@@ -137,12 +137,12 @@ public class SecGenreEvLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM secgenreclasslink where " + "eventId=" + eventId;
+			sqlString = "DELETE FROM secgenreclasslink where " + "eventId=" + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; secondaryGenreEvLinks != null && i < secondaryGenreEvLinks.size(); i++) {
 				evLink = (SecGenreEvLink) secondaryGenreEvLinks.get(i);
-				sqlString = "INSERT INTO secgenreclasslink " + "(secGenrePreferredId, eventId) VALUES (" + evLink.getSecGenrePreferredId() + ", " + eventId + ")";
+				sqlString = "INSERT INTO secgenreclasslink " + "(secGenrePreferredId, eventId) VALUES (" + evLink.getSecGenrePreferredId() + ", " + m_db.plSqlSafeString(eventId) + ")";
 				m_db.runSQL(sqlString, stmt);
 			}
 			l_ret = true;
@@ -170,7 +170,7 @@ public class SecGenreEvLink {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from secgenreclasslink WHERE eventId = " + eventId;
+			sqlString = "DELETE from secgenreclasslink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

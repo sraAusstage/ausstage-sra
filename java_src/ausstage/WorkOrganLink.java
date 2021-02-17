@@ -80,7 +80,7 @@ public class WorkOrganLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM WORKORGLINK" + " WHERE WORKORGLINKID = " + p_WORKORGLINKID;
+			sqlString = " SELECT * FROM WORKORGLINK" + " WHERE WORKORGLINKID = " + m_db.plSqlSafeString(p_WORKORGLINKID);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -135,12 +135,12 @@ public class WorkOrganLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM WORKORGLINK where " + "workid=" + p_workId;
+			sqlString = "DELETE FROM WORKORGLINK where " + "workid=" + m_db.plSqlSafeString(p_workId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; p_organLinks != null && i < p_organLinks.size(); i++) {
 				workOrganLink = (WorkOrganLink) p_organLinks.get(i);
-				sqlString = "INSERT INTO WORKORGLINK " + "(workid, WORKORGLINK, orderBy) " + "VALUES (" + p_workId + ", " + workOrganLink.getOrganId() + ","
+				sqlString = "INSERT INTO WORKORGLINK " + "(workid, WORKORGLINK, orderBy) " + "VALUES (" + m_db.plSqlSafeString(p_workId) + ", " + workOrganLink.getOrganId() + ","
 						+ workOrganLink.getOrderBy() + ")";
 				m_db.runSQL(sqlString, stmt);
 			}

@@ -469,6 +469,10 @@ public class Search {
 				}
 
 			}
+			subTypes = m_db.plSqlSafeString(subTypes);
+			if(subTypes!=null && !subTypes.isEmpty()&&!subTypes.equals("")){
+				System.out.println("M printing types"+subTypes);
+				
 			m_sql_string.append(" and item_sub_type_lov_id in (" + subTypes + ")");
 		}
 
@@ -523,7 +527,7 @@ public class Search {
 		}
 
 		if (m_secondary_genre != null) {
-
+			
 			for (int i = 0; i < m_secondary_genre.length; i++) {
 				if (i == 0) {
 					secGenre = m_secondary_genre[i];
@@ -531,6 +535,7 @@ public class Search {
 					secGenre = secGenre + "," + m_secondary_genre[i];
 				}
 			}
+			secGenre = m_db.plSqlSafeString(secGenre);
 
 			m_sql_string.append(" and itemid in (SELECT itemid " + "                  FROM ITEMSECGENRELINK IW" + "                 WHERE SECGENREPREFERREDID  IN (" + secGenre
 					+ " ))");
@@ -826,6 +831,7 @@ public class Search {
 									"		ON venue.countryid = country.countryid "+
 									//"		WHERE MATCH(combined_all) AGAINST ('"+keywords+"' IN BOOLEAN MODE) "+  
 									"		WHERE "+keywords+
+									"		OR venue_country like '"+getKeywordsAsLike()+"'"+
 									"		GROUP BY country.countryid "+
 									"	) AS ven "+
 									"	ON ven.countryid = c.countryid "+
@@ -1229,52 +1235,52 @@ public class Search {
 	 * SET FUNCTIONS
 	 *******************/
 	public void setId(String p_id) {
-		m_id = p_id;
+		m_id = m_db.plSqlSafeString(p_id);
 	}
 
 	public void setKeyWord(String p_key_word) {
-		m_key_word = p_key_word.trim();
+		m_key_word = m_db.plSqlSafeString(p_key_word.trim());
 		
 	}
 
 	public void setSqlSwitch(String p_sql_switch) {
-		m_sql_switch = p_sql_switch;
+		m_sql_switch = m_db.plSqlSafeString(p_sql_switch);
 	}
 
 	public void setCollectionInstitution(String p_collectingInstitution) {
-		m_collectingInstitution = p_collectingInstitution;
+		m_collectingInstitution = m_db.plSqlSafeString(p_collectingInstitution);
 	}
 
 	public void setWork(String p_work) {
-		m_work = p_work;
+		m_work = m_db.plSqlSafeString(p_work);
 	}
 
 	public void setCreator(String p_creator) {
-		m_creator = p_creator;
+		m_creator = m_db.plSqlSafeString(p_creator);
 	}
 
 	public void setSource(String p_source) {
-		m_source = p_source;
+		m_source = m_db.plSqlSafeString(p_source);
 	}
 
 	public void setTitle(String p_title) {
-		m_title = p_title;
+		m_title = m_db.plSqlSafeString(p_title);
 	}
 
 	public void setEvent(String p_event) {
-		m_event = p_event;
+		m_event = m_db.plSqlSafeString(p_event);
 	}
 
 	public void setContributor(String p_contributor) {
-		m_contributor = p_contributor;
+		m_contributor = m_db.plSqlSafeString(p_contributor);
 	}
 
 	public void setVenue(String p_venue) {
-		m_venue = p_venue;
+		m_venue = m_db.plSqlSafeString(p_venue);
 	}
 
 	public void setOrganisation(String p_organisation) {
-		m_organisation = p_organisation;
+		m_organisation = m_db.plSqlSafeString(p_organisation);
 	}
 
 	public void setSecondaryGenre(String[] p_secondary_genre) {
@@ -1287,15 +1293,15 @@ public class Search {
 	public void setFirstDate(String p_yyyyfirst_date, String p_mmfirst_date, String p_ddfirst_date) {
 
 		if (p_yyyyfirst_date != null) {
-			m_yyyyfirst_date = p_yyyyfirst_date;
+			m_yyyyfirst_date = m_db.plSqlSafeString(p_yyyyfirst_date);
 		}
 		;
 		if (p_mmfirst_date != null) {
-			m_mmfirst_date = p_mmfirst_date;
+			m_mmfirst_date = m_db.plSqlSafeString(p_mmfirst_date);
 		}
 		;
 		if (p_ddfirst_date != null) {
-			m_ddfirst_date = p_ddfirst_date;
+			m_ddfirst_date = m_db.plSqlSafeString(p_ddfirst_date);
 		}
 
 	}
@@ -1303,15 +1309,15 @@ public class Search {
 	public void setBetweenFromDate(String p_yyyybetween_from_date, String p_mmbetween_from_date, String p_ddbetween_from_date) {
 
 		if (p_yyyybetween_from_date != null) {
-			m_yyyybetween_from_date = p_yyyybetween_from_date;
+			m_yyyybetween_from_date = m_db.plSqlSafeString(p_yyyybetween_from_date);
 		}
 		;
 		if (p_mmbetween_from_date != null) {
-			m_mmbetween_from_date = p_mmbetween_from_date;
+			m_mmbetween_from_date = m_db.plSqlSafeString(p_mmbetween_from_date);
 		}
 		;
 		if (p_ddbetween_from_date != null) {
-			m_ddbetween_from_date = p_ddbetween_from_date;
+			m_ddbetween_from_date = m_db.plSqlSafeString(p_ddbetween_from_date);
 		}
 
 	}
@@ -1319,33 +1325,33 @@ public class Search {
 	public void setBetweenToDate(String p_yyyybetween_to_date, String p_mmbetween_to_date, String p_ddbetween_to_date) {
 
 		if (p_yyyybetween_to_date != null) {
-			m_yyyybetween_to_date = p_yyyybetween_to_date;
+			m_yyyybetween_to_date = m_db.plSqlSafeString(p_yyyybetween_to_date);
 		}
 		;
 		if (p_mmbetween_to_date != null) {
-			m_mmbetween_to_date = p_mmbetween_to_date;
+			m_mmbetween_to_date = m_db.plSqlSafeString(p_mmbetween_to_date);
 		}
 		;
 		if (p_ddbetween_to_date != null) {
-			m_ddbetween_to_date = p_ddbetween_to_date;
+			m_ddbetween_to_date = m_db.plSqlSafeString(p_ddbetween_to_date);
 		}
 
 	}
 
 	public void setSearchFor(String p_search_for) {
-		m_search_for = p_search_for;
+		m_search_for = m_db.plSqlSafeString(p_search_for);
 	}
 
 	public void setSortBy(String p_sort_by) {
-		m_sort_by = p_sort_by;
+		m_sort_by = m_db.plSqlSafeString(p_sort_by);
 	}
 
 	public void setSearchWithinResults(String p_search_within_result_str) {
-		m_search_within_result_str = p_search_within_result_str;
+		m_search_within_result_str = m_db.plSqlSafeString(p_search_within_result_str);
 	}
 
 	public void setSubTypes(String[] p_sub_Type_lov_id) {
-		m_sub_Type_lov_id = p_sub_Type_lov_id;
+		m_sub_Type_lov_id = p_sub_Type_lov_id; 
 	}
 
 	// set Copyright Date
@@ -1353,15 +1359,15 @@ public class Search {
 	public void setCopyrightDate(String p_yyyycopyright_date, String p_mmcopyright_date, String p_ddcopyright_date) {
 
 		if (p_yyyycopyright_date != null) {
-			m_yyyycopyright_date = p_yyyycopyright_date;
+			m_yyyycopyright_date = m_db.plSqlSafeString(p_yyyycopyright_date);
 		}
 		;
 		if (p_mmcopyright_date != null) {
-			m_mmcopyright_date = p_mmcopyright_date;
+			m_mmcopyright_date = m_db.plSqlSafeString(p_mmcopyright_date);
 		}
 		;
 		if (p_ddcopyright_date != null) {
-			m_ddcopyright_date = p_ddcopyright_date;
+			m_ddcopyright_date = m_db.plSqlSafeString(p_ddcopyright_date);
 		}
 
 	}
@@ -1487,14 +1493,19 @@ public class Search {
 	}
 
 	public void setResourceVisible(String showResources) {
-		m_showResources = showResources;
+		m_showResources = m_db.plSqlSafeString(showResources);
 	}
 
 	public void setOrderBy(String orderBy) {
 		if (orderBy == null) {
 			m_orderBy = "";
 		} else {
-			m_orderBy = orderBy;
+			m_orderBy = m_db.plSqlSafeString(orderBy);
 		}
+	}
+	
+	public String getKeywordsAsLike() {
+		String query = (m_key_word == null || m_key_word.equals(""))? "*" : m_key_word.toLowerCase();
+		return m_db.plSqlSafeString(query + "%");
 	}
 }

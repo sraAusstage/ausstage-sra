@@ -56,7 +56,7 @@ public class ContFunctPref {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT * FROM ContributorFunctPreferred WHERE ContributorFunctPreferredId = " + p_id;
+			sqlString = "SELECT * FROM ContributorFunctPreferred WHERE ContributorFunctPreferredId = " + m_db.plSqlSafeString(p_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -83,7 +83,7 @@ public class ContFunctPref {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = "SELECT ContributorFunctPreferred.ContributorFunctPreferredId,  ContributorFunctPreferred.PreferredTerm " + "FROM ContributorFunctPreferred, contfunct "
-					+ "WHERE ContributorFunctPreferred.ContributorFunctPreferredId=contfunct.ContributorFunctPreferredId " + "AND contfunct.CONTFUNCTIONID=" + p_id;
+					+ "WHERE ContributorFunctPreferred.ContributorFunctPreferredId=contfunct.ContributorFunctPreferredId " + "AND contfunct.CONTFUNCTIONID=" + m_db.plSqlSafeString(p_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {

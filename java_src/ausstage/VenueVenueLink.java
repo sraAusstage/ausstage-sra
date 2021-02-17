@@ -72,7 +72,7 @@ public class VenueVenueLink {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = "SELECT * FROM VenueVenueLink"
-					+ " WHERE venuevenuelinkId = " + p_venuevenuelink_id;
+					+ " WHERE venuevenuelinkId = " + m_db.plSqlSafeString(p_venuevenuelink_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -130,9 +130,9 @@ public class VenueVenueLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM VenueVenueLink where " + "venueId=" + p_venueId;
+			sqlString = "DELETE FROM VenueVenueLink where " + "venueId=" + m_db.plSqlSafeString(p_venueId);
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE FROM VenueVenueLink where " + "childId=" + p_venueId;
+			sqlString = "DELETE FROM VenueVenueLink where " + "childId=" + m_db.plSqlSafeString(p_venueId);
 			m_db.runSQL(sqlString, stmt);
 			
 			if (p_links != null) {
@@ -170,11 +170,11 @@ public class VenueVenueLink {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			
-			sqlString = "DELETE from VenueVenueLink WHERE venueId = " + venueId;
+			sqlString = "DELETE from VenueVenueLink WHERE venueId = " + m_db.plSqlSafeString(venueId);
 			m_db.runSQL(sqlString, stmt);
 			//stmt.close();
 			
-			sqlString = "DELETE from VenueVenueLink WHERE childId = " + venueId;
+			sqlString = "DELETE from VenueVenueLink WHERE childId = " + m_db.plSqlSafeString(venueId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			

@@ -121,7 +121,7 @@ public class WebLinks {
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
-				sqlString = "INSERT INTO www (collection_information_id, weblinks, web_description) VALUES (" + m_collection_id + ",  " + "'"
+				sqlString = "INSERT INTO www (collection_information_id, weblinks, web_description) VALUES (" + m_db.plSqlSafeString(m_collection_id) + ",  " + "'"
 						+ m_db.plSqlSafeString(m_web_links_name) + "', " + "'" + m_db.plSqlSafeString(m_web_links_description) + "'  " + ")";
 				m_db.runSQL(sqlString, stmt);
 

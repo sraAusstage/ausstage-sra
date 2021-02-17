@@ -323,7 +323,7 @@ public class LookupCode {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT * FROM lookup_codes where code_type = '" + p_code_type + "' order by SEQUENCE_NO, short_code";
+			sqlString = "SELECT * FROM lookup_codes where code_type = '" + m_db.plSqlSafeString(p_code_type) + "' order by SEQUENCE_NO, short_code";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
@@ -357,8 +357,8 @@ public class LookupCode {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT distinct lookup_codes.* FROM lookup_codes, " + p_table_to_check + " " + "where lookup_codes.code_type = '" + p_code_type + "' "
-					+ " AND lookup_codes.code_lov_id=" + p_table_to_check + "." + p_link_column + " " + "order by SEQUENCE_NO, short_code";
+			sqlString = "SELECT distinct lookup_codes.* FROM lookup_codes, " + m_db.plSqlSafeString(p_table_to_check) + " " + "where lookup_codes.code_type = '" + m_db.plSqlSafeString(p_code_type) + "' "
+					+ " AND lookup_codes.code_lov_id=" + m_db.plSqlSafeString(p_table_to_check) + "." + m_db.plSqlSafeString(p_link_column) + " " + "order by SEQUENCE_NO, short_code";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);

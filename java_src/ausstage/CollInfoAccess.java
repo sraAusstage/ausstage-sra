@@ -117,7 +117,7 @@ public class CollInfoAccess {
 			// required fields
 			if (validateObjectForDB()) {
 				// As the notes is a text area, need to limit characters
-				sqlString = "INSERT INTO COLLECTION_INFO_ACCESS (COLL_ACCESS) VALUES ('" + m_coll_access + "')";
+				sqlString = "INSERT INTO COLLECTION_INFO_ACCESS (COLL_ACCESS) VALUES ('" + m_db.plSqlSafeString(m_coll_access) + "')";
 				m_db.runSQL(sqlString, stmt);
 
 				// Get the inserted index
@@ -150,7 +150,7 @@ public class CollInfoAccess {
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
-				sqlString = "UPDATE COLLECTION_INFO_ACCESS set " + "COLL_ACCESS= '" + m_coll_access + "' " + "where collection_info_access_id=" + m_collection_info_access_id;
+				sqlString = "UPDATE COLLECTION_INFO_ACCESS set " + "COLL_ACCESS= '" + m_db.plSqlSafeString(m_coll_access) + "' " + "where collection_info_access_id=" + m_collection_info_access_id;
 				m_db.runSQL(sqlString, stmt);
 				l_ret = true;
 			}

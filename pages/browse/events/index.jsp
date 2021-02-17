@@ -119,7 +119,7 @@
   String validSql = "name vname dat total ASC DESC street state suburb";
   if (sortCol == null || !validSql.contains(sortCol)) sortCol = "name";
   String sortOrd = request.getParameter("order");
-  if (sortOrd == null || !validSql.contains(sortCol)) sortOrd = "ASC";
+  if (sortOrd == null || !validSql.contains(sortOrd)) sortOrd = "ASC";
 
   ausstage.Database     m_db = new ausstage.Database ();  
   CachedRowSet  l_rs     = null;

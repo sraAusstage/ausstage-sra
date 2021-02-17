@@ -49,7 +49,7 @@ public class FormElementsManager {
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			Statement stmt_for_clob = db.m_conn.createStatement();
-			sqlString = "select count(*) as counter from form_element where form_layout_id=" + form_layout_id;
+			sqlString = "select count(*) as counter from form_element where form_layout_id=" + db.plSqlSafeString(form_layout_id);
 			rset = db.runSQL(sqlString, stmt);
 			if (rset.next()) {
 				num_elements = rset.getString("counter");
@@ -60,7 +60,7 @@ public class FormElementsManager {
 				if (!num_elements.equals("0")) {
 					sqlString = "select type_name,html_name,display_name,table_location_row,table_location_col,si"
 							+ "ze_length,do_validate,num_rows,num_cols,form_element_id,form_element_group_id,is"
-							+ "_selected,is_multiselect,field_type from form_element where form_layout_id=" + form_layout_id + " order by table_location_row";
+							+ "_selected,is_multiselect,field_type from form_element where form_layout_id=" + db.plSqlSafeString(form_layout_id) + " order by table_location_row";
 					rset = db.runSQL(sqlString, stmt);
 					rset.next();
 					do {
@@ -80,7 +80,7 @@ public class FormElementsManager {
 						field_type = rset.getString("field_type");
 						default_display_val = "";
 						default_val = "";
-						sqlString = "select default_display_val, default_val from form_element where form_element_id=" + element_id;
+						sqlString = "select default_display_val, default_val from form_element where form_element_id=" + db.plSqlSafeString(element_id);
 						clobRset = db.runSQLResultSet(sqlString, stmt_for_clob);
 						if (clobRset.next()) {
 							FormElementsManager _tmp = this;
@@ -129,8 +129,8 @@ public class FormElementsManager {
 		String form_element_id = "0";
 		try {
 			Statement stmt = db.m_conn.createStatement();
-			sqlString = "select table_location_row, table_location_col, form_element_id from form_element" + " where table_location_row=" + rowLocation + " and "
-					+ "table_location_col= " + colLocation + " and form_layout_id=" + form_layout_id;
+			sqlString = "select table_location_row, table_location_col, form_element_id from form_element" + " where table_location_row=" + db.plSqlSafeString(rowLocation) + " and "
+					+ "table_location_col= " + db.plSqlSafeString(colLocation) + " and form_layout_id=" + db.plSqlSafeString(form_layout_id);
 			rset = db.runSQL(sqlString, stmt);
 			if (rset.next()) {
 				form_element_id = rset.getString("form_element_id");
@@ -146,7 +146,7 @@ public class FormElementsManager {
 	}
 
 	public void updateFormElementColLocation(String col, String element_id, Statement stmt, Database db) {
-		sqlString = "update form_element set table_location_col='" + col + "' where form_element_id=" + element_id;
+		sqlString = "update form_element set table_location_col='" +  db.plSqlSafeString(col) + "' where form_element_id=" +  db.plSqlSafeString(element_id);
 		try {
 			db.runSQL(sqlString, stmt);
 		} catch (Exception e) {
@@ -158,7 +158,7 @@ public class FormElementsManager {
 	}
 
 	public void updateFormElementRowLocation(String row, String element_id, Statement stmt, Database db) {
-		sqlString = "update form_element set table_location_row='" + row + "' where form_element_id=" + element_id;
+		sqlString = "update form_element set table_location_row='" + db.plSqlSafeString(row) + "' where form_element_id=" + db.plSqlSafeString(element_id);
 		try {
 			db.runSQL(sqlString, stmt);
 		} catch (Exception e) {
@@ -176,46 +176,46 @@ public class FormElementsManager {
 		sqlString = "insert into form_element (type_name, html_name, display_name, table_location_row"
 				+ ", table_location_col, size_length, do_validate, num_rows, num_cols, form_element"
 				+ "_group_id, is_selected, form_layout_id, is_multiselect, field_type) values ('"
-				+ type_name
+				+ db.plSqlSafeString(type_name)
 				+ "','"
-				+ html_name
+				+ db.plSqlSafeString(html_name)
 				+ "','"
 				+ db.plSqlSafeString(display_name)
 				+ "','"
-				+ table_location_row
+				+ db.plSqlSafeString(table_location_row)
 				+ "','"
-				+ table_location_col
+				+ db.plSqlSafeString(table_location_col)
 				+ "','"
-				+ size_length
+				+ db.plSqlSafeString(size_length)
 				+ "','"
-				+ do_validate
+				+ db.plSqlSafeString(do_validate)
 				+ "','"
-				+ num_rows
+				+ db.plSqlSafeString(num_rows)
 				+ "','"
-				+ num_cols
+				+ db.plSqlSafeString(num_cols)
 				+ "','"
-				+ element_group_id
+				+ db.plSqlSafeString(element_group_id)
 				+ "','"
-				+ is_selected
+				+ db.plSqlSafeString(is_selected)
 				+ "','"
-				+ form_layout_id
+				+ db.plSqlSafeString(form_layout_id)
 				+ "','"
-				+ is_multiselect
+				+ db.plSqlSafeString(is_multiselect)
 				+ "','"
-				+ field_type + "')";
+				+ db.plSqlSafeString(field_type) + "')";
 		try {
 			db.runSQL(sqlString, stmt);
 			String new_form_element_id = db.getInsertedIndexValue(stmt, "form_element_id_seq");
 			try {
 				if (AppConstants.DATABASE_TYPE == 1) {
-					CallableStatement callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_VAL (" + new_form_element_id + ", '" + db.plSqlSafeString(default_val) + "'); end;");
+					CallableStatement callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_VAL (" + db.plSqlSafeString(new_form_element_id) + ", '" + db.plSqlSafeString(default_val) + "'); end;");
 					callable.execute();
-					callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_DISPLAY_VAL (" + new_form_element_id + ", '" + db.plSqlSafeString(default_display_val) + "'); end;");
+					callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_DISPLAY_VAL (" + db.plSqlSafeString(new_form_element_id) + ", '" + db.plSqlSafeString(default_display_val) + "'); end;");
 					callable.execute();
 					callable.close();
 				} else {
 					sqlString = "update form_element set default_val='" + db.plSqlSafeString(default_val) + "', default_display_val='" + db.plSqlSafeString(default_display_val)
-							+ "' where form_element_id=" + new_form_element_id;
+							+ "' where form_element_id=" + db.plSqlSafeString(new_form_element_id);
 					db.runSQL(sqlString, stmt);
 				}
 			} catch (Exception e) {
@@ -236,22 +236,24 @@ public class FormElementsManager {
 			String size_length, String do_validate, String default_val, String default_display_val, String num_rows, String num_cols, String element_group_id, String is_selected,
 			String is_multiselect, String field_type, Statement stmt, Database db) {
 		boolean retVal = true;
-		sqlString = "update form_element set type_name='" + type_name + "',html_name='" + db.plSqlSafeString(html_name) + "', display_name='" + db.plSqlSafeString(display_name)
-				+ "', table_location_row='" + table_location_row + "', table_location_col='" + table_location_col + "', size_length='" + size_length + "', do_validate='"
-				+ do_validate + "', num_rows='" + num_rows + "', num_cols='" + num_cols + "', form_element_group_id='" + element_group_id + "', is_selected='" + is_selected
-				+ "', is_multiselect= '" + is_multiselect + "', field_type='" + field_type + "' where form_element_id=" + form_element_id;
+		sqlString = "update form_element set type_name='" + db.plSqlSafeString(type_name) + "',html_name='" + db.plSqlSafeString(html_name) + "', display_name='" + db.plSqlSafeString(display_name)
+				+ "', table_location_row='" + db.plSqlSafeString(table_location_row) + "', table_location_col='" + db.plSqlSafeString(table_location_col) + "', size_length='" 
+				+ db.plSqlSafeString(size_length) + "', do_validate='"
+				+ db.plSqlSafeString(do_validate) + "', num_rows='" + db.plSqlSafeString(num_rows) + "', num_cols='" + db.plSqlSafeString(num_cols) 
+				+ "', form_element_group_id='" + db.plSqlSafeString(element_group_id) + "', is_selected='" + db.plSqlSafeString(is_selected)
+				+ "', is_multiselect= '" + db.plSqlSafeString(is_multiselect) + "', field_type='" + db.plSqlSafeString(field_type) + "' where form_element_id=" + db.plSqlSafeString(form_element_id);
 		try {
 			db.runSQL(sqlString, stmt);
 			try {
 				if (AppConstants.DATABASE_TYPE == 1) {
-					CallableStatement callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_VAL (" + form_element_id + ", '" + db.plSqlSafeString(default_val) + "'); end;");
+					CallableStatement callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_VAL (" + db.plSqlSafeString(form_element_id) + ", '" + db.plSqlSafeString(default_val) + "'); end;");
 					callable.execute();
-					callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_DISPLAY_VAL (" + form_element_id + ", '" + db.plSqlSafeString(default_display_val) + "'); end;");
+					callable = db.m_conn.prepareCall("begin UPDATE_DEFAULT_DISPLAY_VAL (" + db.plSqlSafeString(form_element_id) + ", '" + db.plSqlSafeString(default_display_val) + "'); end;");
 					callable.execute();
 					callable.close();
 				} else {
 					sqlString = "update form_element set default_val='" + db.plSqlSafeString(default_val) + "', default_display_val='" + db.plSqlSafeString(default_display_val)
-							+ "' where form_element_id=" + form_element_id;
+							+ "' where form_element_id=" + db.plSqlSafeString(form_element_id);
 					db.runSQL(sqlString, stmt);
 				}
 			} catch (Exception e) {
@@ -276,14 +278,14 @@ public class FormElementsManager {
 			form_element_group_id = "";
 		}
 		if (element_type.equals("radiobutton") || element_type.equals("checkbox") && !form_element_group_id.equals("")) {
-			sqlString = "select form_element_id from form_element where not form_element_id=" + form_element_id + " and form_element_group_id=" + form_element_group_id
-					+ " and not type_name='label' and form_layout_id=" + form_layout_id;
+			sqlString = "select form_element_id from form_element where not form_element_id=" + db.plSqlSafeString(form_element_id) + " and form_element_group_id=" + db.plSqlSafeString(form_element_group_id)
+					+ " and not type_name='label' and form_layout_id=" + db.plSqlSafeString(form_layout_id);
 			try {
 				rset = db.runSQL(sqlString, stmt);
 				if (!rset.next()) {
 					try {
 						if (hasLabel(form_element_group_id, db)) {
-							sqlString = "update form_element set form_element_group_id='' where form_element_id=" + release_label_form_element_id;
+							sqlString = "update form_element set form_element_group_id='' where form_element_id=" + db.plSqlSafeString(release_label_form_element_id);
 							db.runSQL(sqlString, stmt);
 						}
 					} catch (Exception e) {
@@ -298,7 +300,7 @@ public class FormElementsManager {
 				System.out.println("CLASS.TOSTRING: " + e.toString());
 			}
 		}
-		sqlString = "delete from form_element where form_element_id=" + form_element_id;
+		sqlString = "delete from form_element where form_element_id=" + db.plSqlSafeString(form_element_id);
 		try {
 			db.runSQL(sqlString, stmt);
 		} catch (Exception e) {
@@ -341,7 +343,7 @@ public class FormElementsManager {
 
 	public String getElementGroupName(String element_group_id, Database db) {
 		String retStr = "";
-		sqlString = "select group_name from form_element_group where form_element_group_id=" + element_group_id;
+		sqlString = "select group_name from form_element_group where form_element_group_id=" +  db.plSqlSafeString(element_group_id);
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			rset = db.runSQL(sqlString, stmt);
@@ -363,7 +365,7 @@ public class FormElementsManager {
 	public boolean isLabelRequired(String form_layout_id, Database db) {
 		boolean retBool = false;
 		sqlString = "select form_element_group_id from form_element where form_element_group_id is no"
-				+ "t null and (type_name='radiobutton' or type_name='checkbox') and form_layout_id=" + form_layout_id;
+				+ "t null and (type_name='radiobutton' or type_name='checkbox') and form_layout_id=" + db.plSqlSafeString(form_layout_id);
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			rset = db.runSQL(sqlString, stmt);
@@ -393,7 +395,7 @@ public class FormElementsManager {
 
 	private boolean hasLabel(String form_element_group_id, Database db) throws Exception {
 		boolean retBool = false;
-		sqlString = "select form_element_id from form_element where form_element_group_id=" + form_element_group_id + " " + "and type_name='label'";
+		sqlString = "select form_element_id from form_element where form_element_group_id=" + db.plSqlSafeString(form_element_group_id) + " " + "and type_name='label'";
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			CachedRowSet rset = db.runSQL(sqlString, stmt);
@@ -428,7 +430,7 @@ public class FormElementsManager {
 			is_array = true;
 		}
 		try {
-			sqlString = "select form_element_id, default_val from form_element where type_name='" + element_type + "' and form_layout_id=" + form_layout_id;
+			sqlString = "select form_element_id, default_val from form_element where type_name='" + db.plSqlSafeString(element_type) + "' and form_layout_id=" + db.plSqlSafeString(form_layout_id);
 			Statement stmt = db.m_conn.createStatement();
 			clobRset = db.runSQLResultSet(sqlString, stmt);
 			if (clobRset.next()) {
@@ -501,7 +503,7 @@ public class FormElementsManager {
 
 	public String getDisplayName(String element_id, String default_val, Database db) {
 		String retStr = "";
-		sqlString = "select display_name from form_element where form_element_id=" + element_id;
+		sqlString = "select display_name from form_element where form_element_id=" + db.plSqlSafeString(element_id);
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			rset = db.runSQL(sqlString, stmt);
@@ -522,7 +524,7 @@ public class FormElementsManager {
 
 	public String getLabel(String group_id, Database db) {
 		String retStr = "";
-		sqlString = "select default_val from form_element where form_element_group_id=" + group_id + " and type_name='label'";
+		sqlString = "select default_val from form_element where form_element_group_id=" + db.plSqlSafeString(group_id) + " and type_name='label'";
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			clobRset = db.runSQLResultSet(sqlString, stmt);
@@ -555,7 +557,7 @@ public class FormElementsManager {
 
 	public String getMultiCheckBoxDispName(String group_id, String x_default_val, Database db) {
 		String retStr = "";
-		sqlString = "select display_name from form_element where form_element_group_id=" + group_id + " and default_val='" + x_default_val + "' and type_name='checkbox'";
+		sqlString = "select display_name from form_element where form_element_group_id=" + db.plSqlSafeString(group_id)  + " and default_val='" + db.plSqlSafeString(x_default_val)  + "' and type_name='checkbox'";
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			rset = db.runSQL(sqlString, stmt);
@@ -579,7 +581,7 @@ public class FormElementsManager {
 		if (form_layout_id.equals("")) {
 			form_layout_id = "0";
 		}
-		sqlString = "Select form_element_id from form_element where type_name='" + element_type + "' and html_name='" + html_name + "' and form_layout_id=" + form_layout_id;
+		sqlString = "Select form_element_id from form_element where type_name='" + db.plSqlSafeString(element_type) + "' and html_name='" + db.plSqlSafeString(html_name) + "' and form_layout_id=" + db.plSqlSafeString(form_layout_id);
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			rset = db.runSQL(sqlString, stmt);

@@ -80,7 +80,7 @@ public class WorkContribLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM WORKCONLINK" + " WHERE WORKCONLINKID = " + p_WORKCONLINKID;
+			sqlString = " SELECT * FROM WORKCONLINK" + " WHERE WORKCONLINKID = " + m_db.plSqlSafeString(p_WORKCONLINKID);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -135,12 +135,12 @@ public class WorkContribLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM WORKCONLINK where " + "workid=" + p_workId;
+			sqlString = "DELETE FROM WORKCONLINK where " + "workid=" + m_db.plSqlSafeString(p_workId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; p_contribLinks != null && i < p_contribLinks.size(); i++) {
 				workContribLink = (WorkContribLink) p_contribLinks.get(i);
-				sqlString = "INSERT INTO WORKCONLINK " + "(workid, CONTRIBUTORID, orderBy) " + "VALUES (" + p_workId + ", " + workContribLink.getContribId() + ","
+				sqlString = "INSERT INTO WORKCONLINK " + "(workid, CONTRIBUTORID, orderBy) " + "VALUES (" + m_db.plSqlSafeString(p_workId) + ", " + workContribLink.getContribId() + ","
 						+ workContribLink.getOrderBy() + ")";
 				m_db.runSQL(sqlString, stmt);
 			}

@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="org.opencms.main.OpenCms"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
-<%@ page session="true" import="org.opencms.main.*,org.opencms.jsp.*,org.opencms.file.*,java.lang.String"%>
+<%@ page session="true" import="org.opencms.main.*,org.opencms.jsp.*,org.opencms.file.*,java.lang.String, java.util.*"%>
 <cms:include property="template" element="head" />
 <% CmsJspActionElement cms = new CmsJspActionElement(pageContext,request,response);
 	
@@ -43,7 +43,12 @@
 			session.setAttribute("authId", login.getFullName());
 			session.setAttribute("isAdmin", "true");
 			session.setAttribute("loginOK", "true");
-	
+			List<CmsGroup> userGroups = cmsObject.getGroupsOfUser(user, true);
+			String groupNames = "";
+			for(CmsGroup group:userGroups) {
+			   groupNames += group.getName() + ", ";
+			}
+			session.setAttribute("permissions", groupNames);
 			//login successful - redirect to given URL
 			response.sendRedirect("/custom/welcome.jsp");
 	

@@ -83,17 +83,17 @@ public class AdvancedSearch {
 		Vector column_types = new Vector();
 
 		if (!p_eventId.equals("")) {
-			m_eventKeyAndVal = "events.eventid|" + p_eventId;
+			m_eventKeyAndVal = "events.eventid|" + m_db.plSqlSafeString(p_eventId);
 			column_types.addElement("int");
 		}
 
 		if (!p_eventName.equals("")) {
-			m_eventKeyAndVal += ",event_name|" + p_eventName;
+			m_eventKeyAndVal += ",event_name|" + m_db.plSqlSafeString(p_eventName);
 			column_types.addElement("string");
 		}
 
 		if (!p_umbrella.equals("")) {
-			m_eventKeyAndVal += ",events.umbrella|" + p_umbrella;
+			m_eventKeyAndVal += ",events.umbrella|" + m_db.plSqlSafeString(p_umbrella);
 			column_types.addElement("string");
 		}
 
@@ -106,12 +106,12 @@ public class AdvancedSearch {
 
 			m_is_event_dates = true;
 
-			m_firstDateOnDD = p_firstDateOnDD;
-			m_firstDateOnMM = p_firstDateOnMM;
-			m_firstDateOnYYYY = p_firstDateOnYYYY;
-			m_lastDateOnDD = p_lastDateOnDD;
-			m_lastDateOnMM = p_lastDateOnMM;
-			m_lastDateOnYYYY = p_lastDateOnYYYY;
+			m_firstDateOnDD = m_db.plSqlSafeString(p_firstDateOnDD);
+			m_firstDateOnMM = m_db.plSqlSafeString(p_firstDateOnMM);
+			m_firstDateOnYYYY = m_db.plSqlSafeString(p_firstDateOnYYYY);
+			m_lastDateOnDD = m_db.plSqlSafeString(p_lastDateOnDD);
+			m_lastDateOnMM = m_db.plSqlSafeString(p_lastDateOnMM);
+			m_lastDateOnYYYY = m_db.plSqlSafeString(p_lastDateOnYYYY);
 
 			// First Date On
 			if (!m_firstDateOnDD.equals("")) {
@@ -163,7 +163,7 @@ public class AdvancedSearch {
 	}
 
 	public void setStatus(String p_statusId) {
-		m_sqlWhereString += " AND status = " + p_statusId + " ";
+		m_sqlWhereString += " AND status = " + m_db.plSqlSafeString(p_statusId) + " ";
 
 	}
 
@@ -171,7 +171,7 @@ public class AdvancedSearch {
 		Vector column_types = new Vector();
 
 		if (!p_primaryGenre.equals("")) {
-			m_primGenreKeyAndVal = "prigenreclass.genreclass|" + p_primaryGenre;
+			m_primGenreKeyAndVal = "prigenreclass.genreclass|" + m_db.plSqlSafeString(p_primaryGenre);
 			m_priGenreClassTableUsed = true;
 			column_types.addElement("stringNoLike");
 			buildWhereClause(m_primGenreKeyAndVal, column_types);
@@ -198,6 +198,8 @@ public class AdvancedSearch {
 				}
 
 			}
+			secGenre = m_db.plSqlSafeString(secGenre);
+			
 			m_secGenreClassTableUsed = true;
 			m_resourceKeyAndVal = "";
 			m_resourceKeyAndVal += "secgenreclass.genreclass|" + secGenre;
@@ -215,7 +217,7 @@ public class AdvancedSearch {
 		Vector column_types = new Vector();
 
 		if (!p_primaryContentIndicator.equals("")) {
-			m_primConIndKeyAndVal = "contentindicator|" + p_primaryContentIndicator;
+			m_primConIndKeyAndVal = "contentindicator|" + m_db.plSqlSafeString(p_primaryContentIndicator);
 			m_contentindTableUsed = true;
 			column_types.addElement("string");
 			buildWhereClause(m_primConIndKeyAndVal, column_types);
@@ -228,15 +230,15 @@ public class AdvancedSearch {
 		Vector column_types = new Vector();
 
 		if (!p_venueId.equals("") || !p_venueName.equals("")) {
-			m_venueKeyAndVal = "venue.venueid|" + p_venueId;
+			m_venueKeyAndVal = "venue.venueid|" + m_db.plSqlSafeString(p_venueId);
 			column_types.addElement("int");
-			m_venueKeyAndVal += ",venue_name|" + p_venueName;
+			m_venueKeyAndVal += ",venue_name|" + m_db.plSqlSafeString(p_venueName);
 			column_types.addElement("string");
 			buildWhereClause(m_venueKeyAndVal, column_types);
 			column_types.clear(); // clear it for the next if statement
 		}
 		if (!p_venueState.equals("")) {
-			m_statesKeyAndVal = "states.state|" + p_venueState;
+			m_statesKeyAndVal = "states.state|" + m_db.plSqlSafeString(p_venueState);
 			m_statesTableUsed = true;
 			column_types.addElement("string");
 			buildWhereClause(m_statesKeyAndVal, column_types);
@@ -248,21 +250,21 @@ public class AdvancedSearch {
 		Vector column_types = new Vector();
 
 		if (!p_venueId.equals("") || !p_venueName.equals("")) {
-			m_venueKeyAndVal = "venue.venueid|" + p_venueId;
+			m_venueKeyAndVal = "venue.venueid|" + m_db.plSqlSafeString(p_venueId);
 			column_types.addElement("int");
-			m_venueKeyAndVal += ",venue_name|" + p_venueName;
+			m_venueKeyAndVal += ",venue_name|" + m_db.plSqlSafeString(p_venueName);
 			column_types.addElement("string");
 			buildWhereClause(m_venueKeyAndVal, column_types);
 			column_types.clear(); // clear it for the next if statement
 		}
 		if (!p_venueState.equals("")) {
-			m_statesKeyAndVal = "states.state|" + p_venueState;
+			m_statesKeyAndVal = "states.state|" + m_db.plSqlSafeString(p_venueState);
 			m_statesTableUsed = true;
 			column_types.addElement("string");
 			buildWhereClause(m_statesKeyAndVal, column_types);
 		}
 		if (!p_venueCountry.equals("")) {
-			m_countryKeyAndVal = "country.countryid|" + p_venueCountry;
+			m_countryKeyAndVal = "country.countryid|" + m_db.plSqlSafeString(p_venueCountry);
 			m_countryTableUsed = true;
 			column_types.addElement("int");
 			buildWhereClause(m_countryKeyAndVal, column_types);
@@ -282,7 +284,7 @@ public class AdvancedSearch {
 			column_types.clear(); // clear it for the next if statement
 		}
 		if (!p_origin_of_production.equals("")) {
-			m_countryKeyAndVal = "productionevlink.countryid|" + p_origin_of_production;
+			m_countryKeyAndVal = "productionevlink.countryid|" + m_db.plSqlSafeString(p_origin_of_production);
 			m_countryTableUsed = true;
 			m_productionEvLinkTableUsed = true;
 			column_types.addElement("int");
@@ -296,20 +298,20 @@ public class AdvancedSearch {
 		Vector column_types = new Vector();
 
 		if (!p_organisationId.equals("") || !p_organisationName.equals("")) {
-			m_organisationKeyAndVal = "organisation.organisationid|" + p_organisationId;
+			m_organisationKeyAndVal = "organisation.organisationid|" + m_db.plSqlSafeString(p_organisationId);
 			m_organisationTableUsed = true;
 			column_types.addElement("int");
-			m_organisationKeyAndVal += ",name|" + p_organisationName;
+			m_organisationKeyAndVal += ",name|" + m_db.plSqlSafeString(p_organisationName);
 			column_types.addElement("string");
 			buildWhereClause(m_organisationKeyAndVal, column_types);
 			column_types.clear(); // clear it for the next if statement
 		}
 		if (!p_orgFunctMenuAndContFunct.equals("")) {
 			m_orgContFunctTableUsed = true;
-			m_orgFunctMenuKeyAndVal = "orgfunction|" + p_orgFunctMenuAndContFunct;
+			m_orgFunctMenuKeyAndVal = "orgfunction|" + m_db.plSqlSafeString(p_orgFunctMenuAndContFunct);
 			column_types.addElement("string");
 			buildWhereClause(m_orgFunctMenuKeyAndVal, column_types);
-			m_contFunctKeyAndVal = "contfunction|" + p_orgFunctMenuAndContFunct;
+			m_contFunctKeyAndVal = "contfunction|" + m_db.plSqlSafeString(p_orgFunctMenuAndContFunct);
 			buildWhereClause(m_contFunctKeyAndVal, column_types);
 		}
 	}
@@ -319,16 +321,16 @@ public class AdvancedSearch {
 		Vector column_types = new Vector();
 
 		if (!p_contributorId.equals("") || !p_contributorName.equals("")) {
-			m_contributorKeyAndVal = "contributor.contributorid|" + p_contributorId;
+			m_contributorKeyAndVal = "contributor.contributorid|" + m_db.plSqlSafeString(p_contributorId);
 			m_contribtorTableUsed = true;
 			column_types.addElement("int");
-			m_contributorKeyAndVal += ",combined_all|" + p_contributorName;
+			m_contributorKeyAndVal += ",combined_all|" + m_db.plSqlSafeString(p_contributorName);
 			column_types.addElement("string");
 			buildWhereClause(m_contributorKeyAndVal, column_types);
 			column_types.clear(); // clear it for the next if statement
 		}
 		if (!p_contributorFunction.equals("")) {
-			m_contFunctKeyAndVal = "contributorfunctpreferred.preferredterm|" + p_contributorFunction;
+			m_contFunctKeyAndVal = "contributorfunctpreferred.preferredterm|" + m_db.plSqlSafeString(p_contributorFunction);
 			m_contributorFunctPreferredTableUsed = true;
 			column_types.addElement("string");
 			buildWhereClause(m_contFunctKeyAndVal, column_types);
@@ -351,7 +353,7 @@ public class AdvancedSearch {
 
 		if (!p_resource_title.equals("") || !p_resource_source.equals("") || !p_resource_abstract.equals("")) {
 
-			m_resourceKeyAndVal = "item.title|" + p_resource_title;
+			m_resourceKeyAndVal = "item.title|" + m_db.plSqlSafeString(p_resource_title);
 			column_types.addElement("string");
 			// source
 			// this refers to the 'parent' item of this item
@@ -359,13 +361,13 @@ public class AdvancedSearch {
 				// need to add another item table to the list to query for the
 				// citation
 				m_resourceSourceTableUsed = true;
-				m_resourceKeyAndVal += ",source_name.citation|" + p_resource_source;
+				m_resourceKeyAndVal += ",source_name.citation|" + m_db.plSqlSafeString(p_resource_source);
 				column_types.addElement("string");
 			} else {
 				// do nothing about the source
 			}
 
-			m_resourceKeyAndVal += ",item.description_abstract|" + p_resource_abstract;
+			m_resourceKeyAndVal += ",item.description_abstract|" + m_db.plSqlSafeString(p_resource_abstract);
 			column_types.addElement("string");
 
 			buildWhereClause(m_resourceKeyAndVal, column_types);
@@ -374,7 +376,7 @@ public class AdvancedSearch {
 		if (!p_contributor_creator.equals("")) {
 			m_creator_contributor = true;
 
-			m_resourceKeyAndVal = "cont_creator.last_name|" + p_contributor_creator;
+			m_resourceKeyAndVal = "cont_creator.last_name|" + m_db.plSqlSafeString(p_contributor_creator);
 			column_types.addElement("string");
 			buildWhereClause(m_resourceKeyAndVal, column_types);
 
@@ -383,7 +385,7 @@ public class AdvancedSearch {
 		if (!p_organisation_creator.equals("")) {
 			m_creator_organisation = true;
 
-			m_resourceKeyAndVal += "orga_creator.name|" + p_organisation_creator;
+			m_resourceKeyAndVal += "orga_creator.name|" + m_db.plSqlSafeString(p_organisation_creator);
 			column_types.addElement("string");
 
 			buildWhereClause(m_resourceKeyAndVal, column_types);
@@ -402,7 +404,7 @@ public class AdvancedSearch {
 				}
 			}
 			m_resourceKeyAndVal = "";
-			m_resourceKeyAndVal += "item.item_sub_type_lov_id|" + subTypes;
+			m_resourceKeyAndVal += "item.item_sub_type_lov_id|" + m_db.plSqlSafeString(subTypes);
 			column_types.addElement("int list");
 
 			buildInWhereClause(m_resourceKeyAndVal, column_types);
@@ -425,9 +427,9 @@ public class AdvancedSearch {
 																		// date
 																		// being
 																		// used
-				m_copyrightDateOnDD = p_copyright_date_dd;
-				m_copyrightDateOnMM = p_copyright_date_mm;
-				m_copyrightDateOnYYYY = p_copyright_date_yyyy; // set member
+				m_copyrightDateOnDD = m_db.plSqlSafeString(p_copyright_date_dd);
+				m_copyrightDateOnMM = m_db.plSqlSafeString(p_copyright_date_mm);
+				m_copyrightDateOnYYYY = m_db.plSqlSafeString(p_copyright_date_yyyy); // set member
 																// variables
 				if (!p_copyright_date_yyyy.equals("")) {
 					if (m_resourceDateKeyAndVal.equals(""))
@@ -755,7 +757,7 @@ public class AdvancedSearch {
 		m_sqlString = "SELECT events.eventid, events.event_name, events.status, venue.venue_name, venue.suburb, "
 				+ " venue.state as state_id, states.state as state, events.first_date ,events.ddfirst_date ,events.mmfirst_date ,events.yyyyfirst_date , if(max(i.ITEM_URL) is null,if(max(i.itemid) is null,'N','Y'),'ONLINE')  ASSOC_ITEM, "
 				+ " count(distinct ie.itemid) as total, country.countryname  " 
-				+ " FROM " + m_sqlFromString
+				+ " FROM " + m_db.plSqlSafeString(m_sqlFromString)
 				+ " INNER JOIN country ON (venue.countryid = country.countryid)"
 				+ " inner join states on states.stateid=venue.state "
 				+ " left join itemevlink ie on ie.eventid = events.eventid  "
@@ -764,12 +766,12 @@ public class AdvancedSearch {
 				+ m_sqlWhereString;
 		// add resource date clause onto the end
 		if (!m_dateClause.equals("")) {
-			m_sqlString += " and " + m_dateClause;
+			m_sqlString += " and " + m_db.plSqlSafeString(m_dateClause);
 		}
 
 		// add event date clause onto the end
 		if (!m_eventDateClause.equals("")) {
-			m_sqlString += " " + m_eventDateClause;
+			m_sqlString += " " + m_db.plSqlSafeString(m_eventDateClause);
 		}
 
 		m_sqlString += " group by  events.eventid, events.event_name, events.status, venue.venue_name, venue.suburb," + " venue.state , " + " states.state, events.first_date";
@@ -805,16 +807,16 @@ public class AdvancedSearch {
 	public String setResourceDateClause(final String day, final String month, final String year, final String dayFrom, final String monthFrom, final String yearFrom,
 			final String dayTo, final String monthTo, final String yearTo, final String tableColumn) {
 
-		String l_tableCol = tableColumn;
-		String l_DateOnDD = day;
-		String l_DateOnMM = month;
-		String l_DateOnYYYY = year;
-		String l_betweenFromDateDD = dayFrom;
-		String l_betweenFromDateMM = monthFrom;
-		String l_betweenFromDateYYYY = yearFrom;
-		String l_betweenToDateDD = dayTo;
-		String l_betweenToDateMM = monthTo;
-		String l_betweenToDateYYYY = yearTo;
+		String l_tableCol = m_db.plSqlSafeString(tableColumn);
+		String l_DateOnDD = m_db.plSqlSafeString(day);
+		String l_DateOnMM = m_db.plSqlSafeString(month);
+		String l_DateOnYYYY = m_db.plSqlSafeString(year);
+		String l_betweenFromDateDD = m_db.plSqlSafeString(dayFrom);
+		String l_betweenFromDateMM = m_db.plSqlSafeString(monthFrom);
+		String l_betweenFromDateYYYY = m_db.plSqlSafeString(yearFrom);
+		String l_betweenToDateDD = m_db.plSqlSafeString(dayTo);
+		String l_betweenToDateMM = m_db.plSqlSafeString(monthTo);
+		String l_betweenToDateYYYY = m_db.plSqlSafeString(yearTo);
 		// From other date clause
 		Search search = new Search(m_db); // created so I can use the
 											// getNumberOfDays method.

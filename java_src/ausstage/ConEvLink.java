@@ -93,8 +93,8 @@ public class ConEvLink {
 		// Reset the object
 		initialise();
 
-		contributorId = p_id;
-		eventId = e_id;
+		contributorId = m_db.plSqlSafeString(p_id);
+		eventId = m_db.plSqlSafeString(e_id);
 		contributorBean = new Contributor(m_db);
 		contributorBean.load(Integer.parseInt(contributorId));
 		contFunctBean = new ContributorFunction(m_db);
@@ -171,13 +171,14 @@ public class ConEvLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM ConEvLink where " + "eventId=" + eventId;
+			sqlString = "DELETE FROM ConEvLink where " + "eventId=" + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; conEvLinks != null && i < conEvLinks.size(); i++) {
 				conEvLink = (ConEvLink) conEvLinks.get(i);
-				sqlString = "INSERT INTO ConEvLink " + "(eventId, contributorId, function, notes) " + "VALUES (" + eventId + ", " + conEvLink.getContributorId() + ", "
-						+ m_db.plSqlSafeString(conEvLink.getFunction()) + ", '" + m_db.plSqlSafeString(conEvLink.getNotes()) + "')";
+
+				sqlString = "INSERT INTO ConEvLink " + "(eventId, contributorId, `function`, notes) " + "VALUES (" + m_db.plSqlSafeString(eventId) + ", " + conEvLink.getContributorId() + ", "
+			+ m_db.plSqlSafeString(conEvLink.getFunction()) + ", '" + m_db.plSqlSafeString(conEvLink.getNotes()) + "')";
 				m_db.runSQL(sqlString, stmt);
 
 				Contributor contrib = conEvLink.getContributorBean();
@@ -211,7 +212,7 @@ public class ConEvLink {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from ConEvLink WHERE eventId = " + eventId;
+			sqlString = "DELETE from ConEvLink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

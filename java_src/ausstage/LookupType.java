@@ -231,7 +231,7 @@ public class LookupType {
 			stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			String ret;
-			sqlString = "DELETE from lookup_codes WHERE code_type= '" + m_code_type + "'";
+			sqlString = "DELETE from lookup_codes WHERE code_type= '" + m_db.plSqlSafeString(m_code_type) + "'";
 			m_db.runSQL(sqlString, stmt);
 
 			sqlString = "DELETE from lookup_types WHERE id=" + m_id;
@@ -272,7 +272,7 @@ public class LookupType {
 			stmt = m_db.m_conn.createStatement();
 
 			// Venue
-			sqlString = "SELECT * FROM lookup_codes WHERE " + " code_type ='" + p_code_type + "'";
+			sqlString = "SELECT * FROM lookup_codes WHERE " + " code_type ='" + m_db.plSqlSafeString(p_code_type) + "'";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) ret = true;
@@ -378,7 +378,7 @@ public class LookupType {
 		try {
 			stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT code_lov_id, short_code, description " + "FROM lookup_codes " + "WHERE code_type= '" + m_code_type + "' ORDER BY SEQUENCE_NO, short_code";
+			sqlString = "SELECT code_lov_id, short_code, description " + "FROM lookup_codes " + "WHERE code_type= '" + m_db.plSqlSafeString(m_code_type) + "' ORDER BY SEQUENCE_NO, short_code";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			// Reset the object

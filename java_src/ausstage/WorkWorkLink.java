@@ -145,6 +145,7 @@ public class WorkWorkLink {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			boolean l_ret = false;
+			p_workId= m_db.plSqlSafeString(p_workId);
 
 			sqlString = "DELETE FROM WorkWorkLink where " + "workId=" + p_workId;
 			m_db.runSQL(sqlString, stmt);
@@ -185,6 +186,7 @@ public class WorkWorkLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
+			workId = m_db.plSqlSafeString(workId);
 			sqlString = "DELETE from WorkWorkLink WHERE workId = " + workId;
 			m_db.runSQL(sqlString, stmt);
 			sqlString = "DELETE from WorkWorkLink WHERE ChildId = " + workId;

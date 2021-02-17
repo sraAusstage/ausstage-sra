@@ -86,7 +86,7 @@ public class ItemItemLink {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = " SELECT * FROM ItemItemLink" 
-					+ " WHERE itemitemlinkId = " + p_itemitemlink_id;
+					+ " WHERE itemitemlinkId = " + m_db.plSqlSafeString(p_itemitemlink_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -144,9 +144,9 @@ public class ItemItemLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM ItemItemLink where " + "itemId=" + p_itemId;
+			sqlString = "DELETE FROM ItemItemLink where " + "itemId=" + m_db.plSqlSafeString(p_itemId);
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE FROM ItemItemLink where " + "childId=" + p_itemId;
+			sqlString = "DELETE FROM ItemItemLink where " + "childId=" + m_db.plSqlSafeString(p_itemId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; p_childLinks != null && i < p_childLinks.size(); i++) {

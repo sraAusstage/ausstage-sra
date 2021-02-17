@@ -25,7 +25,7 @@ public class FormValidationManager {
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			sqlString = "select form_repository.form_name from form_repository, form_layout where form_la" + "yout.form_id=form_repository.form_id and form_layout.form_layout_id="
-					+ form_layout_id;
+					+ db.plSqlSafeString(form_layout_id);
 			rset = db.runSQL(sqlString, stmt);
 			rset.next();
 			form_name = rset.getString("form_name");

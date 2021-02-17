@@ -740,7 +740,7 @@ public class Contributor {
 						" FROM contributor "+ 
 						" LEFT JOIN conevlink ON (contributor.contributorid = conevlink.contributorid) "+ 
 						" LEFT JOIN events ON (conevlink.eventid = events.eventid) "+ 
-						"WHERE contributor.contributorid="+p_id;
+						"WHERE contributor.contributorid="+m_db.plSqlSafeString(p_id);
 			
 			l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -763,7 +763,7 @@ public class Contributor {
 		String sqlString, ret_str = "";
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			sqlString = "SELECT PreferredTerm FROM ContFunctLink, ContributorFunctPreferred where " + "ContFunctLink.contributorid=" + p_id + " "
+			sqlString = "SELECT PreferredTerm FROM ContFunctLink, ContributorFunctPreferred where " + "ContFunctLink.contributorid=" + m_db.plSqlSafeString(p_id) + " "
 					+ "and ContFunctLink.ContributorFunctPreferredid=" + "ContributorFunctPreferred.ContributorFunctPreferredid";
 
 			l_rs = m_db.runSQL(sqlString, stmt);
@@ -830,7 +830,7 @@ public class Contributor {
 
 			// Check to see if a Contributor record exists (same last and first
 			// names)
-			sqlString = "select CONTRIBUTORID from CONTRIBUTOR where LAST_NAME='" + m_l_name + "' and FIRST_NAME='" + m_name + "'";
+			sqlString = "select CONTRIBUTORID from CONTRIBUTOR where LAST_NAME='" + m_l_name + "' and FIRST_NAME='" + m_db.plSqlSafeString(m_name) + "'";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) l_ret = true;
@@ -1135,7 +1135,7 @@ public class Contributor {
 
 		try {
 			if (m_gender_id == "") m_gender_id = "3";
-			sqlString = "select gender from gendermenu where genderid=" + m_gender_id;
+			sqlString = "select gender from gendermenu where genderid=" + m_db.plSqlSafeString(m_gender_id);
 
 			Statement stmt = m_db.m_conn.createStatement();
 			crset = m_db.runSQL(sqlString, stmt);

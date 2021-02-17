@@ -131,11 +131,11 @@ public class MaterialLink {
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
-				sqlString = "DELETE FROM MATERIALLINK where " + "COLLECTION_INFORMATION_ID=" + collectionInformationId;
+				sqlString = "DELETE FROM MATERIALLINK where " + "COLLECTION_INFORMATION_ID=" + m_db.plSqlSafeString(collectionInformationId);
 				m_db.runSQL(sqlString, stmt);
 
 				for (int i = 0; materialLinks != null && i < materialLinks.length; i++) {
-					sqlString = "INSERT INTO MATERIALLINK " + "(materialid, collection_information_id) " + "VALUES (" + materialLinks[i] + ", " + collectionInformationId + ")";
+					sqlString = "INSERT INTO MATERIALLINK " + "(materialid, collection_information_id) " + "VALUES (" + materialLinks[i] + ", " + m_db.plSqlSafeString(collectionInformationId) + ")";
 					m_db.runSQL(sqlString, stmt);
 				}
 				l_ret = true;

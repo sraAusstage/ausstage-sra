@@ -74,7 +74,7 @@ public class OrganisationOrganisationLink {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = " SELECT * FROM OrgOrgLink"
-					+ " WHERE OrgOrgLinkId = " + p_organisationorganisationlink_id;
+					+ " WHERE OrgOrgLinkId = " + m_db.plSqlSafeString(p_organisationorganisationlink_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -132,9 +132,9 @@ public class OrganisationOrganisationLink {
 			String sqlString;
 			boolean l_ret = false;
 			//System.out.println("In update");
-			sqlString = "DELETE FROM OrgOrgLink where " + "organisationId=" + p_organisationId;
+			sqlString = "DELETE FROM OrgOrgLink where " + "organisationId=" + m_db.plSqlSafeString(p_organisationId);
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE FROM OrgOrgLink where " + "childId=" + p_organisationId;
+			sqlString = "DELETE FROM OrgOrgLink where " + "childId=" + m_db.plSqlSafeString(p_organisationId);
 			m_db.runSQL(sqlString, stmt);
 			
 
@@ -174,9 +174,9 @@ public class OrganisationOrganisationLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
-			sqlString = "DELETE from OrgOrgLink WHERE organisationId = " + organisationId;
+			sqlString = "DELETE from OrgOrgLink WHERE organisationId = " + m_db.plSqlSafeString(organisationId);
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE from OrgOrgLink WHERE childId = " + organisationId;
+			sqlString = "DELETE from OrgOrgLink WHERE childId = " + m_db.plSqlSafeString(organisationId);
 			m_db.runSQL(sqlString, stmt);
 			
 			

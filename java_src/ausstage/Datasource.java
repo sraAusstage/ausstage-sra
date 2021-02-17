@@ -170,7 +170,7 @@ public class Datasource {
 		boolean ret = true;
 		try {
 			Statement l_stmt = m_db.m_conn.createStatement();
-			l_sql = "DELETE from DATASOURCEEVLINK WHERE EVENTID = " + p_eventid;
+			l_sql = "DELETE from DATASOURCEEVLINK WHERE EVENTID = " + m_db.plSqlSafeString(p_eventid);
 			m_db.runSQL(l_sql, l_stmt);
 			l_stmt.close();
 		} catch (Exception e) {
@@ -191,7 +191,7 @@ public class Datasource {
 			l_sql = "INSERT INTO DATASOURCEEVLINK " + "(DATASOURCEEVLINKID, DATASOURCEDESCRIPTION, COLLECTION, EVENTID, DATASOURCEID) " 
 			//+ "values ('" + m_db.plSqlSafeString(m_datasource_desc) + "','"
 			+ "(select (max(datasourceevlinkid)+1),'" + m_db.plSqlSafeString(m_datasource_desc) + "','"
-				+ m_db.plSqlSafeString(m_collection) + "'," + p_eventid + "," + m_datasource_id + " from datasourceevlink)";
+				+ m_db.plSqlSafeString(m_collection) + "'," + m_db.plSqlSafeString(p_eventid) + "," + m_datasource_id + " from datasourceevlink)";
 
 			m_db.runSQL(l_sql, l_stmt);
 
@@ -268,7 +268,7 @@ public class Datasource {
 	 */
 	public CachedRowSet getDataSources(Statement p_stmt, String p_sqlString) {
 		CachedRowSet l_rs;
-		String sqlString = p_sqlString;
+		String sqlString = m_db.plSqlSafeString(p_sqlString);
 		String l_ret;
 
 		try {
@@ -350,7 +350,7 @@ public class Datasource {
 	public String isCollection() {
 		String ret = "No";
 		CachedRowSet l_rs;
-		String sqlString = "select collection from DATASOURCEEVLINK " + "where DATASOURCEID=" + m_datasource_id + " and " + "DATASOURCEEVLINKID='" + m_datasoureevlinkid + "'";
+		String sqlString = "select collection from DATASOURCEEVLINK " + "where DATASOURCEID=" + m_datasource_id + " and " + "DATASOURCEEVLINKID='" + m_db.plSqlSafeString(m_datasoureevlinkid) + "'";
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_rs = m_db.runSQL(sqlString, stmt);
@@ -426,7 +426,7 @@ public class Datasource {
 
 		String sqlString = "select DATASOURCEEVLINK.DATASOURCEEVLINKID, DATASOURCE.DATASOURCE, " + "DATASOURCEEVLINK.DATASOURCEDESCRIPTION, " + "DATASOURCEEVLINK.COLLECTION "
 				+ "from DATASOURCE, DATASOURCEEVLINK " + "where DATASOURCE.DATASOURCEID=" + p_id + " " + "and DATASOURCE.DATASOURCEID=DATASOURCEEVLINK.DATASOURCEID "
-				+ "and DATASOURCEEVLINK.EVENTID=" + p_event_id + " and " + "DATASOURCEEVLINK.DATASOURCEEVLINKID not in (" + p_datasourceevelinkids + ") "
+				+ "and DATASOURCEEVLINK.EVENTID=" + p_event_id + " and " + "DATASOURCEEVLINK.DATASOURCEEVLINKID not in (" + m_db.plSqlSafeString(p_datasourceevelinkids) + ") "
 				+ "ORDER BY DATASOURCE.DATASOURCE ASC";
 
 		// set the id here

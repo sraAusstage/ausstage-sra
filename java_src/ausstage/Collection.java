@@ -272,7 +272,7 @@ public class Collection {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from collection_information WHERE collection_information_id=" + m_collection_information_id;
+			sqlString = "DELETE from collection_information WHERE collection_information_id=" + m_db.plSqlSafeString(m_collection_information_id);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

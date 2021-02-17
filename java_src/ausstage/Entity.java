@@ -161,7 +161,7 @@ public class Entity {
 				// As the notes is a text area, need to limit characters
 				sqlString = "INSERT INTO ENTITY (TYPE, DATE_ENTERED, INPUT_PERSON, NAME, ADDRESS, " + "CITY_SUBURB, STATEID, POSTCODE, CONTACTS, PHONE, FAX, EMAIL, WWW) VALUES ("
 						+ "    "
-						+ m_type
+						+ m_db.plSqlSafeString(m_type)
 						+ " , "
 						+ m_db.safeDateFormat(new Date(), false)
 						+ " , '"
@@ -214,7 +214,7 @@ public class Entity {
 			// Check to make sure that the user has entered in all of the
 			// required fields
 			if (validateObjectForDB()) {
-				sqlString = "UPDATE ENTITY set " + "TYPE= " + m_type + " , " + "DATE_UPDATED=" + m_db.safeDateFormat(new Date(), false) + ", " + "NAME='"
+				sqlString = "UPDATE ENTITY set " + "TYPE= " + m_db.plSqlSafeString(m_type) + " , " + "DATE_UPDATED=" + m_db.safeDateFormat(new Date(), false) + ", " + "NAME='"
 						+ m_db.plSqlSafeString(m_name) + "', " + "ADDRESS='" + m_db.plSqlSafeString(m_address) + "', " + "CITY_SUBURB='" + m_db.plSqlSafeString(m_city_suburb)
 						+ "', " + "STATEID=" + Integer.parseInt(m_stateid) + ", " + "POSTCODE='" + m_db.plSqlSafeString(m_postcode) + "', " + "PHONE='"
 						+ m_db.plSqlSafeString(m_phone) + "', " + "FAX='" + m_db.plSqlSafeString(m_fax) + "', " + "EMAIL='" + m_db.plSqlSafeString(m_email) + "', " + "WWW='"

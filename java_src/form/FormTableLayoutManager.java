@@ -85,8 +85,8 @@ public class FormTableLayoutManager {
 	public void addFormLayout(String form_id, String rows, String cols, String cellpadd, String cellspace, String tabel_border, String tabel_width, String tabel_align,
 			Statement stmt) {
 		sqlString = "insert into form_layout (form_id, layout_table_rows, layout_table_cols, layout_t"
-				+ "able_cellpadd, layout_table_cellspace, layout_table_border, layout_table_width, " + "layout_table_align) values ('" + form_id + "','" + rows + "','" + cols
-				+ "','" + cellpadd + "','" + cellspace + "','" + tabel_border + "','" + tabel_width + "','" + tabel_align + "')";
+				+ "able_cellpadd, layout_table_cellspace, layout_table_border, layout_table_width, " + "layout_table_align) values ('" + db.plSqlSafeString(form_id) + "','" + db.plSqlSafeString(rows) + "','" + db.plSqlSafeString(cols)
+				+ "','" + db.plSqlSafeString(cellpadd) + "','" + db.plSqlSafeString(cellspace) + "','" + db.plSqlSafeString(tabel_border) + "','" + db.plSqlSafeString(tabel_width) + "','" + db.plSqlSafeString(tabel_align) + "')";
 		try {
 			db.runSQLResultSet(sqlString, stmt);
 		} catch (Exception e) {
@@ -102,9 +102,9 @@ public class FormTableLayoutManager {
 
 	public void updateFormLayout(String form_layout_id, String rows, String cols, String cellpadd, String cellspace, String tabel_border, String tabel_width, String table_align,
 			Statement stmt) {
-		sqlString = "update form_layout set layout_table_rows='" + rows + "', layout_table_cols='" + cols + "', layout_table_cellpadd='" + cellpadd + "', layout_table_cellspace='"
-				+ cellspace + "', layout_table_border='" + tabel_border + "', layout_table_width='" + tabel_width + "', layout_table_align='" + table_align
-				+ "' where form_layout_id=" + form_layout_id;
+		sqlString = "update form_layout set layout_table_rows='" + db.plSqlSafeString(rows) + "', layout_table_cols='" + db.plSqlSafeString(cols) + "', layout_table_cellpadd='" + db.plSqlSafeString(cellpadd) + "', layout_table_cellspace='"
+				+ db.plSqlSafeString(cellspace) + "', layout_table_border='" + db.plSqlSafeString(tabel_border) + "', layout_table_width='" + db.plSqlSafeString(tabel_width) + "', layout_table_align='" + db.plSqlSafeString(table_align)
+				+ "' where form_layout_id=" + db.plSqlSafeString(form_layout_id);
 		try {
 			db.runSQLResultSet(sqlString, stmt);
 		} catch (Exception e) {
@@ -121,11 +121,11 @@ public class FormTableLayoutManager {
 	public void updateFormHtmlLayout(String finalFormHtmlStr, String form_layout_id, Statement stmt) {
 		try {
 			if (AppConstants.DATABASE_TYPE == 1) {
-				CallableStatement callable = db.m_conn.prepareCall("begin UPDATE_HTMLFORMLAYOUT (" + form_layout_id + ", '" + db.plSqlSafeString(finalFormHtmlStr) + "'); end;");
+				CallableStatement callable = db.m_conn.prepareCall("begin UPDATE_HTMLFORMLAYOUT (" + db.plSqlSafeString(form_layout_id) + ", '" + db.plSqlSafeString(finalFormHtmlStr) + "'); end;");
 				callable.execute();
 				callable.close();
 			} else {
-				sqlString = "update form_layout set htmlformlayout='" + db.plSqlSafeString(finalFormHtmlStr) + "' where form_layout_id=" + form_layout_id;
+				sqlString = "update form_layout set htmlformlayout='" + db.plSqlSafeString(finalFormHtmlStr) + "' where form_layout_id=" + db.plSqlSafeString(form_layout_id);
 				db.runSQL(sqlString, stmt);
 			}
 		} catch (Exception e) {
@@ -140,7 +140,7 @@ public class FormTableLayoutManager {
 				callable.execute();
 				callable.close();
 			} else {
-				sqlString = "insert into form_layout (htmlformlayout) values (" + finalFormHtmlStr + ")";
+				sqlString = "insert into form_layout (htmlformlayout) values (" + db.plSqlSafeString(finalFormHtmlStr) + ")";
 				db.runSQL(sqlString, stmt);
 			}
 		} catch (Exception e) {
@@ -150,7 +150,7 @@ public class FormTableLayoutManager {
 
 	public String getFormHtmlLayout(String form_layout_id, Statement stmt) {
 		String itemText = "";
-		sqlString = "select htmlformlayout from form_layout where form_layout_id=" + form_layout_id;
+		sqlString = "select htmlformlayout from form_layout where form_layout_id=" + db.plSqlSafeString(form_layout_id);
 		try {
 			rset = db.runSQLResultSet(sqlString, stmt);
 			rset.next();
@@ -176,7 +176,7 @@ public class FormTableLayoutManager {
 
 	public boolean isFormHtmlLayoutEmpty(String form_layout_id, Statement stmt) {
 		String itemText = "";
-		sqlString = "select htmlformlayout from form_layout where form_layout_id=" + form_layout_id;
+		sqlString = "select htmlformlayout from form_layout where form_layout_id=" + db.plSqlSafeString(form_layout_id);
 		try {
 			rset = db.runSQLResultSet(sqlString, stmt);
 			rset.next();
@@ -209,7 +209,7 @@ public class FormTableLayoutManager {
 	public CachedRowSet getTableSettings(String form_layout_id, Statement stmt) {
 		CachedRowSet ret = null;
 		sqlString = "select form_layout_id, layout_table_rows, layout_table_cols, layout_table_cellpa"
-				+ "dd, layout_table_cellspace, layout_table_border, layout_table_width, layout_tabl" + "e_align, form_id from form_layout where form_layout_id=" + form_layout_id;
+				+ "dd, layout_table_cellspace, layout_table_border, layout_table_width, layout_tabl" + "e_align, form_id from form_layout where form_layout_id=" + db.plSqlSafeString(form_layout_id);
 		try {
 			ret = db.runSQL(sqlString, stmt);
 		} catch (Exception e) {
@@ -491,8 +491,8 @@ public class FormTableLayoutManager {
 
 	private void unSelectOtherButton(String element_id, String element_group_id, String form_layout_id) {
 		if (element_id != null && !element_id.equals("") && element_group_id != null && !element_group_id.equals("") && form_layout_id != null && !form_layout_id.equals("")) {
-			sqlString = "select form_element_id, is_selected, form_element_group_id, form_layout_id from " + "form_element where form_layout_id= " + form_layout_id + " "
-					+ "and not form_element_id=" + element_id + " and is_selected='true'";
+			sqlString = "select form_element_id, is_selected, form_element_group_id, form_layout_id from " + "form_element where form_layout_id= " + db.plSqlSafeString(form_layout_id) + " "
+					+ "and not form_element_id=" + db.plSqlSafeString(element_id) + " and is_selected='true'";
 			try {
 				Statement stmt = db.m_conn.createStatement();
 				Statement x_stmt = db.m_conn.createStatement();

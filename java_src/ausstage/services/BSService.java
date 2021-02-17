@@ -49,7 +49,7 @@ public class BSService
 
     //try retrieve data from file
     try {
-      props.load(new FileInputStream("BSService.properties"));
+      props.load(new FileInputStream("/opt/ausstage/BSService.properties"));
       DB_CONNECTION_STRING = props.getProperty("DB_CONNECTION_STRING");
     }
     catch(IOException e) {

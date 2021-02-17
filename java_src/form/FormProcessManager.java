@@ -88,21 +88,21 @@ public class FormProcessManager {
 			if (process_buffer.indexOf("|") != -1) {
 				for (strTokenizer = new StringTokenizer(process_buffer, "|"); strTokenizer.hasMoreTokens(); db.runSQL(sqlString, stmt)) {
 					name_and_email = new StringTokenizer(strTokenizer.nextToken().toString(), ",");
-					sqlString = "insert into form_process (flfr_id, name, url_or_email) values ('" + flfr_id + "','" + name_and_email.nextToken().toString() + "','"
+					sqlString = "insert into form_process (flfr_id, name, url_or_email) values ('" + db.plSqlSafeString(flfr_id) + "','" + name_and_email.nextToken().toString() + "','"
 							+ name_and_email.nextToken().toString() + "')";
 				}
 
 			} else if (process_buffer.indexOf(",") != -1) {
 				name_and_email = new StringTokenizer(process_buffer, ",");
-				sqlString = "insert into form_process (flfr_id, name, url_or_email) values ('" + flfr_id + "','" + name_and_email.nextToken().toString() + "','"
+				sqlString = "insert into form_process (flfr_id, name, url_or_email) values ('" + db.plSqlSafeString(flfr_id) + "','" + name_and_email.nextToken().toString() + "','"
 						+ name_and_email.nextToken().toString() + "')";
 				db.runSQL(sqlString, stmt);
 				stmt.close();
 			} else {
 				if (process_buffer != null && process_buffer.equals("true")) {
-					sqlString = "insert into form_process (is_confirm_req, flfr_id) values ('t'," + flfr_id + ")";
+					sqlString = "insert into form_process (is_confirm_req, flfr_id) values ('t'," + db.plSqlSafeString(flfr_id) + ")";
 				} else {
-					sqlString = "insert into form_process (is_confirm_req, flfr_id) values (''," + flfr_id + ")";
+					sqlString = "insert into form_process (is_confirm_req, flfr_id) values (''," + db.plSqlSafeString(flfr_id) + ")";
 				}
 				db.runSQL(sqlString, stmt);
 				stmt.close();
@@ -118,14 +118,14 @@ public class FormProcessManager {
 	public void updateFormProcess(String old_frm_layout_frm_rel_id, String frm_layout_frm_rel_id, String is_confirm_req) {
 		try {
 			stmt = db.m_conn.createStatement();
-			sqlString = "select flfr_id from form_process where flfr_id=" + old_frm_layout_frm_rel_id;
+			sqlString = "select flfr_id from form_process where flfr_id=" + db.plSqlSafeString(old_frm_layout_frm_rel_id);
 			CachedRowSet rst = db.runSQL(sqlString, stmt);
 			if (rst.next()) {
 				if (is_confirm_req != null && is_confirm_req.equals("true")) {
-					sqlString = "update form_process set is_confirm_req='t', flfr_id=" + frm_layout_frm_rel_id + " where flfr_id=" + old_frm_layout_frm_rel_id;
+					sqlString = "update form_process set is_confirm_req='t', flfr_id=" + db.plSqlSafeString(frm_layout_frm_rel_id) + " where flfr_id=" + db.plSqlSafeString(old_frm_layout_frm_rel_id);
 					db.runSQL(sqlString, stmt);
 				} else {
-					sqlString = "update form_process set is_confirm_req='', flfr_id=" + frm_layout_frm_rel_id + " where flfr_id=" + old_frm_layout_frm_rel_id;
+					sqlString = "update form_process set is_confirm_req='', flfr_id=" + db.plSqlSafeString(frm_layout_frm_rel_id) + " where flfr_id=" + db.plSqlSafeString(old_frm_layout_frm_rel_id);
 					db.runSQL(sqlString, stmt);
 				}
 			} else {
@@ -144,10 +144,10 @@ public class FormProcessManager {
 		try {
 			stmt = db.m_conn.createStatement();
 			if (form_process_id.equals("")) {
-				sqlString = "delete from form_process where flfr_id=" + flfr_id;
+				sqlString = "delete from form_process where flfr_id=" + db.plSqlSafeString(flfr_id);
 				db.runSQL(sqlString, stmt);
 			} else {
-				sqlString = "delete from form_process where form_process_id=" + form_process_id;
+				sqlString = "delete from form_process where form_process_id=" + db.plSqlSafeString(form_process_id);
 				db.runSQL(sqlString, stmt);
 			}
 			stmt.close();
@@ -163,10 +163,10 @@ public class FormProcessManager {
 		try {
 			stmt = db.m_conn.createStatement();
 			if (added_process != null && added_process.equals("true")) {
-				sqlString = "insert into form_process (is_confirm_req, flfr_id) values ('t', " + frm_layout_frm_rel_id + ")";
+				sqlString = "insert into form_process (is_confirm_req, flfr_id) values ('t', " + db.plSqlSafeString(frm_layout_frm_rel_id) + ")";
 				db.runSQL(sqlString, stmt);
 			} else {
-				sqlString = "insert into form_process (is_confirm_req, flfr_id) values ('', " + frm_layout_frm_rel_id + ")";
+				sqlString = "insert into form_process (is_confirm_req, flfr_id) values ('', " + db.plSqlSafeString(frm_layout_frm_rel_id) + ")";
 				db.runSQL(sqlString, stmt);
 			}
 			stmt.close();
@@ -185,11 +185,11 @@ public class FormProcessManager {
 		String subs_grp_ids = "";
 		try {
 			if (display_name.indexOf("|") == -1) {
-				sqlString = "select group_id from subscription_groups where group_name='" + display_name + "'";
+				sqlString = "select group_id from subscription_groups where group_name='" + db.plSqlSafeString(display_name) + "'";
 				stmt = db.m_conn.createStatement();
 				rset = db.runSQL(sqlString, stmt);
 				if (!rset.next()) {
-					sqlString = "insert into subscription_groups (group_name) values ('" + display_name + "')";
+					sqlString = "insert into subscription_groups (group_name) values ('" + db.plSqlSafeString(display_name) + "')";
 					db.runSQL(sqlString, stmt);
 					subs_grp_id = db.getInsertedIndexValue(stmt, "grp_id_seq");
 					subs_grp_ids = subs_grp_ids + subs_grp_id;
@@ -199,11 +199,11 @@ public class FormProcessManager {
 			} else {
 				for (StringTokenizer strTokenizer = new StringTokenizer(display_name, "|"); strTokenizer.hasMoreTokens();) {
 					String disp_name = strTokenizer.nextToken();
-					sqlString = "select group_id from subscription_groups where LOWER(group_name)='" + disp_name.toLowerCase() + "'";
+					sqlString = "select group_id from subscription_groups where LOWER(group_name)='" + db.plSqlSafeString(disp_name).toLowerCase() + "'";
 					stmt = db.m_conn.createStatement();
 					rset = db.runSQL(sqlString, stmt);
 					if (!rset.next()) {
-						sqlString = "insert into subscription_groups (group_name) values ('" + disp_name + "')";
+						sqlString = "insert into subscription_groups (group_name) values ('" + db.plSqlSafeString(disp_name) + "')";
 						db.runSQL(sqlString, stmt);
 						subs_grp_id = db.getInsertedIndexValue(stmt, "grp_id_seq");
 						if (subs_grp_ids.equals("")) {
@@ -278,7 +278,7 @@ public class FormProcessManager {
 				}
 
 			}
-			sqlString = "select subs_id from subscribers where LOWER(name)='" + subscribers_name.toLowerCase() + "' and LOWER(email)='" + subscribers_email.toLowerCase() + "'";
+			sqlString = "select subs_id from subscribers where LOWER(name)='" + db.plSqlSafeString(subscribers_name).toLowerCase() + "' and LOWER(email)='" + db.plSqlSafeString(subscribers_email).toLowerCase() + "'";
 			rset = db.runSQL(sqlString, stmt);
 			if (rset.next()) {
 				subs_id = rset.getString("subs_id");
@@ -334,18 +334,18 @@ public class FormProcessManager {
 						break;
 					}
 					id = st_subs_grp_ids.nextToken();
-					sqlString = "select subs_id from subscription_groups_rel where group_id=" + id + " and subs_id=" + subscribers_id;
+					sqlString = "select subs_id from subscription_groups_rel where group_id=" + id + " and subs_id=" + db.plSqlSafeString(subscribers_id);
 					rset = db.runSQL(sqlString, stmt);
 					if (!rset.next()) {
-						sqlString = "insert into subscription_groups_rel (subs_id, group_id) values (" + subscribers_id + ", " + id + ")";
+						sqlString = "insert into subscription_groups_rel (subs_id, group_id) values (" + db.plSqlSafeString(subscribers_id) + ", " + id + ")";
 						db.runSQL(sqlString, stmt);
 					}
 				} while (true);
 			} else if (!subs_grp_ids.equals("")) {
-				sqlString = "select subs_id from subscription_groups_rel where group_id=" + subs_grp_ids + " and subs_id=" + subscribers_id;
+				sqlString = "select subs_id from subscription_groups_rel where group_id=" + subs_grp_ids + " and subs_id=" + db.plSqlSafeString(subscribers_id);
 				rset = db.runSQL(sqlString, stmt);
 				if (!rset.next()) {
-					sqlString = "insert into subscription_groups_rel (subs_id, group_id) values (" + subscribers_id + ", " + subs_grp_ids + ")";
+					sqlString = "insert into subscription_groups_rel (subs_id, group_id) values (" + db.plSqlSafeString(subscribers_id) + ", " + subs_grp_ids + ")";
 					db.runSQL(sqlString, stmt);
 				}
 			}
@@ -486,7 +486,7 @@ public class FormProcessManager {
 		boolean retVal = false;
 		try {
 			Statement stmt = db.m_conn.createStatement();
-			sqlString = "select flfr_id from form_layout_form_rel where form_id=" + form_id;
+			sqlString = "select flfr_id from form_layout_form_rel where form_id=" + db.plSqlSafeString(form_id);
 			CachedRowSet rset = db.runSQL(sqlString, stmt);
 			if (rset.next()) {
 				sqlString = "select is_confirm_req from form_process where is_confirm_req='t' and flfr_id=" + rset.getString("flfr_id");
@@ -507,13 +507,13 @@ public class FormProcessManager {
 
 	public void copyFormProcess(String old_page_id, String new_page_id, String new_flfr_id) {
 		String sqlString = "select form_process.name,form_process.url_or_email ,form_process.is_confirm_req "
-				+ "from form_process,form_layout_form_rel where form_process.flfr_id=form_layout_fo" + "rm_rel.flfr_id and form_layout_form_rel.page_id=" + old_page_id;
+				+ "from form_process,form_layout_form_rel where form_process.flfr_id=form_layout_fo" + "rm_rel.flfr_id and form_layout_form_rel.page_id=" + db.plSqlSafeString(old_page_id);
 		try {
 			Statement stmt = db.m_conn.createStatement();
 			sqlString = "";
 			for (CachedRowSet rset = db.runSQL(sqlString, stmt); rset.next();) {
 				sqlString = "insert into form_process (name, url_or_email, is_confirm_req, flfr_id) values ('" + rset.getString("name") + "','" + rset.getString("url_or_email")
-						+ "','" + rset.getString("is_confirm_req") + "'," + new_flfr_id + ")";
+						+ "','" + rset.getString("is_confirm_req") + "'," + db.plSqlSafeString(new_flfr_id) + ")";
 			}
 
 			stmt.close();

@@ -25,9 +25,9 @@ public class FormLayoutManager {
 		FormTableStructure = "";
 		sqlString = "";
 		try {
-			this.form_layout_id = form_layout_id;
+			this.form_layout_id = db.plSqlSafeString(form_layout_id);
 			db = p_db;
-			formTableGenerator = new FormTableGenerator(form_layout_id, db);
+			formTableGenerator = new FormTableGenerator(db.plSqlSafeString(form_layout_id), db);
 			FormTableStructure = formTableGenerator.getFormTableStructure();
 		} catch (Exception e) {
 			System.out.println("Trying to generate the Html table");
@@ -55,7 +55,7 @@ public class FormLayoutManager {
 
 	public CachedRowSet getFormLayout(String form_id) throws Exception {
 		sqlString = "select form_layout_id, layout_table_rows, layout_table_cols, layout_table_cellpa"
-				+ "dd, layout_table_cellspace, layout_table_border, layout_table_width, layout_tabl" + "e_align from form_layout where form_id=" + form_id;
+				+ "dd, layout_table_cellspace, layout_table_border, layout_table_width, layout_tabl" + "e_align from form_layout where form_id=" + db.plSqlSafeString(form_id);
 		try {
 			rset = db.runSQL(sqlString, stmt);
 			if (rset.next()) {

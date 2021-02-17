@@ -323,10 +323,10 @@ public class Item {
       Statement stmt = m_db.m_conn.createStatement();
       if (p_isItemId) {
         sqlString = 
-            "SELECT * FROM item WHERE itemid = '" + p_id + "'";
+            "SELECT * FROM item WHERE itemid = '" + m_db.plSqlSafeString(p_id) + "'";
       } else {
         sqlString = 
-            "SELECT * FROM item WHERE catalogueid = '" + p_id + "'";
+            "SELECT * FROM item WHERE catalogueid = '" + m_db.plSqlSafeString(p_id) + "'";
       }
       l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -552,7 +552,7 @@ public class Item {
         if (m_sourceid != null && !m_sourceid.equals("")) {
           l_rs2 = 
               m_db.runSQLResultSet("SELECT citation FROM item where itemid = " + 
-                                   m_sourceid, stmt);
+            		  m_db.plSqlSafeString(m_sourceid), stmt);
 
           if (l_rs2.next()) {
             m_source_citation = l_rs2.getString("citation");
@@ -1215,11 +1215,11 @@ public class Item {
 
 
         l_sql += 
-            "'" + m_db.plSqlSafeString(m_catalogueid) + "', " + m_institutionid + 
-            ", " + m_item_type + ", " + m_item_sub_type + ", " + 
-            m_item_language + ", " + "'" + 
+            "'" + m_db.plSqlSafeString(m_catalogueid) + "', " + m_db.plSqlSafeString(m_institutionid) + 
+            ", " + m_db.plSqlSafeString(m_item_type) + ", " + m_db.plSqlSafeString(m_item_sub_type) + ", " + 
+            m_db.plSqlSafeString(m_item_language) + ", " + "'" + 
             m_db.plSqlSafeString(m_item_description) + "', " + 
-            m_item_condition_id + ", " + "'" + 
+            m_db.plSqlSafeString(m_item_condition_id) + ", " + "'" + 
             m_db.plSqlSafeString(m_detail_comments) + "', '" + 
             m_db.plSqlSafeString(m_donated_purchased) + "', '" + 
             m_db.plSqlSafeString(m_aquired_from) + "', '" + 
@@ -1246,19 +1246,19 @@ public class Item {
             m_db.plSqlSafeString(m_title) + "' " + ", '" + 
             m_db.plSqlSafeString(m_title_alternative) + "' " + ", '" + 
             m_db.plSqlSafeString(m_dc_creator) + "' " + ", '" + 
-            m_ddCreate_date + "' " + ", '" + m_mmCreate_date + "' " + ", '" + 
-            m_yyyyCreate_date + "' " + ",  " + l_create_date + " " + ", '" + 
-            m_ddCopyright_date + "' " + ", '" + m_mmCopyright_date + "' " + 
-            ", '" + m_yyyyCopyright_date + "' " + ",  " + l_copyright_date + 
-            " " + ", '" + m_ddIssued_date + "' " + ", '" + m_mmIssued_date + 
-            "' " + ", '" + m_yyyyIssued_date + "' " + ",  " + l_issued_date + 
-            " " + ", '" + m_ddAccessioned_date + "' " + ", '" + 
-            m_mmAccessioned_date + "' " + ", '" + m_yyyyAccessioned_date + 
+            m_db.plSqlSafeString(m_ddCreate_date) + "' " + ", '" + m_db.plSqlSafeString(m_mmCreate_date) + "' " + ", '" + 
+            m_db.plSqlSafeString(m_yyyyCreate_date) + "' " + ",  " + l_create_date + " " + ", '" + 
+            m_db.plSqlSafeString(m_ddCopyright_date) + "' " + ", '" + m_db.plSqlSafeString(m_mmCopyright_date) + "' " + 
+            ", '" + m_db.plSqlSafeString(m_yyyyCopyright_date) + "' " + ",  " + l_copyright_date + 
+            " " + ", '" + m_db.plSqlSafeString(m_ddIssued_date) + "' " + ", '" + m_db.plSqlSafeString(m_mmIssued_date) + 
+            "' " + ", '" + m_db.plSqlSafeString(m_yyyyIssued_date) + "' " + ",  " + l_issued_date + 
+            " " + ", '" + m_db.plSqlSafeString(m_ddAccessioned_date) + "' " + ", '" + 
+            m_db.plSqlSafeString(m_mmAccessioned_date) + "' " + ", '" + m_db.plSqlSafeString(m_yyyyAccessioned_date) + 
             "' " + ",  " + l_accessioned_date +
-            " " + ", '" + m_ddTerminated_date + "' " + ", '" + 
-            m_mmTerminated_date + "' " + ", '" + m_yyyyTerminated_date + 
+            " " + ", '" + m_db.plSqlSafeString(m_ddTerminated_date) + "' " + ", '" + 
+            m_db.plSqlSafeString(m_mmTerminated_date) + "' " + ", '" + m_db.plSqlSafeString(m_yyyyTerminated_date) + 
             "' " + ",  " + l_terminated_date +
-            ", " + m_sourceid + " " + 
+            ", " + m_db.plSqlSafeString(m_sourceid) + " " + 
             ", '" + m_db.plSqlSafeString(m_date_notes) + "' " + ", '" + 
             m_db.plSqlSafeString(m_publisher_location) + "' " + ", '" + 
             m_db.plSqlSafeString(m_volume) + "' " + ", '" + 
@@ -1673,27 +1673,27 @@ public class Item {
           l_sql += 
               "CATALOGUEID='" + m_db.plSqlSafeString(m_catalogueid) + "',";
         if (m_sourceid != null && !m_sourceid.equals(""))
-          l_sql += "SOURCEID=" + m_sourceid + ",";
+          l_sql += "SOURCEID=" + m_db.plSqlSafeString(m_sourceid) + ",";
         if (m_institutionid != null && !m_institutionid.equals(""))
-          l_sql += "INSTITUTIONID=" + m_institutionid + ",";
+          l_sql += "INSTITUTIONID=" + m_db.plSqlSafeString(m_institutionid) + ",";
         if (m_item_type != null && !m_item_type.equals(""))
-          l_sql += "ITEM_TYPE_LOV_ID=" + m_item_type + ",";
+          l_sql += "ITEM_TYPE_LOV_ID=" + m_db.plSqlSafeString(m_item_type) + ",";
         if (m_item_sub_type != null && !m_item_sub_type.equals(""))
-          l_sql += "ITEM_SUB_TYPE_LOV_ID=" + m_item_sub_type + ",";
+          l_sql += "ITEM_SUB_TYPE_LOV_ID=" + m_db.plSqlSafeString(m_item_sub_type) + ",";
         if (m_item_language != null && !m_item_language.equals(""))
-          l_sql += "LANGUAGE_LOV_ID=" + m_item_language + ",";
+          l_sql += "LANGUAGE_LOV_ID=" + m_db.plSqlSafeString(m_item_language) + ",";
         if (m_item_description != null)
           l_sql += 
               "ITEM_DESCRIPTION='" + m_db.plSqlSafeString(m_item_description) + 
               "',";
         if (m_item_condition_id != null && !m_item_condition_id.equals(""))
-          l_sql += "ITEM_CONDITION_ID=" + m_item_condition_id + ",";
+          l_sql += "ITEM_CONDITION_ID=" + m_db.plSqlSafeString(m_item_condition_id) + ",";
         if (m_detail_comments != null)
           l_sql += 
               "DETAIL_COMMENTS='" + m_db.plSqlSafeString(m_detail_comments) + 
               "',";
         if (m_donated_purchased != null && !m_donated_purchased.equals(""))
-          l_sql += "DONATED_PURCHASED=" + m_donated_purchased + ",";
+          l_sql += "DONATED_PURCHASED=" + m_db.plSqlSafeString(m_donated_purchased) + ",";
         if (m_aquired_from != null)
           l_sql += 
               "AQUIRED_FROM='" + m_db.plSqlSafeString(m_aquired_from) + "',";
@@ -1775,29 +1775,29 @@ public class Item {
           l_sql += "page='" + m_db.plSqlSafeString(m_page) + "', ";
 
 
-        l_sql += "ddCreated_date = '" + m_ddCreate_date + "', ";
-        l_sql += "mmCreated_date = '" + m_mmCreate_date + "', ";
-        l_sql += "yyyyCreated_date = '" + m_yyyyCreate_date + "', ";
+        l_sql += "ddCreated_date = '" + m_db.plSqlSafeString(m_ddCreate_date) + "', ";
+        l_sql += "mmCreated_date = '" + m_db.plSqlSafeString(m_mmCreate_date) + "', ";
+        l_sql += "yyyyCreated_date = '" + m_db.plSqlSafeString(m_yyyyCreate_date) + "', ";
         l_sql += "created_date = " + l_create_date + " ,";
 
-        l_sql += " ddCopyright_date = '" + m_ddCopyright_date + "' ,";
-        l_sql += " mmCopyright_date = '" + m_mmCopyright_date + "' ,";
-        l_sql += " yyyyCopyright_date = '" + m_yyyyCopyright_date + "' ,";
+        l_sql += " ddCopyright_date = '" + m_db.plSqlSafeString(m_ddCopyright_date) + "' ,";
+        l_sql += " mmCopyright_date = '" + m_db.plSqlSafeString(m_mmCopyright_date) + "' ,";
+        l_sql += " yyyyCopyright_date = '" + m_db.plSqlSafeString(m_yyyyCopyright_date) + "' ,";
         l_sql += " copyright_date = " + l_copyright_date + " ,";
 
-        l_sql += " ddIssued_date = '" + m_ddIssued_date + "' ,";
-        l_sql += " mmIssued_date = '" + m_mmIssued_date + "' ,";
-        l_sql += " yyyyIssued_date = '" + m_yyyyIssued_date + "' ,";
+        l_sql += " ddIssued_date = '" + m_db.plSqlSafeString(m_ddIssued_date) + "' ,";
+        l_sql += " mmIssued_date = '" + m_db.plSqlSafeString(m_mmIssued_date) + "' ,";
+        l_sql += " yyyyIssued_date = '" + m_db.plSqlSafeString(m_yyyyIssued_date) + "' ,";
         l_sql += " issued_date = " + l_issued_date + " ,";
 
-        l_sql += " ddAccessioned_date = '" + m_ddAccessioned_date + "' ,";
-        l_sql += " mmAccessioned_date = '" + m_mmAccessioned_date + "' ,";
-        l_sql += " yyyyAccessioned_date = '" + m_yyyyAccessioned_date + "' ,";
+        l_sql += " ddAccessioned_date = '" + m_db.plSqlSafeString(m_ddAccessioned_date) + "' ,";
+        l_sql += " mmAccessioned_date = '" + m_db.plSqlSafeString(m_mmAccessioned_date) + "' ,";
+        l_sql += " yyyyAccessioned_date = '" + m_db.plSqlSafeString(m_yyyyAccessioned_date) + "' ,";
         l_sql += " accessioned_date = " + l_accessioned_date + " ,";
         
-        l_sql += " ddTerminated_date = '" + m_ddTerminated_date + "' ,";
-        l_sql += " mmTerminated_date = '" + m_mmTerminated_date + "' ,";
-        l_sql += " yyyyTerminated_date = '" + m_yyyyTerminated_date + "' ,";
+        l_sql += " ddTerminated_date = '" + m_db.plSqlSafeString(m_ddTerminated_date) + "' ,";
+        l_sql += " mmTerminated_date = '" + m_db.plSqlSafeString(m_mmTerminated_date) + "' ,";
+        l_sql += " yyyyTerminated_date = '" + m_db.plSqlSafeString(m_yyyyTerminated_date) + "' ,";
         l_sql += " terminated_date = " + l_terminated_date + " ,";
         
         l_sql += 
@@ -2953,7 +2953,7 @@ public class Item {
     ResultSet l_rs = null;
 
     try {
-      sqlString = "SELECT * " + "FROM items " + "WHERE itemid=" + p_item_id;
+      sqlString = "SELECT * " + "FROM items " + "WHERE itemid=" + m_db.plSqlSafeString(p_item_id);
 
       Statement stmt = m_db.m_conn.createStatement();
       l_rs = m_db.runSQLResultSet(sqlString, stmt);

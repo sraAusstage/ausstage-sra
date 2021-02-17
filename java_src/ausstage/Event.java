@@ -82,6 +82,8 @@ public class Event {
 	private boolean m_estimated_dates;
 
 	private String m_error_string;
+	
+	private String m_event_status_id;
 
 	// Derived Objects
 	private Venue m_venue;
@@ -317,6 +319,7 @@ public class Event {
 		m_production_origins = new Vector();
 		m_res_evlinks = new Vector();
 		 m_exhibitions = new Vector<Exhibition>();
+		 m_event_status_id = "0";
 	}
 
 	/*
@@ -376,6 +379,7 @@ public class Event {
 				m_yyyyopen_date = l_rs.getString("yyyyopening_night");
 				m_opening_night_date = l_rs.getDate("opening_night_date");
 				m_estimated_dates = Common.convertYesNoToBool(l_rs.getString("estimated_dates"));
+				m_event_status_id = l_rs.getString("status_lov_id");
 				// m_est_first_date = Common.convertYesNoToBool (l_rs.getString
 				// ("estimated_first_dates"));
 				// m_est_last_date = Common.convertYesNoToBool (l_rs.getString
@@ -427,6 +431,7 @@ public class Event {
 				if (m_ddopen_date == null) m_ddopen_date = "";
 				if (m_mmopen_date == null) m_mmopen_date = "";
 				if (m_yyyyopen_date == null) m_yyyyopen_date = "";
+				if (m_event_status_id == null) m_event_status_id = "";
 			}
 			l_rs.close();
 			stmt.close();
@@ -467,7 +472,7 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT DATASOURCEEVLINKID FROM DATASOURCEEVLINK " + "WHERE EVENTID=" + m_eventid;
+			sqlString = "SELECT DATASOURCEEVLINKID FROM DATASOURCEEVLINK " + "WHERE EVENTID=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			// Reset the object
@@ -510,7 +515,7 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT secgenrepreferredid FROM SECGENRECLASSLINK " + "WHERE EVENTID=" + m_eventid;
+			sqlString = "SELECT secgenrepreferredid FROM SECGENRECLASSLINK " + "WHERE EVENTID=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			// Reset the object
@@ -632,9 +637,9 @@ public class Event {
 				+"' ', IFNULL(events.yyyyfirst_date, '1800')), '%d %m %Y') "
 				+"as dat "
 				+"FROM eventeventlink el, events "
-				+"WHERE (childid = "+ m_eventid +" or el.eventid = "+ m_eventid +") "
-				+"AND ((el.eventid = events.eventid AND el.eventid != "+ m_eventid +") " 
-				+"	OR (el.childid = events.eventid AND el.childid != "+ m_eventid +")) "
+				+"WHERE (childid = "+ m_db.plSqlSafeString(m_eventid) +" or el.eventid = "+ m_db.plSqlSafeString(m_eventid) +") "
+				+"AND ((el.eventid = events.eventid AND el.eventid != "+ m_db.plSqlSafeString(m_eventid) +") " 
+				+"	OR (el.childid = events.eventid AND el.childid != "+ m_db.plSqlSafeString(m_eventid) +")) "
 				+"ORDER BY orderby ASC, dat ASC";
 		
 			
@@ -732,7 +737,7 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT itemid " + "FROM itemevlink " + "WHERE eventid=" + m_eventid;
+			l_sql = "SELECT itemid " + "FROM itemevlink " + "WHERE eventid=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_res_evlinks.removeAllElements();
@@ -771,7 +776,7 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT COUNTRYID FROM PLAYEVLINK " + "WHERE EVENTID=" + m_eventid;
+			sqlString = "SELECT COUNTRYID FROM PLAYEVLINK " + "WHERE EVENTID=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			// Reset the object
@@ -813,7 +818,7 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT COUNTRYID FROM PRODUCTIONEVLINK " + "WHERE EVENTID=" + m_eventid;
+			sqlString = "SELECT COUNTRYID FROM PRODUCTIONEVLINK " + "WHERE EVENTID=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			// Reset the object
@@ -925,7 +930,7 @@ public class Event {
 					// all fields in the this date were filled in
 					l_openning_night_date = m_db.safeDateFormat(m_ddopen_date + "/" + m_mmopen_date + "/" + m_yyyyopen_date);
 				}
-
+				
 				// "', entered_by_user = '" +
 				// m_db.plSqlSafeString(m_entered_by_user) +
 				// "', interesting_perf_history = '" + Common.convertBoolToYesNo
@@ -942,28 +947,29 @@ public class Event {
 						+ "', description = '" + m_db.plSqlSafeString(m_description) 
 						+ "'," + " world_premier = '" + Common.convertBoolToYesNo(m_world_premier) 
 						+ "', review = '" + Common.convertBoolToYesNo(m_review) 
-						+ "', status =  " + m_status 
-						+ " , venueid =  " + m_venueid 
-						+ " , primary_genre =  " + m_primary_genre
+						+ "', status =  " + m_db.plSqlSafeString(m_status)
+						+ " , venueid =  " + m_db.plSqlSafeString(m_venueid )
+						+ " , primary_genre =  " + m_db.plSqlSafeString(m_primary_genre)
 						+ " , further_information = '" + m_db.plSqlSafeString(m_further_information) 
-						+ "', description_source  =  " + m_description_source 
-						+ ", ddfirst_date = '" + m_ddfirst_date 
-						+ "', mmfirst_date = '" + m_mmfirst_date 
-						+ "', yyyyfirst_date = '" + m_yyyyfirst_date 
+						+ "', description_source  =  " + m_db.plSqlSafeString(m_description_source )
+						+ ", ddfirst_date = '" + m_db.plSqlSafeString(m_ddfirst_date )
+						+ "', mmfirst_date = '" + m_db.plSqlSafeString(m_mmfirst_date )
+						+ "', yyyyfirst_date = '" + m_db.plSqlSafeString(m_yyyyfirst_date )
 						+ "', first_date = " + l_fisrt_date
-						+ ", ddlast_date = '" + m_ddlast_date 
-						+ "', mmlast_date = '" + m_mmlast_date 
-						+ "', yyyylast_date = '" + m_yyyylast_date 
+						+ ", ddlast_date = '" + m_db.plSqlSafeString(m_ddlast_date) 
+						+ "', mmlast_date = '" + m_db.plSqlSafeString(m_mmlast_date )
+						+ "', yyyylast_date = '" + m_db.plSqlSafeString(m_yyyylast_date )
 						+ "', last_date = " + l_last_date
-						+ ", ddopening_night  = '" + m_ddopen_date 
-						+ "', mmopening_night = '" + m_mmopen_date 
-						+ "', yyyyopening_night = '" + m_yyyyopen_date 
+						+ ", ddopening_night  = '" + m_db.plSqlSafeString(m_ddopen_date )
+						+ "', mmopening_night = '" + m_db.plSqlSafeString(m_mmopen_date )
+						+ "', yyyyopening_night = '" + m_db.plSqlSafeString(m_yyyyopen_date )
 						+ "', UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_entered_by_user) 
 						+ "', UPDATED_DATE = now() " 
 						+ ", opening_night_date = " + l_openning_night_date
 						+ ", estimated_dates = '" + Common.convertBoolToYesNo(m_estimated_dates) 
 						+ "', part_of_a_tour = '" + Common.convertBoolToYesNo(m_part_of_a_tour) 
-						+ "'  where eventid =  " + m_eventid;
+						+ "', status_lov_id = " + (m_event_status_id.isEmpty() ? "null" : "'" + m_db.plSqlSafeString(m_event_status_id) + "'")
+						+ "  where eventid =  " + m_db.plSqlSafeString(m_eventid);
 
 				// lets do some uniqueness check here
 				if (!existInEvents(UPDATE)) {
@@ -987,10 +993,10 @@ public class Event {
 					// Delete the current links, then for each item id in the
 					// vector
 					// perform an insert
-					String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_eventid;
+					String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_db.plSqlSafeString(m_eventid);
 					m_db.runSQLResultSet(l_sql, stmt);
 					for (int i = 0; i < m_res_evlinks.size(); i++) {
-						l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_eventid + "," + m_res_evlinks.elementAt(i) + ")";
+						l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_db.plSqlSafeString(m_eventid )+ "," + m_res_evlinks.elementAt(i) + ")";
 						m_db.runSQLResultSet(l_sql, stmt);
 					}
 
@@ -1121,7 +1127,7 @@ public class Event {
 							+ " status, venueid, primary_genre, further_information, description_source, "
 							+ " ddfirst_date, mmfirst_date, yyyyfirst_date, first_date, " 
 							+ " ddlast_date, mmlast_date, yyyylast_date, last_date, "
-							+ " ddopening_night, mmopening_night, yyyyopening_night, opening_night_date, estimated_dates) " 
+							+ " ddopening_night, mmopening_night, yyyyopening_night, opening_night_date, estimated_dates, status_lov_id) " 
 							+ "VALUES ('"
 							+ m_db.plSqlSafeString(m_event_name)
 							+ "', '"
@@ -1141,42 +1147,44 @@ public class Event {
 							+ "', '"
 							+ Common.convertBoolToYesNo(m_part_of_a_tour)
 							+ "',  "
-							+ (m_status)
+							+ m_db.plSqlSafeString(m_status)
 							+ " ,  "
-							+ (m_venueid)
+							+ m_db.plSqlSafeString(m_venueid)
 							+ " ,  "
-							+ (m_primary_genre)
+							+ m_db.plSqlSafeString(m_primary_genre)
 							+ " , '"
 							+ m_db.plSqlSafeString(m_further_information)
 							+ "',  "
-							+ (m_description_source)
+							+ m_db.plSqlSafeString(m_description_source)
 							+ ", '"
-							+ (m_ddfirst_date)
+							+ m_db.plSqlSafeString(m_ddfirst_date)
 							+ "', '"
-							+ (m_mmfirst_date)
+							+ m_db.plSqlSafeString(m_mmfirst_date)
 							+ "', '"
-							+ (m_yyyyfirst_date)
+							+ m_db.plSqlSafeString(m_yyyyfirst_date)
 							+ "', "
 							+ l_fisrt_date
 							+ ", '"
-							+ (m_ddlast_date)
+							+ m_db.plSqlSafeString(m_ddlast_date)
 							+ "', '"
-							+ (m_mmlast_date)
+							+ m_db.plSqlSafeString(m_mmlast_date)
 							+ "', '"
-							+ (m_yyyylast_date)
+							+ m_db.plSqlSafeString(m_yyyylast_date)
 							+ "', "
 							+ l_last_date
 							+ ", '"
-							+ (m_ddopen_date)
+							+ m_db.plSqlSafeString(m_ddopen_date)
 							+ "', '"
-							+ (m_mmopen_date)
+							+ m_db.plSqlSafeString(m_mmopen_date)
 							+ "', '"
-							+ (m_yyyyopen_date)
+							+ m_db.plSqlSafeString(m_yyyyopen_date)
 							+ "', "
 							+ l_openning_night_date 
 							+ ", '" 
 							+ Common.convertBoolToYesNo(m_estimated_dates) 
-							+ "')";
+							+ "', "
+							+ (m_event_status_id.isEmpty() ? "null" : "'" + m_db.plSqlSafeString(m_event_status_id) + "'")
+							+ ")";
 
 					m_db.runSQL(sqlString, stmt);
 					//for the original id if this was a copied event
@@ -1201,7 +1209,7 @@ public class Event {
 
 					// Insert into the item link table
 					for (int i = 0; i < m_res_evlinks.size(); i++) {
-						String l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_eventid + "," + m_res_evlinks.elementAt(i) + ")";
+						String l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_db.plSqlSafeString(m_eventid) + "," + m_res_evlinks.elementAt(i) + ")";
 						m_db.runSQLResultSet(l_sql, stmt);
 					}
 
@@ -1291,10 +1299,10 @@ public class Event {
 				modifyProductionOrigins(DELETE);
 
 				// Delete from the item link table
-				String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_eventid;
+				String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_db.plSqlSafeString(m_eventid);
 				m_db.runSQLResultSet(l_sql, stmt);
 
-				sqlString = "DELETE FROM events " + "WHERE eventid = " + m_eventid;
+				sqlString = "DELETE FROM events " + "WHERE eventid = " + m_db.plSqlSafeString(m_eventid);
 				m_db.runSQL(sqlString, stmt);
 
 				l_ret = true;
@@ -1865,7 +1873,7 @@ public class Event {
 		try {
 			if (status_id != null && !status_id.equals("")) {
 				Statement stmt = m_db.m_conn.createStatement();
-				rset = m_db.runSQL("select STATUS from STATUSMENU where STATUSID=" + status_id, stmt);
+				rset = m_db.runSQL("select STATUS from STATUSMENU where STATUSID=" + m_db.plSqlSafeString(status_id), stmt);
 				if (rset.next()) status_name = rset.getString("STATUS");
 				stmt.close();
 			}
@@ -1887,7 +1895,7 @@ public class Event {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT PreferredTerm FROM ConEvLink, ContributorFunctPreferred, events" + " WHERE contributorId = " + p_id + " AND   ConEvLink.eventId = events.eventid "
+			sqlString = " SELECT PreferredTerm FROM ConEvLink, ContributorFunctPreferred, events" + " WHERE contributorId = " + m_db.plSqlSafeString(p_id) + " AND   ConEvLink.eventId = events.eventid "
 					+ " AND   function      = ContributorFunctPreferredId ";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -1976,6 +1984,10 @@ public class Event {
 
 	public Vector getResEvLinks() {
 		return m_res_evlinks;
+	}
+	
+	public String getEventStatusId() {
+		return m_event_status_id;
 	}
 
 	public void setEventid(String s) {
@@ -2314,6 +2326,7 @@ public class Event {
 		}
 
 		this.m_estimated_dates = Common.convertYesNoToBool(request.getParameter("f_estimated_dates"));
+		this.m_event_status_id = request.getParameter("f_event_status_id");
 	}
 
 	private boolean existInEvents(int mode) {
@@ -2335,9 +2348,9 @@ public class Event {
 				// m_db.runSQL("select EVENTID from EVENTS where EVENT_NAME='" +
 				// m_db.plSqlSafeString(m_event_name) + "' and EVENTID !=" +
 				// m_eventid, stmt);
-				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_venueid;
+				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_db.plSqlSafeString(m_venueid);
 			} else {
-				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_venueid;
+				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_db.plSqlSafeString(m_venueid);
 
 				// rset =
 				// m_db.runSQL("select EVENTID from EVENTS where EVENT_NAME='" +
@@ -2709,7 +2722,7 @@ public class Event {
 
 			l_sql = "SELECT eventeventlinkid  " 
 					+ " FROM eventeventlink el" 
-					+ " WHERE (eventid=" + m_eventid + " OR childid = " + m_eventid + " )";
+					+ " WHERE (eventid=" + m_db.plSqlSafeString(m_eventid) + " OR childid = " + m_db.plSqlSafeString(m_eventid )+ " )";
 			
 			
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
