@@ -226,7 +226,7 @@ public class EventBkup {
 		try {
 
 			sqlString = "select events.*, ifnull(search_event.resource_flag, 'N') resource_flag from events left join search_event on events.eventid = search_event.eventid where events.eventid="
-					+ p_event_id;
+					+ m_db.plSqlSafeString(p_event_id);
 
 			Statement stmt = m_db.m_conn.createStatement();
 			crset = m_db.runSQL(sqlString, stmt);
@@ -615,7 +615,7 @@ public class EventBkup {
 
 			l_sql = "SELECT DISTINCT eventeventlinkid  " 
 					+ " FROM eventeventlink el, events e, lookup_codes lu" 
-					+ " WHERE el.eventid=" + m_eventid 
+					+ " WHERE el.eventid=" + m_db.plSqlSafeString(m_eventid )
 					+ " AND el.childid = e.eventid "
 					+ " AND lu.code_lov_id = el.function_lov_id "
 					+ " ORDER BY lu.description ASC, event_name ASC";
@@ -713,7 +713,7 @@ public class EventBkup {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			l_sql = "SELECT itemid " + "FROM itemevlink " + "WHERE eventid=" + m_eventid;
+			l_sql = "SELECT itemid " + "FROM itemevlink " + "WHERE eventid=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			// Reset the object
 			m_res_evlinks.removeAllElements();
@@ -752,7 +752,7 @@ public class EventBkup {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT COUNTRYID FROM PLAYEVLINK " + "WHERE EVENTID=" + m_eventid;
+			sqlString = "SELECT COUNTRYID FROM PLAYEVLINK " + "WHERE EVENTID=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			// Reset the object
@@ -794,7 +794,7 @@ public class EventBkup {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT COUNTRYID FROM PRODUCTIONEVLINK " + "WHERE EVENTID=" + m_eventid;
+			sqlString = "SELECT COUNTRYID FROM PRODUCTIONEVLINK " + "WHERE EVENTID=" + m_db.plSqlSafeString(m_eventid);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			// Reset the object
@@ -923,28 +923,28 @@ public class EventBkup {
 						+ "', description = '" + m_db.plSqlSafeString(m_description) 
 						+ "'," + " world_premier = '" + Common.convertBoolToYesNo(m_world_premier) 
 						+ "', review = '" + Common.convertBoolToYesNo(m_review) 
-						+ "', status =  " + m_status 
-						+ " , venueid =  " + m_venueid 
-						+ " , primary_genre =  " + m_primary_genre
+						+ "', status =  " + m_db.plSqlSafeString(m_status )
+						+ " , venueid =  " + m_db.plSqlSafeString(m_venueid )
+						+ " , primary_genre =  " + m_db.plSqlSafeString(m_primary_genre)
 						+ " , further_information = '" + m_db.plSqlSafeString(m_further_information) 
-						+ "', description_source  =  " + m_description_source 
-						+ ", ddfirst_date = '" + m_ddfirst_date 
-						+ "', mmfirst_date = '" + m_mmfirst_date 
-						+ "', yyyyfirst_date = '" + m_yyyyfirst_date 
+						+ "', description_source  =  " + m_db.plSqlSafeString(m_description_source )
+						+ ", ddfirst_date = '" + m_db.plSqlSafeString(m_ddfirst_date )
+						+ "', mmfirst_date = '" + m_db.plSqlSafeString(m_mmfirst_date )
+						+ "', yyyyfirst_date = '" + m_db.plSqlSafeString(m_yyyyfirst_date )
 						+ "', first_date = " + l_fisrt_date
-						+ ", ddlast_date = '" + m_ddlast_date 
-						+ "', mmlast_date = '" + m_mmlast_date 
-						+ "', yyyylast_date = '" + m_yyyylast_date 
+						+ ", ddlast_date = '" + m_db.plSqlSafeString(m_ddlast_date )
+						+ "', mmlast_date = '" + m_db.plSqlSafeString(m_mmlast_date )
+						+ "', yyyylast_date = '" + m_db.plSqlSafeString(m_yyyylast_date )
 						+ "', last_date = " + l_last_date
-						+ ", ddopening_night  = '" + m_ddopen_date 
-						+ "', mmopening_night = '" + m_mmopen_date 
-						+ "', yyyyopening_night = '" + m_yyyyopen_date 
+						+ ", ddopening_night  = '" + m_db.plSqlSafeString(m_ddopen_date )
+						+ "', mmopening_night = '" + m_db.plSqlSafeString(m_mmopen_date )
+						+ "', yyyyopening_night = '" + m_db.plSqlSafeString(m_yyyyopen_date )
 						+ "', UPDATED_BY_USER = '" + m_db.plSqlSafeString(m_entered_by_user) 
 						+ "', UPDATED_DATE = now() " 
 						+ ", opening_night_date = " + l_openning_night_date
 						+ ", estimated_dates = '" + Common.convertBoolToYesNo(m_estimated_dates) 
 						+ "', part_of_a_tour = '" + Common.convertBoolToYesNo(m_part_of_a_tour) 
-						+ "'  where eventid =  " + m_eventid;
+						+ "'  where eventid =  " + m_db.plSqlSafeString(m_eventid);
 
 				// lets do some uniqueness check here
 				if (!existInEvents(UPDATE)) {
@@ -970,10 +970,10 @@ public class EventBkup {
 					// Delete the current links, then for each item id in the
 					// vector
 					// perform an insert
-					String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_eventid;
+					String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_db.plSqlSafeString(m_eventid);
 					m_db.runSQLResultSet(l_sql, stmt);
 					for (int i = 0; i < m_res_evlinks.size(); i++) {
-						l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_eventid + "," + m_res_evlinks.elementAt(i) + ")";
+						l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_db.plSqlSafeString(m_eventid) + "," + m_res_evlinks.elementAt(i) + ")";
 						m_db.runSQLResultSet(l_sql, stmt);
 					}
 
@@ -1125,37 +1125,37 @@ public class EventBkup {
 							+ "', '"
 							+ Common.convertBoolToYesNo(m_part_of_a_tour)
 							+ "',  "
-							+ (m_status)
+							+ m_db.plSqlSafeString(m_status)
 							+ " ,  "
-							+ (m_venueid)
+							+ m_db.plSqlSafeString(m_venueid)
 							+ " ,  "
-							+ (m_primary_genre)
+							+ m_db.plSqlSafeString(m_primary_genre)
 							+ " , '"
 							+ m_db.plSqlSafeString(m_further_information)
 							+ "',  "
-							+ (m_description_source)
+							+ m_db.plSqlSafeString(m_description_source)
 							+ ", '"
-							+ (m_ddfirst_date)
+							+ m_db.plSqlSafeString(m_ddfirst_date)
 							+ "', '"
-							+ (m_mmfirst_date)
+							+ m_db.plSqlSafeString(m_mmfirst_date)
 							+ "', '"
-							+ (m_yyyyfirst_date)
+							+ m_db.plSqlSafeString(m_yyyyfirst_date)
 							+ "', "
 							+ l_fisrt_date
 							+ ", '"
-							+ (m_ddlast_date)
+							+ m_db.plSqlSafeString(m_ddlast_date)
 							+ "', '"
-							+ (m_mmlast_date)
+							+ m_db.plSqlSafeString(m_mmlast_date)
 							+ "', '"
-							+ (m_yyyylast_date)
+							+ m_db.plSqlSafeString(m_yyyylast_date)
 							+ "', "
 							+ l_last_date
 							+ ", '"
-							+ (m_ddopen_date)
+							+ m_db.plSqlSafeString(m_ddopen_date)
 							+ "', '"
-							+ (m_mmopen_date)
+							+ m_db.plSqlSafeString(m_mmopen_date)
 							+ "', '"
-							+ (m_yyyyopen_date)
+							+ m_db.plSqlSafeString(m_yyyyopen_date)
 							+ "', "
 							+ l_openning_night_date 
 							+ ", '" 
@@ -1179,7 +1179,7 @@ public class EventBkup {
 
 					// Insert into the item link table
 					for (int i = 0; i < m_res_evlinks.size(); i++) {
-						String l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_eventid + "," + m_res_evlinks.elementAt(i) + ")";
+						String l_sql = "INSERT INTO itemevlink (EVENTID, ITEMID) " + "VALUES (" + m_db.plSqlSafeString(m_eventid) + "," + m_res_evlinks.elementAt(i) + ")";
 						m_db.runSQLResultSet(l_sql, stmt);
 					}
 
@@ -1269,10 +1269,10 @@ public class EventBkup {
 				modifyProductionOrigins(DELETE);
 
 				// Delete from the item link table
-				String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_eventid;
+				String l_sql = "DELETE FROM itemevlink WHERE eventid=" + m_db.plSqlSafeString(m_eventid);
 				m_db.runSQLResultSet(l_sql, stmt);
 
-				sqlString = "DELETE FROM events " + "WHERE eventid = " + m_eventid;
+				sqlString = "DELETE FROM events " + "WHERE eventid = " + m_db.plSqlSafeString(m_eventid);
 				m_db.runSQL(sqlString, stmt);
 
 				l_ret = true;
@@ -1804,7 +1804,7 @@ public class EventBkup {
 		try {
 			if (status_id != null && !status_id.equals("")) {
 				Statement stmt = m_db.m_conn.createStatement();
-				rset = m_db.runSQL("select STATUS from STATUSMENU where STATUSID=" + status_id, stmt);
+				rset = m_db.runSQL("select STATUS from STATUSMENU where STATUSID=" + m_db.plSqlSafeString(status_id), stmt);
 				if (rset.next()) status_name = rset.getString("STATUS");
 				stmt.close();
 			}
@@ -1826,7 +1826,7 @@ public class EventBkup {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT PreferredTerm FROM ConEvLink, ContributorFunctPreferred, events" + " WHERE contributorId = " + p_id + " AND   ConEvLink.eventId = events.eventid "
+			sqlString = " SELECT PreferredTerm FROM ConEvLink, ContributorFunctPreferred, events" + " WHERE contributorId = " + m_db.plSqlSafeString(p_id) + " AND   ConEvLink.eventId = events.eventid "
 					+ " AND   `function`      = ContributorFunctPreferredId ";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -2270,9 +2270,9 @@ public class EventBkup {
 				// m_db.runSQL("select EVENTID from EVENTS where EVENT_NAME='" +
 				// m_db.plSqlSafeString(m_event_name) + "' and EVENTID !=" +
 				// m_eventid, stmt);
-				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_venueid;
+				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_db.plSqlSafeString(m_venueid);
 			} else {
-				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_venueid;
+				l_sqlStr = "select EVENTID from EVENTS where EVENT_NAME='" + m_db.plSqlSafeString(m_event_name) + "' and VENUEID=" + m_db.plSqlSafeString(m_venueid);
 
 				// rset =
 				// m_db.runSQL("select EVENTID from EVENTS where EVENT_NAME='" +
@@ -2300,7 +2300,7 @@ public class EventBkup {
 				if ((m_ddfirst_date != null && !m_ddfirst_date.equals("")) && (m_mmfirst_date != null && !m_mmfirst_date.equals(""))
 						&& (m_yyyyfirst_date != null && !m_yyyyfirst_date.equals(""))) {
 
-					l_sqlStr += " and FIRST_DATE=" + m_db.safeDateFormat(m_ddfirst_date + " " + m_db.getMonthName(Integer.parseInt(m_mmfirst_date), true) + " " + m_yyyyfirst_date);
+					l_sqlStr += " and FIRST_DATE=" + m_db.safeDateFormat(m_ddfirst_date + " " + m_db.getMonthName(Integer.parseInt(m_mmfirst_date), true) + " " + m_db.plSqlSafeString(m_yyyyfirst_date));
 					// sqlString =
 					// "select EVENTID from EVENTS where FIRST_DATE='" +
 					// m_ddfirst_date + "-" +
@@ -2313,7 +2313,7 @@ public class EventBkup {
 
 				} else if (m_mmfirst_date != null && !m_mmfirst_date.equals("")) {
 					// means year is not blank
-					l_sqlStr += " and MMFIRST_DATE='" + m_mmfirst_date + "' and YYYYFIRST_DATE='" + m_yyyyfirst_date + "'";
+					l_sqlStr += " and MMFIRST_DATE='" + m_db.plSqlSafeString(m_mmfirst_date) + "' and YYYYFIRST_DATE='" + m_db.plSqlSafeString(m_yyyyfirst_date) + "'";
 					/*
 					 * sqlString =
 					 * "select EVENTID from EVENTS where DDFIRST_DATE= '' and MMFIRST_DATE='"
@@ -2323,7 +2323,7 @@ public class EventBkup {
 					 * isFirstDateExistInEvent = true;
 					 */
 				} else if (m_yyyyfirst_date != null && !m_yyyyfirst_date.equals("")) {
-					l_sqlStr += " and YYYYFIRST_DATE='" + m_yyyyfirst_date + "'";
+					l_sqlStr += " and YYYYFIRST_DATE='" + m_db.plSqlSafeString(m_yyyyfirst_date) + "'";
 					/*
 					 * sqlString =
 					 * "select EVENTID from EVENTS where DDFIRST_DATE= '' and MMFIRST_DATE = '' and YYYYFIRST_DATE='"
@@ -2339,7 +2339,7 @@ public class EventBkup {
 				if ((m_ddfirst_date != null && !m_ddfirst_date.equals("")) && (m_mmfirst_date != null && !m_mmfirst_date.equals(""))
 						&& (m_yyyyfirst_date != null && !m_yyyyfirst_date.equals(""))) {
 
-					l_sqlStr += " and FIRST_DATE=" + m_db.safeDateFormat(m_ddfirst_date + " " + m_db.getMonthName(Integer.parseInt(m_mmfirst_date), true) + " " + m_yyyyfirst_date);
+					l_sqlStr += " and FIRST_DATE=" + m_db.safeDateFormat(m_ddfirst_date + " " + m_db.getMonthName(Integer.parseInt(m_mmfirst_date), true) + " " + m_db.plSqlSafeString(m_yyyyfirst_date));
 
 					// sqlString =
 					// "select EVENTID from EVENTS where FIRST_DATE='" +
@@ -2352,7 +2352,7 @@ public class EventBkup {
 
 				} else if (m_mmfirst_date != null && !m_mmfirst_date.equals("")) {
 					// means year is not blank
-					l_sqlStr += " and MMFIRST_DATE='" + m_mmfirst_date + "' and YYYYFIRST_DATE='" + m_yyyyfirst_date + "'";
+					l_sqlStr += " and MMFIRST_DATE='" + m_db.plSqlSafeString(m_mmfirst_date) + "' and YYYYFIRST_DATE='" + m_db.plSqlSafeString(m_yyyyfirst_date) + "'";
 
 					// sqlString =
 					// "select EVENTID from EVENTS where DDFIRST_DATE= '' and MMFIRST_DATE='"
@@ -2362,7 +2362,7 @@ public class EventBkup {
 					// if(rset.next())
 					// isFirstDateExistInEvent = true;
 				} else if (m_yyyyfirst_date != null && !m_yyyyfirst_date.equals("")) {
-					l_sqlStr += " and YYYYFIRST_DATE='" + m_yyyyfirst_date + "'";
+					l_sqlStr += " and YYYYFIRST_DATE='" + m_db.plSqlSafeString(m_yyyyfirst_date) + "'";
 
 					// sqlString =
 					// "select EVENTID from EVENTS where DDFIRST_DATE= '' and MMFIRST_DATE = '' and YYYYFIRST_DATE='"
@@ -2638,7 +2638,7 @@ public class EventBkup {
 
 			l_sql = "SELECT eventeventlinkid  " 
 					+ " FROM eventeventlink el, events e, lookup_codes lu" 
-					+ " WHERE eventid=" + m_eventid 
+					+ " WHERE eventid=" + m_db.plSqlSafeString(m_eventid )
 					+ " AND el.childid = e.eventid "
 					+ " AND lu.code_lov_id = el.function_lov_id "
 					+ " ORDER BY lu.description ASC, event_name ASC";

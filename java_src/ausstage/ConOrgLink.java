@@ -79,8 +79,8 @@ public class ConOrgLink {
 		// Reset the object
 		initialise();
 
-		contributorId = p_contributorId;
-		organisationId = p_organisationId;
+		contributorId = m_db.plSqlSafeString(p_contributorId);
+		organisationId = m_db.plSqlSafeString(p_organisationId);
 
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
@@ -136,7 +136,7 @@ public class ConOrgLink {
 
 			for (int i = 0; p_conOrgLinks != null && i < p_conOrgLinks.size(); i++) {
 				conOrgLink = (ConOrgLink) p_conOrgLinks.get(i);
-				sqlString = "INSERT INTO ConOrgLink " + "(contributorId, organisationId, description) " + "VALUES (" + p_contributorId + ", " + conOrgLink.getOrganisationId()
+				sqlString = "INSERT INTO ConOrgLink " + "(contributorId, organisationId, description) " + "VALUES (" + m_db.plSqlSafeString(p_contributorId) + ", " + conOrgLink.getOrganisationId()
 						+ ", '" + m_db.plSqlSafeString(conOrgLink.getDescription()) + "')";
 				m_db.runSQL(sqlString, stmt);
 			}
@@ -165,7 +165,7 @@ public class ConOrgLink {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from ConOrgLink WHERE contributorId = " + p_contributorId;
+			sqlString = "DELETE from ConOrgLink WHERE contributorId = " + m_db.plSqlSafeString(p_contributorId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

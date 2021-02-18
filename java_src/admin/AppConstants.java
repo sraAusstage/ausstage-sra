@@ -148,7 +148,8 @@ public class AppConstants implements DatabaseType {
 	public static String RETURN_TO_TOP_IMAGE_KEY;
 	public static String DATE_FORMAT_STRING;
 	public static int DATABASE_TYPE = 4;
-	public static String DB_CONNECTION_STRING;
+	public static String DB_CONNECTION_STRING;	
+	public static String DB_READONLY_CONNECTION_STRING;
 	public static String DB_PUBLIC_USER_NAME;
 	public static String DB_PUBLIC_USER_PASSWORD;
 	public static String DB_ADMIN_USER_NAME;
@@ -203,6 +204,7 @@ public class AppConstants implements DatabaseType {
 	public static boolean WORKFLOW_ENABLED;
 	public static boolean WORKFLOW_UNANIMOUS_APPROVAL;
 	public static int WORKFLOW_DAYS_AFTER_COMPLETION;
+	public static String GOOGLE_KEY;
 
 	public AppConstants() {
 	}
@@ -254,6 +256,7 @@ public class AppConstants implements DatabaseType {
 				DB_ADMIN_USER_NAME = iniFile.getItem("DB_ADMIN_USER_NAME");
 				DB_ADMIN_USER_PASSWORD = iniFile.getItem("DB_ADMIN_USER_PASSWORD");
 				DB_CONNECTION_STRING = iniFile.getItem("DB_CONNECTION_STRING");
+				DB_READONLY_CONNECTION_STRING = iniFile.getItem("DB_READONLY_CONNECTION_STRING");
 
 				iniFile.setHeader("CUSTOM");
 				LINK_TO_CUSTOM_MAIN_PAGE = (new Boolean(iniFile.getItem("LINK_TO_CUSTOM_MAIN_PAGE"))).booleanValue();
@@ -332,6 +335,8 @@ public class AppConstants implements DatabaseType {
 				WORKFLOW_UNANIMOUS_APPROVAL = (new Boolean(iniFile.getItem("WORKFLOW_UNANIMOUS_APPROVAL"))).booleanValue();
 				WORKFLOW_DAYS_AFTER_COMPLETION = Integer.parseInt(iniFile.getItem("WORKFLOW_DAYS_AFTER_COMPLETION"));
 				LOAD_FROM_INI_FILE = false;
+				iniFile.setHeader("API KEYS");
+				GOOGLE_KEY = iniFile.getItem("GOOGLE_KEY");
 			}
 		} catch (Exception e) {
 			System.out.println("An exception occurred in loadFromIniFile()");

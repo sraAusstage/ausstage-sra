@@ -28,14 +28,34 @@ public class Database {
 	}
 
 	public String connDatabase(String p_user, String p_password) {
-		
+
 		try {
 			if (m_conn != null) {
 				for (; !m_conn.isClosed(); m_conn.close()) {
 				}
 			}
-			
+
 			m_conn = DriverManager.getConnection(AppConstants.DB_CONNECTION_STRING, p_user, p_password);
+		} catch (Exception e) {
+			System.out.println("Trying to open DB - We have an exception!!!");
+			System.out.println("MESSAGE: " + e.getMessage());
+			System.out.println("LOCALIZED MESSAGE: " + e.getLocalizedMessage());
+			System.out.println("CLASS.TOSTRING: " + e.toString());
+			String s = e.getLocalizedMessage().substring(e.getLocalizedMessage().indexOf(": ") + 2);
+			return s;
+		}
+		return "";
+	}
+
+	public String connReadOnlyDatabase(String p_user, String p_password) {
+
+		try {
+			if (m_conn != null) {
+				for (; !m_conn.isClosed(); m_conn.close()) {
+				}
+			}
+
+			m_conn = DriverManager.getConnection(AppConstants.DB_READONLY_CONNECTION_STRING, p_user, p_password);
 		} catch (Exception e) {
 			System.out.println("Trying to open DB - We have an exception!!!");
 			System.out.println("MESSAGE: " + e.getMessage());
@@ -119,8 +139,10 @@ public class Database {
 				p_string = common.ReplaceStrWithStr(p_string, "&", "'||CHR(38)||'");
 			}
 		} else if (p_string != null && !p_string.equals("")) {
-			p_string = common.ReplaceStrWithStr(p_string, "'", "\\'");
+//			p_string = common.ReplaceStrWithStr(p_string, "'", "\\'");
+			p_string = p_string.replaceAll("[\\\\';]", "\\\\$0");
 		}
+
 		return p_string;
 	}
 
@@ -159,7 +181,7 @@ public class Database {
 	private String getInsertedIndex(Statement p_stmt, String p_sequence_name) throws Exception {
 		String sqlString = "";
 		try {
-			sqlString = "select " + p_sequence_name + ".currval as curr_val FROM DUAL";
+			sqlString = "select " + plSqlSafeString(p_sequence_name) + ".currval as curr_val FROM DUAL";
 			CachedRowSet rset = runSQL(sqlString, p_stmt);
 			rset.next();
 			String s = rset.getString("curr_val");
@@ -280,10 +302,11 @@ public class Database {
 
 		case 1: // '\001'
 			if (p_include_time) {
-				l_result = "TO_DATE('" + l_cal.get(1) + "/" + (l_cal.get(2) + 1) + "/" + l_cal.get(5) + ":" + l_cal.get(11) + ":" + l_cal.get(12) + ":" + l_cal.get(13)
-						+ "', 'yyyy/mm/dd:hh24:mi:ss')";
+				l_result = "TO_DATE('" + l_cal.get(1) + "/" + (l_cal.get(2) + 1) + "/" + l_cal.get(5) + ":"
+						+ l_cal.get(11) + ":" + l_cal.get(12) + ":" + l_cal.get(13) + "', 'yyyy/mm/dd:hh24:mi:ss')";
 			} else {
-				l_result = "TO_DATE('" + l_cal.get(1) + "/" + (l_cal.get(2) + 1) + "/" + l_cal.get(5) + "', 'yyyy/mm/dd')";
+				l_result = "TO_DATE('" + l_cal.get(1) + "/" + (l_cal.get(2) + 1) + "/" + l_cal.get(5)
+						+ "', 'yyyy/mm/dd')";
 			}
 			break;
 
@@ -338,7 +361,8 @@ public class Database {
 				continue;
 			}
 			if (!tmpChar.endsWith("/") && !tmpChar.endsWith("-")) {
-				if (tmpChar.toUpperCase().endsWith("TH") || tmpChar.toUpperCase().endsWith("RD") || tmpChar.toUpperCase().endsWith("ST") || tmpChar.toUpperCase().endsWith("ND")) {
+				if (tmpChar.toUpperCase().endsWith("TH") || tmpChar.toUpperCase().endsWith("RD")
+						|| tmpChar.toUpperCase().endsWith("ST") || tmpChar.toUpperCase().endsWith("ND")) {
 					if (tmpStr.length() <= 4) {
 						if (tmpStr.length() == 4) {
 							m_day = tmpStr.substring(0, 2);
@@ -375,7 +399,8 @@ public class Database {
 		String retStr = "";
 		String monthsArray[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec" };
 		if (p_str_month.length() >= 3) {
-			for (i = 0; i < monthsArray.length - 1 && !p_str_month.substring(0, 3).toUpperCase().equals(monthsArray[i].substring(0, 3).toUpperCase()); i++) {
+			for (i = 0; i < monthsArray.length - 1 && !p_str_month.substring(0, 3).toUpperCase()
+					.equals(monthsArray[i].substring(0, 3).toUpperCase()); i++) {
 			}
 			if (++i < 10) {
 				retStr = "0" + Integer.toString(i);

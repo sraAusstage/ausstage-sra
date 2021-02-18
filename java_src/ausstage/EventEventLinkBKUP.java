@@ -84,7 +84,7 @@ public class EventEventLinkBKUP {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = " SELECT * FROM EventEventLink "
-				+ " WHERE eventeventlinkId = " + p_eventeventlink_id;
+				+ " WHERE eventeventlinkId = " + m_db.plSqlSafeString(p_eventeventlink_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -142,13 +142,13 @@ public class EventEventLinkBKUP {
 			boolean l_ret = false;
 
 			System.out.println("In update");
-			sqlString = "DELETE FROM EventEventLink where " + "eventId=" + p_eventId;
+			sqlString = "DELETE FROM EventEventLink where " + "eventId=" + m_db.plSqlSafeString(p_eventId);
 			m_db.runSQL(sqlString, stmt);
 			if (p_childLinks != null) {
 				// System.out.println("Event:" + p_childLinks + ", Event Id:"+
 				// p_eventId);
 				for (int i = 0; i < p_childLinks.size(); i++) {
-					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id, notes) " + "VALUES (" + p_eventId + ", "
+					sqlString = "INSERT INTO EventEventLink " + "(eventId, childId, function_lov_id, notes) " + "VALUES (" + m_db.plSqlSafeString(p_eventId) + ", "
 						+ p_childLinks.get(i).getChildId() + ", " + p_childLinks.get(i).getFunctionId() + ", '"+m_db.plSqlSafeString(p_childLinks.get(i).getNotes())+ "' )";
 					
 					m_db.runSQL(sqlString, stmt);
@@ -179,7 +179,7 @@ public class EventEventLinkBKUP {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from EventEventLink WHERE eventId = " + eventId;
+			sqlString = "DELETE from EventEventLink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

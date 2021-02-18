@@ -30,17 +30,17 @@ public class Form {
 		}
 		sqlString = "insert into form_repository (form_name, form_method, submit_caption, reset_capti"
 				+ "on, is_multipart, cancel_back_caption, is_approved, real_form_id, approval_reque" + "sted, modified_by_auth_id, form_type) values ('"
-				+ form_name + "','"
-				+ form_method + "','"
-				+ submit_caption + "','"
-				+ reset_caption + "','"
-				+ is_multipart + "','"
-				+ cancel_back_caption + "','"
-				+ is_approved + "','"
-				+ real_form_id + "','" 
-				+ approval_requested + "','" 
-				+ modified_by_auth_id + "','" 
-				+ form_type + "')";
+				+ db.plSqlSafeString(form_name) + "','"
+				+ db.plSqlSafeString(form_method) + "','"
+				+ db.plSqlSafeString(submit_caption) + "','"
+				+ db.plSqlSafeString(reset_caption) + "','"
+				+ db.plSqlSafeString(is_multipart) + "','"
+				+ db.plSqlSafeString(cancel_back_caption) + "','"
+				+ db.plSqlSafeString(is_approved) + "','"
+				+ db.plSqlSafeString(real_form_id) + "','" 
+				+ db.plSqlSafeString(approval_requested) + "','" 
+				+ db.plSqlSafeString(modified_by_auth_id) + "','" 
+				+ db.plSqlSafeString(form_type) + "')";
 		try {
 			db.runSQL(sqlString, stmt);
 		} catch (Exception e) {
@@ -59,13 +59,13 @@ public class Form {
 		FormLayoutManager flm = new FormLayoutManager(db);
 		FormTableLayoutManager ftlm = new FormTableLayoutManager(db, stmt);
 		FormElementsManager fem = new FormElementsManager();
-		sqlString = "select * from form_repository where form_id=" + form_id;
+		sqlString = "select * from form_repository where form_id=" + db.plSqlSafeString(form_id);
 		try {
 			CachedRowSet rset = db.runSQL(sqlString, stmt);
 			if (rset.next()) {
 				Statement xstmt = db.m_conn.createStatement();
 				addForm(xstmt, rset.getString("form_name"), rset.getString("form_method"), rset.getString("submit_caption"), rset.getString("reset_caption"),
-						rset.getString("is_multipart"), rset.getString("cancel_back_caption"), is_approved, real_form_id, approval_requested, modified_by_auth_id,
+						rset.getString("is_multipart"), rset.getString("cancel_back_caption"), db.plSqlSafeString(is_approved), db.plSqlSafeString(real_form_id), db.plSqlSafeString(approval_requested), db.plSqlSafeString(modified_by_auth_id),
 						rset.getString("form_type"));
 				unApprovedFormId = db.getInsertedIndexValue(xstmt, "form_id_seq");
 				rset.close();
@@ -111,11 +111,11 @@ public class Form {
 
 	private String getNewInsertedGroupID(String old_group_id, String form_layout_id, CachedRowSet rset, Statement xstmt, Statement stmt) {
 		String new_group_id = "";
-		sqlString = "select group_name from form_element_group where form_element_group_id=" + old_group_id;
+		sqlString = "select group_name from form_element_group where form_element_group_id=" + db.plSqlSafeString(old_group_id);
 		try {
 			rset = db.runSQL(sqlString, xstmt);
 			if (rset.next()) {
-				sqlString = "insert into form_element_group (group_name, form_layout_id) values ('" + rset.getString("group_name") + "','" + form_layout_id + "')";
+				sqlString = "insert into form_element_group (group_name, form_layout_id) values ('" + rset.getString("group_name") + "','" + db.plSqlSafeString(form_layout_id) + "')";
 				db.runSQL(sqlString, stmt);
 				new_group_id = db.getInsertedIndexValue(xstmt, "form_element_group_id_seq");
 			}
@@ -135,10 +135,10 @@ public class Form {
 		} else {
 			ismultipart = "n";
 		}
-		sqlString = "update form_repository set form_name = '" + form_name + "', form_method = '" + form_method + "', submit_caption = '" + submit_caption + "', reset_caption = '"
-				+ reset_caption + "', cancel_back_caption ='" + cancel_back_caption + "', is_multipart ='" + ismultipart + "', is_approved = '" + is_approved
-				+ "',  real_form_id = '" + real_form_id + "', approval_requested = '" + approval_requested + "', modified_by_auth_id ='" + modified_by_auth_id
-				+ "' where form_id = " + form_id;
+		sqlString = "update form_repository set form_name = '" + db.plSqlSafeString(form_name) + "', form_method = '" + db.plSqlSafeString(form_method) + "', submit_caption = '" + db.plSqlSafeString(submit_caption) + "', reset_caption = '"
+				+ db.plSqlSafeString(reset_caption) + "', cancel_back_caption ='" + db.plSqlSafeString(cancel_back_caption) + "', is_multipart ='" + db.plSqlSafeString(ismultipart) + "', is_approved = '" + db.plSqlSafeString(is_approved)
+				+ "',  real_form_id = '" + db.plSqlSafeString(real_form_id) + "', approval_requested = '" + db.plSqlSafeString(approval_requested) + "', modified_by_auth_id ='" + db.plSqlSafeString(modified_by_auth_id)
+				+ "' where form_id = " + db.plSqlSafeString(form_id);
 		try {
 			db.runSQL(sqlString, stmt);
 		} catch (Exception e) {
@@ -150,7 +150,7 @@ public class Form {
 		String form_layout_id = "";
 		boolean retVal = true;
 		FormElementsManager fem = new FormElementsManager();
-		sqlString = "select form_layout_id from form_layout where form_id=" + form_id;
+		sqlString = "select form_layout_id from form_layout where form_id=" + db.plSqlSafeString(form_id);
 		try {
 			CachedRowSet rset = db.runSQL(sqlString, stmt);
 			CachedRowSet xrset;
@@ -176,15 +176,15 @@ public class Form {
 			}
 			rset.close();
 			sqlString = "select form_layout_form_rel.flfr_id as flfr_id from form_process, form_layout_fo"
-					+ "rm_rel where form_layout_form_rel.flfr_id=form_process.flfr_id and form_layout_f" + "orm_rel.form_id=" + form_id;
+					+ "rm_rel where form_layout_form_rel.flfr_id=form_process.flfr_id and form_layout_f" + "orm_rel.form_id=" + db.plSqlSafeString(form_id);
 			for (xrset = db.runSQL(sqlString, stmt); xrset.next(); db.runSQL(sqlString, stmt)) {
 				sqlString = "delete from form_process where flfr_id=" + xrset.getString("flfr_id");
 			}
 
 			xrset.close();
-			sqlString = "delete from form_repository where form_id=" + form_id;
+			sqlString = "delete from form_repository where form_id=" + db.plSqlSafeString(form_id);
 			db.runSQL(sqlString, stmt);
-			sqlString = "delete from form_layout_form_rel where form_id=" + form_id;
+			sqlString = "delete from form_layout_form_rel where form_id=" + db.plSqlSafeString(form_id);
 			db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {
@@ -198,7 +198,7 @@ public class Form {
 	}
 
 	public CachedRowSet getFormSettings(Statement stmt, String form_id) {
-		sqlString = "select * from form_repository where form_id=" + form_id;
+		sqlString = "select * from form_repository where form_id=" + db.plSqlSafeString(form_id);
 		try {
 			CachedRowSet cachedrowset = db.runSQL(sqlString, stmt);
 			return cachedrowset;
@@ -211,7 +211,7 @@ public class Form {
 	public boolean isFormApproved(String form_id) {
 		try {
 			Statement stmt = db.m_conn.createStatement();
-			sqlString = "select form_id from form_repository where is_approved='f' and form_id=" + form_id;
+			sqlString = "select form_id from form_repository where is_approved='f' and form_id=" + db.plSqlSafeString(form_id);
 			CachedRowSet rset = db.runSQL(sqlString, stmt);
 			boolean ret;
 			if (rset.next()) {
@@ -236,7 +236,7 @@ public class Form {
 	public boolean getRequestedApproval(String form_id) {
 		try {
 			Statement stmt = db.m_conn.createStatement();
-			sqlString = "select form_id from form_repository where approval_requested='t' and form_id=" + form_id;
+			sqlString = "select form_id from form_repository where approval_requested='t' and form_id=" + db.plSqlSafeString(form_id);
 			CachedRowSet rset = db.runSQL(sqlString, stmt);
 			boolean ret;
 			if (rset.next()) {
@@ -261,10 +261,10 @@ public class Form {
 	public boolean isSubscriptionForm(String form_id, String form_layout_id) {
 		boolean retVal = false;
 		if (!form_id.equals("")) {
-			sqlString = "select form_id from form_repository where form_type='subscription' and form_id=" + form_id;
+			sqlString = "select form_id from form_repository where form_type='subscription' and form_id=" + db.plSqlSafeString(form_id);
 		} else {
 			sqlString = "select form_repository.form_id from form_repository, form_layout where form_repo"
-					+ "sitory.form_type='subscription' and form_repository.form_id=form_layout.form_id " + "and form_layout.form_layout_id=" + form_layout_id;
+					+ "sitory.form_type='subscription' and form_repository.form_id=form_layout.form_id " + "and form_layout.form_layout_id=" + db.plSqlSafeString(form_layout_id);
 		}
 		try {
 			Statement stmt = db.m_conn.createStatement();
@@ -285,9 +285,9 @@ public class Form {
 	public static String getMaxNumRowCol(String row_col_type, String form_layout_id, Statement stmt, Database db) {
 		String stsqlString;
 		if (row_col_type.equals("row")) {
-			stsqlString = "select table_location_row from form_element where form_layout_id=" + form_layout_id + " order by table_location_row desc";
+			stsqlString = "select table_location_row from form_element where form_layout_id=" + db.plSqlSafeString(form_layout_id) + " order by table_location_row desc";
 		} else {
-			stsqlString = "select table_location_col from form_element where form_layout_id=" + form_layout_id + " order by table_location_col desc";
+			stsqlString = "select table_location_col from form_element where form_layout_id=" + db.plSqlSafeString(form_layout_id) + " order by table_location_col desc";
 		}
 		String s3;
 		try {

@@ -83,8 +83,8 @@ public class ItemOrganLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM ITEMORGLINK " + " WHERE ITEMORGLINKID = " + p_ITEMORGLINKID + "   AND ((creator_flag is NULL and '" + p_creator_flag
-					+ "'='N') or creator_flag='" + p_creator_flag + "')";
+			sqlString = " SELECT * FROM ITEMORGLINK " + " WHERE ITEMORGLINKID = " + m_db.plSqlSafeString(p_ITEMORGLINKID) + "   AND ((creator_flag is NULL and '" + m_db.plSqlSafeString(p_creator_flag)
+					+ "'='N') or creator_flag='" + m_db.plSqlSafeString(p_creator_flag) + "')";
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -142,8 +142,8 @@ public class ItemOrganLink {
 			String functionId;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM ITEMORGLINK where " + " itemId=" + p_itemId + " AND ((creator_flag is NULL and '" + p_creator_flag + "'='N') or creator_flag='"
-					+ p_creator_flag + "')";
+			sqlString = "DELETE FROM ITEMORGLINK where " + " itemId=" + m_db.plSqlSafeString(p_itemId) + " AND ((creator_flag is NULL and '" + m_db.plSqlSafeString(p_creator_flag) + "'='N') or creator_flag='"
+					+ m_db.plSqlSafeString(p_creator_flag) + "')";
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; p_organLinks != null && i < p_organLinks.size(); i++) {
@@ -152,8 +152,8 @@ public class ItemOrganLink {
 				if (functionId.equals("0")) {
 					functionId = "null";
 				}
-				sqlString = "INSERT INTO ITEMORGLINK " + "(itemId, ORGANISATIONID,creator_flag, orderBy, function_lov_id) " + "VALUES (" + p_itemId + ", "
-						+ itemOrganLink.getOrganisationId() + ",'" + p_creator_flag + "'," + itemOrganLink.getOrderBy() + ", " + functionId + ")";
+				sqlString = "INSERT INTO ITEMORGLINK " + "(itemId, ORGANISATIONID,creator_flag, orderBy, function_lov_id) " + "VALUES (" + m_db.plSqlSafeString(p_itemId) + ", "
+						+ itemOrganLink.getOrganisationId() + ",'" + m_db.plSqlSafeString(p_creator_flag) + "'," + itemOrganLink.getOrderBy() + ", " + m_db.plSqlSafeString(functionId) + ")";
 				m_db.runSQL(sqlString, stmt);
 			}
 			l_ret = true;

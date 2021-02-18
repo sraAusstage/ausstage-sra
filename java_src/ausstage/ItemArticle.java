@@ -66,7 +66,7 @@ public class ItemArticle {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString =   " SELECT * FROM ITEM_ARTICLE" 
-						+ " WHERE ITEMARTICLEID = " + p_itemArticleId;
+						+ " WHERE ITEMARTICLEID = " + m_db.plSqlSafeString(p_itemArticleId);
 			
 			l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -115,7 +115,7 @@ public class ItemArticle {
 			boolean l_ret = false;
 			delete(p_itemId);
 			sqlString =   "INSERT INTO ITEM_ARTICLE (itemarticleid, body) " 
-						+ "VALUES (" + p_itemId + ", '"+m_db.plSqlSafeString(p_body)+"')";
+						+ "VALUES (" + m_db.plSqlSafeString(p_itemId) + ", '"+m_db.plSqlSafeString(p_body)+"')";
 				m_db.runSQL(sqlString, stmt);
 			l_ret = true;
 			stmt.close();
@@ -136,7 +136,7 @@ public class ItemArticle {
 			String sqlString;
 			boolean l_ret = false;
 			
-			sqlString = "DELETE FROM ITEM_ARTICLE where itemarticleid=" + p_itemId; 
+			sqlString = "DELETE FROM ITEM_ARTICLE where itemarticleid=" + m_db.plSqlSafeString(p_itemId); 
 			m_db.runSQL(sqlString, stmt);
 		
 			l_ret = true;

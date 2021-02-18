@@ -58,10 +58,10 @@ public class CodeAssociation {
 			stmt = p_db.m_conn.createStatement();
 
 			// query will return unique values
-			sqlString = "SELECT CODE_2_LOV_ID, lookup_codes.DESCRIPTION " + "FROM CODE_ASSOCIATIONS, lookup_codes " + "WHERE code_1_lov_id= " + code1LovId;
+			sqlString = "SELECT CODE_2_LOV_ID, lookup_codes.DESCRIPTION " + "FROM CODE_ASSOCIATIONS, lookup_codes " + "WHERE code_1_lov_id= " + p_db.plSqlSafeString(code1LovId);
 			// only use code 2 type if it is supplied
 			if (!code2Type.equals("")) {
-				sqlString += "  and code_2_type='" + code2Type + "'";
+				sqlString += "  and code_2_type='" + p_db.plSqlSafeString(code2Type) + "'";
 			}
 			sqlString += "  and CODE_ASSOCIATIONS.CODE_2_LOV_ID=lookup_codes.CODE_LOV_ID " + "ORDER BY description, sequence_no, short_code";
 
@@ -116,7 +116,7 @@ public class CodeAssociation {
 			stmt = m_db.m_conn.createStatement();
 
 			// query will return unique values
-			sqlString = "SELECT CODE_1_TYPE, CODE_1_LOV_ID,  " + "CODE_2_TYPE, CODE_2_LOV_ID " + "FROM CODE_ASSOCIATIONS " + "WHERE code_1_lov_id= " + code1LovId;
+			sqlString = "SELECT CODE_1_TYPE, CODE_1_LOV_ID,  " + "CODE_2_TYPE, CODE_2_LOV_ID " + "FROM CODE_ASSOCIATIONS " + "WHERE code_1_lov_id= " + m_db.plSqlSafeString(code1LovId);
 
 			l_rs = m_db.runSQL(sqlString, stmt);
 

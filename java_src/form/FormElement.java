@@ -30,6 +30,9 @@ public class FormElement {
 	private CachedRowSet rset;
 	private ResultSet clobRset;
 	private AppConstants appConstants;
+	
+
+	Database db;
 
 	public FormElement(String type_name, String display_name, String table_location_row, String table_location_col, String size_length, String html_name, String do_validate,
 			String default_val, String default_display_val, String num_rows, String num_cols, String group_id, String is_selected, String element_id, String is_multiselect,
@@ -80,10 +83,10 @@ public class FormElement {
 		try {
 			sqlString = "select type_name,display_name,table_location_row , table_location_col,size_lengt"
 					+ "h,html_name , do_validate,num_rows,num_cols ,form_element_group_id , is_selected" + ",is_multiselect, field_type from form_element where form_element_id="
-					+ element_id;
+					+ db.plSqlSafeString(element_id);
 			rset = db.runSQL(sqlString, stmt);
 			if (rset.next()) {
-				sqlString = "select default_display_val, default_val from form_element where form_element_id=" + element_id;
+				sqlString = "select default_display_val, default_val from form_element where form_element_id=" + db.plSqlSafeString(element_id);
 				clobRset = db.runSQLResultSet(sqlString, stmt);
 				if (clobRset.next()) {
 					FormElement _tmp = this;
@@ -123,22 +126,22 @@ public class FormElement {
 	private void setElementProperties(String type_name, String display_name, String table_location_row, String table_location_col, String size_length, String html_name,
 			String do_validate, String default_val, String default_display_val, String num_rows, String num_cols, String group_id, String is_selected, String element_id,
 			String is_multiselect, String field_type) {
-		this.type_name = type_name;
-		this.display_name = display_name;
-		this.table_location_row = table_location_row;
-		this.table_location_col = table_location_col;
-		this.size_length = size_length;
-		this.html_name = html_name;
-		this.do_validate = do_validate;
-		this.default_val = default_val;
-		this.default_display_val = default_display_val;
-		this.num_rows = num_rows;
-		this.num_cols = num_cols;
-		this.element_id = element_id;
-		element_group_id = group_id;
-		this.is_selected = is_selected;
-		this.is_multiselect = is_multiselect;
-		this.field_type = field_type;
+		this.type_name = db.plSqlSafeString(type_name);
+		this.display_name = db.plSqlSafeString(display_name);
+		this.table_location_row = db.plSqlSafeString(table_location_row);
+		this.table_location_col = db.plSqlSafeString(table_location_col);
+		this.size_length = db.plSqlSafeString(size_length);
+		this.html_name = db.plSqlSafeString(html_name);
+		this.do_validate = db.plSqlSafeString(do_validate);
+		this.default_val = db.plSqlSafeString(default_val);
+		this.default_display_val = db.plSqlSafeString(default_display_val);
+		this.num_rows = db.plSqlSafeString(num_rows);
+		this.num_cols = db.plSqlSafeString(num_cols);
+		this.element_id = db.plSqlSafeString(element_id);
+		element_group_id = db.plSqlSafeString(group_id);
+		this.is_selected = db.plSqlSafeString(is_selected);
+		this.is_multiselect = db.plSqlSafeString(is_multiselect);
+		this.field_type = db.plSqlSafeString(field_type);
 	}
 
 	public String getTypeName() {

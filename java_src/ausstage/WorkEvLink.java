@@ -81,8 +81,8 @@ public class WorkEvLink {
 		// Reset the object
 		initialise();
 
-		workId = w_id;
-		eventId = e_id;
+		workId = m_db.plSqlSafeString(w_id);
+		eventId = m_db.plSqlSafeString(e_id);
 		
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
@@ -142,13 +142,13 @@ public class WorkEvLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM EventWorkLink where " + "eventId=" + eventId;
+			sqlString = "DELETE FROM EventWorkLink where " + "eventId=" + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; workEvLinks != null && i < workEvLinks.size(); i++) {
 				WorkEvLink workEvLink = (WorkEvLink)workEvLinks.get(i);
 				
-				sqlString = "INSERT INTO EventWorkLink " + "(eventId, workid, orderby) " + "VALUES (" + eventId + ", " + workEvLink.getWorkId() + ","+workEvLink.getOrderby()+")";
+				sqlString = "INSERT INTO EventWorkLink " + "(eventId, workid, orderby) " + "VALUES (" + m_db.plSqlSafeString(eventId) + ", " + workEvLink.getWorkId() + ","+workEvLink.getOrderby()+")";
 				m_db.runSQL(sqlString, stmt);
 
 			}
@@ -177,7 +177,7 @@ public class WorkEvLink {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from eventworklink WHERE eventId = " + eventId;
+			sqlString = "DELETE from eventworklink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

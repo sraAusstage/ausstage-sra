@@ -306,14 +306,14 @@ public class Venue {
 						  + "'" + m_db.plSqlSafeString(m_street) + "','" + m_db.plSqlSafeString(m_suburb) + "','"
 						+ m_db.plSqlSafeString(m_postcode) + "'," + Integer.parseInt(m_state_id) + "," + strCapacity + "," + "'" + m_db.plSqlSafeString(m_contact) + "','"
 						+ m_db.plSqlSafeString(m_phone) + "'," + "'" + m_db.plSqlSafeString(m_fax) + "','" + m_db.plSqlSafeString(m_email) + "'," + "'"
-						+ m_db.plSqlSafeString(m_web_links) + "','" + m_db.plSqlSafeString(m_notes) + "'," + m_country + "," + "'" + m_db.plSqlSafeString(m_entered_by_user)
+						+ m_db.plSqlSafeString(m_web_links) + "','" + m_db.plSqlSafeString(m_notes) + "'," + m_db.plSqlSafeString(m_country) + "," + "'" + m_db.plSqlSafeString(m_entered_by_user)
 						+ "', NOW(),'" + m_db.plSqlSafeString(m_ddfirst_date) + "', " + "'" + m_db.plSqlSafeString(m_mmfirst_date) + "', " + "'"
 						+ m_db.plSqlSafeString(m_yyyyfirst_date) + "', " + "'" + m_db.plSqlSafeString(m_ddlast_date) + "', " + "'" + m_db.plSqlSafeString(m_mmlast_date) + "', "
 						+ "'" + m_db.plSqlSafeString(m_yyyylast_date) + "'";
-				if (!m_longitude.equals("")) sqlString += ",'" + m_longitude + "'";
-				if (!m_latitude.equals("")) sqlString += ",'" + m_latitude + "'";
-				if (!m_radius.equals("")) sqlString += ",'" + m_radius + "'";
-				if (!m_elevation.equals("")) sqlString += ",'" + m_elevation + "'";
+				if (!m_longitude.equals("")) sqlString += ",'" + m_db.plSqlSafeString(m_longitude) + "'";
+				if (!m_latitude.equals("")) sqlString += ",'" + m_db.plSqlSafeString(m_latitude) + "'";
+				if (!m_radius.equals("")) sqlString += ",'" + m_db.plSqlSafeString(m_radius) + "'";
+				if (!m_elevation.equals("")) sqlString += ",'" + m_db.plSqlSafeString(m_elevation) + "'";
 
 				sqlString += ")";
 				m_db.runSQL(sqlString, stmt);
@@ -371,7 +371,7 @@ public class Venue {
 						+ " updated_BY_USER = '" + m_db.plSqlSafeString(m_updated_by_user) + "'" + ", updated_DATE =  now()  " + ",CAPACITY=" + strCapacity + " , CONTACT='"
 						+ m_db.plSqlSafeString(m_contact) + "', " + "PHONE='" + m_db.plSqlSafeString(m_phone) + "', FAX='" + m_db.plSqlSafeString(m_fax) + "', EMAIL='"
 						+ m_db.plSqlSafeString(m_email) + "', " + "WEB_LINKS='" + m_db.plSqlSafeString(m_web_links) + "', NOTES='" + m_db.plSqlSafeString(m_notes)
-						+ "', COUNTRYID=" + m_country + ", " + "ddfirst_date= '" + m_db.plSqlSafeString(m_ddfirst_date) + "'," + "mmfirst_date= '"
+						+ "', COUNTRYID=" + m_db.plSqlSafeString(m_country) + ", " + "ddfirst_date= '" + m_db.plSqlSafeString(m_ddfirst_date) + "'," + "mmfirst_date= '"
 						+ m_db.plSqlSafeString(m_mmfirst_date) + "'," + "yyyyfirst_date= '" + m_db.plSqlSafeString(m_yyyyfirst_date) + "'," + "ddlast_date= '"
 						+ m_db.plSqlSafeString(m_ddlast_date) + "'," + "mmlast_date= '" + m_db.plSqlSafeString(m_mmlast_date) + "'," + "yyyylast_date= '"
 						+ m_db.plSqlSafeString(m_yyyylast_date) + "'";
@@ -379,26 +379,26 @@ public class Venue {
 				if (m_longitude.equals(""))
 					sqlString += ",LONGITUDE=null ";
 				else
-					sqlString += ",LONGITUDE='" + m_longitude + "' ";
+					sqlString += ",LONGITUDE='" + m_db.plSqlSafeString(m_longitude) + "' ";
 				if (m_latitude.equals(""))
 					sqlString += ",LATITUDE=null ";
 				else
-					sqlString += ",LATITUDE='" + m_latitude + "' ";
+					sqlString += ",LATITUDE='" + m_db.plSqlSafeString(m_latitude) + "' ";
 				if (m_radius.equals(""))
 					sqlString += ",RADIUS=null ";
 				else
-					sqlString += ",RADIUS='" + m_radius + "' ";
+					sqlString += ",RADIUS='" + m_db.plSqlSafeString(m_radius) + "' ";
 				if (m_elevation.equals(""))
 					sqlString += ",ELEVATION=null ";
 				else
-					sqlString += ",ELEVATION='" + m_elevation + "' ";
+					sqlString += ",ELEVATION='" + m_db.plSqlSafeString(m_elevation) + "' ";
 				if (m_regional_or_metro != null && !m_regional_or_metro.equals("")) {
-					sqlString += ",REGIONAL_OR_METRO='" + m_regional_or_metro + "' ";
+					sqlString += ",REGIONAL_OR_METRO='" + m_db.plSqlSafeString(m_regional_or_metro) + "' ";
 				} else {
 					sqlString += ",REGIONAL_OR_METRO=null ";
 				}
 
-				sqlString += "where venueid=" + m_venue_id;
+				sqlString += "where venueid=" + m_db.plSqlSafeString(m_venue_id);
 				m_db.runSQL(sqlString, stmt);
 				l_ret = true;
 				modifyVenueVenueLinks(UPDATE);
@@ -431,7 +431,7 @@ public class Venue {
 			modifyVenueVenueLinks(DELETE);
 			
 			
-			sqlString = "DELETE from VENUE WHERE venueid=" + m_venue_id;
+			sqlString = "DELETE from VENUE WHERE venueid=" + m_db.plSqlSafeString(m_venue_id);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {
@@ -511,9 +511,9 @@ public class Venue {
 			// Check to see if a Venue record exists (same name and state)
 			sqlString = "select venueid from venue where venue_name='" 
 						+ m_db.plSqlSafeString(m_venue_name) 
-						+ "' and state=" + m_state_id 
+						+ "' and state=" + m_db.plSqlSafeString(m_state_id) 
 						+ " and suburb='" + m_db.plSqlSafeString(m_suburb) 
-						+ "' and venueid!=" + (m_venue_id.equals("") ? "0" : m_venue_id);
+						+ "' and venueid!=" + (m_venue_id.equals("") ? "0" : m_db.plSqlSafeString(m_venue_id));
 			//System.out.println(sqlString);
 			l_rs = m_db.runSQL(sqlString, stmt);
 			if (l_rs.next()) {

@@ -77,7 +77,7 @@ public boolean hasValue(String str) {
   Statement     stmt = db_ausstage_for_drill.m_conn.createStatement();
   String formatted_date       = "";
   String event_id             = request.getParameter("f_event_id");
-  String contrib_id           = request.getParameter("id");
+  String contrib_id           = db_ausstage_for_drill.plSqlSafeString(request.getParameter("id"));
   String location             = "";
   Vector item_evlinks;
   Vector item_orglinks;

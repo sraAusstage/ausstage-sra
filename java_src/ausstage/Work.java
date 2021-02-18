@@ -80,7 +80,7 @@ public class Work {
 
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = (new StringBuilder("SELECT * FROM work WHERE workid = '")).append(p_id).append("'").toString();
+			sqlString = (new StringBuilder("SELECT * FROM work WHERE workid = '")).append(m_db.plSqlSafeString(p_id)).append("'").toString();
 
 			ResultSet l_rs = m_db.runSQL(sqlString, stmt);
 
@@ -261,7 +261,7 @@ public class Work {
 			//System.out.print("work.java 2");
 			l_sql = (new StringBuilder("SELECT DISTINCT organisation.organisationid, organisation.name"
 					+ " FROM organisation, workorglink WHERE "
-					+ " workorglink.organisationid = organisation.organisationid AND workorglink.workid=")).append(m_workid).append(" ").append("ORDER BY organisation.name ")
+					+ " workorglink.organisationid = organisation.organisationid AND workorglink.workid=")).append(m_db.plSqlSafeString(m_workid)).append(" ").append("ORDER BY organisation.name ")
 					.toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			while (l_rs.next()) {
@@ -394,7 +394,7 @@ public class Work {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql = (new StringBuilder("SELECT DISTINCT country.countryid, country.countryname"
 					+ " FROM country, workcountrylink WHERE "
-					+ " workcountrylink.countryid = country.countryid AND workcountrylink.workid=")).append(m_workid).append(" ").append("ORDER BY country.countryname ")
+					+ " workcountrylink.countryid = country.countryid AND workcountrylink.workid=")).append(m_db.plSqlSafeString(m_workid)).append(" ").append("ORDER BY country.countryname ")
 					.toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			
@@ -429,7 +429,7 @@ public class Work {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql = (new StringBuilder("SELECT DISTINCT contributor.contributorid, contributor.first_name, contributor.last_name"
 					+ " FROM contributor, workconlink WHERE "
-					+ " workconlink.contributorid = contributor.contributorid AND workconlink.workid=")).append(m_workid).append(" ").append("ORDER BY contributor.last_name ")
+					+ " workconlink.contributorid = contributor.contributorid AND workconlink.workid=")).append(m_db.plSqlSafeString(m_workid)).append(" ").append("ORDER BY contributor.last_name ")
 					.toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			
@@ -688,13 +688,13 @@ public class Work {
 					m_workid = l_work_id;
 					for (int i = 0; i < m_work_conlinks.size(); i++) {
 						WorkContribLink workContribLink = (WorkContribLink) m_work_conlinks.elementAt(i);
-						l_sql = (new StringBuilder("INSERT INTO workconlink (WORKID, CONTRIBUTORID, ORDER_BY) VALUES (")).append(l_work_id).append(",")
+						l_sql = (new StringBuilder("INSERT INTO workconlink (WORKID, CONTRIBUTORID, ORDER_BY) VALUES (")).append(m_db.plSqlSafeString(l_work_id)).append(",")
 								.append(workContribLink.getContribId()).append(",").append(workContribLink.getOrderBy()).append(")").toString();
 						m_db.runSQLResultSet(l_sql, stmt);
 					}
 					for (int i = 0; i < m_work_countrylinks.size(); i++) {
 						WorkCountryLink workCountryLink = (WorkCountryLink) m_work_countrylinks.elementAt(i);
-						l_sql = (new StringBuilder("INSERT INTO workcountrylink (WORKID, COUNTRYID) VALUES (")).append(l_work_id).append(",")
+						l_sql = (new StringBuilder("INSERT INTO workcountrylink (WORKID, COUNTRYID) VALUES (")).append(m_db.plSqlSafeString(l_work_id)).append(",")
 								.append(workCountryLink.getCountryId()).append(")").toString();
 						m_db.runSQLResultSet(l_sql, stmt);
 					}
@@ -702,7 +702,7 @@ public class Work {
 					modifyWorkWorkLinks(0);
 					for (int i = 0; i < m_work_orglinks.size(); i++) {
 						WorkOrganLink workOrganLink = (WorkOrganLink) m_work_orglinks.elementAt(i);
-						l_sql = (new StringBuilder("INSERT INTO workorglink (WORKID, ORGANISATIONID, ORDER_BY) VALUES (")).append(l_work_id).append(",")
+						l_sql = (new StringBuilder("INSERT INTO workorglink (WORKID, ORGANISATIONID, ORDER_BY) VALUES (")).append(m_db.plSqlSafeString(l_work_id)).append(",")
 								.append(workOrganLink.getOrganId()).append(",").append(workOrganLink.getOrderBy()).append(")").toString();
 						m_db.runSQLResultSet(l_sql, stmt);
 					}
@@ -791,33 +791,33 @@ public class Work {
 				} 
 				 
 				if (m_workid != null) {
-					l_sql = (new StringBuilder(String.valueOf(l_sql))).append("WHERE WORKID=").append(m_workid).append(" ").toString();
+					l_sql = (new StringBuilder(String.valueOf(l_sql))).append("WHERE WORKID=").append(m_db.plSqlSafeString(m_workid)).append(" ").toString();
 				}
 				m_db.runSQLResultSet(l_sql, stmt);
 				modifyWorkWorkLinks(2);
-				l_sql = (new StringBuilder("DELETE FROM workconlink WHERE workid=")).append(m_workid).toString();
+				l_sql = (new StringBuilder("DELETE FROM workconlink WHERE workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
 				m_db.runSQLResultSet(l_sql, stmt);
 				for (int i = 0; i < m_work_conlinks.size(); i++) {
 					WorkContribLink workContribLink = (WorkContribLink) m_work_conlinks.elementAt(i);
-					l_sql = (new StringBuilder("INSERT INTO workconlink (WORKID, CONTRIBUTORID, ORDER_BY) VALUES (")).append(m_workid).append(",")
+					l_sql = (new StringBuilder("INSERT INTO workconlink (WORKID, CONTRIBUTORID, ORDER_BY) VALUES (")).append(m_db.plSqlSafeString(m_workid)).append(",")
 							.append(workContribLink.getContribId()).append(",").append(workContribLink.getOrderBy()).append(")").toString();
 					m_db.runSQLResultSet(l_sql, stmt);
 				}
 
-				l_sql = (new StringBuilder("DELETE FROM workcountrylink WHERE workid=")).append(m_workid).toString();
+				l_sql = (new StringBuilder("DELETE FROM workcountrylink WHERE workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
 				m_db.runSQLResultSet(l_sql, stmt);
 				for (int i = 0; i < m_work_countrylinks.size(); i++) {
 					WorkCountryLink workCountryLink = (WorkCountryLink) m_work_countrylinks.elementAt(i);
-					l_sql = (new StringBuilder("INSERT INTO workcountrylink (WORKID, COUNTRYID) VALUES (")).append(m_workid).append(",")
+					l_sql = (new StringBuilder("INSERT INTO workcountrylink (WORKID, COUNTRYID) VALUES (")).append(m_db.plSqlSafeString(m_workid)).append(",")
 							.append(workCountryLink.getCountryId()).append(")").toString();
 					m_db.runSQLResultSet(l_sql, stmt);
 				}
 
-				l_sql = (new StringBuilder("DELETE FROM workorglink WHERE workid=")).append(m_workid).toString();
+				l_sql = (new StringBuilder("DELETE FROM workorglink WHERE workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
 				m_db.runSQLResultSet(l_sql, stmt);
 				for (int i = 0; i < m_work_orglinks.size(); i++) {
 					WorkOrganLink workOrganLink = (WorkOrganLink) m_work_orglinks.elementAt(i);
-					l_sql = (new StringBuilder("INSERT INTO workorglink (WORKID, ORGANISATIONID, ORDER_BY) VALUES (")).append(m_workid).append(",")
+					l_sql = (new StringBuilder("INSERT INTO workorglink (WORKID, ORGANISATIONID, ORDER_BY) VALUES (")).append(m_db.plSqlSafeString(m_workid)).append(",")
 							.append(workOrganLink.getOrganId()).append(",").append(workOrganLink.getOrderBy()).append(")").toString();
 					m_db.runSQLResultSet(l_sql, stmt);
 				}
@@ -845,14 +845,14 @@ public class Work {
 		try {
 			if (!isInUse()) {
 				Statement stmt = m_db.m_conn.createStatement();
-				l_sql = (new StringBuilder("DELETE FROM workconlink WHERE workid=")).append(m_workid).toString();
+				l_sql = (new StringBuilder("DELETE FROM workconlink WHERE workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
 				m_db.runSQLResultSet(l_sql, stmt);
-				l_sql = (new StringBuilder("DELETE FROM workcountrylink WHERE workid=")).append(m_workid).toString();
+				l_sql = (new StringBuilder("DELETE FROM workcountrylink WHERE workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
 				m_db.runSQLResultSet(l_sql, stmt);
-				l_sql = (new StringBuilder("DELETE FROM workorglink WHERE workid=")).append(m_workid).toString();
+				l_sql = (new StringBuilder("DELETE FROM workorglink WHERE workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
 				m_db.runSQLResultSet(l_sql, stmt);
 				modifyWorkWorkLinks(1);
-				l_sql = (new StringBuilder("DELETE FROM work WHERE workid=")).append(m_workid).toString();
+				l_sql = (new StringBuilder("DELETE FROM work WHERE workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
 				m_db.runSQLResultSet(l_sql, stmt);
 				stmt.close();
 				l_ret = true;
@@ -876,8 +876,8 @@ public class Work {
 		int counter = 0;
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			sqlString = (new StringBuilder("select sum(c.counter) counter from ( select count(*) as counter from itemworklin" + "k where workid=")).append(m_workid).toString();
-			sqlString = (new StringBuilder(String.valueOf(sqlString))).append(" UNION ALL select count(*) as counter from eventworklink where workid=").append(m_workid)
+			sqlString = (new StringBuilder("select sum(c.counter) counter from ( select count(*) as counter from itemworklin" + "k where workid=")).append(m_db.plSqlSafeString(m_workid)).toString();
+			sqlString = (new StringBuilder(String.valueOf(sqlString))).append(" UNION ALL select count(*) as counter from eventworklink where workid=").append(m_db.plSqlSafeString(m_workid))
 					.append(") c").toString();
 			CachedRowSet l_rs = m_db.runSQL(sqlString, stmt);
 			l_rs.next();
@@ -938,7 +938,7 @@ public class Work {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql = (new StringBuilder("SELECT DISTINCT organisation.organisationid, WORKORGLINKID, workorglink.ORDER_BY"
 					+ " FROM organisation, workorglink, work WHERE work.workid = workorglink.workid AND"
-					+ " workorglink.organisationid = organisation.organisationid AND work.workid=")).append(m_workid).append(" ").append("ORDER BY WORKORGLINK.ORDER_BY ")
+					+ " workorglink.organisationid = organisation.organisationid AND work.workid=")).append(m_db.plSqlSafeString(m_workid)).append(" ").append("ORDER BY WORKORGLINK.ORDER_BY ")
 					.toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			m_work_orglinks.removeAllElements();
@@ -970,7 +970,7 @@ public class Work {
 					+ ", work "+
 					"WHERE work.workid = workcountrylink.workid "+
 					"AND workcountrylink.countryid = country.countryid "+
-					"AND work.workid=")).append(m_workid)
+					"AND work.workid=")).append(m_db.plSqlSafeString(m_workid))
 					.append(" ORDER BY countryname ").toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			m_work_countrylinks.removeAllElements();
@@ -1003,7 +1003,7 @@ public class Work {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql = (new StringBuilder("SELECT DISTINCT WORKCONLINKID, workconlink.ORDER_BY FROM contributor, workconlin"
-					+ "k, work WHERE work.workid = workconlink.workid AND workconlink.contributorid = c" + "ontributor.contributorid AND work.workid=")).append(m_workid)
+					+ "k, work WHERE work.workid = workconlink.workid AND workconlink.contributorid = c" + "ontributor.contributorid AND work.workid=")).append(m_db.plSqlSafeString(m_workid))
 					.append(" ").append("ORDER BY workconlink.ORDER_BY, contributor.last_name, contributor.first_name ").toString();
 			l_rs = m_db.runSQLResultSet(l_sql, stmt);
 			m_work_conlinks.removeAllElements();
@@ -1033,7 +1033,7 @@ public class Work {
 			Statement stmt = m_db.m_conn.createStatement();
 			l_sql =   " SELECT DISTINCT wl.workworklinkid "
 					+ " FROM workworklink wl, work w"
-					+ " WHERE (wl.workid = " + m_workid + " || wl.childid = " + m_workid + " )" 
+					+ " WHERE (wl.workid = " + m_db.plSqlSafeString(m_workid) + " || wl.childid = " + m_db.plSqlSafeString(m_workid) + " )" 
 					+ " AND wl.childid = w.workid"
 					+ " ORDER BY REPLACE(REPLACE(w.work_title, \"'\",\"\"), '\"', \"\") ASC" ;
 

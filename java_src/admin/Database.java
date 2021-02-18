@@ -118,8 +118,10 @@ public class Database {
 				p_string = common.ReplaceStrWithStr(p_string, "&", "'||CHR(38)||'");
 			}
 		} else if (p_string != null && !p_string.equals("")) {
-			p_string = common.ReplaceStrWithStr(p_string, "'", "\\'");
+//			p_string = common.ReplaceStrWithStr(p_string, "'", "\\'");
+			p_string = p_string.replaceAll("[\\\\';]", "\\\\$0");
 		}
+
 		return p_string;
 	}
 

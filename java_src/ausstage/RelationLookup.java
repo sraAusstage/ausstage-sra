@@ -277,7 +277,7 @@ public class RelationLookup {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = "SELECT * FROM relation_lookup where "
-						+ " code_type = '" + p_code_type + "'";
+						+ " code_type = '" + m_db.plSqlSafeString(p_code_type) + "'";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);
@@ -311,9 +311,9 @@ public class RelationLookup {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = "SELECT distinct relation_lookup.* FROM relation_lookup, " + p_table_to_check + " " 
-						+ "where relation_lookup.code_type = '" + p_code_type + "' "
-						+ " AND relation_lookup.relationlookupid=" + p_table_to_check + "." + p_link_column + " ";
+			sqlString = "SELECT distinct relation_lookup.* FROM relation_lookup, " + m_db.plSqlSafeString(p_table_to_check) + " " 
+						+ "where relation_lookup.code_type = '" + m_db.plSqlSafeString(p_code_type) + "' "
+						+ " AND relation_lookup.relationlookupid=" + m_db.plSqlSafeString(p_table_to_check) + "." + m_db.plSqlSafeString(p_link_column) + " ";
 			l_rs = m_db.runSQL(sqlString, stmt);
 			stmt.close();
 			return (l_rs);

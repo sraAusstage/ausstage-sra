@@ -87,8 +87,8 @@ public class OrgEvLink {
 		// Reset the object
 		initialise();
 
-		organisationId = p_id;
-		eventId = e_id;
+		organisationId = m_db.plSqlSafeString(p_id);
+		eventId = m_db.plSqlSafeString(e_id);
 		organisationBean = new Organisation(m_db);
 		organisationBean.load(Integer.parseInt(organisationId));
 
@@ -159,7 +159,7 @@ public class OrgEvLink {
 			String l_function;
 			String l_artisticFunction;
 
-			sqlString = "DELETE FROM OrgEvLink where " + "eventId=" + eventId;
+			sqlString = "DELETE FROM OrgEvLink where " + "eventId=" + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; orgEvLinks != null && i < orgEvLinks.size(); i++) {
@@ -206,7 +206,7 @@ public class OrgEvLink {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from OrgEvLink WHERE eventId = " + eventId;
+			sqlString = "DELETE from OrgEvLink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

@@ -9,9 +9,14 @@
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />
 <%
 	admin.ValidateLogin login = (admin.ValidateLogin) session.getAttribute("login");
+
+	if (!session.getAttribute("permissions").toString().contains("SQL Editor") && !session.getAttribute("permissions").toString().contains("Administrators")) {
+		response.sendError(403, "Permission Denied" );
+		return;
+	}
 	admin.FormatPage pageFormater = (admin.FormatPage) session.getAttribute("pageFormater");
 	ausstage.Database db_ausstage = new ausstage.Database();
-	db_ausstage.connDatabase(AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
+	db_ausstage.connReadOnlyDatabase(AusstageCommon.AUSSTAGE_DB_USER_NAME, AusstageCommon.AUSSTAGE_DB_PASSWORD);
 	ausstage.AusstageReports sqlInterface = null;
 
 	out.println("SQL Interface");

@@ -84,7 +84,7 @@ public class SecContentIndicatorEvLink {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
 
-			sqlString = " SELECT * FROM SecContentIndicatorPreferred" + " WHERE SecContentIndicatorPreferredId = " + p_id;
+			sqlString = " SELECT * FROM SecContentIndicatorPreferred" + " WHERE SecContentIndicatorPreferredId = " + m_db.plSqlSafeString(p_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -137,12 +137,12 @@ public class SecContentIndicatorEvLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM SecContentIndicatorEvLink where " + "eventId=" + eventId;
+			sqlString = "DELETE FROM SecContentIndicatorEvLink where " + "eventId=" + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; secContentIndicatorEvLinks != null && i < secContentIndicatorEvLinks.size(); i++) {
 				evLink = (SecContentIndicatorEvLink) secContentIndicatorEvLinks.get(i);
-				sqlString = "INSERT INTO SecContentIndicatorEvLink " + "(SecContentIndicatorPreferredId, eventId) VALUES (" + evLink.getSecContentIndPrefId() + ", " + eventId
+				sqlString = "INSERT INTO SecContentIndicatorEvLink " + "(SecContentIndicatorPreferredId, eventId) VALUES (" + evLink.getSecContentIndPrefId() + ", " + m_db.plSqlSafeString(eventId)
 						+ ")";
 				m_db.runSQL(sqlString, stmt);
 			}
@@ -172,7 +172,7 @@ public class SecContentIndicatorEvLink {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from SecContentIndicatorEvLink WHERE eventId = " + eventId;
+			sqlString = "DELETE from SecContentIndicatorEvLink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

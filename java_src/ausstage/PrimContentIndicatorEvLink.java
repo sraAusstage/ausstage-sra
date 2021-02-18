@@ -78,8 +78,8 @@ public class PrimContentIndicatorEvLink {
 		// Reset the object
 		initialise();
 
-		primContentIndicatorId = p_id;
-		eventId = e_id;
+		primContentIndicatorId = m_db.plSqlSafeString(p_id);
+		eventId = m_db.plSqlSafeString(e_id);
 		primaryContentInd.load(Integer.parseInt(primContentIndicatorId));
 
 		try {
@@ -138,12 +138,12 @@ public class PrimContentIndicatorEvLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM PrimContentIndicatorEvLink where " + "eventId=" + eventId;
+			sqlString = "DELETE FROM PrimContentIndicatorEvLink where " + "eventId=" + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 
 			for (int i = 0; primContentIndicatorEvLinks != null && i < primContentIndicatorEvLinks.size(); i++) {
 				evLink = (PrimContentIndicatorEvLink) primContentIndicatorEvLinks.get(i);
-				sqlString = "INSERT INTO PrimContentIndicatorEvLink " + "(primContentIndicatorId, eventId) VALUES (" + evLink.getPrimContentIndicatorId() + ", " + eventId + ")";
+				sqlString = "INSERT INTO PrimContentIndicatorEvLink " + "(primContentIndicatorId, eventId) VALUES (" + evLink.getPrimContentIndicatorId() + ", " + m_db.plSqlSafeString(eventId) + ")";
 				m_db.runSQL(sqlString, stmt);
 			}
 			l_ret = true;
@@ -172,7 +172,7 @@ public class PrimContentIndicatorEvLink {
 			String sqlString;
 			String ret;
 
-			sqlString = "DELETE from PrimContentIndicatorEvLink WHERE eventId = " + eventId;
+			sqlString = "DELETE from PrimContentIndicatorEvLink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

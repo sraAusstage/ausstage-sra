@@ -87,7 +87,7 @@ public class EventEventLink {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = " SELECT * FROM EventEventLink "
-				+ " WHERE eventeventlinkId = " + p_eventeventlink_id;
+				+ " WHERE eventeventlinkId = " + m_db.plSqlSafeString(p_eventeventlink_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -145,9 +145,9 @@ public class EventEventLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM EventEventLink where " + "eventId=" + p_eventId;
+			sqlString = "DELETE FROM EventEventLink where " + "eventId=" + m_db.plSqlSafeString(p_eventId);
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE FROM EventEventLink where " + "childId=" + p_eventId;
+			sqlString = "DELETE FROM EventEventLink where " + "childId=" + m_db.plSqlSafeString(p_eventId);
 			m_db.runSQL(sqlString, stmt);
 			if (p_links != null) {
 				for (int i = 0; i < p_links.size(); i++) {
@@ -186,9 +186,9 @@ public class EventEventLink {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 			//String ret;
-			sqlString = "DELETE from EventEventLink WHERE eventId = " + eventId;
+			sqlString = "DELETE from EventEventLink WHERE eventId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE from EventEventLink WHERE childId = " + eventId;
+			sqlString = "DELETE from EventEventLink WHERE childId = " + m_db.plSqlSafeString(eventId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

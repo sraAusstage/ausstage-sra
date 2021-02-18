@@ -4,6 +4,9 @@ import admin.*;
 import java.io.*;
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
+
+import com.ibm.db2.jcc.am.db;
+
 import sun.jdbc.rowset.CachedRowSet;
 
 public class FormSubscription {
@@ -32,7 +35,7 @@ public class FormSubscription {
 	public boolean getRequestedApproval(String group_id) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			sqlString = "select group_id from subscription_groups where approval_requested='t' and group_" + "id=" + group_id;
+			sqlString = "select group_id from subscription_groups where approval_requested='t' and group_" + "id=" + m_db.plSqlSafeString(group_id);
 			CachedRowSet rset = m_db.runSQL(sqlString, stmt);
 			boolean ret;
 			if (rset.next()) {
@@ -56,7 +59,7 @@ public class FormSubscription {
 	public boolean isSubscriptionApproved(String group_id) {
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
-			sqlString = "select group_id from subscription_groups where is_approved='f' and group_id=" + group_id;
+			sqlString = "select group_id from subscription_groups where is_approved='f' and group_id=" + m_db.plSqlSafeString(group_id);
 			rset = m_db.runSQL(sqlString, stmt);
 			boolean ret;
 			if (rset.next()) {
@@ -88,14 +91,14 @@ public class FormSubscription {
 			Statement stmt3 = m_db.m_conn.createStatement();
 			Statement stmt4 = m_db.m_conn.createStatement();
 			Statement stmt_for_clob = m_db.m_conn.createStatement();
-			sqlString = "select * from subscription_groups where group_id=" + group_id;
+			sqlString = "select * from subscription_groups where group_id=" + m_db.plSqlSafeString(group_id);
 			rset = m_db.runSQL(sqlString, stmt1);
 			if (rset.next()) {
 				sqlString = "insert into subscription_groups (group_name, real_group_id , is_approved, approv" + "al_requested, modified_by_auth_id)  values ('"
-						+ rset.getString("group_name") + "'," + real_group_id_val + ",'" + is_approved_val + "','" + approval_requested_val + "'," + modified_by_auth_id_val + ")";
+						+ rset.getString("group_name") + "'," + m_db.plSqlSafeString(real_group_id_val) + ",'" + m_db.plSqlSafeString(is_approved_val) + "','" + m_db.plSqlSafeString(approval_requested_val) + "'," + m_db.plSqlSafeString(modified_by_auth_id_val) + ")";
 				m_db.runSQL(sqlString, stmt2);
 				unApprovedGroupId = m_db.getInsertedIndexValue(stmt2, "grp_id_seq");
-				sqlString = "select * from subscription_groups_rel where group_id=" + group_id;
+				sqlString = "select * from subscription_groups_rel where group_id=" + m_db.plSqlSafeString(group_id);
 				CachedRowSet crset1 = m_db.runSQL(sqlString, stmt2);
 				if (crset1.next()) {
 					do {
@@ -104,7 +107,7 @@ public class FormSubscription {
 					} while (crset1.next());
 				}
 				sqlString = "select subscribers.subs_id, subscribers.name, subscribers.email from subscribers"
-						+ " , subscription_groups_rel where subscription_groups_rel.group_id=" + group_id + "and subscription_groups_rel.subs_id=subscribers.subs_id";
+						+ " , subscription_groups_rel where subscription_groups_rel.group_id=" + m_db.plSqlSafeString(group_id) + "and subscription_groups_rel.subs_id=subscribers.subs_id";
 				crset1 = m_db.runSQL(sqlString, stmt2);
 				if (crset1.next()) {
 					do {

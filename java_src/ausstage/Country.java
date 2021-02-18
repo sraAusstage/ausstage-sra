@@ -307,7 +307,7 @@ public class Country {
 		String l_ret;
 		String orderByCase = "";
 		
-		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+firstCountry+"%' THEN 1 ELSE 2 END, "; }
+		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+ m_db.plSqlSafeString(firstCountry) +"%' THEN 1 ELSE 2 END, "; }
 		
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
@@ -348,7 +348,7 @@ public class Country {
 		String l_ret;
 		String orderByCase = "";
 		
-		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+firstCountry+"%' THEN 1 ELSE 2 END, "; }
+		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+m_db.plSqlSafeString(firstCountry)+"%' THEN 1 ELSE 2 END, "; }
 		
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
@@ -389,7 +389,7 @@ public class Country {
 		String l_ret;
 		String orderByCase = "";
 		
-		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+firstCountry+"%' THEN 1 ELSE 2 END, "; }
+		if (!firstCountry.equals("")){ orderByCase = "CASE WHEN countryname LIKE '"+m_db.plSqlSafeString(firstCountry)+"%' THEN 1 ELSE 2 END, "; }
 		
 		try {
 			Statement stmt = m_db.m_conn.createStatement();
@@ -436,9 +436,9 @@ public class Country {
 
 			// first lets delete the event link for this datasource
 			if (isNationalPlayOrigin)
-				l_sql = "INSERT INTO PLAYEVLINK " + "(EVENTID, COUNTRYID) " + "values (" + p_eventid + "," + m_country_id + ")";
+				l_sql = "INSERT INTO PLAYEVLINK " + "(EVENTID, COUNTRYID) " + "values (" + m_db.plSqlSafeString(p_eventid) + "," + m_country_id + ")";
 			else {
-				l_sql = "INSERT INTO PRODUCTIONEVLINK " + "(EVENTID, COUNTRYID) " + "values (" + p_eventid + "," + m_country_id + ")";
+				l_sql = "INSERT INTO PRODUCTIONEVLINK " + "(EVENTID, COUNTRYID) " + "values (" + m_db.plSqlSafeString(p_eventid) + "," + m_country_id + ")";
 			}
 
 			m_db.runSQL(l_sql, l_stmt);
@@ -459,9 +459,9 @@ public class Country {
 			Statement l_stmt = m_db.m_conn.createStatement();
 
 			if (isNationalPlayOrigin)
-				l_sql = "DELETE from PLAYEVLINK WHERE EVENTID = " + p_eventid;
+				l_sql = "DELETE from PLAYEVLINK WHERE EVENTID = " + m_db.plSqlSafeString(p_eventid);
 			else
-				l_sql = "DELETE from PRODUCTIONEVLINK WHERE EVENTID = " + p_eventid;
+				l_sql = "DELETE from PRODUCTIONEVLINK WHERE EVENTID = " + m_db.plSqlSafeString(p_eventid);
 
 			m_db.runSQL(l_sql, l_stmt);
 			l_stmt.close();

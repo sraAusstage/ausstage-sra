@@ -278,11 +278,11 @@ public class ContentIndicator {
 	}
 
 	public void setName(String p_name) {
-		m_name = p_name;
+		m_name = m_db.plSqlSafeString(p_name);
 	}
 
 	public void setDescription(String p_description) {
-		m_description = p_description;
+		m_description = m_db.plSqlSafeString(p_description);
 	}
 
 	public void setPrefId(int p_id) {
@@ -290,7 +290,7 @@ public class ContentIndicator {
 	}
 
 	public void setNewPrefName(String p_name) {
-		m_new_pref_name = p_name;
+		m_new_pref_name = m_db.plSqlSafeString(p_name);
 	}
 
 	// /////////////////////////////

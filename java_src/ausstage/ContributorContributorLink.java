@@ -72,7 +72,7 @@ public class ContributorContributorLink {
 			Statement stmt = m_db.m_conn.createStatement();
 
 			sqlString = " SELECT * FROM ContribContribLink" 
-					+ " WHERE ContribContribLinkId = " + p_contributorcontributorlink_id;
+					+ " WHERE ContribContribLinkId = " + m_db.plSqlSafeString(p_contributorcontributorlink_id);
 			l_rs = m_db.runSQL(sqlString, stmt);
 
 			if (l_rs.next()) {
@@ -130,9 +130,9 @@ public class ContributorContributorLink {
 			String sqlString;
 			boolean l_ret = false;
 
-			sqlString = "DELETE FROM ContribContribLink where contributorId=" + p_contributorId;
+			sqlString = "DELETE FROM ContribContribLink where contributorId=" + m_db.plSqlSafeString(p_contributorId);
 			m_db.runSQL(sqlString, stmt);
-			sqlString = "DELETE FROM ContribContribLink where childId=" + p_contributorId;
+			sqlString = "DELETE FROM ContribContribLink where childId=" + m_db.plSqlSafeString(p_contributorId);
 			m_db.runSQL(sqlString, stmt);
 
 			if (p_links != null) {
@@ -173,10 +173,10 @@ public class ContributorContributorLink {
 			Statement stmt = m_db.m_conn.createStatement();
 			String sqlString;
 
-			sqlString = "DELETE from ContribContribLink WHERE contributorId = " + contributorId;
+			sqlString = "DELETE from ContribContribLink WHERE contributorId = " + m_db.plSqlSafeString(contributorId);
 			m_db.runSQL(sqlString, stmt);
 			
-			sqlString = "DELETE from ContribContribLink WHERE childId = " + contributorId;
+			sqlString = "DELETE from ContribContribLink WHERE childId = " + m_db.plSqlSafeString(contributorId);
 			m_db.runSQL(sqlString, stmt);
 			stmt.close();
 		} catch (Exception e) {

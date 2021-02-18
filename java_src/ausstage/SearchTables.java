@@ -134,7 +134,7 @@ public class SearchTables {
 	 *******************************/
 	public CachedRowSet getResult() {
 		m_sql_string = null;
-		m_sql_string = "select " + getSelectString() + " from " + getTables() + " where " + getClause() + m_dateClause;
+		m_sql_string = "select " + getSelectString() + " from " + getTables() + " where " + getClause() + m_db.plSqlSafeString(m_dateClause);
 		try {
 			Statement l_stmt = m_db.m_conn.createStatement();
 			m_crset = m_db.runSQL(new String(m_sql_string.toString()), l_stmt);

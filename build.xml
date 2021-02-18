@@ -61,4 +61,36 @@
 		<mkdir dir="C:\AusstageUpgrade\titan" />
 		<jar destfile="C:\AusstageUpgrade\titan\ausstage_custom.jar" basedir="classes"/>
 	</target>
+	
+	<target name="UAT Build" description="create jar for UAT" >
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_USER_NAME = ".*";' 
+			replace='public static final String AUSSTAGE_DB_USER_NAME = "ausstage";' byline="true" />
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "4rkAroo1$4us";' byline="true" />
+		<replaceregexp file="${src}/admin/AppConstants.java" 
+			match='iniFile.readIni\(".*"\);' 
+			replace='iniFile.readIni("/opt/ausstage/cmjava.ini");' byline="true" />
+		
+		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
+		<mkdir dir="C:\AusstageUpgrade\test" />
+		<jar destfile="C:\AusstageUpgrade\test\ausstage_custom.jar" basedir="classes"/>
+	</target>
+	
+	<target name="Prod Build" description="create jar for Prod" >
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_USER_NAME = ".*";' 
+			replace='public static final String AUSSTAGE_DB_USER_NAME = "ausstage";' byline="true" />
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "Prd4rkAroo1$4us";' byline="true" />
+		<replaceregexp file="${src}/admin/AppConstants.java" 
+			match='iniFile.readIni\(".*"\);' 
+			replace='iniFile.readIni("/opt/ausstage/cmjava.ini");' byline="true" />
+		
+		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
+		<mkdir dir="C:\AusstageUpgrade\prod" />
+		<jar destfile="C:\AusstageUpgrade\prod\ausstage_custom.jar" basedir="classes"/>
+	</target>
 </project>
