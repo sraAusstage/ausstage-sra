@@ -6,6 +6,7 @@
 	<property name="server-tomcat-path" value="C:\AusstageUpgrade\apache-tomcat-9.0.31" />
 	<!-- <property name="server-tomcat-path" value="\\${target-server}\Ausstage\apache-tomcat-6.0.32" />-->
 	<property name="libs" value="C:\AusstageUpgrade\workspace\au.edu.flinders.ausstage\lib" />
+	<property file="build.properties" />
 
 	<path id="project-classpath">
 		<fileset dir="${libs}" includes="*.jar" />		
@@ -38,7 +39,7 @@
 	</target>
 	
 	<target name="restart local dev" description="restart the local VM">
-		<get src="http://${target-server}:8080/reload.jsp" dest="blank" />
+		<get src="http://${target-server}:8090/reload.jsp" dest="blank" />
 		<delete file="blank" />
 		
 		<echo message="Please wait for Tomcat to restart..." />
@@ -49,13 +50,13 @@
 	<target name="Titan Build" description="create jar for titan" >
 		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
 			match='public static final String AUSSTAGE_DB_USER_NAME = ".*";' 
-			replace='public static final String AUSSTAGE_DB_USER_NAME = "ausstage";' byline="true" />
+			replace='public static final String AUSSTAGE_DB_USER_NAME = "root";' byline="true" />
 		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
 			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
-			replace='public static final String AUSSTAGE_DB_PASSWORD = "arkaroo";' byline="true" />
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "root";' byline="true" />
 		<replaceregexp file="${src}/admin/AppConstants.java" 
 			match='iniFile.readIni\(".*"\);' 
-			replace='iniFile.readIni("/home1/ausstage/cmjava.ini");' byline="true" />
+			replace='iniFile.readIni("D:/AusStage/cmjava.ini");' byline="true" />
 		
 		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
 		<mkdir dir="C:\AusstageUpgrade\titan" />
@@ -68,14 +69,14 @@
 			replace='public static final String AUSSTAGE_DB_USER_NAME = "ausstage";' byline="true" />
 		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
 			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
-			replace='public static final String AUSSTAGE_DB_PASSWORD = "4rkAroo1$4us";' byline="true" />
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "${UAT.AUSSTAGE_DB_PASSWORD}";' byline="true" />
 		<replaceregexp file="${src}/admin/AppConstants.java" 
 			match='iniFile.readIni\(".*"\);' 
 			replace='iniFile.readIni("/opt/ausstage/cmjava.ini");' byline="true" />
 		
 		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
-		<mkdir dir="C:\AusstageUpgrade\test" />
-		<jar destfile="C:\AusstageUpgrade\test\ausstage_custom.jar" basedir="classes"/>
+		<mkdir dir="C:\AusstageUpgrade\jars\test" />
+		<jar destfile="C:\AusstageUpgrade\jars\test\ausstage_custom.jar" basedir="classes"/>
 	</target>
 	
 	<target name="Prod Build" description="create jar for Prod" >
@@ -84,13 +85,13 @@
 			replace='public static final String AUSSTAGE_DB_USER_NAME = "ausstage";' byline="true" />
 		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
 			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
-			replace='public static final String AUSSTAGE_DB_PASSWORD = "Prd4rkAroo1$4us";' byline="true" />
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "${PROD.AUSSTAGE_DB_PASSWORD}";' byline="true" />
 		<replaceregexp file="${src}/admin/AppConstants.java" 
 			match='iniFile.readIni\(".*"\);' 
 			replace='iniFile.readIni("/opt/ausstage/cmjava.ini");' byline="true" />
 		
 		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
-		<mkdir dir="C:\AusstageUpgrade\prod" />
-		<jar destfile="C:\AusstageUpgrade\prod\ausstage_custom.jar" basedir="classes"/>
+		<mkdir dir="C:\AusstageUpgrade\jars\prod" />
+		<jar destfile="C:\AusstageUpgrade\jars\prod\ausstage_custom.jar" basedir="classes"/>
 	</target>
 </project>

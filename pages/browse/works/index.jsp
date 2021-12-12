@@ -136,7 +136,7 @@
   int recordCount = Integer.parseInt(l_rs.getString(1));
 %>
 <table class="browse-table">
-  <form name="form_searchSort_report" method="POST" action=".">
+  <form name="form_searchSort_report" method="post" action=".">
   <%-- These are hidden inputs that will be populated by the reSortData() JavaScript function. --%>
     <input type="hidden" name="col" value="<%=sortCol%>">
     <input type="hidden" name="order" value="<%=sortOrd%>">

@@ -755,7 +755,7 @@ public class AdvancedSearch {
 		// the where clause without doing the decode again.
 
 		m_sqlString = "SELECT events.eventid, events.event_name, events.status, venue.venue_name, venue.suburb, "
-				+ " venue.state as state_id, states.state as state, events.first_date ,events.ddfirst_date ,events.mmfirst_date ,events.yyyyfirst_date , if(max(i.ITEM_URL) is null,if(max(i.itemid) is null,'N','Y'),'ONLINE')  ASSOC_ITEM, "
+				+ " states.state as state, venue.state as state_id, concat(events.first_date, '') as first_date ,events.ddfirst_date ,events.mmfirst_date ,events.yyyyfirst_date , if(max(i.ITEM_URL) is null,if(max(i.itemid) is null,'N','Y'),'ONLINE')  ASSOC_ITEM, "
 				+ " count(distinct ie.itemid) as total, country.countryname  " 
 				+ " FROM " + m_db.plSqlSafeString(m_sqlFromString)
 				+ " INNER JOIN country ON (venue.countryid = country.countryid)"
@@ -771,7 +771,7 @@ public class AdvancedSearch {
 
 		// add event date clause onto the end
 		if (!m_eventDateClause.equals("")) {
-			m_sqlString += " " + m_db.plSqlSafeString(m_eventDateClause);
+			m_sqlString += " " + m_eventDateClause;
 		}
 
 		m_sqlString += " group by  events.eventid, events.event_name, events.status, venue.venue_name, venue.suburb," + " venue.state , " + " states.state, events.first_date";

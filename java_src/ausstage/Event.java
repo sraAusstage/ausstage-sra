@@ -195,7 +195,7 @@ public class Event {
 
 		try {
 
-			sqlString = "select distinct events.eventid, events.event_name,  events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date, events.first_date, "
+			sqlString = "select distinct events.eventid, events.event_name,  events.ddfirst_date, events.mmfirst_date, events.yyyyfirst_date, concat(events.first_date, '') as first_date, "
 					+ "venue.venue_name, venue.suburb, states.state, "
 					+ "concat_ws(', ', venue.venue_name, venue.suburb, if(states.state='O/S', country.countryname, states.state)) venue " 
 					+ "from events, conevlink, contributor, states, venue " 

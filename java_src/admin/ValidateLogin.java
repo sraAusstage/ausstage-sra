@@ -72,7 +72,7 @@ public class ValidateLogin {
 		} else {
 			logonSuccess = checkAuthors(VALIDATE, p_username, p_password, p_db);
 		}
-
+		System.out.println("check server backend");
 		return logonSuccess;
 	}
 

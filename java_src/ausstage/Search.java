@@ -1241,6 +1241,7 @@ public class Search {
 
 	public void setKeyWord(String p_key_word) {
 		m_key_word = m_db.plSqlSafeString(p_key_word.trim());
+//		m_key_word = p_key_word.trim();
 		
 	}
 

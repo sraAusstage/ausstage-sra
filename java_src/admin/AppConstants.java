@@ -150,6 +150,8 @@ public class AppConstants implements DatabaseType {
 	public static int DATABASE_TYPE = 4;
 	public static String DB_CONNECTION_STRING;	
 	public static String DB_READONLY_CONNECTION_STRING;
+	public static String DB_READONLY_USER_NAME;
+	public static String DB_READONLY_USER_PASSWORD;
 	public static String DB_PUBLIC_USER_NAME;
 	public static String DB_PUBLIC_USER_PASSWORD;
 	public static String DB_ADMIN_USER_NAME;
@@ -237,9 +239,9 @@ public class AppConstants implements DatabaseType {
 				// FileTools fileTools = new FileTools();
 				IniFile iniFile = new IniFile();
 
-				iniFile.readIni("C:/AusstageUpgrade/cmjava.ini");
+				iniFile.readIni("D:/AusStage/cmjava.ini");
 				//this will be important for PROD???
-				//iniFile.readIni("C:/AusstageUpgrade/cmjava.ini");
+				//iniFile.readIni("D:/AusStage/cmjava.ini");
 				
 				iniFile.setHeader("GENERAL");
 				SITE_NAME = iniFile.getItem("SITE_NAME");
@@ -257,6 +259,8 @@ public class AppConstants implements DatabaseType {
 				DB_ADMIN_USER_PASSWORD = iniFile.getItem("DB_ADMIN_USER_PASSWORD");
 				DB_CONNECTION_STRING = iniFile.getItem("DB_CONNECTION_STRING");
 				DB_READONLY_CONNECTION_STRING = iniFile.getItem("DB_READONLY_CONNECTION_STRING");
+				DB_READONLY_USER_NAME = iniFile.getItem("DB_READONLY_USER_NAME");
+				DB_READONLY_USER_PASSWORD = iniFile.getItem("DB_READONLY_USER_PASSWORD");
 
 				iniFile.setHeader("CUSTOM");
 				LINK_TO_CUSTOM_MAIN_PAGE = (new Boolean(iniFile.getItem("LINK_TO_CUSTOM_MAIN_PAGE"))).booleanValue();

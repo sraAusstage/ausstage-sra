@@ -290,7 +290,7 @@ public class Venue {
 			// required fields
 			if (validateObjectForDB()) {
 				// As the notes is a text area, need to limit characters
-				if (m_notes.length() >= 300) m_notes = m_notes.substring(0, 299);
+				if (m_notes.length() >= 4000) m_notes = m_notes.substring(0, 3999);
 				sqlString = "INSERT INTO VENUE (VENUE_NAME, OTHER_NAMES1, OTHER_NAMES2, OTHER_NAMES3, "
 						+ "STREET, SUBURB, POSTCODE, STATE, CAPACITY, CONTACT, PHONE, "
 						+ "FAX, EMAIL, WEB_LINKS, NOTES, COUNTRYID, entered_by_user, entered_date, ddfirst_date, mmfirst_date, yyyyfirst_date, ddlast_date, mmlast_date, yyyylast_date ";
@@ -353,7 +353,7 @@ public class Venue {
 			// required fields
 			if (validateObjectForDB()) {
 				// As the notes is a text area, need to limit characters
-				if (m_notes.length() >= 300) m_notes = m_notes.substring(0, 299);
+				if (m_notes.length() >= 4000) m_notes = m_notes.substring(0, 3999);
 
 				String strCapacity = "";
 				if (m_capacity.equals("null")) {
