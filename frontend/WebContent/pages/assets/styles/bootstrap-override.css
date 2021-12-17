@@ -1,0 +1,89 @@
+.label{
+	padding:inherit;
+	font-size:inherit;
+	font-weight:inherit;
+	text-align:inherit;
+	line-height:inherit;
+}
+
+*{
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: content-box;
+}
+
+body{
+	display: block;
+    font-family: helvetica, arial, verdana;
+    font-size: 12px;
+    line-height: 140%;
+    color: #333333;
+    background-color: #ffffff;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    min-width: 320px;
+
+
+}
+
+/*hide the file upload button.*/
+.note-group-select-from-files {
+  display: none;
+}
+
+.note-group-image-url .note-image-url, 
+.note-form-group .note-video-url,
+.note-form-group .note-link-text,
+.note-form-group .note-link-url
+ {
+	width: 95%;
+}
+
+.text-success{
+	color:#71c573;
+}
+
+.text-danger{
+	color:#d46765;
+}
+
+.bs-searchbox .form-control{
+	box-sizing:border-box;
+}
+
+
+/*bootstrap normalise overrides*/
+button, input, optgroup, select, textarea {
+	color: #000000;/* c-189 */
+}
+
+table {
+     border-spacing: 2px;
+     border-collapse: separate;
+}
+
+button, input, optgroup, select, textarea{
+    font: 400 13.3333px Arial;
+   }
+
+td, th {
+	padding: 1px;
+	}
+
+/*bootstrap labels overrides*/
+.label{
+	border-radius:0;
+}
+
+.modal-content{
+border-radius:0px;
+}
+
+.no-padding-fix table{
+	border-spacing:0px;
+}
+
+.no-padding-fix td{
+	padding : 0px;
+}

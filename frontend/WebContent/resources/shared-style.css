@@ -1,0 +1,160 @@
+/*with the introduction of the exhibition zone, 
+there has been doubling up of css styles across admin and public
+This style sheet intedns to try and remove some of this doubling up*/
+
+/* R E C O R D S */
+
+.record {
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-bottom: 5em;
+	position: relative;
+}
+
+.record-table {
+	font-size:12px;
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.record-table table{
+	font-size:12px;
+	border-spacing: 0px;
+}
+
+
+.record-label {
+	vertical-align: top;
+	text-align: right;
+	width: 218px;
+	padding: 5px; 
+	color: #ffffff;
+}
+
+.record-value {
+	position: relative;
+	vertical-align: top;
+	text-align: left;
+	word-wrap: break-word;
+	padding: 5px 5px 5px 10px;
+}
+
+.squash-list{
+	padding-bottom : 0px!important
+}
+
+.record-tabs {
+	background-color: #aaaaaa;
+	/*height: 1.3em;*/
+	padding: 5px 1em;
+	margin: 0px 0px 0px 10px;
+}
+.record-tabs.label{
+	display:block;
+	
+}
+
+ul.record-tabs  {
+	list-style: none;
+	margin: -5px 0px 0px 0px!important;
+	padding: 5px 5px 5px 0px!important;
+}
+
+.record-tabs li {
+	display: inline;
+	list-style: none;
+	padding: 0px 1em 0px 5px;
+	margin: 0px;
+}
+
+.record-tabs li a {
+	font-weight: normal;
+	padding: 5px 1em;
+}
+
+.record-tabs a:hover, .record-tabs a:focus   {
+	background-color: #666666;
+	text-decoration: none;
+/*	padding: 5px 1em; */
+	}
+
+.record-value ul {
+	list-style: none;
+	margin: -5px 0px 0px 0px;
+	padding: 5px 5px 0px 0px;
+}
+
+.record-value ul > :first-child {
+	padding-top: 0px;
+}
+.record-value ul + h3{
+	padding-top:10px; 
+}
+
+
+.record-value li {
+	list-style: none;
+	padding: 0px 0px 0px 0px;
+}
+/*fix for spacing issue AUS-75*/
+.events-tab .record-value ul > :not(:first-child),
+#events .record-value ul > :not(:first-child),
+#organisation .record-value ul > :not(:first-child),
+#venue .record-value ul > :not(:first-child),
+#contributor .record-value ul > :not(:first-child),
+#function .record-value ul > :not(:first-child),
+#organisation .record-value ul > :not(:first-child){
+	padding: 4px 0px 0px 0px;
+}
+
+
+
+.record-value h3 { 
+	padding: 0px 0px 5px 0px;
+	font-size: 1em;
+	margin: 0em;
+}
+
+.record-value-table {
+	padding: 0px 10px 0px 0px;
+}
+
+.record-picture {
+	min-height: 100px;
+	max-height: 100px;
+	border: 0px;
+}
+
+.record-comment{
+    position: absolute;
+    padding: 5px 5px 5px 10px;
+    right: 0px;
+    z-index:100;
+}
+/*minor adjustment for record comment when shown on the resource page*/
+.right-side-display {
+	position:relative;
+	width:47%;
+	float:right;
+}
+.right-side-display .record-comment{
+	position:relative;
+	padding-bottom:20px;
+}
+.right-side-display .item-article{
+	width:100%;
+	position:relative;
+	float:right;
+        margin-bottom: 65px;
+}
+.item-article img, .item-article-container img, .modal-body img{
+padding:0px 10px 0px 10px;
+}
+.modal-body{
+display:inline-block;
+}

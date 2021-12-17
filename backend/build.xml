@@ -1,0 +1,97 @@
+<project name="TMS" default="Local Dev Build" basedir=".">
+	<property name="src" location="java_src"/>
+  	<property name="build" location="classes"/>
+	<property name="inifile" value="C:/AusStage Without OpenCMS/cmjava.ini" />
+	<property name="target-server" value="AUSSTAGE-FLND" />
+	<property name="server-tomcat-path" value="C:\AusStage Without OpenCMS\apache-tomcat-9.0.31" />
+	<!-- <property name="server-tomcat-path" value="\\${target-server}\Ausstage\apache-tomcat-6.0.32" />-->
+	<property name="libs" value="C:\AusStage Without OpenCMS\workspace\ausstage\lib" />
+	<property file="build.properties" />
+
+	<path id="project-classpath">
+		<fileset dir="${libs}" includes="*.jar" />		
+ 	</path>
+	
+	<target name="Local Dev Build" description="create jar for local dev" >
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_USER_NAME = ".*";' 
+			replace='public static final String AUSSTAGE_DB_USER_NAME = "root";' byline="true" />
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "srasra";' byline="true" />
+		<replaceregexp file="${src}/admin/AppConstants.java" 
+			match='iniFile.readIni\(".*"\);' 
+			replace='iniFile.readIni("${inifile}");' byline="true" />
+		
+		<delete dir="classes/admin"></delete>
+		<delete dir="classes/ausstage"></delete>
+		<delete dir="classes/form"></delete>
+		
+		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath" includeantruntime="false">
+               <compilerarg value="-XDignore.symbol.file" />
+	    </javac>
+		
+		<mkdir dir="C:\AusStage Without OpenCMS\jars" />
+		<jar destfile="C:\AusStage Without OpenCMS\jars\ausstage_custom.jar" basedir="classes"/>
+		
+		<copy file="C:\AusStage Without OpenCMS\jars\ausstage_custom.jar" tofile="${server-tomcat-path}\lib\ausstage_custom.jar" overwrite="true" />
+		<!-- <antcall target="restart local dev" /> -->
+	</target>
+	
+	<target name="restart local dev" description="restart the local VM">
+		<get src="http://${target-server}:8090/reload.jsp" dest="blank" />
+		<delete file="blank" />
+		
+		<echo message="Please wait for Tomcat to restart..." />
+		<sleep seconds="45" />
+		<echo message="Tomcat has been restarted. Don't forget to re-login to OpenCMS if you haven't published JSP changes." />
+	</target>
+	
+	<target name="Titan Build" description="create jar for titan" >
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_USER_NAME = ".*";' 
+			replace='public static final String AUSSTAGE_DB_USER_NAME = "root";' byline="true" />
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "root";' byline="true" />
+		<replaceregexp file="${src}/admin/AppConstants.java" 
+			match='iniFile.readIni\(".*"\);' 
+			replace='iniFile.readIni("D:/AusStage/cmjava.ini");' byline="true" />
+		
+		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
+		<mkdir dir="C:\AusStage Without OpenCMS\titan" />
+		<jar destfile="C:\AusStage Without OpenCMS\titan\ausstage_custom.jar" basedir="classes"/>
+	</target>
+	
+	<target name="UAT Build" description="create jar for UAT" >
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_USER_NAME = ".*";' 
+			replace='public static final String AUSSTAGE_DB_USER_NAME = "ausstage";' byline="true" />
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "${UAT.AUSSTAGE_DB_PASSWORD}";' byline="true" />
+		<replaceregexp file="${src}/admin/AppConstants.java" 
+			match='iniFile.readIni\(".*"\);' 
+			replace='iniFile.readIni("/opt/ausstage/cmjava.ini");' byline="true" />
+		
+		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
+		<mkdir dir="C:\AusStage Without OpenCMS\jars\test" />
+		<jar destfile="C:\AusStage Without OpenCMS\jars\test\ausstage_custom.jar" basedir="classes"/>
+	</target>
+	
+	<target name="Prod Build" description="create jar for Prod" >
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_USER_NAME = ".*";' 
+			replace='public static final String AUSSTAGE_DB_USER_NAME = "ausstage";' byline="true" />
+		<replaceregexp file="${src}/ausstage/AusstageCommon.java" 
+			match='public static final String AUSSTAGE_DB_PASSWORD = ".*";' 
+			replace='public static final String AUSSTAGE_DB_PASSWORD = "${PROD.AUSSTAGE_DB_PASSWORD}";' byline="true" />
+		<replaceregexp file="${src}/admin/AppConstants.java" 
+			match='iniFile.readIni\(".*"\);' 
+			replace='iniFile.readIni("/opt/ausstage/cmjava.ini");' byline="true" />
+		
+		<javac srcdir="java_src" destdir="classes" classpathref="project-classpath"/>
+		<mkdir dir="C:\AusStage Without OpenCMS\jars\prod" />
+		<jar destfile="C:\AusStage Without OpenCMS\jars\prod\ausstage_custom.jar" basedir="classes"/>
+	</target>
+</project>

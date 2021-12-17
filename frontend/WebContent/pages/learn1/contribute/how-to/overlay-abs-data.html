@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.opencms.org/dtd/6.0/xmlpage.xsd">
+  <page language="en">
+    <element name="body">
+      <links>
+        <link name="link0" internal="true" type="A">
+          <target><![CDATA[/sites/default/system/workplace/editors/convert-map-files.html]]></target>
+        </link>
+        <link name="link1" internal="false" type="A">
+          <target><![CDATA[http://code.google.com/apis/kml/documentation/extendeddata.html]]></target>
+        </link>
+        <link name="link2" internal="false" type="A">
+          <target><![CDATA[http://code.google.com/apis/kml/documentation/kmlreference.html]]></target>
+          <anchor><![CDATA[balloonstyle]]></anchor>
+        </link>
+        <link name="link3" internal="false" type="A">
+          <target><![CDATA[http://code.google.com/p/aus-e-stage/wiki/MapInfoToKML]]></target>
+        </link>
+      </links>
+      <content><![CDATA[<h1>Overlay ABS Data</h1>
+<h2><a name="Introduction"></a>Introduction</h2>
+<p>In <a target="_self" href="%(link0)">Convert Map Files</a> how-to guide, we introduced the procedure to construct map overlays in a KML format using ABS geographic information. The popup infowindow of the map overlay includes the information about State Code, Local Government Code and Local Government Name. In this article, we will introduce how to add more information on the infowindow such as ABS Regional Profile URL, how to style infowindow using BalloonStyle template, HTML and CSS and how to highlight polygons.</p>
+<h2><a name="Adding_Custom_Data"></a>Adding Custom Data</h2>
+<p><tt>&lt;ExtendedData&gt;</tt> element in KML provides the mechanism to associate untyped name/value pairs with a given feature (e.g. Placemark). In the following KML excerpt, <strong>State_Code</strong> and <strong>LGA_Code</strong> are attached to the Placemark through <tt>&lt;Data&gt;</tt> and <tt>&lt;value&gt;</tt> pairs. For more details about mechanisms to add custom data, please refer to <a rel="nofollow" href="%(link1)">Google web site</a>.</p>
+<pre class="prettyprint">
+    &lt;Placemark&gt;
+
+         &lt;name&gt;Adelaide (C)&lt;/name&gt;
+         &lt;styleUrl&gt;#sharedStyle&lt;/styleUrl&gt;
+         &lt;ExtendedData&gt;
+
+            &lt;Data name=&quot;State_Code&quot;&gt;
+
+               &lt;value&gt;4&lt;/value&gt;
+            &lt;/Data&gt;
+
+            &lt;Data name=&quot;LGA_Code&quot;&gt;
+               &lt;value&gt;40070&lt;/value&gt;
+
+            &lt;/Data&gt;
+
+         &lt;/ExtendedData&gt;
+        &lt;Polygon&gt;&hellip;..&lt;/Polygon&gt;
+    &lt;/Placemark&gt;
+</pre>
+<blockquote><tt>&lt;KML excerpt 1&gt;</tt> </blockquote>
+<h2><a name="Balloon_Style"></a>Balloon Style</h2>
+<p>Descriptive balloons, so-called 'infowindows', are attached to Placemarks in Google Earth and displayed when clicked. By default, a balloon in Google Earth only displays placemark <tt>&lt;name&gt;</tt>, <tt>&lt;description&gt;</tt> elements and links for driving direction. <tt>&lt;BalloonStyle&gt;</tt> element provides a mechanism to customise the balloon (background color, text color etc.) as shown in the following KML excerpt.</p>
+<pre class="prettyprint">
+1 &lt;style id=&rdquo;sharedStyle&rdquo;&gt;
+2   &lt;BalloonStyle&gt;
+3   &lt;!-- specific to BalloonStyle --&gt;
+
+4     &lt;bgColor&gt;ffffffff&lt;/bgColor&gt;            &lt;!-- kml:color --&gt;
+5     &lt;textColor&gt;ff000000&lt;/textColor&gt;        &lt;!-- kml:color --&gt; 
+6     &lt;text&gt;		                     &lt;!-- string --&gt;
+
+7     &lt;![CDATA[&lt;html&gt;
+8     &lt;head&gt;
+9       &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style/infowindow-style.css&quot; /&gt; 
+
+10      &lt;/head&gt;
+11      &lt;body&gt;
+12        
+13        &lt;table class=&quot;infowindow&quot;&gt;
+14 
+15         &lt;tr class=&quot;odd&quot;&gt;
+16           &lt;td class=&quot;label&quot;&gt;State Code&lt;/td&gt;
+
+17           &lt;td class=&quot;text&quot;&gt;$[State_Code]&lt;/td&gt;
+18         &lt;/tr&gt;
+19
+20         &lt;tr class=&quot;even&quot;&gt;
+21           &lt;td class=&quot;label&quot;&gt;Link&lt;/td&gt;
+
+22           &lt;td class=&quot;text&quot;&gt;&lt;a href=&quot;http://www.abs.gov.au/ausstats/abs@nrp.nsf/lookup/LGA$[LGA_Code]Main+Features12005-2009&quot;&gt;ABS Profile&lt;/a&gt;&lt;/td&gt;
+23         &lt;/tr&gt;
+24       &lt;/table&gt;
+25     &lt;/body&gt;
+
+26     &lt;/html&gt;]]&gt;
+27     &lt;/text&gt;
+28  &lt;/BalloonStyle&gt;
+29 &lt;/style&gt;</pre>
+<p>&nbsp;</p>
+<blockquote><tt>&lt;KML excerpt 2&gt;</tt> </blockquote>
+<p>&nbsp;</p>
+<p>As we can see from the above KML excerpt, <tt>&lt;text&gt;</tt> element (line 6) contains the content displayed in the balloon. HTML code can be embedded inside it through the CDATA brackets (line 7). Therefore the content in <tt>&lt;text&gt;</tt> element can also be styled using external Cascading Style Sheets (CSS) through <tt>&lt;link&gt;</tt> element (line 9). In the above example, we use an external CSS file (style/infowindow-style.css) to format the table in HTML. For more details about <tt>&lt;BalloonStyle&gt;</tt>, please refer to <a rel="nofollow" href="%(link2)">KML reference</a>.</p>
+<h2><a name="Entity_Replacement"></a>Entity Replacement</h2>
+<p>You may notice that there are two entities in the above <tt>&lt;text&gt;</tt> element. One is <strong><tt>$[State_Code]</tt></strong> (line 17), the other is <strong><tt>$[LGA_Code]</tt></strong> (line 22). These two entities refer to correspondent <tt>&lt;Data name=&rdquo;State_Code&rdquo;&gt;</tt> and <tt>&lt;Data name=&rdquo;LGA_Code&rdquo;&gt;</tt> elements in the <tt>&lt;ExtendedData&gt;</tt> of KML excerpt 1, or as shown in the following snippet. The contents of <tt>&lt;value&gt;</tt> elements will substitute those entities in the balloon. Google Earth supports the entity replacement of certain extended data elements within the <tt>&lt;text&gt;</tt> element of <tt>&lt;BalloonStyle&gt;</tt>.</p>
+<pre class="prettyprint">
+&lt;Data name=&quot;State_Code&quot;&gt;
+
+   &lt;value&gt;4&lt;/value&gt;
+&lt;/Data&gt;
+
+&lt;Data name=&quot;LGA_Code&quot;&gt;
+   &lt;value&gt;40070&lt;/value&gt;
+&lt;/Data&gt;
+
+</pre>
+<p>After analysing the URLs of ABS regional profiles for Local Government Area (LGA), we found that only the LGA_Code part is different; other parts are the same. For example, in the following URL,</p>
+<p><tt>http://www.abs.gov.au/ausstats/abs@nrp.nsf/lookup/LGA</tt><strong>40070</strong> <tt>Main+Features12005-2009</tt>,</p>
+<p>40070 is the LGA Code which is different for each LGA. The parts before 40070 (<strong><tt>http://www.abs.gov.au/ausstats/abs@nrp.nsf/lookup/LGA</tt></strong>)&nbsp;and after it (Main+Features12005-2009) are fixed. So we can use entity <strong><tt>$[LGA_Code]</tt></strong> to replace 40070 as shown in the following URL.</p>
+<p><tt>http://www.abs.gov.au/ausstats/abs@nrp.nsf/lookup/LGA</tt><strong><tt>$[LGA_Code]</tt></strong> <tt>Main+Features12005-2009</tt></p>
+<p>When Google earth renders this KML, the value 40070 will replace the entity <tt>$[LGA_Code]</tt>. Since the #sharedStyle in KML excerpt 2 is attached to every Placemark using <tt>&lt;styleURL&gt;</tt> element and each Placemark represents one LGA, we can get the ABS profile URL for each LGA by replacing the <tt>$[LGA_Code]</tt> with the content of the correspondent <tt>&lt;value&gt;</tt> element.</p>
+<h2><a name="Highlighted_polygon_when_mouseover"></a>Highlighted polygon when mouseover</h2>
+<p><tt>&lt;StyleMap&gt;</tt> maps between two different styles through <tt>&lt;key&gt;</tt>/<tt>&lt;styleUrl&gt;</tt> pairs. It is used to provide normal and highlighted styles for a placemark (polygon in our case). When a user mousesover a polygon, the highlighted style appears. To realize the highlighted version, different fill colors can be set in <tt>&lt;PolyStyle&gt;</tt>. In the following KML excerpt, two styles (Highlight and Normal) are defined using <tt>&lt;Style&gt;</tt> element. They are linked through <tt>&lt;StyleMap&gt;</tt> element.</p>
+<pre class="prettyprint">
+&lt;Style id=&quot;Highlight&quot;&gt;
+
+      &lt;PolyStyle&gt;
+         &lt;color&gt;ff21a5ff&lt;/color&gt;
+         &lt;fill&gt;true&lt;/fill&gt;
+      &lt;/PolyStyle&gt;
+      &lt;BalloonStyle/&gt;&lt;!-- style of infowindow (HTML, CSS), refer to KML excerpt 2 --&gt;
+
+&lt;/Style&gt;
+
+&lt;Style id=&quot;Normal&quot;&gt;
+      &lt;PolyStyle&gt;
+         &lt;color&gt;cf10e0ff&lt;/color&gt;
+         &lt;fill&gt;true&lt;/fill&gt;
+
+      &lt;/PolyStyle&gt;
+      &lt;BalloonStyle/&gt; &lt;!--  style of infowindow (HTML, CSS), refer to KML excerpt 2 --&gt;
+&lt;/Style&gt;
+
+&lt;StyleMap id=&quot;sharedStyle&quot;&gt;
+      &lt;Pair&gt;
+
+         &lt;key&gt;normal&lt;/key&gt;
+         &lt;styleUrl&gt;#Normal&lt;/styleUrl&gt;
+      &lt;/Pair&gt;
+
+      &lt;Pair&gt;
+
+         &lt;key&gt;highlight&lt;/key&gt;
+         &lt;styleUrl&gt;#Highlight&lt;/styleUrl&gt;
+      &lt;/Pair&gt;
+&lt;/StyleMap&gt;</pre>
+<p>&nbsp;</p>
+<blockquote><tt>&lt;KML excerpt 3&gt;</tt> </blockquote>
+<p>&nbsp;</p>
+<h2><a name="XSL_style_sheet"></a>XSL style sheet</h2>
+<p>Before applying the above mentioned techniques, we need to modify the KML (LGA.kml) that got in the <a rel="nofollow" href="%(link3)">MapInfo To KML</a> procedure. An XSL style sheet (place_mark.xsl) is written to make the KML ready to be styled. It includes the following functions:</p>
+<ul>
+    <li>Extract name for each Placemark.</li>
+    <li>Set <tt>&lt;styleURL id=&rdquo;sharedStyle&rdquo;&gt;</tt> for each Placemark</li>
+    <li>Prepare <tt>&lt;Data&gt;</tt> / <tt>&lt;Value&gt;</tt> for each Placemark</li>
+</ul>
+<p>After applying the XSL transformation we get dest.kml. Then we can copy the <tt>&lt;StyleMap id=&rdquo;sharedStyle&rdquo;&gt;</tt> in KML excerpt 3 and paste it to the <tt>&lt;Document&gt;</tt> element of dest.kml. It is worth noting that the id (sharedStyle) of <tt>&lt;StyleMap&gt;</tt> and <tt>&lt;styleURL&gt;</tt> elements should be the same. The HTML and CSS in <tt>&lt;text&gt;</tt> element of <tt>&lt;BalloonStyle&gt;</tt> are designed in advance with suitable editors. The following snippet is the final KML skeleton.</p>
+<pre class="prettyprint">
+&lt;kml xmlns=&quot;http://www.opengis.net/kml/2.2&quot;&gt;
+
+   &lt;Document&gt;
+      &lt;open&gt;1&lt;/open&gt;
+
+      &lt;Style id=&quot;Highlight&quot;&gt;
+         &lt;PolyStyle/&gt; &lt;!--  Set highlighted color here     --&gt;
+
+         &lt;BalloonStyle&gt;
+           &lt;text&gt;&lt;![CDATA[
+             &lt;html&gt;
+               &lt;head&gt;
+                &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;style/infowindow-style.css&quot; /&gt; 
+               &lt;/head&gt;
+
+               &lt;body&gt; 
+                     &lt;!--  The content of infowindow.    --&gt;
+               &lt;/body&gt;
+             &lt;/html&gt;]]&gt;
+           &lt;/text&gt;
+         &lt;/BalloonStyle&gt;
+
+      &lt;/Style&gt;
+
+      &lt;Style id=&quot;Normal&quot;&gt;
+         &lt;PolyStyle/&gt;
+         &lt;BalloonStyle/&gt; &lt;!--  Same as above  --&gt;
+      &lt;/Style&gt;
+
+      
+      &lt;StyleMap id=&quot;sharedStyle&quot;&gt;
+         &lt;Pair&gt;
+            &lt;key&gt;normal&lt;/key&gt;
+            &lt;styleUrl&gt;#Normal&lt;/styleUrl&gt;
+
+         &lt;/Pair&gt;
+      
+         &lt;Pair&gt;
+            &lt;key&gt;highlight&lt;/key&gt;
+            &lt;styleUrl&gt;#Highlight&lt;/styleUrl&gt;
+         &lt;/Pair&gt;
+
+      &lt;/StyleMap&gt;
+
+      &lt;Folder&gt;
+         &lt;name&gt;South Australia&lt;/name&gt;
+         &lt;open&gt;1&lt;/open&gt;
+
+         &lt;Placemark&gt;
+            &lt;name&gt;Adelaide (C)&lt;/name&gt;
+            &lt;styleUrl&gt;#sharedStyle&lt;/styleUrl&gt;
+            &lt;ExtendedData&gt;
+               &lt;Data name=&quot;STATE_CODE&quot;&gt;
+
+                  &lt;value&gt;4&lt;/value&gt;
+               &lt;/Data&gt;
+      
+               &lt;Data name=&quot;LGA_CODE&quot;&gt;
+                  &lt;value&gt;40070&lt;/value&gt;
+
+               &lt;/Data&gt;
+      
+               &lt;Data name=&quot;LGA_NAME&quot;&gt;
+                  &lt;value&gt;Adelaide (C)&lt;/value&gt;
+               &lt;/Data&gt;
+            &lt;/ExtendedData&gt;
+
+            &lt;Polygon/&gt; &lt;!--   coordinates are here --&gt;
+       &lt;/Placemark&gt;
+	&hellip;&hellip;
+       &lt;Placemark/&gt;
+   &lt;/Folder&gt;
+ &lt;/Document&gt;
+
+&lt;/kml&gt;</pre>]]></content>
+    </element>
+  </page>
+</pages>

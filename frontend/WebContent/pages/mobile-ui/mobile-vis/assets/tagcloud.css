@@ -1,0 +1,55 @@
+
+
+#tagCloud {
+    padding:3%;
+    width:95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+#tagCloud .word  {
+   margin: 10px;
+   display:inline;
+}
+
+.info {
+    display: none;
+}
+
+
+
+.FeedbackList li {
+            list-style: none;
+            padding:5px;
+            margin-left: 0px;
+            margin-top: 5px;
+            font-size: .9em;
+
+}
+
+.FeedbackList li .feedbackInfo {
+    font-size: .9em;
+    color:lightslategray;
+}
+
+.highlight {
+    background-color:#F9E98E;
+}
+
+
+/*ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix*/
+
+.ui-dialog .ui-widget-header {
+
+    background:none;
+    color: #222222;
+    font-weight: bold;
+    font-size: 2em;
+    border: none
+}
+
+
+
+                        
+                        

@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.opencms.org/dtd/6.0/xmlpage.xsd">
+  <page language="en">
+    <element name="body">
+      <links>
+        <link name="link0" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[events]]></anchor>
+        </link>
+        <link name="link1" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[contributor]]></anchor>
+        </link>
+        <link name="link2" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[organisation]]></anchor>
+        </link>
+        <link name="link3" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[venue]]></anchor>
+        </link>
+        <link name="link4" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[resource]]></anchor>
+        </link>
+        <link name="link5" internal="true" type="A">
+          <target><![CDATA[]]></target>
+          <anchor><![CDATA[work]]></anchor>
+        </link>
+      </links>
+      <content><![CDATA[<h1>Data Models</h1>
+<p><a target="_self" href="%(link0)">Events</a> | <a target="_self" href="%(link1)">Contributor</a> | <a target="_self" href="%(link2)">Organisation</a> | <a target="_self" href="%(link3)">Venue</a> | <a target="_self" href="%(link4)">Resource</a> | <a target="_self" href="%(link5)">Work</a></p>
+<h2><a name="events"></a>Events</h2>
+<dl>
+    <dt>events</dt>
+    <dd>A distinct happening defined by title, date/s and venue; typically, a performance or series of performances at a venue. This is the core table of Ausstage. Multiple presentations of the same production at different venues (e.g. touring productions) are recorded as separate events.</dd>
+    <dd> <br />
+    </dd>
+    <dt>event_name</dt>
+    <dd>The title or name of an event. Free text. Using preceding capitals except for articles, prepositions and pronouns. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>umbrella</dt>
+    <dd>The festival or series in which an event is presented. Enter only if applicable. Free text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>venueid</dt>
+    <dd>The unique number identifying the venue at which the event occurred. Displayed as venue name, suburb, state (if Australia) or country (if overseas). Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>ddfirst_date</dt>
+    <dd>The day of the event's first public presentation even if a preview. Enter as numerals. Display as numerals.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmfirst_date</dt>
+    <dd>The month of the event's first public presentation, even if a preview.  Enter as numerals. Display as text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyyfirst_date</dt>
+    <dd>The year of the event's first public presentation even if a preview.  Enter as numerals. Displayed as numerals. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>sndfirst_date</dt>
+    <dd>The date of the event's first public showing, even if preview. Automatically generated.</dd>
+    <dd> <br />
+    </dd>
+    <dt>ddopening_night</dt>
+    <dd>The day of the event's opening public showing - not a preview. Enter as numerals. Displayed as numeric.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmopening_night</dt>
+    <dd>The month of the event's opening public showing - not a preview.  Enter as numerals. Display as text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyyopening_night</dt>
+    <dd>The year of the event's opening public showing - not a preview.  Enter as numerals. Displayed as numeric.</dd>
+    <dd> <br />
+    </dd>
+    <dt>sndopening_night</dt>
+    <dd>The date of the event's opening public showing - not a preview. Automatically generated.</dd>
+    <dd> <br />
+    </dd>
+    <dt>ddlast_date</dt>
+    <dd>The day of the event's last public presentation.  Enter as numerals. Displayed as numerals.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmlast_date</dt>
+    <dd>The month of the event's first public presentation.  Enter as numerals. Display as text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyylast_date</dt>
+    <dd>The year of the event's first public showing.  Enter as numerals. Displayed as numerals.</dd>
+    <dd> <br />
+    </dd>
+    <dt>sndlast_date</dt>
+    <dd>The date of the event's last public showing. Automatically generated.</dd>
+    <dd> <br />
+    </dd>
+    <dt>estimated_dates</dt>
+    <dd>Are the event's dates are estimated?. Binary selection: either yes or no.</dd>
+    <dd> <br />
+    </dd>
+    <dt>status</dt>
+    <dd>The socio-economic status of the production of an event. Encompasses a range from professional to amateur. Select from the controlled list. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>world_premier</dt>
+    <dd>Is the event a world premiere (being presented for the very first time)?. Binary selection: either yes or no.</dd>
+    <dd> <br />
+    </dd>
+    <dt>part_of_a_tour</dt>
+    <dd>Is the event is part of a touring production?. Binary selection: either yes or no.</dd>
+    <dd> <br />
+    </dd>
+    <dt>description</dt>
+    <dd>A short description of the content or significance of the event.  Free text. Preferably derived from an existing resource and referenced in Description Source. Add referenced resource to the Resource table.</dd>
+    <dd> <br />
+    </dd>
+    <dt>description_source</dt>
+    <dd>Denoting the source of the event description entered in the free text field above.  To be chosen from controlled list.</dd>
+    <dd> <br />
+    </dd>
+    <dt>primary_genre</dt>
+    <dd>A category indicating the kind of event, as defined by its main mode of performance. Select from the controlled list,  noting associations between primary and secondary genres. 'Other' is to be used only as a last resort. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>further_information</dt>
+    <dd>Any additional relevant information about the event not already covered by the available fields. Not to be confused with event description, which aims to summarise the content of the event. Free text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>review</dt>
+    <dd>Is the record reviewed?. Binary selection: either yes or no. If yes, displayed as user name of reviewer (from updated_by_user) and date.</dd>
+    <dd> <br />
+    </dd>
+    <dt>eventid</dt>
+    <dd>A unique number identifying an event.  Automatically generated. Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>entered_by_user</dt>
+    <dd>The user name of the user entering the data. Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_entered</dt>
+    <dd>The day of data entry.  Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_entered</dt>
+    <dd>The month of data entry. Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_entered</dt>
+    <dd>The year of data entry.  Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>snddate_entered</dt>
+    <dd>The date of data entry. Entered automatically.</dd>
+    <dd> <br />
+    </dd>
+    <dt>updated_by_user</dt>
+    <dd>The name of the user updating the data. Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_updated</dt>
+    <dd>The day of data update.  Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_updated</dt>
+    <dd>The month of data update.  Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_updated</dt>
+    <dd>The year of data update.  Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>snddate_updated</dt>
+    <dd>The date of data update. Automatically generated.</dd>
+</dl>
+<h2><a name="contributor"></a>Contributor</h2>
+<dl>
+    <dt>contributor</dt>
+    <dd>An individual who contributes in some capacity to the conception, production or presentation of an event. Contributors are distinguished by their name and date of birth. A new record is created when a contributor changes name; former and subsequent names are recorded in the Other_Names field. Multiple contributors with the same name should be distinguished by date of birth and function. Care should be taken to avoid unnecessary duplicates, with particular attention being paid to variations in spellings of the same contributor. Contributors must be an individual, and may be human or non-human (e.g. animal, machine).</dd>
+    <dd> <br />
+    </dd>
+    <dt>prefix</dt>
+    <dd>A contributor's title. Mr, Mrs, Prof, Dr etc.</dd>
+    <dd> <br />
+    </dd>
+    <dt>first_name</dt>
+    <dd>The contributor's first name or initial. Free text, with capitalised initial letter. Use a hyphen if there is no first name. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>middle_name</dt>
+    <dd>A contributor's middle name/s or initial/s. Free text, with capitaliased initial letter.</dd>
+    <dd> <br />
+    </dd>
+    <dt>last_name</dt>
+    <dd>The contributor's last name/s. Free text, with capitalised initial letter. Use a hyphen if there is no last name. Mandatory.</dd>
+    <dd> <br />
+    </dd>
+    <dt>suffix</dt>
+    <dd>A contributor's suffix. OAM, PhD, AM etc.</dd>
+    <dd> <br />
+    </dd>
+    <dt>display_name</dt>
+    <dd>The contributor's first name and last name. Auto-generated by concatenating the First Name and Last Name, but editable.</dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names</dt>
+    <dd>Other names by which the contributor is known. May include stage names, former or subsequent names, or alternative spellings of the First and Last Names. Free text, in natural order, with capitalised initial letter. Separate multiple names with ;.</dd>
+    <dd> <br />
+    </dd>
+    <dt>gender</dt>
+    <dd>The contributor's gender. Select either female or male.</dd>
+    <dd> <br />
+    </dd>
+    <dt>nationality</dt>
+    <dd>The contributor's nationality, whether by origin or adoption. Free text, with capitalised initial letter. Prefer self-identified nationality; consult contributor if possible; otherwise nationality of origin. Hyphenated nationalities are acceptable.</dd>
+    <dd> <br />
+    </dd>
+    <dt>place_of_birth</dt>
+    <dd>A contributor's place of birth. Select from venue table.</dd>
+    <dd> <br />
+    </dd>
+    <dt>place_of_death</dt>
+    <dd>A contributor's place of death. Select from venue table.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_of_birth</dt>
+    <dd>The day of the contributor's birth. Enter as numerals. Display as numeric. Not visible to users on the public side, unless date of death is complete.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_of_birth</dt>
+    <dd>The month of the contributor's birth. Enter as numerals. Display as text. Not visible to users on the public side, unless date of death is complete.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_of_birth</dt>
+    <dd>The year of the contributor's birth. Enter as numerals. Display as numerals. Not visible to users on the public side, unless date of death is complete.</dd>
+    <dd> <br />
+    </dd>
+    <dt>dddate_of_death</dt>
+    <dd>The day of the contributor's death . Enter as numerals. Display as numerals. Source from published obituaries or research publications.</dd>
+    <dd> <br />
+    </dd>
+    <dt>mmdate_of_death</dt>
+    <dd>The month of the contributor's death. Enter as numerals. Display as text. Source from published obituaries or research publications.</dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyydate_of_death</dt>
+    <dd>The year of the contributor's death. Enter as numerals. Display as numerals. Source from published obituaries or research publications.</dd>
+    <dd> <br />
+    </dd>
+    <dt>notes</dt>
+    <dd>Additional biographical information about the contributor. Recommended use is to draw biographical information from published sources (Australian Dictionary of Biography, Parson's Companion to Theatre in Australia, and so on) or invite contributor to provide information. Note source at end of field. Free text.</dd>
+    <dd> <br />
+    </dd>
+    <dt>nla</dt>
+    <dd>The contributor's Persistent Identifier at the National Library of Australia. Source from the National Library of Australia.</dd>
+    <dd> <br />
+    </dd>
+    <dt>contributorid</dt>
+    <dd>A unique number identifying a contributor. Automatically generated. Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>entered_by_user</dt>
+    <dd>The user name of the user creating the record. Entered automatically on creation.</dd>
+    <dd> <br />
+    </dd>
+    <dt>entered_date</dt>
+    <dd>The date when the record is created. Entered automatically on creation.</dd>
+    <dd> <br />
+    </dd>
+    <dt>updated_by_user</dt>
+    <dd>The user name of the user updating the data. Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>updated_date</dt>
+    <dd>The date when the record is last updated. Entered automatically on update.</dd>
+    <dd> <br />
+    </dd>
+    <dt>address</dt>
+    <dd>The contributor's house and street address of residency. Free text. Use only when provided by contributor. Not visible to users on public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>suburb</dt>
+    <dd>The contributor's suburb address of residency. Free text. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>state</dt>
+    <dd>The contributor's state address of residency. Select from controlled list. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>email</dt>
+    <dd>The contributor's email address. Free text. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>postcode</dt>
+    <dd>The contributor's postcode of residency. Four digit numeral. Use only when provided by contributor. Not visible to users on the public side.</dd>
+    <dd> <br />
+    </dd>
+    <dt>countryid</dt>
+    <dd>A unique number identifying the contributor's country of residence. Select from Country table. Use only when provided by contributor. Unique.</dd>
+</dl>
+<h2><a name="organisation"></a>Organisation</h2>
+<dl>
+    <dt>organisation</dt>
+    <dd>A group or company involved in the conception, production or presentation of an event. Organisations are distinguished by their name and location. A new record is created when an organisation changes name. </dd>
+    <dd> <br />
+    </dd>
+    <dt>organisationid</dt>
+    <dd>A unique number identifying an organisation. Organisations that share the same name are given different IDs. Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>name</dt>
+    <dd>The name of the organisation. Free text. Care must be taken to prevent unnecessary duplicates. </dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names1</dt>
+    <dd>Other names by which the organisation is known. Free text. This field may be used to record former or subsequent names. It can also be used for variant names to avoid duplicate records. </dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names2</dt>
+    <dd>Other names by which the organisation is known. Free text. This field may be used to record former or subsequent names. It can also be used for variant names to avoid duplicate records. </dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names3</dt>
+    <dd>Other names by which the organisation is known. Free text. This field may be used to record former or subsequent names. It can also be used for variant names to avoid duplicate records. </dd>
+    <dd> <br />
+    </dd>
+    <dt>address</dt>
+    <dd>The number and street of the organisation's address. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>suburb</dt>
+    <dd>The suburb, town or locality of the organisation's address. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>state</dt>
+    <dd>The state of the organisation's address. Select from controlled list. </dd>
+    <dd> <br />
+    </dd>
+    <dt>postcode</dt>
+    <dd>The postcode of the organisation's address. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>contact</dt>
+    <dd>The name of a contact person for the organisation. Free text, with capitalised initials. Not visible on the public side. </dd>
+    <dd> <br />
+    </dd>
+    <dt>phone1</dt>
+    <dd>A contact telephone number for the organisation. Free text, numerically, including area codes. Not visible on the public side. Format +xx x xxxx xxxx. Append name of telephone line if known, e.g. box office, administration. </dd>
+    <dd> <br />
+    </dd>
+    <dt>phone2</dt>
+    <dd>A contact telephone number for the organisation. Free text, numerically, including area codes. Not visible on the public side. Format +xx x xxxx xxxx. Append name of telephone line if known, e.g. box office, administration. </dd>
+    <dd> <br />
+    </dd>
+    <dt>phone3</dt>
+    <dd>A contact telephone number for the organisation. Free text, numerically, including area codes. Not visible on the public side. Format +xx x xxxx xxxx. Append name of telephone line if known, e.g. box office, administration. </dd>
+    <dd> <br />
+    </dd>
+    <dt>fax</dt>
+    <dd>A contact fax number for the organisation. Free text, numerically, including area codes. Not visible on the public side. Format +xx x xxxx xxxx. </dd>
+    <dd> <br />
+    </dd>
+    <dt>email</dt>
+    <dd>A contact email address for the organisation. Free text. Not visible on the public side. </dd>
+    <dd> <br />
+    </dd>
+    <dt>web_links</dt>
+    <dd>A website address for the organisation. Free text. 'http://' is required. </dd>
+    <dd> <br />
+    </dd>
+    <dt>notes</dt>
+    <dd>Any other relevant information about the organisation not covered by other fields. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>countryid</dt>
+    <dd>A unique number identifying a country.. Select from controlled list. Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>ddfirst_date</dt>
+    <dd>A two-digit number denoting the first day of existence of the organisation using the title denoted in name. Free text. Use leading zeros for single digit days. </dd>
+    <dd> <br />
+    </dd>
+    <dt>mmfirst_date</dt>
+    <dd>A two-digit number denoting the first month of existence of the organisation using the title denoted in name. Free text. Use leading zeros for single digit months. </dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyyfirst_date</dt>
+    <dd>A four-digit number denoting the first year of existence of the organisation using the title denoted in name. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>ddlast_date</dt>
+    <dd>A two-digit number denoting the last day of existence of the organisation using the title denoted in name. Free text. Use leading zeros for single digit days. </dd>
+    <dd> <br />
+    </dd>
+    <dt>mmlast_date</dt>
+    <dd>A two-digit number denoting the last month of existence of the organisation using the title denoted in name. Free text. Use leading zeros for single digit months. </dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyylast_date</dt>
+    <dd>A four-digit number denoting the last year of existence of the organisation using the title denoted in name. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>place_of_origin</dt>
+    <dd>An organisation place of origin. Select from venue table. </dd>
+    <dd> <br />
+    </dd>
+    <dt>place_of_demise</dt>
+    <dd>An organisations place of demise. Select from venue table. </dd>
+</dl>
+<h2><a name="venue"></a>Venue</h2>
+<dl>
+    <dt>venue</dt>
+    <dd>A place where an event happens. Venues are distinguished by their name and location. A new record is created when a venue changes name. </dd>
+    <dd> <br />
+    </dd>
+    <dt>venueid</dt>
+    <dd>A unique number identifying a venue. Different venues with the same name are given different IDs. Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>venue_name</dt>
+    <dd>The name of a venue. To be typed as free text. Care must be taken to prevent unnecessary duplicates, especially as some duplicates are justified by venues with the same name in different locations. Where a venue is located within a larger 'parent' venue it is given its own venue record with the name of the venue it is located within in the Other Names field. </dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names1</dt>
+    <dd>An additional or alternative name by which the venue is known. Free text. Used for former or subsequent names of venue, or names of related venues either smaller 'child' venues within, or larger 'parent' venues. </dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names2</dt>
+    <dd>An additional or alternative name by which the venue is known. Free text. Used for former or subsequent names of venue, or names of related venues either smaller 'child' venues within, or larger 'parent' venues. </dd>
+    <dd> <br />
+    </dd>
+    <dt>other_names3</dt>
+    <dd>An additional or alternative name by which the venue is known. Free text. Used for former or subsequent names of venue, or names of related venues either smaller 'child' venues within, or larger 'parent' venues. </dd>
+    <dd> <br />
+    </dd>
+    <dt>street</dt>
+    <dd>The number and street of the venue's address. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>suburb</dt>
+    <dd>The suburb of the venue's address. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>state</dt>
+    <dd>The state of the venue's address. Select from controlled list. </dd>
+    <dd> <br />
+    </dd>
+    <dt>postcode</dt>
+    <dd>The postcode of the venue's address. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>capacity</dt>
+    <dd>The number of spectators to which the venue can present an event. Prefer the highest number of the most common configuration. To be typed as a number. </dd>
+    <dd> <br />
+    </dd>
+    <dt>contact</dt>
+    <dd>The name of a contact person for the venue. Free text, with capitalised initials. Not visible on the public side. </dd>
+    <dd> <br />
+    </dd>
+    <dt>phone</dt>
+    <dd>A contact telephone number for the venue. Free text, numerically, including area codes. Format +xx x xxxx xxxx. Not visible on the public side. </dd>
+    <dd> <br />
+    </dd>
+    <dt>fax</dt>
+    <dd>A contact fax number for the venue. Free text, numerically, including area codes. Format +xx x xxxx xxxx. Not visible on the public side. </dd>
+    <dd> <br />
+    </dd>
+    <dt>email</dt>
+    <dd>A contact email address for the venue. Free text. Not visible on the public side. </dd>
+    <dd> <br />
+    </dd>
+    <dt>web_links</dt>
+    <dd>A website address or URL for the venue. Free text. 'http://' is required. </dd>
+    <dd> <br />
+    </dd>
+    <dt>notes</dt>
+    <dd>Any other relevant information about the venue not covered by other fields. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>country</dt>
+    <dd>The country in which the venue is located. Select from controlled list. </dd>
+    <dd> <br />
+    </dd>
+    <dt>countryid</dt>
+    <dd>The identifier for the country in which the venue is located. .</dd>
+    <dd> <br />
+    </dd>
+    <dt>longitude</dt>
+    <dd>The longitudinal geographic coordinate of the venue. Free text, numerically, in decimals to five decimal points. </dd>
+    <dd> <br />
+    </dd>
+    <dt>latitude</dt>
+    <dd>The latitudinal geographic coordinates of the venue. Free text, numerically, in decimals to five decimal points. </dd>
+    <dd> <br />
+    </dd>
+    <dt>regional_or_metro</dt>
+    <dd>Indicates whether the location of the venue is within a specified type of area. Select from controlled list, e.g. regional, suburban, metroplitan. </dd>
+    <dd> <br />
+    </dd>
+    <dt>elevation</dt>
+    <dd>The geographic measurement of elevation. </dd>
+    <dd> <br />
+    </dd>
+    <dt>radius</dt>
+    <dd>The measurement surrounding the longitude and latitude fields to which the venue is accurate. </dd>
+    <dd> <br />
+    </dd>
+    <dt>ddfirst_date</dt>
+    <dd>A two-digit number denoting the first day of existence of the venue using the title denoted in name. Free text. Use leading zeros for single digit days. </dd>
+    <dd> <br />
+    </dd>
+    <dt>mmfirst_date</dt>
+    <dd>A two-digit number denoting the first month of existence of the venue using the title denoted in name. Free text. Use leading zeros for single digit months. </dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyyfirst_date</dt>
+    <dd>A four-digit number denoting the first year of existence of the venue using the title denoted in name. Free text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>ddlast_date</dt>
+    <dd>A two-digit number denoting the last day of existence of the venue using the title denoted in name. Free text. Use leading zeros for single digit days. </dd>
+    <dd> <br />
+    </dd>
+    <dt>mmlast_date</dt>
+    <dd>A two-digit number denoting the last month of existence of the venue using the title denoted in name. Free text. Use leading zeros for single digit months. </dd>
+    <dd> <br />
+    </dd>
+    <dt>yyyylast_date</dt>
+    <dd>A four-digit number denoting the last year of existence of the venue using the title denoted in name. Free text. </dd>
+</dl>
+<h2><a name="resource"></a>Resource</h2>
+<dl>
+    <dt>item</dt>
+    <dd>A resource is a text, image, object, recording or the like which relates to an event, or to a contributor, organisation or venue, or to a work, genre, content indicator or other resource. Some resources exist as individual items stored in collections (like programs, posters, photographs and so on). Other resources exist as multiple copies in libraries (books, journals, articles and so on).  The fields for the resource table augment the existing AusStage Item table with fields drawn from the Dublin Core Metadata Element set. Not all fields will be relevant to each type of resource.<br />
+    </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource type</dt>
+    <dd>The type of resource.  Controlled list, based on the Dublic Core Metadata Initiative Type Vocabulary:  Collection, Dataset, Event, Image, InteractiveResource, MovingImage, PhysicalObject, Service, Software, Sound, StillImage and Text. </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource sub type</dt>
+    <dd>A more specific designation of the type of resource. Chosen from a set of sub types associated with each main Resource Type.  The set of sub types is expandable. Changes made on request; prefer existing terms. </dd>
+    <dd> <br />
+    </dd>
+    <dt>title</dt>
+    <dd>A name given to a resource. For example, the title of a book, a chapter or an article; a caption for a photograph or illustration.  To be entered as free text. Use leading capitals except for articles, prepositions and pronouns. </dd>
+    <dd> <br />
+    </dd>
+    <dt>title alternative</dt>
+    <dd>An alternative name given to a resource.   Multiple names separated by ; . </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource contributor</dt>
+    <dd>An agent responsible for contributing to the resource.  To include a mandatory Resource Creator (ResourceCreator [ContributorID/s]).  This is the agent primarily responsible for creating the resource. For example, the author of an article, chapter or book; the photographer of a photo; the designer for a set design.  Each creator or contributor will be listed as either Individual or Organisation, with a list of numerically ordered functions to choose from. </dd>
+    <dd> <br />
+    </dd>
+    <dt>contributor id</dt>
+    <dd>A contributor (or contributors) to which the resource refers. Contributor associations are created where a resource depicts or describes a contributor.  Use ResourceCreator or ResourceContributor where a contributor creates or contributes to a resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>abstract/description</dt>
+    <dd>A description or abstract of the content of the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>comments</dt>
+    <dd>Notes or comments on the content of the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>source</dt>
+    <dd>The resource from which the described resource is derived. Used for resources which are included within or part of other resources.  For example, the newspaper is the source for a newspaper article; the journal is the source for a journal article; an anthology is the source for a chapter; a collection is the source for an item within that collection. </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource id</dt>
+    <dd>Another resource (or resources) related in some way to the current resource.  The relation is qualified according to type using the Dublin Core relation qualifiers. </dd>
+    <dd> <br />
+    </dd>
+    <dt>publisher</dt>
+    <dd>An agent or organisation responsible for making the resource available.  For example, the publisher of a book. </dd>
+    <dd> <br />
+    </dd>
+    <dt>publisher location</dt>
+    <dd>The location of the agent or organisation responsible for making the resource available. </dd>
+    <dd> <br />
+    </dd>
+    <dt>volume</dt>
+    <dd>The volume number identifying the part of a Source in which a resource is located.  For example, the volume number of the journal in which an article is published. </dd>
+    <dd> <br />
+    </dd>
+    <dt>issue</dt>
+    <dd>The issue number identifying the part of a Source in which a resource is located.  For example, the issue number of the journal in which an article is published. </dd>
+    <dd> <br />
+    </dd>
+    <dt>page </dt>
+    <dd>The page number or page range indicating where a resource is located in a Source.  For example, the page number of a newspaper article, or the page range of a journal article or chapter in a book. </dd>
+    <dd> <br />
+    </dd>
+    <dt>citation</dt>
+    <dd>A text string unambiguously identifying the resource, for example a bibliographic citation for an article, chapter of book.  This is automatically generated from information provided in other fields. It will include ResourceCreator, Title, Source, Date, Publisher and other identifying and finding information appropriate to the resource type. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date created - day</dt>
+    <dd>Date when the record is created. Automatically generated. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date created - month</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date created - year</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date of issue - day</dt>
+    <dd>Date of publication of the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date of issue - month</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date of issue - year</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date of copyright - day</dt>
+    <dd>Date of a statement of copyright in the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date of copyright - month</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date of copyright - year</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date accessioned - day</dt>
+    <dd>Date of the accessioning of the resource.  Used for material items stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date accessioned - month</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date accessioned - year</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date notes</dt>
+    <dd>Notes or comments on date information.  For example, if dates are estimated. </dd>
+    <dd> <br />
+    </dd>
+    <dt>catalogue id</dt>
+    <dd>A unique identifier given to a resource which is part of a collection.  Used for material items stored in collections.  Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>holding institution</dt>
+    <dd>The name of the organisation which holds the resource.   Used for material items stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>storage</dt>
+    <dd>A description of how and where the resource is stored.  Used for material items, stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>donated/purchased</dt>
+    <dd>Indicate whether resource is donated to or purchased.  Used for material items stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>from</dt>
+    <dd>Person or organisation from whom the resource was obtained.  Used for material items stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>provenance</dt>
+    <dd>Statement of the provenance of the resource.   Used for material items stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>significance</dt>
+    <dd>Statement of the significance of the resource.  Used for material items stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource condition</dt>
+    <dd>An indication of the physical condition of the resource.  Used for material items, stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>detail comments</dt>
+    <dd>Comments on the physical condition of the resource.  Used for material items, stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>rights</dt>
+    <dd>A statement of copyright in the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>rights holder</dt>
+    <dd>An agent (or agents) asserting copyright in the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>access rights</dt>
+    <dd>Conditions regarding rights or restrictions to access the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource language</dt>
+    <dd>The language/s of the resource is in, where the resource has language content. </dd>
+    <dd> <br />
+    </dd>
+    <dt>medium</dt>
+    <dd>The physical medium of the resource.  Used for material items, stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>extent</dt>
+    <dd>The physical dimensions of the resource.  Used for material items, stored in collections. </dd>
+    <dd> <br />
+    </dd>
+    <dt>mimetype</dt>
+    <dd>The file format of the resource designated by Multipurpose Internet Mail Extensions (MIME). Used for digital items. </dd>
+    <dd> <br />
+    </dd>
+    <dt>format</dt>
+    <dd>Other information relating to the file format, physical medium or dimensions of the resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource url</dt>
+    <dd>A unique Uniform Resource Locator for the resource.  Used for digital resources which are publicly and persistently accessible.  Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>international standard book number</dt>
+    <dd>Unique identifier assigned to a book.  Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>international standard music number</dt>
+    <dd>Unique identifier assigned to a piece of music.  Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>international standard serial number</dt>
+    <dd>Unique identifier assigned to a serial (journal, magazine, newspaper).  Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>serial resource and contribution number</dt>
+    <dd>Unique identifier assigned to an article published as part of a serial.  Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>event id</dt>
+    <dd>An event (or events) associated with or referred to by the resource.  Event associations will be created where a resource is created in the process of making or responding to an event. </dd>
+    <dd> <br />
+    </dd>
+    <dt>contributor id</dt>
+    <dd>A contributor (or contributors) to which the resource refers. Contributor associations are created where a resource depicts or describes a contributor.  Use ResourceCreator or ResourceContributor where a contributor creates or contributes to a resource. </dd>
+    <dd> <br />
+    </dd>
+    <dt>organisation id</dt>
+    <dd>An organisation (or organisations) to which the resource refers.  Organisation associations are created where a resource depicts or describes an organisation. Not to be mistaken with the Resource Contributor of Creator. </dd>
+    <dd> <br />
+    </dd>
+    <dt>venue id</dt>
+    <dd>A venue (or venues) to which the resource refers. Venue associations will be created where a resource depicts or describes a venue. </dd>
+    <dd> <br />
+    </dd>
+    <dt>work id</dt>
+    <dd>A work (or works) to which the resource refers.  Work associations will be created where a resource relates, for example, to a dramatic work, than to an actual production. </dd>
+    <dd> <br />
+    </dd>
+    <dt>genre id</dt>
+    <dd>A genre (or genres) to which the resource refers or relates.  Genre associations will be created where a resource relates, for example, to a performance genre, rather than particular productions. </dd>
+    <dd> <br />
+    </dd>
+    <dt>content indicator id</dt>
+    <dd>A content indicator (or content indicators) to which the resource refers or relates.  Content Indicator associations will be created where a resource relates to a particular subject, rather than actual productions. </dd>
+    <dd> <br />
+    </dd>
+    <dt>resource id</dt>
+    <dd>Another resource (or resources) related in some way to the current resource.  The relation is qualified according to type using the Dublin Core relation qualifiers. </dd>
+    <dd> <br />
+    </dd>
+    <dt>created by user</dt>
+    <dd>User who created the record. Automatically generated. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date created - day</dt>
+    <dd>Date when the record is created. Automatically generated. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date created - month</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date created - year</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>update by user</dt>
+    <dd>User who last updated the record. Automatically generated. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date updated - day</dt>
+    <dd>Date when the record is last updated. Automatically generated. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date updated - month</dt>
+    <dd>. </dd>
+    <dd> <br />
+    </dd>
+    <dt>date updated - year</dt>
+    <dd>. </dd>
+</dl>
+<h2><a name="work"></a>Work</h2>
+<dl>
+    <dt>work</dt>
+    <dd>A work is the abstract conception of an event, typically (though not always) expressed as a material resource, such as a script or score. </dd>
+    <dd> <br />
+    </dd>
+    <dt>workid</dt>
+    <dd>A unique number identifying a work.   Unique.</dd>
+    <dd> <br />
+    </dd>
+    <dt>work_title</dt>
+    <dd>A name identifying a work. Prefer the original name, as conceived by creator.</dd>
+    <dd> <br />
+    </dd>
+    <dt>alternative_work_title</dt>
+    <dd>Alternative names for a work. Use for alternative names, translations of name and variant spellings.</dd>
+</dl>
+<h2>Controlled vocabularies</h2>
+<h3>Genres</h3>
+<h3>Functions</h3>
+<h3>Subjects</h3>
+<h3>Resource Types</h3>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>]]></content>
+    </element>
+  </page>
+</pages>

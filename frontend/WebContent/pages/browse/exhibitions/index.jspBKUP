@@ -1,0 +1,128 @@
+<%@ page pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page import="org.opencms.main.OpenCms" %>
+
+<%@ page import = "java.util.Vector, java.text.SimpleDateFormat"%>
+<%@ page import = "java.sql.*, sun.jdbc.rowset.*, java.util.Calendar"%>
+<%@ page import = "ausstage.State"%>
+<%@ page import = "admin.Common"%>
+<%@ page import = "ausstage.Event, ausstage.DescriptionSource"%>
+<%@ page import = "ausstage.Datasource, ausstage.Venue, ausstage.VenueVenueLink, ausstage.ItemItemLink"%>
+<%@ page import = "ausstage.PrimaryGenre, ausstage.SecGenreEvLink"%>
+<%@ page import = "ausstage.Country, ausstage.PrimContentIndicatorEvLink"%>
+<%@ page import = "ausstage.OrgEvLink, ausstage.Organisation, ausstage.Organisation"%>
+<%@ page import = "ausstage.ConEvLink, ausstage.Contributor"%>
+<%@ page import = "ausstage.Item, ausstage.LookupCode, ausstage.RelationLookup, ausstage.ContentIndicator"%>
+<%@ page import = "ausstage.ItemContribLink, ausstage.ItemOrganLink"%>
+<%@ page import = "ausstage.SecondaryGenre, ausstage.Work"%>
+<%@ page import = "ausstage.WorkContribLink, ausstage.WorkEvLink,ausstage.WorkOrganLink" %>
+<%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
+<%@ page session="true" import="org.opencms.main.*, org.opencms.jsp.*,org.opencms.file.*, java.lang.String, java.util.*" %>
+
+<%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
+<%@ page session="true" import="org.opencms.main.*, org.opencms.jsp.*,org.opencms.file.*, java.lang.String, java.util.*" %>
+<%admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstants(request);%>
+<%@ page import = "ausstage.AusstageCommon"%>
+<%@ include file="../../../public/common.jsp"%>
+
+<link rel="stylesheet" content-type="text/css" href="/resources/exhibition.css">
+
+<cms:include property="template" element="head" />
+  
+<div class="heading-bar exhibition">Browse Exhibitions</div>
+
+
+
+
+<div class='browse-exhibit-blurb'>
+Users of Ausstage have curated Ausstage data into exhibitions examining various things. Here, you can browse the exhibitions.
+Clicking on records within an exhibition will open a separate window in your browser with detailed record information.
+					
+</div>
+<h4 class='gridHeader'>CURRENT EXHIBITIONS</h4>
+
+	<div style="width: 100%;padding-bottom:70px">
+		<div>	
+	<%
+	//get event data
+	ausstage.Database m_db = new ausstage.Database ();
+	m_db.connDatabase(AppConstants.DB_ADMIN_USER_NAME, AppConstants.DB_ADMIN_USER_PASSWORD);
+	Statement stmt = m_db.m_conn.createStatement();
+	
+	
+	CachedRowSet rowSetExhibitions = null;
+	String sqlExhibitions = 
+		"SELECT\n" +
+		"	`exhibition`.`exhibitionid`,\n" +
+		"	`exhibition`.`name`,\n" +
+		"	`exhibition`.`description`,\n" +
+		"	`exhibition`.`published_flag`,\n" +
+		"	`exhibition`.`owner`,\n" +
+		"	`exhibition`.`entered_by_user`,\n" +
+		"	`exhibition`.`entered_date`,\n" +
+		"	`exhibition`.`updated_by_user`,\n" +
+		"	`exhibition`.`updated_date`,\n" +
+		"	fn_get_group_concat_contributor(`exhibition`.`exhibitionid`) `curator`\n" +      
+		"FROM \n" +
+		"	`exhibition`\n" +
+		"WHERE\n" +
+		"	upper(`exhibition`.`published_flag`) = 'Y'\n" +
+		"ORDER BY name asc ";
+	rowSetExhibitions = m_db.runSQL(sqlExhibitions , stmt);
+	
+	if (rowSetExhibitions != null && rowSetExhibitions .size() > 0) {
+		while (rowSetExhibitions .next()) {
+			%>
+			
+			<a href="/pages/exhibition/<%= rowSetExhibitions.getString("exhibitionid") %>">
+				<!--<div class='exhibition-tile border-153'>-->
+				<div class='exhibition-tile'>
+					<div class='exhibition-title' >
+						<div style='width: 32px;display: inline-block;height: 100%;' class='b-153'>
+							<img src='/resources/images/icon-exhibition.png' class='browse-icon'/>
+						</div>
+
+						<div class='browse-heading large bold'>
+							
+								 <%= rowSetExhibitions.getString("name") %>
+
+						</div>
+						
+						<div class='curated-text'>
+						<%--curated by: <%=rowSetExhibitions.getString("curator") %> --%>
+						curated by <%=rowSetExhibitions.getString("entered_by_user")%>
+						</div>
+					</div>
+					<div class='exhibition-blurb' >
+						<div style='padding:10px;'>
+							<%=rowSetExhibitions.getString("description")%>
+						</div>
+					
+					</div>
+				</div>
+			</a>
+			
+			
+			
+			
+			
+	
+			
+			
+			
+			
+		
+			<%
+		}
+	}
+
+	%>
+	
+
+	
+	</div>
+	</div>
+			
+	
+<cms:include property="template" element="foot" />
+

@@ -1,0 +1,3 @@
+#build.properties file
+UAT.AUSSTAGE_DB_PASSWORD=Password
+PROD.AUSSTAGE_DB_PASSWORD=Password

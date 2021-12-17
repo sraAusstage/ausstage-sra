@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.opencms.org/dtd/6.0/xmlpage.xsd">
+  <page language="en">
+    <element name="body">
+      <links>
+        <link name="link0" internal="false" type="A">
+          <target><![CDATA[https://www.w3.org/RDF/]]></target>
+        </link>
+        <link name="link1" internal="false" type="A">
+          <target><![CDATA[http://www.w3.org/TR/rdf-sparql-query/]]></target>
+        </link>
+        <link name="link2" internal="false" type="A">
+          <target><![CDATA[http://en.wikipedia.org/wiki/SPARQL]]></target>
+        </link>
+        <link name="link3" internal="false" type="A">
+          <target><![CDATA[http://jena.sourceforge.net/ARQ/Tutorial/]]></target>
+        </link>
+        <link name="link4" internal="false" type="A">
+          <target><![CDATA[http://semanticweb.org/wiki/SPARQL_endpoint.html]]></target>
+        </link>
+        <link name="link5" internal="false" type="A">
+          <target><![CDATA[http://semanticweb.org/wiki/SPARQL_endpoint.html]]></target>
+        </link>
+        <link name="link6" internal="false" type="A">
+          <target><![CDATA[http://rdf.csem.flinders.edu.au/joseki/sparql]]></target>
+        </link>
+        <link name="link7" internal="false" type="A">
+          <target><![CDATA[http://rdf.csem.flinders.edu.au/joseki/networks ]]></target>
+        </link>
+        <link name="link8" internal="false" type="A">
+          <target><![CDATA[http://rdf.csem.flinders.edu.au/joseki/sparql.html]]></target>
+        </link>
+        <link name="link9" internal="false" type="A">
+          <target><![CDATA[http://rdf.csem.flinders.edu.au/joseki/networks.html]]></target>
+        </link>
+      </links>
+      <content><![CDATA[<h1>Working with the RDF Application</h1>
+<p>The AusStage data set was previously only accessible via human interaction with a custom-designed web interface.<br />
+Reformatting the AusStage data set in an open-access, standards-compliant format has extended access to programmatic interaction and new possibilities for data re-use. <br />
+By doing this the knowledge that AusStage has accumulated can be integrated into the linked data fabric of the Semantic Web by mapping the AusStage database schema onto an ontology that formally expresses relations between entities, by reformatting the dataset as an expression of that ontology, and by storing that expression in a publicly accessible, machine-readable data repository.</p>
+<p>This is done using our RDF application (<a href="%(link0)">Resource Description Framework</a>) which is accessed via the SPARQL Endpoint.</p>
+<h2>ABOUT SPARQL</h2>
+<p><span style="color: rgb(68, 68, 68); font-family: arial, sans-serif; font-size: 13px; line-height: 20.02px;">SPARQL Query Language for RDF is a language that can be used to query RDF data sources. T</span><span style="color: rgb(68, 68, 68); font-family: arial, sans-serif; font-size: 13px; line-height: 20.02px;">he Navigating Networks and Complete Ausstage Dataset Services use an RDF based datastore that is created and populated by the RdfExport application.</span></p>
+<h3>USEFUL LINKS</h3>
+<p><span style="color: rgb(68, 68, 68); font-family: arial, sans-serif; font-size: 13px; line-height: 20.02px;">Useful SPARQL Links include:</span></p>
+<ul style="margin: 10px 10px 10px 30px; padding: 0px; color: rgb(68, 68, 68); font-family: arial, sans-serif; font-size: 13px; line-height: 20.02px;">
+    <li><a href="%(link1)" style="color: rgb(119, 89, 174); text-decoration: none;">SPARQL Query Language for RDF Specification</a></li>
+    <li><a href="%(link2)" style="color: rgb(119, 89, 174); text-decoration: none;">Wikipedia page on SPARQL</a></li>
+    <li><a href="%(link3)" style="color: rgb(119, 89, 174); text-decoration: none;">Jena SPARQL Tutorial</a>&nbsp;- Jena is the library used to manage this datastore</li>
+</ul>
+<p>&nbsp;</p>
+<h2>SPARQL ENDPOINTS</h2>
+<div>There are two <a href="%(link4)">SP</a><a href="%(link5)">ARQL endpoints</a> available:</div>
+<ul>
+    <li><a href="%(link6)">The complete AusStage dataset</a>&nbsp;</li>
+    <li><a href="%(link7)">The Navigating Networks dataset</a></li>
+</ul>
+<div>These endpoints can be accessed through forms accessed via the links below :</div>
+<ul>
+    <li><a href="%(link8)">The Complete Dataset Form</a></li>
+    <li><a href="%(link9)">Navigating Networks Dataset Form</a></li>
+</ul>
+<h2>SAMPLE SPARQL QUERY</h2>
+<h3>List the Collaborators of a Contributor (Robyn Archer)</h3>
+<pre><p>PREFIX ausstage:&nbsp; &lt;http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#&gt;</p><p>SELECT ?collaborator ?collabGivenName ?collabFamilyName<br />WHERE {&nbsp; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;ausstage:Contributor:774&gt; a ausstage:CONTRIBUTOR ; <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ausstage:CONTRIBUTORhasCONTRIBUTORLINK ?collaborator.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ?collaborator&nbsp; ausstage:CONTRIBUTORhasFIRST_NAME ?collabGivenName;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ausstage:CONTRIBUTORhasLAST_NAME ?collabFamilyName.<br />}</p><p>&nbsp;</p><p>&nbsp;</p></pre>
+<h2>TABLE NAMES AND PREDICATES</h2>
+<p>The list below details the table names and predicates that can be used when querying the SPARQL endpoint.</p>
+<h3>CONTENT INDICATOR</h3>
+<p>&lt;table name='ContentIndicator' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTOR</strong>' primaryKey='contentindicatorid'&gt;<span class="Apple-tab-span" style="white-space:pre"><br />
+</span>&nbsp; &nbsp; &lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTENTINDICATORhasCONTENTINDICATOR' </strong>type='string'&gt;{contentindicator}&lt;/object&gt;<br />
+&nbsp; &nbsp; &lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTENTINDICATORhasCONTENTINDICATORDESCRIPTION</strong>' type='string'&gt;{contentindicatordescription}&lt;/object&gt;</p>
+<h3>CONTRIBUTOR FUNCTION</h3>
+<p>&lt;table name='ContFunc' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTFUNC</strong>' primaryKey='contributorfunctpreferredid'&gt;<br />
+&nbsp; &nbsp; &lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTFUNCThasCONTFUNCTION</strong>' type='string'&gt;{contfunction}&lt;/object&gt;<br />
+&nbsp; &nbsp; &lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTFUNCThasCONTFUNCTDESCRIPTION</strong>' type='string'&gt;{contfunctiondescription}&lt;/object&gt;</p>
+<h3>CONTRIBUTOR</h3>
+<p>&lt;table name='Contributor' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTOR</strong>' primaryKey='contributorid'&gt;<br />
+&nbsp; &nbsp; &lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasCONTRIBUTORCOUNTRY</strong>' type='string'&gt;{contributorcountry}&lt;/object&gt;<br />
+&nbsp; &nbsp; &lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasDATE_OF_DEATH</strong>' type='dateTime'&gt;{date_of_death}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasDDDATE_OF_DEATH</strong>' type='string'&gt;{dddate_of_death}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasDISPLAY_NAME</strong>' type='string'&gt;{first_name} {last_name}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasFIRST_NAME</strong>' type='string'&gt;{first_name}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasGENDER</strong>' type='string' matches='male|female'&gt;{gendername}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasLAST_NAME</strong>' type='string'&gt;{last_name}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasMMDATE_OF_DEATH</strong>' type='string'&gt;{mmdate_of_death}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasNATIONALITY</strong>' type='string'&gt;{nationality}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasNOTES</strong>' type='string'&gt;{notes}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasOTHER_NAMES</strong>' type='string'&gt;{other_names}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasSTATE</strong>' type='string' matches='[^U].*'&gt;{statename}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasYYYYDATE_OF_DEATH</strong>' type='string'&gt;{yyyydate_of_death}&lt;/object&gt;<br />
+&nbsp; &nbsp; &nbsp; &lt;subquery&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasCONTFUNCT</strong>' type='key'&gt;ContFunc:{contributorfunctpreferredid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>﻿<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasORGANISATIONLINK</strong>' type='key'&gt;Organisation:{organisationid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasCONTRIBUTORLINK</strong>' type='key' reversePredicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>CONTRIBUTORhasCONTRIBUTORLINK</strong>'&gt;Contributor:{collaboratorid}&lt;/object&gt;</p>
+<h3>&nbsp;DESCRIPTION SOURCE</h3>
+<p>&lt;table name='DescriptionSrc' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>DESCRIPTIONSRC</strong>' primaryKey='descriptionsourceid'&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>DESCRIPTIONSRChasDESCRIPTIONSOURCE</strong>' type='string'&gt;{descriptionsource}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>DESCRIPTIONSRChasDESCRIPTIONDESCRIPTION</strong>' type='string'&gt;{descriptiondescription}&lt;/object&gt;</p>
+<h3>EVENTS</h3>
+<p>&lt;table name='Events' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENTS</strong>' primaryKey='eventid'&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasCOLLECTION1</strong>' type='string'&gt;{collection1}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasCOLLECTION2</strong>' type='string'&gt;{collection2}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasCOLLECTION3</strong>' type='string'&gt;{collection3}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasCONTENT_INDICATOR</strong>' type='key'&gt;ContentIndicator:{content_indicator}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDATA_SOURCE1</strong>' type='string'&gt;{datasource1}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDATA_SOURCE2</strong>' type='string'&gt;{datasource2}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDATA_SOURCE3</strong>' type='string'&gt;{datasource3}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDATA_SOURCE_DESCRIPTION1</strong>' type='string'&gt;{data_source_description1}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDATA_SOURCE_DESCRIPTION2</strong>' type='string'&gt;{data_source_description2}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDATA_SOURCE_DESCRIPTION3</strong>' type='string'&gt;{data_source_description3}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDDDATE_ENTERED</strong>' type='string'&gt;{dddate_entered}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDDDATE_UPDATED</strong>' type='string'&gt;{dddate_updated}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>﻿&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDDFIRST_DATE</strong>' type='string'&gt;{ddfirst_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>﻿&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDDLAST_DATE</strong>' type='string'&gt;{ddlast_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>﻿&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDDOPENING_NIGHT</strong>' type='string'&gt;{ddopening_night}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDESCRIPTION</strong>' type='string'&gt;{description}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDESCRIPTION_SOURCE</strong>' type='key'&gt;DescriptionSrc:{description_source}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasENTERED_BY</strong>' type='nonNegativeInteger'&gt;{entered_by}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasENTERED_BY_USER</strong>' type='string'&gt;{entered_by_user}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasENTERED_DATE</strong>' type='dateTime'&gt;{entered_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasESTIMATED_DATES</strong>' type='string'&gt;{estimated_dates}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasEVENT_NAME</strong>' type='string'&gt;{event_name}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasFIRST_DATE</strong>' type='dateTime'&gt;{first_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasFURTHER_INFORMATION</strong>' type='string'&gt;{further_information}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasINTERESTING_PERF_HISTORY</strong>' type='string'&gt;{interesting_perf_history}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasLAST_DATE</strong>' type='dateTime'&gt;{last_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasMMDATE_ENTERED</strong>' type='string'&gt;{mmdate_entered}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasMMDATE_UPDATED</strong>' type='string'&gt;{mmdate_updated}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasMMFIRST_DATE</strong>' type='string'&gt;{mmfirst_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasMMLAST_DATE</strong>' type='string'&gt;{mmlast_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasMMOPENING_NIGHT</strong>' type='string'&gt;{mmopening_night}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasOPENING_NIGHT_DATE</strong>' type='dateTime'&gt;{opening_night_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasPRIMARY_GENRE</strong>' type='string'&gt;{genre}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasSNDDATE_ENTERED</strong>' type='nonNegativeInteger'&gt;{snddate_entered}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasSNDDATE_UPDATED</strong>' type='nonNegativeInteger'&gt;{snddate_updated}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasSNDFIRST_DATE</strong>' type='nonNegativeInteger'&gt;{sndfirst_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasSNDLAST_DATE</strong>' type='nonNegativeInteger'&gt;{sndlast_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasSNDOPENING_NIGHT</strong>' type='nonNegativeInteger'&gt;{sndopening_night}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasSTATUS</strong>' type='key'&gt;StatusMenu:{status}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasUPDATED_DATE</strong>' type='dateTime'&gt;{updated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasVENUEID</strong>' type='key'&gt;Venue:{venueid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasWORLD_PREMIER</strong>' type='string'&gt;{world_premier}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasYYYYFIRST_DATE</strong>' type='string'&gt;{yyyyfirst_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasYYYYLAST_DATE</strong>' type='string'&gt;{yyyylast_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasYYYYOPENING_NIGHT</strong>' type='string'&gt;{yyyyopening_night}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasYYYYDATE_ENTERED</strong>' type='string'&gt;{yyyydate_entered}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;subquery&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasWORKLINK</strong>' reversePredicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#WORKhasEVENTLINK' type='key'&gt;Work:{workid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasDATA_SOURCE</strong>' type='string'&gt;{datasource}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>EVENThasSECONDARYGENRE</strong>' type='string'&gt;{preferredterm}&lt;/object&gt;<br />
+&nbsp;</p>
+<h3>ITEM</h3>
+<p>&lt;table name='Item' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEM</strong>' primaryKey='itemid'&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasACCESSIONED_DATE</strong>' type='dateTime'&gt;{accessioned_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasAQUIRED_FROM</strong>' type='string'&gt;{aquired_from}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasCATALOGUEID</strong>' type='string'&gt;{catalogueid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasCITATION</strong>' type='string'&gt;{citation}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasCOMMENTS</strong>' type='string'&gt;{comments}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasCONDITION</strong>' type='string'&gt;{condition}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasCOPYRIGHT_DATE</strong>' type='dateTime'&gt;{copyright_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasCREATED_DATE</strong>' type='dateTime'&gt;{created_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDATE_NOTES</strong>' type='string'&gt;{date_notes}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDC_CREATOR</strong>' type='string'&gt;{dc_creator}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDDACCESSIONED_DATE</strong>' type='string'&gt;{ddaccessioned_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDDCOPYRIGHT_DATE</strong>' type='string'&gt;{ddcopyright_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDDCREATED_DATE</strong>' type='string'&gt;{ddcreated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDDISSUED_DATE</strong>' type='string'&gt;{ddissued_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDDTERMINATED_DATE</strong>' type='string'&gt;{ddterminated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDESCRIPTION_ABSTRACT</strong>' type='string'&gt;{description_abstract}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDETAIL_COMMENTS</strong>' type='string'&gt;{detail_comments}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasDONATED_PURCHASED</strong>' type='string'&gt;{donated_purchased}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasENTERED_BY_USER</strong>' type='string'&gt;{entered_by_user}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasENTERED_DATE</strong>' type='dateTime'&gt;{entered_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasFORMAT</strong>' type='string'&gt;{format}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasFORMAT_EXTENT</strong>' type='string'&gt;{format_extent}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasFORMAT_MEDIUM</strong>' type='string'&gt;{format_medium}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasFORMAT_MIMETYPE</strong>' type='string'&gt;{format_mimetype}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasIDENT_ISBN</strong>' type='string'&gt;{ident_isbn}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasIDENT_ISMN</strong>' type='string'&gt;{ident_ismn}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasIDENT_ISSN</strong>' type='string'&gt;{ident_issn}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasIDENT_SICI</strong>' type='string'&gt;{ident_sici}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasINSTITUTION</strong>' type='string'&gt;{organisationname}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasISSUE</strong>' type='string'&gt;{issue}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasISSUED_DATE</strong>' type='dateTime'&gt;{issued_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasITEM_DESCRIPTION</strong>' type='string'&gt;{item_description}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasITEM_TYPE_OLD</strong>' type='string'&gt;{item_type_lov_id}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasITEM_URL</strong>' type='anyURI'&gt;{item_url}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasLANGUAGE</strong>' type='string'&gt;{language}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasLOOKUP</strong>' type='string'&gt;{item_type_old}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasMMACCESSIONED_DATE</strong>' type='string'&gt;{mmaccessioned_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasMMCOPYRIGHT_DATE</strong>' type='string'&gt;{mmcopyright_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasMMCREATED_DATE</strong>' type='string'&gt;{mmcreated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasMMISSUED_DATE</strong>' type='string'&gt;{mmissued_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasMMTERMINATED_DATE</strong>' type='string'&gt;{mmterminated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasMODIFIED_BY_USER</strong>' type='string'&gt;{modified_by_user}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasMODIFIED_DATE</strong>' type='dateTime'&gt;{modified_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasPAGE</strong>' type='string'&gt;{page}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasPROVENANCE</strong>' type='string'&gt;{provenance}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasPUBLISHER</strong>' type='string'&gt;{publisher}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasPUBLISHER_LOCATION</strong>' type='string'&gt;{publisher_location}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasRIGHTS</strong>' type='string'&gt;{rights}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasRIGHTS_ACCESS_RIGHTS</strong>' type='string'&gt;{rights_access_rights}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>﻿&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasRIGHTS_HOLDER</strong>' type='string'&gt;{rights_holder}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>﻿&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasSIGNIFICANCE</strong>' type='string'&gt;{significance}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasSOURCE</strong>' type='string'&gt;{source}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasSTORAGE</strong>' type='string'&gt;{storage}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasSUB_LOOKUP</strong>' type='string'&gt;{item_sub_type_old}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasTERMINATED_DATE</strong>' type='dateTime'&gt;{terminated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasTITLE</strong>' type='string'&gt;{title}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasTITLE_ALTERNATIVE</strong>' type='string'&gt;{title_alternative}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasUPDATED_DATE</strong>' type='dateTime'&gt;{updated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasVOLUME</strong>' type='string'&gt;{volume}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasYYYYACCESSIONED_DATE</strong>' type='string'&gt;{yyyyaccessioned_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasYYYYCOPYRIGHT_DATE</strong>' type='string'&gt;{yyyycopyright_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasYYYYCREATED_DATE</strong>' type='string'&gt;{yyyycreated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasYYYYISSUED_DATE</strong>' type='string'&gt;{yyyyissued_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasYYYYTERMINATED_DATE</strong>' type='string'&gt;{yyyyterminated_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;subquery&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasCONTRIBUTORLINK</strong>' type='key'&gt;Contributor:{contributorid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasChildItem</strong>' reversePredicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#ITEMhasParentItem' type='key'&gt;Item:{childid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasITEMLINK</strong>' reversePredicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#ITEMhasITEMLINK' type='key'&gt;Item:{childid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasEVLINK</strong>' type='key'&gt;Event:{eventid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasORGANISATIONLINK</strong>' type='key'&gt;Organisation:{organisationid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasVENUELINK</strong>' type='key'&gt;Venue:{venueid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ITEMhasWORKLINK</strong>' type='key'&gt;Work:{workid}&lt;/object&gt;</p>
+<h3>ORGANISATION</h3>
+<p><a id="fck_paste_padding">﻿</a>&lt;table name='Organisation' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATION</strong>' primaryKey='organisationid'&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasADDRESS</strong>' type='string'&gt;{address}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasCOUNTRYNAME</strong>' type='string'&gt;{countryname}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasNAME</strong>' type='string'&gt;{name}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasNOTES</strong>' type='string'&gt;{notes}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasORGANISATIONCOUNTRY</strong>' type='string'&gt;{organisationcountry}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasOTHER_NAMES1</strong>' type='string'&gt;{other_names1}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasOTHER_NAMES2</strong>' type='string'&gt;{other_names2}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasOTHER_NAMES3</strong>' type='string'&gt;{other_names3}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasPOSTCODE</strong>' type='nonNegativeInteger'&gt;{postcode}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasSTATE</strong>' type='string' matches='[^U].*'&gt;{statename}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasSUBURB</strong>' type='string'&gt;{suburb}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasTYPE</strong>' type='string'&gt;{type}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasWEB_LINKS</strong>' type='anyURI'&gt;{web_links}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;subquery&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasDDFIRST_DATE</strong>' type='string'&gt;{ddfirst}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasDDLAST_DATE</strong>' type='string'&gt;{ddlast}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasFIRST_DATE</strong>' type='dateTime'&gt;{firstdate}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasLAST_DATE</strong>' type='dateTime'&gt;{lastdate}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasMMFIRST_DATE</strong>' type='string'&gt;{mmfirst}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasMMLAST_DATE</strong>' type='string'&gt;{mmlast}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasYYYYFIRST_DATE</strong>' type='string'&gt;{yyyyfirst}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasYYYYLAST_DATE</strong>' type='string'&gt;{yyyylast}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>ORGANISATIONhasEVLINK</strong>' reversePredicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#EVENThasORGANISATIONLINK' type='key'&gt;Event:{eventid}&lt;/object&gt;</p>
+<h3>STATUS MENU<span class="Apple-tab-span" style="white-space:pre">	</span><span class="Apple-tab-span" style="white-space: pre;">	</span></h3>
+<p>&lt;table name='StatusMenu' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>STATUSMENU</strong>' primaryKey='statusid'&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>STATUSMENUhasSTATUS</strong>' type='string'&gt;{status}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>STATUSMENUhasSTATUSID</strong>' type='nonNegativeInteger'&gt;{statusid}&lt;/object&gt;</p>
+<h3>VENUE</h3>
+<p>&lt;table name='Venue' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUE</strong>' primaryKey='venueid'&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasCAPACITY</strong>' type='nonNegativeInteger' matches='[0-9]*'&gt;{capacity}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasCOUNTRY</strong>' type='string'&gt;{country}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasLATITUDE</strong>' type='decimal'&gt;{latitude}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasLONGITUDE</strong>' type='decimal'&gt;{longitude}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasNOTES</strong>' type='string'&gt;{notes}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasPOSTCODE</strong>' type='string'&gt;{postcode}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasSTATE</strong>' type='string' matches='[^U].*'&gt;{statename}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasSTREET</strong>' type='string'&gt;{street}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasSUBURB</strong>' type='string'&gt;{suburb}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasVENUE_NAME</strong>' type='string'&gt;{venue_name}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasWEB_LINKS</strong>' type='anyURI'&gt;{web_links}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;subquery&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasDDFIRST_DATE</strong>' type='string'&gt;{ddfirst}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasDDLAST_DATE</strong>' type='string'&gt;{ddlast}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasFIRST_DATE</strong>' type='dateTime'&gt;{firstdate}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasLAST_DATE</strong>' type='dateTime'&gt;{lastdate}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasMMFIRST_DATE</strong>' type='string'&gt;{mmfirst}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasMMLAST_DATE</strong>' type='string'&gt;{mmlast}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasYYYYFIRST_DATE</strong>' type='string'&gt;{yyyyfirst}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>VENUEhasYYYYLAST_DATE</strong>' type='string'&gt;{yyyylast}&lt;/object&gt;<span class="Apple-tab-span" style="white-space:pre">	</span><span class="Apple-tab-span" style="white-space: pre;">	</span></p>
+<h3>WORK</h3>
+<p>&lt;table name='Work' type='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORK</strong>' primaryKey='workid'&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasALTER_WORK_TITLE</strong>' type='string'&gt;{alter_work_title}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasENTERED_BY_USER</strong>' type='string'&gt;{entered_by_user}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasENTERED_DATE</strong>' type='dateTime'&gt;{entered_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasMODIFIED_BY_USER</strong>' type='string'&gt;{modified_by_user}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasMODIFIED_DATE</strong>' type='dateTime'&gt;{modified_date}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasWORK_TITLE</strong>' type='string'&gt;{work_title}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a>&lt;subquery&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasCONTRIBUTORLINK</strong>' type='key'&gt;Contributor:{contributorid}&lt;/object&gt;<br />
+&nbsp; &nbsp;&nbsp;﻿&nbsp; &nbsp;&nbsp;<a id="fck_paste_padding">﻿</a><a id="fck_paste_padding">﻿</a>&lt;object predicate='http://www.semanticweb.org/ontologies/2011/6/AusStagev1-3.owl#<strong>WORKhasORGANISATIONLINK</strong>' type='key'&gt;Organisation:{organisationid}&lt;/object&gt;</p>
+<p><span class="Apple-tab-span" style="white-space:pre">	</span></p>
+<p>&nbsp;</p>]]></content>
+    </element>
+  </page>
+</pages>

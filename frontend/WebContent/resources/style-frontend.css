@@ -1,0 +1,1152 @@
+/* S T R U C T U R E */
+
+html,body {
+	display: block;
+	font-family: helvetica, arial, verdana;
+	font-size: 12px;
+	line-height: 140%;
+	color: #333333;
+	background-color: #ffffff;
+	padding: 0px;
+	margin: 0px;
+	height: 100%;
+	min-width: 320px;
+	}
+
+div {
+	padding: 0px;
+	margin: 0px;
+	}
+
+.wrapper {
+	zoom: 1;
+	height:calc(100% - 94px);
+	min-height:calc(100% - 94px);
+	position: relative;
+/*	padding-top:94px;*/
+	padding-top:85px;
+}
+
+/* H E A D E R */
+
+#header {
+	zoom: 1;
+	height: 5em;
+}
+
+.header-logo {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 5em;
+	width: 120px;
+	}
+
+.header-search {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	margin-top: 1.4em;
+	margin-right: 10px;
+	text-align: right;
+	color: #aaaaaa;
+	}
+
+.header-wrapper{
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+    top: 0px;
+}
+
+/* F O O T E R */
+
+#footer{
+	width:100%; 
+	min-height:5em;
+/*	position:absolute;*/
+	position:fixed;
+	bottom:0;
+	left:0;
+	background-color: #aaaaaa;
+	padding:0px;
+	z-index: 100;
+}
+
+.footer-left{
+	float:left;
+	padding: 10px;
+	text-align:left;
+	/*added this messy fix to make sure the admin and public footers are the same... ;)*/
+	line-height:133%;
+	padding-top:11px;
+}
+
+.footer-right, .footer-right.label{
+	float:right;
+	padding:10px;
+	text-align:right;
+}
+
+
+/* S I D E B A R */
+#sidebar {
+	position:fixed;
+	float: left;
+	width: 218px;
+	padding: 5px;
+	margin: 10px;
+	margin-top: 26px;
+}
+
+#sidebar a {
+	display: block;
+	color: white;
+}
+
+#sidebar a.current {
+	font-weight: bold;
+}
+
+#sidebar a.expanded {
+	margin-left: 10px;
+}
+
+.staticpage {
+	margin-left: 240px;
+	padding: 20px 10px 60px 10px;
+}
+
+/* Fix header and footer and scroll contents. */
+/*part of 2017 updates */
+
+.footer-space{
+	padding-bottom:5em;
+}
+
+/* T E X T */
+
+	
+a {
+	color: #001bcc; /* c-189 */
+	text-decoration: none;
+	border-width: 0;
+	}
+	
+a * {
+	color: #001bcc; /* c-189 */
+	text-decoration: none;
+	border-width: 0;
+	}
+
+a:focus, a:hover{
+	color: #001bcc; /* c-189 */
+}
+    
+a:hover {
+	text-decoration: underline;
+	}
+
+.box:hover{
+	text-decoration: none;
+	}     
+    
+.label {
+	color: #ffffff;
+	}
+
+.label a {
+	color: #ffffff;
+	font-weight: bold;
+	}
+
+.label a:hover {
+	text-decoration: underline;
+	color: #ffffff;
+	}
+
+/*unfortunate fix I needed to make because of this stupid bootstrap .less styles overriding everything*/
+.footer-label {
+	color: #ffffff;
+	}
+
+.footer-label a {
+	color: #ffffff;
+	font-weight: bold;
+	}
+
+.footer-label a:hover {
+	text-decoration: underline;
+	color: #ffffff;
+	}	
+	
+
+.light {
+	color: #aaaaaa;
+	}
+
+.light a {
+	font-weight: bold;
+	color: #aaaaaa;
+	}
+
+.light a:hover {
+	text-decoration: underline;
+	}
+
+.small {
+	font-size: 0.8em!important;
+	}
+
+.large {
+	font-size: 1.1em;
+	}
+
+
+.bold {
+	font-weight: bold;
+	}
+	
+.top {
+	valign: top!important;
+	}
+
+h1 {
+	font-size: 1.3em;
+	font-weight: normal;
+	color: #666666;
+	background-color: #eeeeee;
+	padding: 3px;
+	}
+
+h2 {
+	font-size: 1.1em;
+	font-weight: normal;
+	color: #666666;
+	background-color: #eeeeee;
+	padding: 3px;
+	}
+
+h3 {
+	font-size: 1em;
+	font-weight: bold;
+	color: #666666;
+	}
+
+th {
+	font-weight: normal;
+}
+
+.nowrap{
+	white-space:nowrap;
+}
+
+/* N A V I G A T I O N */
+.navigation {
+	height: 1.5em;
+	background-color: #aaaaaa;
+	padding: 3px 0px 3px 0px;
+}
+
+
+/*.navigation {
+	height: 1.5em;
+	background-color: #aaaaaa;
+	padding: 3px 3px 3px 0px;
+	}
+*/
+.navigation ul {
+	display: block;
+	margin: 0px;
+	list-style: none;
+}
+
+.navigation li {
+	display: inline;
+	list-style: none;
+	vertical-align: middle;
+	}
+
+.navigation li a {
+	padding: 5px 1em;
+	font-weight: normal;
+	}
+
+.navigation a:hover {
+	background-color: #666666;
+	text-decoration: none;
+	padding: 5px 1em;
+	}
+
+#loginBar{
+    margin:-2px 10px;
+    padding: 0px;
+    }
+    
+#loginBar a {
+    color: white;
+    }
+    
+#loginBar a, #loginBar select {
+     float: right;
+    }
+    
+#loginBar #aform{
+    width: 50%;
+    float: right;
+    margin-top:2px;
+}    
+    
+#loginBar a:hover {
+	background-color: #aaaaaa;
+	text-decoration: underline;
+	padding: 0px;
+	}    
+
+
+/* B O X E S */
+
+.boxes {
+	padding-top: 10px;
+	padding-left: 10px;
+	overflow-y: auto;
+	/*height: calc(100% - 155px);*/
+}
+
+.box {
+    position: relative;
+    display: inline-block; 
+    width: 218px;
+    height: 156px;
+    margin: 0px 10px 10px 0px;
+    padding: 5px;
+    }
+
+.box a {
+    color: #ffffff;
+    text-decoration: none;
+    }
+
+.box-count,.box-count-load {
+	text-align: center;
+	position: absolute;
+	color: #ffffff;
+	left: 0px;
+	top: 72px;
+	width: 228px;
+	font-size: 1.3em;
+	}
+
+.box-label {
+	text-align: right;
+	position: absolute;
+	color: #ffffff;
+	width: 218px;
+	left:0px;
+	bottom: 10px;
+	font-size: 1.1em;
+}
+
+.box-icon {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	}
+
+.box-image {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	
+	}
+
+.box-definition {}
+
+.box-help {
+	width: 226px;
+	height: 15px;
+	font-size: 0.9em;	
+	text-align: center;
+	opacity:0.0;
+	transition: height 0.75s, opacity 0.75s;	
+}
+
+.box-help:hover {
+	opacity:1.0;
+	height:125px;
+}
+
+
+/* B R O W S E   R E C O R D S */
+
+.browse {
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-bottom:6em;
+}
+
+.browse-bar {
+	position: relative;
+	height: 2em;
+	padding: 3px 3px 3px 3px;
+	}
+
+.browse-icon {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	}
+
+.browse-heading {
+	position: absolute;
+	left: 33px;
+	top: 0.6em;
+	color:#ffffff;
+	}
+
+.browse-index {
+	position: absolute;
+	bottom: 0.5em;
+	right: 10px;
+	color: #ffffff;
+	}
+
+.browse-index a {
+	color: #ffffff;
+	padding: 3px;
+	}
+.browse-index a:hover{
+	color: #ffffff;
+}
+
+.browse-index-contributor a:hover, .browse-index-function a:hover {
+	background-color:#52ad43; /* b-106 green*/
+	text-decoration: none;
+	}
+	
+.browse-index-event a:hover, .browse-index-genre a:hover, .browse-index-subject a:hover {
+	background-color:#2557d3; /* b-91 blue */
+	text-decoration: none;
+	
+	}	
+
+.browse-index-venue a:hover {
+	background-color:#ffb620; /* b-135 yellow */
+	text-decoration: none;
+	}	
+
+.browse-index-organisation a:hover {
+	background-color:#e13a3b; /* b-122 red */
+	text-decoration: none;
+	}	
+
+.browse-index-resource a:hover, .browse-index-work a:hover {
+	background-color:#7234a4; /* b-154 purple */
+	text-decoration: none;
+	}	
+
+.browse-index-international a:hover {
+	background-color:#2557d3 ; /* b-91 un blue*/
+	text-decoration: none;
+	}
+
+/*Browse table*/
+.browse-table {
+	position: inherit;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	/*margin-top:10px;*/
+	margin-bottom: 10px;
+}
+
+.browse-table thead {
+	background-color: #aaaaaa;
+	text-align: left;
+}
+
+.browse-table th {
+	padding: 0.3em;
+}
+
+.browse-table th a {
+	color:#ffffff;
+	text-decoration: none;
+	font-weight: normal;
+}
+/*, .browse-table a:hover*/
+.browse-table th:hover{
+	background-color:#666666;
+	text-decoration: none;
+	}
+
+.browse-table td {
+	padding: 0.3em;
+
+}
+/*CUSTOM BROWSE for individually colored th cells - see international browse page*/
+.cust-browse-table {
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.cust-browse-table thead {
+	background-color: #aaaaaa;
+	text-align: left;
+}
+
+.cust-browse-table th {
+	padding: 0.3em;
+}
+
+.cust-browse-table th a {
+	color:#ffffff;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+/*.cust-browse-table th:hover{
+	background-color:#666666;
+	text-decoration: none;
+	}
+*/
+.browse-table td {
+	padding: 0.3em;
+}
+
+.browse-th-organisation a, .browse-th-venue a, .browse-th-work a, .browse-th-event a  {
+	color:#ffffff;
+	text-decoration: none;	
+}
+.browse-th-organisation {
+	background-color:#f34648; /*b-121*/
+	text-decoration: none;	
+}
+.browse-th-organisation:hover{
+	background-color:#e13a3b; /*b-122*/
+	text-decoration: none;	
+} 
+.browse-th-venue{
+	background-color:#ffc11f; /*b-134*/
+	text-decoration: none;	
+}
+.browse-th-venue:hover{
+	background-color:#ffb620; /*b-135*/
+	text-decoration: none;
+		
+}
+ .browse-th-work{
+	background-color:#8c4eb8; /*b-153*/
+	text-decoration: none;	
+}
+.browse-th-work:hover{
+	background-color:#7234a4; /*b-154*/
+	text-decoration: none;	
+} 
+.browse-th-event{
+	background-color:#3875d7; /*b-91*/
+	text-decoration: none;	
+}
+.browse-th-event:hover{
+	background-color:#2557d3; /*b-90*/
+	text-decoration: none;	
+} 
+
+.browse-th-grey{
+	background-color:#aaaaaa; 
+	text-decoration: none;	
+}
+
+.browse-th-grey:hover{
+	background-color:#666666; 
+	text-decoration: none;	
+} 
+
+/*for international drill down - horizontal browse style tables*/
+.sub-browse-table {
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.sub-browse-table th {
+ 	color: #ffffff;
+	height: 2em;
+	padding: 3px 3px 3px 3px;}
+	
+.sub-browse-heading a {
+	color:#ffffff;
+	text-decoration: none;
+	font-weight: normal;
+}
+
+.sub-browse-table th:hover{
+	text-decoration: none;
+	}
+
+.sub-browse-table td {
+	padding: 0.3em;
+
+}
+
+.sub-browse-heading{
+	padding: 33px;
+	text-decoration: none;	 	
+}
+
+
+
+/* S E A R C H   R E S U L T S */
+
+.search {
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-bottom:6em;
+}
+
+.search-bar {
+	position: relative;
+	height: 2em;
+	padding: 3px 3px 3px 3px;
+	}
+
+.search-icon {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	}
+
+.search-heading {
+	position: absolute;
+	left: 33px;
+	top: 0.6em;
+	color:#ffffff;
+	}
+
+.search-index {
+	position: absolute;
+	bottom: 0.5em;
+	right: 10px;
+	color: #ffffff;
+	}
+
+.search-index a {
+	color: #ffffff;
+	padding: 3px;
+	}
+
+.search-index-event a:hover, .search-index-genre a:hover, .search-index-subject a:hover {
+	background-color:#2557d3; /* b-91 blue */
+	text-decoration: none;
+	}	
+
+.search-index-contributor a:hover, .search-index-function a:hover {
+	background-color:#52ad43; /* b-106 green*/
+	text-decoration: none;
+	}
+	
+.search-index-venue a:hover {
+	background-color:#ffb620; /* b-135 yellow */
+	text-decoration: none;
+	}	
+
+.search-index-organisation a:hover {
+	background-color:#e13a3b; /* b-122 red */
+	text-decoration: none;
+	}	
+
+.search-index-resource a:hover, .search-index-work a:hover {
+	background-color:#7234a4; /* b-154 purple */
+	text-decoration: none;
+	}	
+
+.search-table {
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	/*margin-top:10px;*/
+	margin-bottom: 10px;
+}
+
+.search-table thead {
+	background-color: #aaaaaa;
+	text-align: left;
+}
+
+.search-table th {
+	padding: 0.3em;
+}
+
+.search-table th a {
+	color:#ffffff;
+	text-decoration: none;
+	font-weight: normal;
+}
+/*, .search-table a:hover*/
+.search-table th:hover{
+	background-color:#666666;
+	text-decoration: none;
+	}
+
+.search-table td {
+	padding: 0.3em;
+
+}
+
+/* S E A R C H  F O R M */
+
+.search-form {
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-bottom: 6em;
+}
+
+.search-form-table {
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	margin-top:10px;
+	margin-bottom: 10px;}
+
+.search-form-label {
+	vertical-align: top;
+	text-align: right;
+	width: 218px;
+	padding: 5px; 
+	color: #ffffff;
+}
+
+.search-form-value {
+	position: relative;
+	vertical-align: top;
+	text-align: left;
+	word-wrap: break-word;
+	padding: 5px 5px 5px 10px;
+}
+
+.search-form-input-number {
+	width: 54px;
+}
+
+.search-form-input-text {
+	width: 218px;
+}
+
+.search-basic-box {
+    zoom:1;
+    position: relative;
+    display: inline-block;
+    height: 156px;
+    margin: 0px 10px 10px 0px;
+    padding: 5px;
+    vertical-align: top;
+    }
+
+
+/* R E C O R D S */
+/*
+.record {
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-bottom: 5em;
+	position: relative;
+}
+
+.record-table {
+	font-size:12px;
+	position: relative;
+	width:100%;
+	border-collapse: collapse;
+	border-width:0px;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.record-table table{
+	font-size:12px;
+	border-spacing: 0px;
+}
+
+
+.record-label {
+	vertical-align: top;
+	text-align: right;
+	width: 218px;
+	padding: 5px; 
+	color: #ffffff;
+}
+
+.record-value {
+	position: relative;
+	vertical-align: top;
+	text-align: left;
+	word-wrap: break-word;
+	padding: 5px 5px 5px 10px;
+}
+
+.squash-list{
+	padding-bottom : 0px!important
+}
+
+.record-tabs {
+	background-color: #aaaaaa;
+
+	padding: 5px 1em;
+	margin: 0px 0px 0px 10px;
+}
+.record-tabs.label{
+	display:block;
+	
+}
+
+ul.record-tabs  {
+	list-style: none;
+	margin: -5px 0px 0px 0px!important;
+	padding: 5px 5px 5px 0px!important;
+}
+
+.record-tabs li {
+	display: inline;
+	list-style: none;
+	padding: 0px 1em 0px 5px;
+	margin: 0px;
+}
+
+.record-tabs li a {
+	font-weight: normal;
+	padding: 5px 1em;
+}
+
+.record-tabs a:hover, .record-tabs a:focus   {
+	background-color: #666666;
+	text-decoration: none;
+
+	}
+
+.record-value ul {
+	list-style: none;
+	margin: -5px 0px 0px 0px;
+	padding: 5px 5px 0px 0px;
+}
+
+.record-value ul > :first-child {
+	padding-top: 0px;
+}
+.record-value ul + h3{
+	padding-top:10px; 
+}
+
+
+.record-value li {
+	list-style: none;
+	padding: 0px 0px 0px 0px;
+}
+*/
+/*fix for spacing issue AUS-75*//*
+.events-tab .record-value ul > :not(:first-child),
+#events .record-value ul > :not(:first-child),
+#organisation .record-value ul > :not(:first-child),
+#venue .record-value ul > :not(:first-child),
+#contributor .record-value ul > :not(:first-child),
+#function .record-value ul > :not(:first-child),
+#organisation .record-value ul > :not(:first-child){
+	padding: 4px 0px 0px 0px;
+}
+
+
+
+.record-value h3 { 
+	padding: 0px 0px 5px 0px;
+	font-size: 1em;
+	margin: 0em;
+}
+
+.record-value-table {
+	padding: 0px 10px 0px 0px;
+}
+
+.record-picture {
+	min-height: 100px;
+	max-height: 100px;
+	border: 0px;
+}
+
+.record-comment{
+    position: absolute;
+    padding: 5px 5px 5px 10px;
+    right: 0px;
+    z-index:100;
+}
+*/
+/*minor adjustment for record comment when shown on the resource page*//*
+.right-side-display {
+	position:relative;
+	width:47%;
+	float:right;
+}
+.right-side-display .record-comment{
+	position:relative;
+	padding-bottom:20px;
+}
+.right-side-display .item-article{
+	width:100%;
+	position:relative;
+	float:right;
+        margin-bottom: 65px;
+}
+.item-article img, .item-article-container img, .modal-body img{
+padding:0px 10px 0px 10px;
+}
+.modal-body{
+display:inline-block;
+}
+*/
+/* P A G E S */
+
+.page{
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	vertical-align: top; 
+	position: relative;
+	padding-bottom: 5em;
+}
+
+.page-menu {
+float: left; clear: right;
+/*	display: inline-block; */
+	vertical-align: top;
+	width: 218px;
+	background-color: #c8c8c8;
+	margin: 0px 10px 10px 0px;
+    	padding: 5px;
+}
+
+.page-menu-single {
+        position: absolute;
+	top: 0px; 
+	left: 0px; bottom: 6em;
+}
+
+.page-menu-list {
+	list-style: none;
+	margin: 5px;
+	padding: 0px;
+}
+
+.page-menu-list li {
+	margin: 5px;
+	padding: 0px;
+}
+
+.page-menu-list a {
+	font-weight: normal;
+}
+
+.page-content{
+    margin-left: 240px;
+    margin-top: 10px;
+    padding: 0px 10px 60px;
+    word-wrap: break-word;
+}
+
+.page-table {
+	position: relative;
+	border-collapse: collapse;
+	border: 1px solid #aaaaaa;
+	margin: 10px;
+}
+
+.page-table thead {
+	background-color: #aaaaaa;
+	color: #ffffff;
+	text-align: left;
+}
+
+.page-table th {
+	padding: 0.3em;
+}
+
+.page-table tr.odd {
+	background-color: #eeeeee;
+}
+
+.page-table td {
+	padding: 0.3em;
+	vertical-align: top;
+}
+
+.text-veri {
+	display: none;
+	position: absolute;
+	top: -5000px;
+}
+
+/* styles for image display on resource page */
+div.iframe-link {
+  	position: relative;
+	float: left;
+	width: 800px;
+    	height: 520px;
+        border: none;
+        -moz-transform: scale(0.2);
+        -moz-transform-origin: 0 0;
+        -o-transform: scale(0.2);
+        -o-transform-origin: 0 0;
+        -webkit-transform: scale(0.2);
+        -webkit-transform-origin: 0 0;
+}
+
+a.iframe-link {
+  	text-decoration:none;
+  	position: absolute;
+  	top: 0;
+  	right: 0;
+  	bottom: 0;
+  	left: 0;
+  	width:105%;
+  	height:516px;
+}
+
+.heading-bar {
+	background-color: #535353;
+        padding: 25px;
+        /*text-align: center;*/
+	vertical-align: middle;
+	font-family: helvetica, arial, verdana;
+    	font-size: 18px;
+    	color: #FFFFFF;
+    	margin-top: 10px;
+}
+
+/*used for displaying full test article attached to a resource/item*/
+.item-article {
+    position: relative;
+    width: 47%;
+    float: right;
+    border: 1px solid #aaaaaa;
+   /* border-radius: 7px;*/
+    padding: 10px;
+}
+
+/*match wysiwyg editor*/
+.wysiwyg{
+   width:898px;
+   max-width:898px;
+}
+/*a little help containing the contents*/
+.modal-body.item-article-container{
+	width:calc(100% - 30px);
+}
+
+.clickable {
+	cursor:pointer;
+}
+
+.exhibition-header {
+	color: #ffffff;			
+	font-size: medium;
+	font-style: normal;
+}
+
+.event-light {
+	background-color: rgb(98, 145, 222);
+}
+
+
+/*header and footer - browse*/
+.browse, .search{
+	position:relative;
+	height:calc(100% - 166px);
+}
+.browse-table, .search-table{
+	position:inherit;
+}
+
+.scroll-table{
+	max-height: calc(100% - 14px);
+	overflow-y: auto;
+	margin-top: 33px;
+}
+
+.scroll-table thead tr,
+.scroll-table tfoot tr {
+  position: absolute;
+  left: 0;
+  right: 15px;  /* to not cover the scrollbar*/
+}
+.scroll-table  thead tr {
+  top: 40px;
+  width: 100%;
+  display:table;
+  background-color: #aaaaaa;
+}
+
+.scroll-table  tfoot tr.browse-bar, 
+.scroll-table  tfoot tr.search-bar {
+  position: absolute;
+  top: calc(100% - 22px);
+  width: 100%;
+  padding-left:0px;
+  padding-right:0px;
+}
+
+
+
+/* header and footer - detail*/
+
+.record{
+ /*   height: calc(100% - 160px);
+    overflow-y: auto;
+    overflow-x:hidden;
+    padding-bottom:0px;*/
+}
+
+/*scrollable basic*/
+.scrollable{
+/*   height: calc(100% - 162PX);
+    overflow-y: auto;*/
+}
+
+/*handle exhibition styles*/
+.exhibition-element .record{
+	height:auto;
+}
+
+
+.show-hide-icon {
+    color: white;
+    font-size: large;
+    padding-right: 30px;
+    float: right;
+}
+/*help the display of print screen*/
+@media print{
+	.navigation{
+		display:none;
+	}
+	.record-comment{
+		display:none;
+	}
+	.header-search{
+		display:none;
+	}
+	.footer{
+		display:none;
+	}
+}
+
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.opencms.org/dtd/6.0/xmlpage.xsd">
+  <page language="en">
+    <element name="body">
+      <links>
+        <link name="link0" internal="false" type="A">
+          <target><![CDATA[http://www.abs.gov.au/AUSSTATS/abs@.nsf/DetailsPage/1259.0.30.001July%202010]]></target>
+          <query><![CDATA[OpenDocument]]></query>
+        </link>
+        <link name="link1" internal="false" type="A">
+          <target><![CDATA[http://www.gdal.org/ogr2ogr.html]]></target>
+        </link>
+        <link name="link2" internal="false" type="A">
+          <target><![CDATA[http://www.gdal.org/index.html]]></target>
+        </link>
+        <link name="link3" internal="false" type="A">
+          <target><![CDATA[http://fwtools.maptools.org/]]></target>
+        </link>
+        <link name="link4" internal="false" type="IMG">
+          <target><![CDATA[http://aus-e-stage.googlecode.com/svn/trunk/wiki-assets/ogr2ogr.png]]></target>
+        </link>
+        <link name="link5" internal="false" type="A">
+          <target><![CDATA[http://home.gdal.org/fwtools/FWTools247.exe]]></target>
+        </link>
+        <link name="link6" internal="false" type="A">
+          <target><![CDATA[http://fwtools.maptools.org/windows-main.html]]></target>
+        </link>
+        <link name="link7" internal="false" type="A">
+          <target><![CDATA[http://techxplorer.com/2010/06/08/converting-map-data-into-kml/]]></target>
+        </link>
+        <link name="link8" internal="false" type="A">
+          <target><![CDATA[http://aus-e-stage.googlecode.com/svn/trunk/wiki-assets/kml-By-State.png]]></target>
+        </link>
+        <link name="link9" internal="false" type="A">
+          <target><![CDATA[http://aus-e-stage.googlecode.com/svn/trunk/wiki-assets/broken-down-procedure.png]]></target>
+        </link>
+        <link name="link10" internal="false" type="A">
+          <target><![CDATA[http://webhelp.esri.com/arcgisdesktop/9.3/index.cfm]]></target>
+          <query><![CDATA[TopicName=Splitting_polygon_features]]></query>
+        </link>
+        <link name="link11" internal="false" type="A">
+          <target><![CDATA[http://aus-e-stage.googlecode.com/svn/trunk/wiki-assets/replace-with-sub-polygons.png]]></target>
+        </link>
+      </links>
+      <content><![CDATA[<h1>Convert Map Files</h1>
+<h2><a name="Introduction"></a>Introduction</h2>
+<p>In order to display ABS statistical data in our mapping service, we need create map overlays in a KML format using ABS geographic information first. What we have is <a rel="nofollow" href="%(link0)">Local Government Area ASGC Ed 2010 Digital Boundaries in MapInfo Interchange Format and ESRI Shapefile Format</a> from the ABS website.</p>
+<p>To construct an ABS overlay which can be used in Google Earth, we need to convert a MapInfo or ESRI Shapefile format into a KML format. <a rel="nofollow" href="%(link1)">ogr2ogr</a> is used for this purpose, see the following figure. This is a command line utility used to convert and manipulate geospatial data from the <a rel="nofollow" href="%(link2)">Geospatial Data Abstraction Library</a>. The best way to get this utility in ready-to-use form is to download the latest <a rel="nofollow" href="%(link3)">FWTools</a> kit.</p>
+<p><img alt="" src="%(link4)" /></p>
+<h2><a name="Construction_Procedure"></a>Construction Procedure</h2>
+<p><strong>1.</strong> Download and install <a rel="nofollow" href="%(link5)">FWtools 2.4.7 for Windows</a>. Follow the instructions on page <a rel="nofollow" href="%(link6)">http://fwtools.maptools.org/windows-main.html</a>. Open the <strong>setfw.bat</strong> and <strong>openev.bat</strong> scripts in the FWTools install directory to setup the environment variables appropriately.</p>
+<p>To run ogr2ogr, select <strong>Start -&gt; All Programs menu -&gt; FWTools 2.4.7 -&gt; FWTools Shell</strong>. FWTools shell launches a DOS shell (cmd.exe) with the environment pre-initialized to use all the FWTools commands.</p>
+<p><strong>2.</strong> Type the following command in the Dos shell mentioned above. Specify the directory as part of the file path if necessary.</p>
+<blockquote><tt>ogr2ogr -f &quot;KML&quot; -where &quot;state_code_2010 = 7&quot; LGA-7-NT.kml LGA10aAust.mid</tt> </blockquote>
+<p>This command will extract the local government areas from the Northern Territory into a file in the KML format. For more details please refer to the <a rel="nofollow" href="%(link7)">Thoughts by Techxplorer</a> website.</p>
+<p><strong>3.</strong> Open the resulting KML file (an overlay, named <strong>state.kml</strong>) in Google Earth, adjust the transparency of that overlay from completely transparent to fully opaque whenever it is selected in the 3D viewer by dragging the transparency slider under the Places panel.</p>
+<p>In some cases, you will find that one or more polygons are not filled with white color. One of the reasons is that the polygon has too many coordinates (&gt;34,000 coordinates limit) to be displayed correctly in Google earth. The following steps can solve this problem by breaking down the polygon with too many coordinate into several sub polygons in ArcMap.</p>
+<p><strong>a)</strong> Examine the KML file and locate the polygons with problem, see the Figure <a rel="nofollow" href="%(link8)">KML By State</a></p>
+<p><strong>b)</strong> Extract the polygon with problem and create a KML file (<strong>polygon.kml</strong>) for it by adding a KML header element. Please see the Figure <a rel="nofollow" href="%(link9)">Break Down Procedure</a> for the overview of the broken down procedure as described in the following steps.</p>
+<p><strong>c)</strong> To edit the polygon features (break down the polygon) in ArcMap, we need an ESRI shapefile format file of that polygon. Type the following command in the FWTools Shell as mentioned in <strong>step 2</strong> to transform the KML file with the problem polygon into an ESRI shapefile format (<strong>mydata.shp</strong>). Specify the directory as part of the file path if necessary.</p>
+<blockquote><tt>ogr2ogr -f &quot;ESRI Shapefile&quot; mydata.shp polygon.kml </tt></blockquote>
+<p><strong>d)</strong> Start ArcMap with a new empty map, add layers to the new map by selecting <strong>mydata.shp</strong>. Following the instructions about splitting polygon features on <a rel="nofollow" href="%(link10)">ArcGIS Desktop 9.3 Help</a> website to break down the polygon into several sub-polygons by drawing one or more sketches.</p>
+<p><strong>e)</strong> Convert the shapefile which contains several sub-polygons into a KML file (<strong>sub-polygons.kml</strong>) by selecting <strong>Conversion Tools -&gt; To KML -&gt; Layer To KML</strong> in the ArcToolbox.</p>
+<p><strong>f)</strong> Open the file <strong>sub-polygons.kml</strong> in Google Earth to make sure that all the polygons have been filled with colour.</p>
+<blockquote>If not, continue <strong>step d</strong> to further break down the polygon. </blockquote>
+<p><strong>g)</strong> Manually edit the <strong>state.kml</strong> to replace the problem polygon with sub-polygons created in <strong>step e</strong>. See the Figure <a rel="nofollow" href="%(link11)">Replace the Problem Polygon</a>.</p>]]></content>
+    </element>
+  </page>
+</pages>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+  <display-name>AusStage</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <session-config>
+    <cookie-config>
+        <name>JSESSIONID_AS</name>
+    </cookie-config>
+</session-config>
+	<servlet>
+        <servlet-name>MarkerServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.MarkerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.SearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LookupServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.LookupServlet</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>EventLookupServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.mapping.EventLookupServlet</servlet-class>
+    </servlet>
+    <servlet>
+    	<servlet-name>KmlDownloadServlet</servlet-name>
+    	<servlet-class>au.edu.ausstage.mapping.KmlDownloadServlet</servlet-class>
+    </servlet>
+    <!-- Networks Servlets -->
+    <servlet>
+        <servlet-name>nLookupServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.networks.LookupServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>nExportServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.networks.ExportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>nSearchServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.networks.SearchServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>nProtovisServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.networks.ProtovisServlet</servlet-class>
+    </servlet>
+	<!--Exchange Servlets -->
+    <servlet>
+        <servlet-name>eEventServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.exchange.EventServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>eResourceServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.exchange.ResourceServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>eLookupServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.exchange.LookupServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>eFeedbackServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.exchange.FeedbackServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>eVenueServlet</servlet-name>
+        <servlet-class>au.edu.ausstage.exchange.VenueServlet</servlet-class>
+    </servlet>
+	
+    <!-- Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>MarkerServlet</servlet-name>
+        <url-pattern>/markers/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LookupServlet</servlet-name>
+        <url-pattern>/lookup/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EventLookupServlet</servlet-name>
+        <url-pattern>/events/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+    	<servlet-name>KmlDownloadServlet</servlet-name>
+    	<url-pattern>/kml/*</url-pattern>
+    </servlet-mapping>    
+
+	<!-- Network Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>nLookupServlet</servlet-name>
+        <url-pattern>/nlookup/*</url-pattern>
+    </servlet-mapping>    
+    <servlet-mapping>
+        <servlet-name>nExportServlet</servlet-name>
+        <url-pattern>/nexport/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>nSearchServlet</servlet-name>
+        <url-pattern>/nsearch/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>nProtovisServlet</servlet-name>
+        <url-pattern>/nprotovis/*</url-pattern>
+    </servlet-mapping>
+
+	<!-- Servlet Exchange Mapping -->
+    <servlet-mapping>
+        <servlet-name>eEventServlet</servlet-name>
+        <url-pattern>/eevents/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>eResourceServlet</servlet-name>
+        <url-pattern>/eresources/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>eLookupServlet</servlet-name>
+        <url-pattern>/elookup/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>eFeedbackServlet</servlet-name>
+        <url-pattern>/efeedback/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>eVenueServlet</servlet-name>
+        <url-pattern>/evenues/*</url-pattern>
+    </servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AnalyticsServlet</servlet-name>
+		<servlet-class>au.edu.ausstage.beta.AnalyticsServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>TransformServlet</servlet-name>
+		<servlet-class>au.edu.ausstage.beta.TransformServlet</servlet-class>
+	</servlet>
+
+    <!-- Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>AnalyticsServlet</servlet-name>
+        <url-pattern>/analytics/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TransformServlet</servlet-name>
+        <url-pattern>/transform/*</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>colourXMLFilePath</param-name>
+        <param-value></param-value>
+    </context-param>
+    <context-param>
+        <param-name>systemName</param-name>
+        <param-value>AusStage Mapping System</param-value>
+    </context-param>    
+    <context-param>
+       	<param-name>systemVersion</param-name>
+       	<param-value>1.0 (Beta)</param-value>
+    </context-param>
+    <context-param>
+        <param-name>buildVersion</param-name>
+        <param-value>1</param-value>
+    </context-param>
+    <context-param>
+        <param-name>moreInfo</param-name>
+        <param-value>http://ausstage-flnd.sra.com.au</param-value>
+    </context-param>
+    <context-param>
+        <param-name>systemUrl</param-name>
+        <!-- Include trailing slash -->
+        <param-value>http://ausstage-flnd.sra.com.au/</param-value>
+    </context-param>
+	<context-param>
+		<param-name>sparqlEndpoint</param-name>
+		<param-value>http://rdf.csem.flinders.edu.au/joseki/networks</param-value>
+	</context-param>  
+	<context-param>
+		<param-name>rdfAccessMethod</param-name>
+		<param-value>http</param-value>
+	</context-param>  	
+	<context-param>
+		<param-name>reportDirectory</param-name>
+		<param-value>/home1/ausstage/root-web/</param-value>
+	</context-param>
+</web-app>

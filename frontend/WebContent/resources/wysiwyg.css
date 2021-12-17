@@ -1,0 +1,19 @@
+/*any styles relating to making Item_article WYSIWYG html display correctly across the site. 
+*/
+
+.item-article img, .item-article-container img, .modal-body img {
+    padding: 0px 10px;
+}
+
+.wysiwyg {
+    width: 898px!important;
+    max-width: 898px;
+}
+
+.wysiwyg h1, .wysiwyg h2, .wysiwyg h3{
+	padding-left:10px;
+}
+
+.modal-body.item-article-container{
+    width: calc(100% - 30px);
+}
