@@ -59,7 +59,7 @@
 
   String organisationName;
   String organisationId;
-  Organisation organisation, org;
+  Organisation organisation, org1;
 
   Hashtable hidden_fields = new Hashtable();
   Work work = (Work)session.getAttribute("work");

@@ -52,7 +52,7 @@ Statement stmt = db_ausstage.m_conn.createStatement();
 
   String organisationName;
   String organisationId;
-  Organisation organisation, org, organisa;
+  Organisation organisation, org1, organisa;
 
   Hashtable hidden_fields = new Hashtable();
   Event eventObj = (Event)session.getAttribute("eventObj");
@@ -151,30 +151,30 @@ Statement stmt = db_ausstage.m_conn.createStatement();
     }
 
     if(!isPartOfThisEvent){
-      org = new Organisation(db_ausstage);
-      org.setName(name);
-      org.setOtherNames1(other_name1);
-      org.setOtherNames2(other_name2);
-      org.setOtherNames3(other_name3);
-      org.setAddress(address);
-      org.setSuburb(suburb);
-      org.setState(state);
-      org.setPostcode(postcode);
-      org.setContact(contact);
-      org.setPhone1(contact_phone1);
-      org.setPhone2(contact_phone2);
-      org.setPhone3(contact_phone3);
-      org.setFax(contact_fax);
-      org.setEmail(contact_email);
-      org.setWebLinks(web_link);
-      org.setCountry(country);
-      org.setNotes(notes);
+      org1 = new Organisation(db_ausstage);
+      org1.setName(name);
+      org1.setOtherNames1(other_name1);
+      org1.setOtherNames2(other_name2);
+      org1.setOtherNames3(other_name3);
+      org1.setAddress(address);
+      org1.setSuburb(suburb);
+      org1.setState(state);
+      org1.setPostcode(postcode);
+      org1.setContact(contact);
+      org1.setPhone1(contact_phone1);
+      org1.setPhone2(contact_phone2);
+      org1.setPhone3(contact_phone3);
+      org1.setFax(contact_fax);
+      org1.setEmail(contact_email);
+      org1.setWebLinks(web_link);
+      org1.setCountry(country);
+      org1.setNotes(notes);
 
       if(!org_id.equals("")){ //  EDIT
-        org.setId(Integer.parseInt(org_id));
-        org.update();
+        org1.setId(Integer.parseInt(org_id));
+        org1.update();
       }else{                  //  ADD
-        org.add();
+        org1.add();
       }
     }
 
@@ -336,4 +336,5 @@ Statement stmt = db_ausstage.m_conn.createStatement();
   db_ausstage.disconnectDatabase();
   pageFormater.writePageTableFooter (out);
   pageFormater.writeFooter(out);
-%><jsp:include page="../templates/admin-footer.jsp" />
+%>
+<jsp:include page="../templates/admin-footer.jsp" />

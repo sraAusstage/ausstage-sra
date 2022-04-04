@@ -339,7 +339,7 @@ function generateRandom() {
     for ( var i = 0; i < 3; i++ ) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
    				}
-    var characters       = "^`!@#$%^&?*\\-_=+'/.,";
+    var characters       = "^`!@#$%^&?*-_=+'/.,";
     var charactersLength = characters.length;
     for ( var i = 0; i < 2; i++ ) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));

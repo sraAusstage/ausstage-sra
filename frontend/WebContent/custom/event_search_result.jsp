@@ -1,7 +1,8 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import = "java.util.Vector, java.util.Calendar, java.util.StringTokenizer, java.text.SimpleDateFormat, java.sql.*, sun.jdbc.rowset.*, ausstage.*"%>
-<%admin.AppConstants ausstage_search_appconstants_for_result = new admin.AppConstants(request);%><cms:include property="template" element="head" />
+<%admin.AppConstants ausstage_search_appconstants_for_result = new admin.AppConstants(request);%>
+<jsp:include page="../templates/admin-header.jsp" />
 
 <jsp:useBean id="admin_db_for_result" class="ausstage.Database" scope="application">
 <%admin_db_for_result.connDatabase(ausstage_search_appconstants_for_result.DB_PUBLIC_USER_NAME, ausstage_search_appconstants_for_result.DB_PUBLIC_USER_PASSWORD);%>

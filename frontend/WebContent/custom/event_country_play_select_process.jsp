@@ -55,4 +55,4 @@
   session.setAttribute("eventObj",eventObj);
 %>
 
-<jsp:include page="../templates/admin-header.jsp" />
+<jsp:include page="../templates/admin-footer.jsp" />

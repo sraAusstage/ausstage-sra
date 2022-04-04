@@ -114,9 +114,9 @@
 							<td class='record-comment'>
 							<%
 								if (groupNames.contains("Administrators") || groupNames.contains("Exhibition Editor")) {%>		 		
-								<cms:include page="../exhibition/add-to-exhibition.jsp" >
-									<cms:param name="organisationid"><%= org_id%></cms:param>
-								</cms:include>
+								<jsp:include page="../exhibition/add-to-exhibition.jsp" >
+									<jsp:param name="organisationid" value="<%= org_id%>" />
+								</jsp:include>
 								<%}
 							
 								if (displayUpdateForm) {

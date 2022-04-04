@@ -139,7 +139,6 @@ public class AppConstants implements DatabaseType {
 	public static final String WORKFLOW_STATE_APPROVED = "approved";
 	public static final String WORKFLOW_STATE_DECLINED = "declined";
 	public static final String WORKFLOW_STATE_PENDING = "pending";
-	public static final String PASSWORD_ENCRYPTION_KEY = "SomeSecureEncryptionKey!?";
 	public static String SITE_NAME;
 	public static int ROOT_PAGE;
 	public static String HOME_PAGE_URL;
@@ -148,6 +147,7 @@ public class AppConstants implements DatabaseType {
 	public static String PUBLIC_LOGIN_PAGE;
 	public static String RETURN_TO_TOP_IMAGE_KEY;
 	public static String DATE_FORMAT_STRING;
+	public static String PASSWORD_ENCRYPTION_KEY;
 	public static int DATABASE_TYPE = 4;
 	public static String DB_CONNECTION_STRING;	
 	public static String DB_READONLY_CONNECTION_STRING;
@@ -242,7 +242,7 @@ public class AppConstants implements DatabaseType {
 
 				iniFile.readIni("C:/AusStage Without OpenCMS/cmjava.ini");
 				//this will be important for PROD???
-				//iniFile.readIni("C:/AusStage Without OpenCMS/cmjava.ini");
+				//iniFile.readIni("/opt/ausstage/cmjava.ini");
 				
 				iniFile.setHeader("GENERAL");
 				SITE_NAME = iniFile.getItem("SITE_NAME");
@@ -253,6 +253,7 @@ public class AppConstants implements DatabaseType {
 				PUBLIC_LOGIN_PAGE = iniFile.getItem("PUBLIC_LOGIN_PAGE");
 				DATE_FORMAT_STRING = iniFile.getItem("DATE_FORMAT");
 				RETURN_TO_TOP_IMAGE_KEY = iniFile.getItem("RETURN_TO_TOP_IMAGE_KEY");
+				PASSWORD_ENCRYPTION_KEY = iniFile.getItem("PASSWORD_ENCRYPTION_KEY");
 				iniFile.setHeader("DATABASE");
 				DB_PUBLIC_USER_NAME = iniFile.getItem("DB_PUBLIC_USER_NAME");
 				DB_PUBLIC_USER_PASSWORD = iniFile.getItem("DB_PUBLIC_USER_PASSWORD");

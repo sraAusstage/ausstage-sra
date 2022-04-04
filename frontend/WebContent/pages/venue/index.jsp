@@ -118,9 +118,9 @@ admin.AppConstants appConstants = new admin.AppConstants(request);
 							<td  class='record-comment'>
 							<%
 							if (groupNames.contains("Administrators") || groupNames.contains("Exhibition Editor")) {%>		 		
-							<cms:include page="../exhibition/add-to-exhibition.jsp" >
-								<cms:param name="venueid"><%= venue_id%></cms:param>
-							</cms:include>
+							<jsp:include page="../exhibition/add-to-exhibition.jsp" >
+								<jsp:param name="venueid" value="<%= venue_id%>"></jsp:param>
+							</jsp:include>
 							<%}
 							if (displayUpdateForm) {
 								displayUpdateForm(venue_id, "Venue", venue.getName(), out,

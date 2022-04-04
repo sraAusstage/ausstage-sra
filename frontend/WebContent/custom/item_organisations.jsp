@@ -56,7 +56,7 @@
 
   String organisationName;
   String organisationId;
-  Organisation organisation, org;
+  Organisation organisation, org1;
 
   Hashtable hidden_fields = new Hashtable();
   Item item = (Item)session.getAttribute("item");

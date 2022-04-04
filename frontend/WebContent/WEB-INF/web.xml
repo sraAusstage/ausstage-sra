@@ -190,4 +190,5 @@
 		<param-name>reportDirectory</param-name>
 		<param-value>/home1/ausstage/root-web/</param-value>
 	</context-param>
+	<request-character-encoding>UTF-8</request-character-encoding>
 </web-app>

@@ -109,25 +109,25 @@
 				if(rowSet.getInt("images_cnt") > 0) {
 					%>		
 					<!-- carousel  -->
-					<cms:include page="item_image.jsp" >
-						<cms:param name="itemid"><%= item_id%></cms:param>
-					</cms:include>
+					<jsp:include page="item_image.jsp" >
+						<jsp:param name="itemid" value="<%= item_id%>"></jsp:param>
+					</jsp:include>
 					
 					
 					<%
 				} if(rowSet.getInt("pdfs_cnt") > 0) {
 					%>	
 					<!-- pdf  -->	
-					<cms:include page="item_pdf.jsp" >
-						<cms:param name="itemid"><%= item_id%></cms:param>
-					</cms:include>
+					<jsp:include page="item_pdf.jsp" >
+						<jsp:param name="itemid" value="<%= item_id%>"></jsp:param>
+					</jsp:include>
 					<%
 				} 
 				//if ((rowSet.getInt("images_cnt") == 0) && (rowSet.getInt("pdfs_cnt") == 0) ) {
 					%>		
-					<cms:include page="item_data.jsp" >
-						<cms:param name="itemid"><%= item_id%></cms:param>
-					</cms:include>  
+					<jsp:include page="item_data.jsp" >
+						<jsp:param name="itemid" value="<%= item_id%>"></jsp:param>
+					</jsp:include>  
 					<%
 				//}
 			}

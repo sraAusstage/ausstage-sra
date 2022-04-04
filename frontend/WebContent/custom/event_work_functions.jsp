@@ -3,7 +3,7 @@
 
 <%@ page import = "java.sql.Statement, sun.jdbc.rowset.CachedRowSet, java.util.*"%>
 <%@ page import = "ausstage.Event,ausstage.Work, ausstage.WorkEvLink, admin.Common, ausstage.RelationLookup"%>
-<jsp:include page="../templates/admin-footer.jsp" />
+<jsp:include page="../templates/admin-header.jsp" />
 <%@ include file="../admin/content_common.jsp"%>
 <%@ page import = "ausstage.AusstageCommon"%>
 <link rel="stylesheet" type="text/css" href="resources/backend.css" />

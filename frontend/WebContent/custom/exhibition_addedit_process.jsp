@@ -71,17 +71,24 @@
 						<span class="glyphicon glyphicon-remove small" aria-hidden="true" style="color: white; float: right; padding-right: 0px;"></span></a>
 					</div>
 					<div style="width: 100%; ">
+					<% 
+					
+					if("addheading".equals(action)){
+						%>
+						<jsp:include page="./exhibition_addedit_text.jsp">
+						<jsp:param name="exhibition_sectionid" value="<%= returnVal%>"></jsp:param>
+							<jsp:param name="heading" value=""></jsp:param>
+						</jsp:include>
+						<%
+					}else if("addtext".equals(action)){ %>
+						<jsp:include page="./exhibition_addedit_text.jsp">
+						<jsp:param name="exhibition_sectionid" value="<%= returnVal%>"></jsp:param>
+							<jsp:param name="text" value=""></jsp:param>
+						</jsp:include>
+					<%}
+					%>
 					<!-- INCLUDE TEXT -->
-						<cms:include page="./exhibition_addedit_text.jsp" >
-							<cms:param name="exhibition_sectionid"><%= returnVal%></cms:param>
-							<%if("addheading".equals(action)){%>
-								<cms:param name="heading"></cms:param>
-							<%} else if("addtext".equals(action)){%>
-								<cms:param name="text"></cms:param>
-							<%}%>
-							
-
-						</cms:include>
+						
 					<!-- END TEXT -->
 					</div>
 				</div>
@@ -115,7 +122,7 @@
 		       	for(String sequenceNumber : values) {
 		       		String heading = request.getParameter("section_id" + exhibitionSectionId + "_heading");
 		       		String text = request.getParameter("section_id" + exhibitionSectionId + "_text");
-		       		System.out.println(heading);
+		       		//System.out.println(heading);
 		       		text = m_db.plSqlSafeString(text);
 		       		heading = m_db.plSqlSafeString(heading);
 		       		

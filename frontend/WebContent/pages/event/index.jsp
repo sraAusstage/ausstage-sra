@@ -103,9 +103,9 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 				 	</td>
 				 	<td class='record-comment'>	
 				 		<%if (groupNames.contains("Administrators") || groupNames.contains("Exhibition Editor")) {%>		 		
-						<cms:include page="../exhibition/add-to-exhibition.jsp" >
-							<cms:param name="eventid"><%= event_id%></cms:param>
-						</cms:include>
+						<jsp:include page="../exhibition/add-to-exhibition.jsp" >
+							<jsp:param name="eventid" value="<%= event_id%>" />
+						</jsp:include>
 						<%}%>
 					<%
 				 		if (displayUpdateForm) {
@@ -203,7 +203,7 @@ admin.AppConstants ausstage_search_appconstants_for_drill = new admin.AppConstan
 			//World Premier
 			%>
 			<tr>
-				<th class='record-label b-90'>World Pqqqremiere</th>
+				<th class='record-label b-90'>World Premiere</th>
 				
 				<td class='record-value' colspan='2'><%=Common.capitalise(Common.convertBoolToYesNo(event.getWorldPremier()), true)%></td>
 			</tr>

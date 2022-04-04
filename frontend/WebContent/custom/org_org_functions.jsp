@@ -132,7 +132,7 @@ function validateForm() {
   // All functions must be selected
   <%
   for(int i=0; i < organisationOrganisationLinks.size(); i++) {
-	  out.println("if (document.getElementById('f_function_lov_id_" + i + "').options [document.getElementById('f_function_lov_id_" + i + "').selectedIndex].value=='0') { alert('Please select all functions'); return (false);} ");
+	  out.println("if (document.getElementById('f_link_org_id_" + i + "').options [document.getElementById('f_link_org_id_" + i + "').selectedIndex].value=='0') { alert('Please select all functions'); return (false);} ");
   } %>
   return (true);
 }

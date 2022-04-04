@@ -125,9 +125,9 @@ if (session.getAttribute("userName")!= null) {
     out.println("   <td class='record-comment'>");
     if (displayUpdateForm) {
 	if (groupNames.contains("Administrators") || groupNames.contains("Exhibition Editor")) {%>		 		
-	<cms:include page="../exhibition/add-to-exhibition.jsp" >
-		<cms:param name="contributorid"><%= contrib_id%></cms:param>
-	</cms:include>
+	<jsp:include page="../exhibition/add-to-exhibition.jsp" >
+		<jsp:param name="contributorid" value="<%= contrib_id %>" />
+	</jsp:include>
 	<%}
       displayUpdateForm(contrib_id, "Contributor", contributor.getName() + " " + contributor.getLastName(),
                         out,

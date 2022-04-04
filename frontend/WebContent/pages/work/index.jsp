@@ -107,9 +107,9 @@
 							<%
 							
 							if (groupNames.contains("Administrators") || groupNames.contains("Exhibition Editor")) {%>		 		
-							<cms:include page="../exhibition/add-to-exhibition.jsp" >
-								<cms:param name="workid"><%= work_id%></cms:param>
-							</cms:include>
+							<jsp:include page="../exhibition/add-to-exhibition.jsp" >
+								<jsp:param name="workid" value="<%= work_id%>" />
+							</jsp:include>
 							<%}
 							if (displayUpdateForm) {
 							displayUpdateForm(work_id, "Work", work.getName(), out,

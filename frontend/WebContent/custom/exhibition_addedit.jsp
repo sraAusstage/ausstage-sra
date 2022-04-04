@@ -183,9 +183,9 @@
 							<div style="width: 100%; margin-top:5px; ">
 								<!--itemid: <%= itemid%> -->
 								<!-- INCLUDE ITEM -->
-								<cms:include page="../pages/exhibition/item.jsp" >
-									<cms:param name="itemid"><%= itemid%></cms:param>
-								</cms:include>
+								<jsp:include page="../pages/exhibition/item.jsp" >
+									<jsp:param name="itemid" value="<%= itemid%>"></jsp:param>
+								</jsp:include>
 								<!-- END ITEM -->
 							</div>
 						</div>
@@ -210,9 +210,9 @@
 							<div style="width: 100%; margin-top:5px;">
 								<!--organisationid: <%= organisationid %> -->
 								<!-- INCLUDE ORG -->
-								<cms:include page="../pages/exhibition/organisation.jsp" >
-									<cms:param name="organisationid"><%= organisationid %></cms:param>
-								</cms:include>
+								<jsp:include page="../pages/exhibition/organisation.jsp" >
+									<jsp:param name="organisationid" value="<%= organisationid %>"></jsp:param>
+								</jsp:include>
 								<!-- END ORG -->
 							</div>
 						</div>
@@ -236,9 +236,9 @@
 							<div style="width: 100%; margin-top:5px;">
 								<!--eventid : <%= eventid %> -->
 								<!-- INCLUDE EVENT -->
-								<cms:include page="../pages/exhibition/event.jsp" >
-									<cms:param name="eventid"><%= eventid %></cms:param>
-								</cms:include>
+								<jsp:include page="../pages/exhibition/event.jsp" >
+									<jsp:param name="eventid" value="<%= eventid %>"></jsp:param>
+								</jsp:include>
 								<!-- END EVENT -->
 							</div>
 						</div>
@@ -263,9 +263,9 @@
 							<div style="width: 100%; margin-top:5px;">
 								<!--venueid : <%= venueid %> -->
 								<!-- VENUE -->
-								<cms:include page="../pages/exhibition/venue.jsp" >
-									<cms:param name="venueid"><%= venueid %></cms:param>
-								</cms:include>
+								<jsp:include page="../pages/exhibition/venue.jsp" >
+									<jsp:param name="venueid" value="<%= venueid %>"></jsp:param>
+								</jsp:include>
 								<!-- END VENUE -->
 							</div>
 						</div>
@@ -290,9 +290,9 @@
 							<div style="width: 100%; margin-top:5px;">
 								<!--contributorid : <%= contributorid %> -->
 								<!-- INCLUDE CONTRIBUTOR -->
-								<cms:include page="../pages/exhibition/contributor.jsp" >
-									<cms:param name="contributorid"><%= contributorid %></cms:param>
-								</cms:include>
+								<jsp:include page="../pages/exhibition/contributor.jsp" >
+									<jsp:param name="contributorid" value="<%= contributorid %>"></jsp:param>
+								</jsp:include>
 								<!-- END CONTRIBUTOR -->
 							</div>
 						</div>
@@ -317,9 +317,9 @@
 							<div style="width: 100%; margin-top:5px;">
 								<!--workid : <%= workid %> -->
 								<!-- INCLUDE WORK -->
-								<cms:include page="../pages/exhibition/work.jsp" >
-									<cms:param name="workid"><%= workid %></cms:param>
-								</cms:include>
+								<jsp:include page="../pages/exhibition/work.jsp" >
+									<jsp:param name="workid" value="<%= workid %>"></jsp:param>
+								</jsp:include>
 								<!-- END WORK -->
 							</div>
 						</div>
@@ -344,11 +344,11 @@
 							</div>
 							<div style="width: 100%; margin-top:5px;">
 							<!-- INCLUDE TEXT -->
-								<cms:include page="./exhibition_addedit_text.jsp" >
-									<cms:param name="exhibition_sectionid"><%= exhibition_sectionid%></cms:param>
-									<cms:param name="heading"><%= heading%></cms:param>
-									<cms:param name="text"><%= text%></cms:param>
-								</cms:include>
+								<jsp:include page="./exhibition_addedit_text.jsp" >
+									<jsp:param name="exhibition_sectionid" value="<%= exhibition_sectionid%>"></jsp:param>
+									<jsp:param name="heading" value="<%= heading%>"></jsp:param>
+									<jsp:param name="text" value="<%= text%>"></jsp:param>
+								</jsp:include>
 							<!-- END TEXT -->
 							</div>
 						</div>

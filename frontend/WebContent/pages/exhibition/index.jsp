@@ -121,9 +121,9 @@
 				
 					<div class="exhibition-element" style="margin: 5px 10px 0px 10px;">
 						<!--itemid: <%= itemid%> -->
-						<cms:include page="item.jsp" >
-							<cms:param name="itemid"><%= itemid%></cms:param>
-						</cms:include>
+						<jsp:include page="item.jsp" >
+							<jsp:param name="itemid" value="<%= itemid%>"></jsp:param>
+						</jsp:include>
 					</div>
 				<%
 			} else if(organisationid != null && !"".equals(organisationid )) {
@@ -131,9 +131,9 @@
 				
 					<div class="exhibition-element" style="margin: 5px 10px 0px 10px;">
 						<!--organisationid: <%= organisationid %> -->
-						<cms:include page="organisation.jsp" >
-							<cms:param name="organisationid"><%= organisationid %></cms:param>
-						</cms:include>
+						<jsp:include page="organisation.jsp" >
+							<jsp:param name="organisationid" value="<%= organisationid %>"></jsp:param>
+						</jsp:include>
 					</div>
 				<%
 			} else if(eventid != null && !"".equals(eventid )) {
@@ -141,9 +141,9 @@
 				
 					<div class="exhibition-element" style="margin: 5px 10px 0px 10px;">
 						<!--eventid : <%= eventid %> -->
-						<cms:include page="event.jsp" >
-							<cms:param name="eventid"><%= eventid %></cms:param>
-						</cms:include>
+						<jsp:include page="event.jsp" >
+							<jsp:param name="eventid" value ="<%= eventid %>"></jsp:param>
+						</jsp:include>
 					</div>
 				<%
 			} else if(venueid != null && !"".equals(venueid )) {
@@ -151,9 +151,9 @@
 				
 					<div class="exhibition-element" style="margin: 5px 10px 0px 10px;">
 						<!--venueid : <%= venueid %> -->
-						<cms:include page="venue.jsp" >
-							<cms:param name="venueid"><%= venueid %></cms:param>
-						</cms:include>
+						<jsp:include page="venue.jsp" >
+							<jsp:param name="venueid" value="<%= venueid %>"></jsp:param>
+						</jsp:include>
 					</div>
 				<%
 			} else if(contributorid != null && !"".equals(contributorid )) {
@@ -161,9 +161,9 @@
 				
 					<div class="exhibition-element" style="margin: 5px 10px 0px 10px;">
 						<!--contributorid : <%= contributorid %> -->
-						<cms:include page="contributor.jsp" >
-							<cms:param name="contributorid"><%= contributorid %></cms:param>
-						</cms:include>
+						<jsp:include page="contributor.jsp" >
+							<jsp:param name="contributorid" value="<%= contributorid %>"></jsp:param>
+						</jsp:include>
 					</div>
 				<%
 			} else if(workid!= null && !"".equals(workid)) {
@@ -171,9 +171,9 @@
 				
 					<div class="exhibition-element" style="margin: 5px 10px 0px 10px;">
 						<!--workid: <%= workid%> -->
-						<cms:include page="work.jsp" >
-							<cms:param name="workid"><%= workid%></cms:param>
-						</cms:include>
+						<jsp:include page="work.jsp" >
+							<jsp:param name="workid" value="<%= workid%>"></jsp:param>
+						</jsp:include>
 					</div>
 				<%
 			} else {
@@ -181,10 +181,10 @@
 					<div class="exhibition-element" style="margin: 5px 10px 0px 10px;">
 						<!--heading: <%= heading%> -->
 						<!--text: <%= text%> -->
-						<cms:include page="text.jsp" >
-							<cms:param name="heading"><%= heading%></cms:param>
-							<cms:param name="text"><%= text%></cms:param>
-						</cms:include>
+						<jsp:include page="text.jsp" >
+							<jsp:param name="heading" value="<%= heading%>"></jsp:param>
+							<jsp:param name="text" value="<%= text%>"></jsp:param>
+						</jsp:include>
 					</div>
 						<%
 			}
