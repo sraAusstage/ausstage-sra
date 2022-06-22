@@ -39,7 +39,7 @@
 	var ajaxChildSelect;
 	var ajaxLoadingImageCell;
 	var req;
-	try { // Firefox, Opera 8.0+, Safari
+	try { // Firefox, Opera 8.0+, Safari , testing
 		req = new XMLHttpRequest();
 	} catch (e) { // Internet Explorer
 		try {
