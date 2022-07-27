@@ -1,0 +1,8 @@
+/backend/.settings/*
+/backend/classes/*
+/backend/bin/*
+/frontend/.settings/*
+.settings/*
+.classpath
+.project
+
