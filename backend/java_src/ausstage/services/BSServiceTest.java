@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package ausstage.services;
+//package ausstage.services;
 
 //import com.sun.org.omg.CORBA.ParameterMode;
 
-import javax.xml.namespace.QName;
+//import javax.xml.namespace.QName;
 
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
@@ -50,7 +50,7 @@ public class BSServiceTest
             
             call.setTargetEndpointAddress( new java.net.URL(endpointURL) );
             //call.setOperationName( new QName("http://ausstage.services", "callSearch") );
-            call.setOperationName( new QName("http://www.ausstage.edu.au:8088/services/BSService", "callSearch") );
+            //call.setOperationName( new QName("http://www.ausstage.edu.au:8088/services/BSService", "callSearch") );
             //call.setOperationName( new QName("-lhttp://sapac24.cc.flinders.edu.au:8088/axis/services/BSService", "callSearch") );
             call.addParameter( "arg1", XMLType.XSD_STRING, javax.xml.rpc.ParameterMode.IN);
             call.addParameter( "arg2", XMLType.XSD_STRING, javax.xml.rpc.ParameterMode.IN);

@@ -9,7 +9,7 @@ Project: Ausstage
 Purpose: Provides access to the Basic Search functionality which a web service can access. 
 
 ***************************************************/
-package ausstage.services;
+//package ausstage.services;
 
 import ausstage.AusstageCommon;
 import ausstage.Search;
